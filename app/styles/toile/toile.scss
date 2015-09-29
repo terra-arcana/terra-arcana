@@ -1,0 +1,14 @@
+.toile-editor {
+	margin: 1em;
+	background-color: white;
+
+	.konvajs-content {
+		width: auto !important;
+		height: auto !important;
+
+		canvas {
+			width: auto !important;
+			height: auto !important;
+		}
+	}
+}

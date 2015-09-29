@@ -26,15 +26,25 @@ namespace terraarcana {
         public function enqueue_scripts() {
             $base = get_stylesheet_directory_uri() . '/';
 
-            wp_register_script( 'bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js', array('jquery') );
+            if (isset($_GET['debug'])) {
+                wp_register_script( 'bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.js', array('jquery') );
 
-            wp_enqueue_script( 'app', $base . 'dist/app.js', array( 'bootstrap' ), null, true );
+                wp_enqueue_script( 'app', $base . 'dist/app.js', array( 'bootstrap' ), null, true );
+            } else {
+                wp_register_script( 'bootstrap-min', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js', array('jquery') );
+
+                // FIXME: Enqueue minified scripts in production
+                wp_enqueue_script( 'app', $base . 'dist/app.js', array( 'bootstrap-min' ), null, true );
+            }
 
             $this->localize_scripts();
         }
 
         public function enqueue_styles() {
+            $base = get_stylesheet_directory_uri() . '/';
+
             wp_enqueue_style( 'bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css' );
+            wp_enqueue_style( 'app', $base . 'dist/style.css' );
         }
 
         /**
@@ -44,9 +54,10 @@ namespace terraarcana {
         private function localize_scripts() {
         	wp_localize_script(
         		'app',
-        		'applocals',
+        		'appLocals',
         		array(
-        			'templates' => trailingslashit( get_template_directory_uri() ) . 'app/templates/'
+        			'jsPath' => trailingslashit( get_template_directory_uri() ) . 'app/',
+                    'scssPath' => trailingslashit( get_template_directory_uri() ) . 'app/styles/'
         		)
         	);
         }
