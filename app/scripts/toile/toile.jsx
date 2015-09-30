@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactKonva from 'react-konva';
 
-require('../styles/toile/toile.scss');
+require('../../styles/toile/toile.scss');
 
 export default React.createClass({
 	getDefaultProps: getDefaultProps,
