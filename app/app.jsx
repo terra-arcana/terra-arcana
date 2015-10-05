@@ -4,7 +4,7 @@ import React from 'react';
 import Router from 'react-router';
 import { Route, DefaultRoute, RouteHandler } from 'react-router';
 
-import Navbar from './scripts/navbar.jsx';
+import SideNav from './scripts/sidenav.jsx';
 import Index from './scripts/index.jsx';
 import Toile from './scripts/toile/toile.jsx';
 import Codex from './scripts/codex/codex.jsx';
@@ -14,10 +14,12 @@ require('./styles/app.scss');
 var App = React.createClass({
     render: function() {
         return (
-            <div>
-                <h1>Terra Arcana</h1>
-                <Navbar />
-                <RouteHandler />
+            <div id="sidenav-page-wrapper" className="toggled">
+                <SideNav />
+                <div id="sidenav-content-wrapper">
+                    <h1>Terra Arcana</h1>
+                    <RouteHandler />
+                </div>
             </div>
         )
     }

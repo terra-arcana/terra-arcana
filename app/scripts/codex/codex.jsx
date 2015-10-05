@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+require('../../styles/codex/codex.scss');
+
 export default React.createClass({
 	getInitialState: getInitialState,
 	componentDidMount: componentDidMount,
@@ -30,17 +32,19 @@ function componentDidMount() {
 function render() {
 	let codexArticles = this.state.codexArticles.map(function(article, index) {
 		return(
-			<li key={article.ID} className='thumbnail'>
-				<div className='caption'>
-					<h2>{article.post_title}</h2>
-					<p className='entry-content'>{article.post_content}</p>
+			<li key={article.ID} className='panel panel-default'>
+				<div className='panel-heading'>
+					<h2 className='panel-title'>{article.post_title}</h2>
+				</div>
+				<div className='panel-body'>
+					{article.post_content}
 				</div>
 			</li>
 		)
 	});
 
 	return (
-		<div>
+		<div className='codex-archive'>
 			<h1>Codex</h1>
 			<ul>
 				{codexArticles}

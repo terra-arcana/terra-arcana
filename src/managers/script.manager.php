@@ -43,7 +43,8 @@ namespace terraarcana {
         public function enqueue_styles() {
             $base = get_stylesheet_directory_uri() . '/';
 
-            wp_enqueue_style( 'bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css' );
+            wp_enqueue_style( 'bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css' );
+            wp_enqueue_style( 'bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array( 'bootstrap' ) );
             wp_enqueue_style( 'app', $base . 'dist/style.css' );
         }
 
