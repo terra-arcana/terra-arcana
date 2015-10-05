@@ -12,7 +12,7 @@ namespace terraarcana {
 
         /**
         * @name init
-        * @desc Run on WP init hook
+        * @desc Runs on WP init hook
         */
         public function init() {
             add_action( 'wp_enqueue_scripts', array($this, 'enqueue_scripts') );
@@ -57,7 +57,9 @@ namespace terraarcana {
         		'appLocals',
         		array(
         			'jsPath' => trailingslashit( get_template_directory_uri() ) . 'app/',
-                    'scssPath' => trailingslashit( get_template_directory_uri() ) . 'app/styles/'
+                    'scssPath' => trailingslashit( get_template_directory_uri() ) . 'app/styles/',
+                    'apiCorePath' => trailingslashit( site_url() ) . '/wp-json/wp/v2/',
+                    'apiTerraPath' => trailingslashit( site_url() ) . '/wp-json/terraarcana/v1/'
         		)
         	);
         }

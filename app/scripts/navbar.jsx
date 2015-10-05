@@ -24,6 +24,7 @@ function render() {
 					<ul className="nav navbar-bar">
 						<li><Link to="/">Index</Link></li>
 						<li><Link to="/toile">Toile</Link></li>
+						<li><Link to="/codex">Codex</Link></li>
 					</ul>
 				</div>
 			</div>

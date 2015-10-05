@@ -7,6 +7,7 @@ import { Route, DefaultRoute, RouteHandler } from 'react-router';
 import Navbar from './scripts/navbar.jsx';
 import Index from './scripts/index.jsx';
 import Toile from './scripts/toile/toile.jsx';
+import Codex from './scripts/codex/codex.jsx';
 
 require('./styles/app.scss');
 
@@ -26,6 +27,7 @@ let routes = (
     <Route name="app" path="/" handler={App}>
         <DefaultRoute handler={Index} />
         <Route path="/toile" handler={Toile} />
+        <Route path="/codex" handler={Codex} />
     </Route>
 );
 
