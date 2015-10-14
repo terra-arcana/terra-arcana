@@ -53,16 +53,16 @@ namespace terraarcana {
         * @desc Serve localization data and generic useful data to public app
         */
         private function localize_scripts() {
-        	wp_localize_script(
-        		'app',
-        		'appLocals',
-        		array(
-        			'jsPath' => trailingslashit( get_template_directory_uri() ) . 'app/',
+            wp_localize_script(
+                'app',
+                'appLocals',
+                array(
+                    'jsPath' => trailingslashit( get_template_directory_uri() ) . 'app/',
                     'scssPath' => trailingslashit( get_template_directory_uri() ) . 'app/styles/',
                     'apiCorePath' => trailingslashit( site_url() ) . '/wp-json/wp/v2/',
                     'apiTerraPath' => trailingslashit( site_url() ) . '/wp-json/terraarcana/v1/'
-        		)
-        	);
+                )
+            );
         }
     }
 }
