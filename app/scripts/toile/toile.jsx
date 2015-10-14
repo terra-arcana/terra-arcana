@@ -13,6 +13,11 @@ var pxStringToNumber = function(str) {
 
 /* Methods */
 
+/**
+ * Set initial props
+ *
+ * @return {Object} The default props
+ */
 toile.getDefaultProps = function() {
 	return {
 		canvas: null,
@@ -21,6 +26,11 @@ toile.getDefaultProps = function() {
 	};
 };
 
+/**
+ * Render the editor component
+ *
+ * @return {jsx} The component template
+ */
 toile.render = function() {
 	return (
 		<div className="toile-editor">
@@ -37,6 +47,9 @@ toile.render = function() {
 	);
 };
 
+/**
+ * Initialize the component after mounting
+ */
 toile.componentDidMount = function() {
 	var root = React.findDOMNode(this);
 
@@ -48,24 +61,37 @@ toile.componentDidMount = function() {
 	this.draw();
 };
 
+/**
+ * Redraw the canvas and its contents
+ */
 toile.draw = function() {
 	this.resizeCanvas();
 	this.refs.stage.node.draw();
 };
 
+/**
+ * Get the desired size of the editor canvas
+ * 
+ * @return {Object} The desired width and height of the editor canvas
+ */
 toile.getEditorSize = function() {
 	var	root = React.findDOMNode(this),
 	 	editorStyle = window.getComputedStyle(root),
+		parentStyle = window.getComputedStyle(root.parentNode),
 		margins = {
 			left: pxStringToNumber(editorStyle.marginLeft),
 			right: pxStringToNumber(editorStyle.marginRight),
 			top: pxStringToNumber(editorStyle.marginTop),
 			bottom: pxStringToNumber(editorStyle.marginBottom)
 		},
+		parentPaddings = {
+			left: pxStringToNumber(parentStyle.paddingLeft),
+			right: pxStringToNumber(parentStyle.paddingRight)
+		},
 		width, height;
 
-	// FIXME: Calculate based on parent node width instead of window
-	width = window.innerWidth - margins.left - margins.right;
+	// Calculate width by taking into account paddings and margins
+	width = root.parentNode.offsetWidth - margins.left - margins.right - parentPaddings.left - parentPaddings.right;
 	height = Math.min(
 		width * 0.75,
 		window.innerHeight - margins.top - margins.bottom - this.props.WP_BAR_HEIGHT,
@@ -78,6 +104,9 @@ toile.getEditorSize = function() {
 	};
 };
 
+/**
+ * Resizes the editor canvas to its wrapper width
+ */
 toile.resizeCanvas = function() {
 	var	editorSize = this.getEditorSize(),
 		root = React.findDOMNode(this);
