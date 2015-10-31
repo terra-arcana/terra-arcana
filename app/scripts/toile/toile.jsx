@@ -3,6 +3,7 @@ import ReactKonva from 'react-konva';
 import Konva from 'konva';
 
 import Node from './node.jsx';
+import SkillNode from './skill-node.jsx';
 
 require('../../styles/toile/toile.scss');
 
@@ -48,12 +49,11 @@ toile.render = function() {
 		<div className="toile-editor">
 			<ReactKonva.Stage width={2000} height={2000} ref={(ref) => this.stage = ref} draggable="true">
 				<ReactKonva.Layer ref={(ref) => this.linkLayer = ref}>
-					<ReactKonva.Rect ref={(ref) => this.rect = ref} x={150} y={120} width={50} height={25} fill="black" draggable="true" />
 				</ReactKonva.Layer>
 				<ReactKonva.Layer ref={(ref) => this.nodeLayer = ref}>
-					<Node id={1} />
-					<Node id={2} x={350} y={150} fill="red" />
-					<Node id={3} x={150} y={250} fill="purple" />
+					<SkillNode id={1} />
+					<Node id={2} x={350} y={150} />
+					<Node id={3} x={150} y={250} />
 				</ReactKonva.Layer>
 			</ReactKonva.Stage>
 			<div ref="tooltip" id="toile-editor-tooltip" className="toile-editor-tooltip"/>
