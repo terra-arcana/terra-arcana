@@ -4,6 +4,7 @@ import Konva from 'konva';
 
 import Node from './node.jsx';
 import SkillNode from './skill-node.jsx';
+import NodeLink from './node-link.jsx';
 
 require('../../styles/toile/toile.scss');
 
@@ -31,7 +32,26 @@ var pxStringToNumber = function(str) {
 toile.getDefaultProps = function() {
 	return {
 		MAX_HEIGHT: 600,
-		WP_BAR_HEIGHT: 32
+		WP_BAR_HEIGHT: 32,
+		nodes: [
+			{
+				id: 1,
+				x: 300,
+				y: 200
+			},
+			{
+				id: 2,
+				x: 350,
+				y: 400
+			}
+		],
+		skillNodes: [
+			{
+				id: 3,
+				x: 400,
+				y: 100
+			}
+		]
 	};
 };
 
@@ -49,11 +69,32 @@ toile.render = function() {
 		<div className="toile-editor">
 			<ReactKonva.Stage width={2000} height={2000} ref={(ref) => this.stage = ref} draggable="true">
 				<ReactKonva.Layer ref={(ref) => this.linkLayer = ref}>
+					<NodeLink />
+					<NodeLink x={200} y={300} />
 				</ReactKonva.Layer>
 				<ReactKonva.Layer ref={(ref) => this.nodeLayer = ref}>
-					<SkillNode id={1} />
-					<Node id={2} x={350} y={150} />
-					<Node id={3} x={150} y={250} />
+					{this.props.nodes.map(function(node) {
+					   return (
+						   <Node
+							   id = {node.id}
+							   x = {node.x}
+							   y = {node.y}
+							   onClick = {this.onNodeClick}
+							   onDragMove = {this.onNodeDragMove}
+						   ></Node>
+				   		);
+					}.bind(this))}
+					{this.props.skillNodes.map(function(node) {
+						return (
+							<SkillNode
+								id = {node.id}
+								x = {node.x}
+								y = {node.y}
+								onClick = {this.onNodeClick}
+								onDragMove = {this.onNodeDragMove}
+							></SkillNode>
+						);
+					}.bind(this))}
 				</ReactKonva.Layer>
 			</ReactKonva.Stage>
 			<div ref="tooltip" id="toile-editor-tooltip" className="toile-editor-tooltip"/>
@@ -132,6 +173,24 @@ toile.resizeCanvas = function() {
 		h: height
 	};
 };
+
+/**
+ * Handle node clicks
+ * 
+ * @param {number} id The node ID
+ */
+toile.onNodeClick = function(id) {
+	console.log('clicked node ' + id);
+}
+
+/**
+ * Handle node drags
+ *
+ * @param {number} id The node ID
+ */
+toile.onNodeDragMove = function(id) {
+	console.log('dragged node ' + id);
+}
 
 /* Export */
 

@@ -34,16 +34,20 @@ skillNode.render = function() {
 			y = {this.props.y}
 			radius = {this.props.radius}
 			fill = "red"
-			onMouseOver = {this.onMouseOver.bind(this)}
-		/>
+			onClick = {this.props.onClick}
+			onDragMove = {this.props.onDragMove}
+			onMouseOver = {this.onMouseOver}
+		></Node>
 	)
 }
 
 /**
  * Handle mouse over events
+ *
+ * @param {number} id The node ID
  */
-skillNode.onMouseOver = function() {
-	console.log('show skill tooltip ' + this.props.id);
+skillNode.onMouseOver = function(id) {
+	console.log('show skill tooltip ' + id);
 }
 
 /* Export */

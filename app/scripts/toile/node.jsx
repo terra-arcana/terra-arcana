@@ -38,10 +38,6 @@ node.getInitialState = function() {
  * @return {jsx} The component template
  */
 node.render = function() {
-	this.props.onClick = this.props.onClick || this.onClick.bind(this);
-	this.props.onDragMove = this.props.onDragMove || this.onDragMove.bind(this);
-	this.props.onMouseOver = this.props.onMouseOver || this.onMouseOver.bind(this);
-
 	return (
 		<ReactKonva.Circle
 			ref = {(ref) => this.circle = ref}
@@ -51,10 +47,10 @@ node.render = function() {
 			fill = {this.props.fill}
 			draggable = "true"
 			listening = "true"
-			onClick = {this.props.onClick}
-			onDragMove = {this.props.onDragMove}
-			onMouseOver = {this.props.onMouseOver}
-		/>
+			onClick = {this.onClick}
+			onDragMove = {this.onDragMove}
+			onMouseOver = {this.onMouseOver}
+		></ReactKonva.Circle>
 	);
 };
 
@@ -70,14 +66,18 @@ node.componentDidMount = function() {
  * Handle mouse over events
  */
 node.onMouseOver = function() {
-	console.log('show tooltip ' + this.props.id);
+	if (this.props.onMouseOver) {
+		this.props.onMouseOver(this.props.id);
+	}
 };
 
 /**
  * Handle click events
  */
 node.onClick = function() {
-	console.log('select node ' + this.props.id);
+	if (this.props.onClick) {
+		this.props.onClick(this.props.id);
+	}
 };
 
 /**
@@ -88,6 +88,10 @@ node.onDragMove = function() {
 		x: this.circle.node.x(),
 		y: this.circle.node.y()
 	});
+
+	if (this.props.onDragMove) {
+		this.props.onDragMove(this.props.id);
+	}
 };
 
 /* Export */
