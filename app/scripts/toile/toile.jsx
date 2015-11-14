@@ -33,27 +33,45 @@ toile.getDefaultProps = function() {
 	return {
 		MAX_HEIGHT: 600,
 		WP_BAR_HEIGHT: 32,
-		nodes: [
+		initialNodeData: [
 			{
 				id: 1,
+				type: 'normal',
 				x: 300,
 				y: 200
 			},
 			{
 				id: 2,
+				type: 'normal',
 				x: 350,
 				y: 400
-			}
-		],
-		skillNodes: [
+			},
 			{
 				id: 3,
+				type: 'skill',
 				x: 400,
 				y: 100
 			}
+		],
+		initialLinkData: [
+			[1, 2],
+			[2, 3],
+			[1, 3]
 		]
 	};
 };
+
+/**
+ * Get the initial state
+ * 
+ * @return {Object} The initial state
+ */
+toile.getInitialState = function() {
+	return {
+		nodeData: this.props.initialNodeData,
+		linkData: this.props.initialLinkData
+	}
+}
 
 /**
  * Render the editor component
@@ -69,31 +87,47 @@ toile.render = function() {
 		<div className="toile-editor">
 			<ReactKonva.Stage width={2000} height={2000} ref={(ref) => this.stage = ref} draggable="true">
 				<ReactKonva.Layer ref={(ref) => this.linkLayer = ref}>
-					<NodeLink />
-					<NodeLink x={200} y={300} />
+					{this.state.linkData.map(function(link) {
+						var fromNode = this.getNodeDataById(link[0]);
+						var toNode = this.getNodeDataById(link[1]);
+						return (
+							<NodeLink
+								key = {[link[0], link[1]].join('-')}
+								from = {{x: fromNode.x, y: fromNode.y}}
+								to = {{x: toNode.x, y: toNode.y}}
+							></NodeLink>
+						);
+					}.bind(this))}
 				</ReactKonva.Layer>
 				<ReactKonva.Layer ref={(ref) => this.nodeLayer = ref}>
-					{this.props.nodes.map(function(node) {
-					   return (
-						   <Node
-							   id = {node.id}
-							   x = {node.x}
-							   y = {node.y}
-							   onClick = {this.onNodeClick}
-							   onDragMove = {this.onNodeDragMove}
-						   ></Node>
-				   		);
-					}.bind(this))}
-					{this.props.skillNodes.map(function(node) {
-						return (
-							<SkillNode
-								id = {node.id}
-								x = {node.x}
-								y = {node.y}
-								onClick = {this.onNodeClick}
-								onDragMove = {this.onNodeDragMove}
-							></SkillNode>
-						);
+					{this.state.nodeData.map(function(node) {
+						// Normal nodes
+						if (node.type === 'normal') {
+							return (
+							   <Node
+								   ref = {(ref) => this.nodes[node.id] = ref}
+								   id = {node.id}
+								   x = {node.x}
+								   y = {node.y}
+								   onClick = {this.onNodeClick}
+								   onDragMove = {this.onNodeDragMove}
+							  ></Node>
+							);
+						}
+
+						// Skill nodes
+						else if (node.type === 'skill') {
+							return (
+								<SkillNode
+									ref = {(ref) => this.nodes[node.id] = ref}
+									id = {node.id}
+									x = {node.x}
+									y = {node.y}
+									onClick = {this.onNodeClick}
+									onDragMove = {this.onNodeDragMove}
+								></SkillNode>
+							);
+						}
 					}.bind(this))}
 				</ReactKonva.Layer>
 			</ReactKonva.Stage>
@@ -175,6 +209,44 @@ toile.resizeCanvas = function() {
 };
 
 /**
+ * Return the data of a particular node by ID
+ *
+ * @param {number} id The node ID
+ * @return {Node|null} The node
+ */
+toile.getNodeDataById = function(id) {
+	var returnNode = null;
+
+	this.state.nodeData.map(function(node) {
+		if (node.id === id) {
+			returnNode = node;
+		}
+	}.bind(this));
+
+	return returnNode;
+}
+
+/**
+ * Return all nodes linked to a particular node
+ *
+ * @param {number} id The node ID
+ * @return {Array<number>} The linked node IDs
+ */
+toile.getLinkedNodesById = function(id) {
+	var linkedNodes = [];
+
+	this.state.linkData.map(function(link) {
+		if (link[0] === id) {
+			linkedNodes[linkedNodes.length] = link[1];
+		} else if (link[1] === id) {
+			linkedNodes[linkedNodes.length] = link[0];
+		}
+	}.bind(this));
+
+	return linkedNodes;
+}
+
+/**
  * Handle node clicks
  * 
  * @param {number} id The node ID
@@ -187,9 +259,26 @@ toile.onNodeClick = function(id) {
  * Handle node drags
  *
  * @param {number} id The node ID
+ * @param {number} x The new X coordinate
+ * @param {number} y The new Y coordinate
  */
-toile.onNodeDragMove = function(id) {
-	console.log('dragged node ' + id);
+toile.onNodeDragMove = function(id, x, y) {
+	var linkedNodes = this.getLinkedNodesById(id),
+		newNodeData = jQuery.extend([], this.state.nodeData),
+		i, j;
+
+	for (i = 0; i < linkedNodes.length; i++) {
+		for (j = 0; j < newNodeData.length; j++) {
+			if (newNodeData[j].id === id) {
+				newNodeData[j].x = x;
+				newNodeData[j].y = y;
+			}
+		}
+	}
+
+	this.setState({
+		nodeData: newNodeData
+	});
 }
 
 /* Export */

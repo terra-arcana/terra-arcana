@@ -18,7 +18,7 @@ skillNode.getDefaultProps = function() {
 		y: 100,
 		radius: 20
 	}
-}
+};
 
 /**
  * Render the skill node
@@ -39,7 +39,16 @@ skillNode.render = function() {
 			onMouseOver = {this.onMouseOver}
 		></Node>
 	)
-}
+};
+
+/**
+ * Return the position of the node
+ * 
+ * @return {Object} The X and Y coordinates
+ */
+skillNode.getPosition = function() {
+	return this.node.node.getPosition();
+};
 
 /**
  * Handle mouse over events
@@ -48,7 +57,7 @@ skillNode.render = function() {
  */
 skillNode.onMouseOver = function(id) {
 	console.log('show skill tooltip ' + id);
-}
+};
 
 /* Export */
 

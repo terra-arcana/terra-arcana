@@ -21,18 +21,6 @@ node.getDefaultProps = function() {
 };
 
 /**
- * Set initial state
- *
- * @return {object} The initial state
- */
-node.getInitialState = function() {
-	return {
-		x: this.props.x,
-		y: this.props.y
-	};
-};
-
-/**
  * Render the editor
  *
  * @return {jsx} The component template
@@ -41,8 +29,8 @@ node.render = function() {
 	return (
 		<ReactKonva.Circle
 			ref = {(ref) => this.circle = ref}
-			x = {this.state.x}
-			y = {this.state.y}
+			x = {this.props.x}
+			y = {this.props.y}
 			radius = {this.props.radius}
 			fill = {this.props.fill}
 			draggable = "true"
@@ -72,6 +60,18 @@ node.onMouseOver = function() {
 };
 
 /**
+ * Return the position of the node
+ *
+ * @return {Object} The X and Y coordinates
+ */
+node.getPosition = function() {
+	return {
+		x: this.props.x,
+		y: this.props.y
+	};
+};
+
+/**
  * Handle click events
  */
 node.onClick = function() {
@@ -84,13 +84,8 @@ node.onClick = function() {
  * Handle drag move events
  */
 node.onDragMove = function() {
-	this.setState({
-		x: this.circle.node.x(),
-		y: this.circle.node.y()
-	});
-
 	if (this.props.onDragMove) {
-		this.props.onDragMove(this.props.id);
+		this.props.onDragMove(this.props.id, this.circle.node.x(), this.circle.node.y());
 	}
 };
 
