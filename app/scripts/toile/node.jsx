@@ -16,8 +16,16 @@ node.getDefaultProps = function() {
 		x: 100,
 		y: 100,
 		radius: 15,
-		fill: 'green'
+		fill: 'green',
+		selected: false
 	};
+};
+
+/**
+ * Prepare component before mounting
+ */
+node.componentWillMount = function() {
+	this.SELECTED_STROKE = 5;
 };
 
 /**
@@ -26,6 +34,8 @@ node.getDefaultProps = function() {
  * @return {jsx} The component template
  */
 node.render = function() {
+	var stroke = (this.props.selected) ? this.SELECTED_STROKE : 0;
+
 	return (
 		<ReactKonva.Circle
 			ref = {(ref) => this.circle = ref}
@@ -33,6 +43,7 @@ node.render = function() {
 			y = {this.props.y}
 			radius = {this.props.radius}
 			fill = {this.props.fill}
+			stroke = {stroke}
 			draggable = "true"
 			listening = "true"
 			onClick = {this.onClick}
@@ -52,15 +63,6 @@ node.componentDidMount = function() {
 };
 
 /**
- * Handle mouse over events
- */
-node.onMouseOver = function() {
-	if (this.props.onMouseOver) {
-		this.props.onMouseOver(this.props.id);
-	}
-};
-
-/**
  * Return the position of the node
  *
  * @return {Object} The X and Y coordinates
@@ -73,11 +75,20 @@ node.getPosition = function() {
 };
 
 /**
- * Handle click events
+ * Handle mouse click events
  */
 node.onClick = function() {
 	if (this.props.onClick) {
 		this.props.onClick(this.props.id);
+	}
+};
+
+/**
+ * Handle mouse over events
+ */
+node.onMouseOver = function() {
+	if (this.props.onMouseOver) {
+		this.props.onMouseOver(this.props.id);
 	}
 };
 

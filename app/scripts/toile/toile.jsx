@@ -48,7 +48,7 @@ toile.getInitialState = function() {
 		nodeData: this.props.initialNodeData,
 		linkData: this.props.initialLinkData
 	}
-}
+};
 
 /**
  * Render the editor component
@@ -86,6 +86,7 @@ toile.render = function() {
 									id = {node.id}
 									x = {node.x}
 									y = {node.y}
+									selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
 									onClick = {this.onNodeClick}
 									onDragMove = {this.onNodeDragMove}
 									onMouseOver = {this.props.onNodeMouseOver}
@@ -102,6 +103,7 @@ toile.render = function() {
 									id = {node.id}
 									x = {node.x}
 									y = {node.y}
+									selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
 									onClick = {this.onNodeClick}
 									onDragMove = {this.onNodeDragMove}
 									onMouseOver = {this.props.onNodeMouseOver}
@@ -210,7 +212,7 @@ toile.getNodeDataById = function(id) {
 	}.bind(this));
 
 	return returnNode;
-}
+};
 
 /**
  * Return all nodes linked to a particular node
@@ -230,7 +232,7 @@ toile.getLinkedNodesById = function(id) {
 	}.bind(this));
 
 	return linkedNodes;
-}
+};
 
 /**
  * Handle node clicks
@@ -238,8 +240,11 @@ toile.getLinkedNodesById = function(id) {
  * @param {number} id The node ID
  */
 toile.onNodeClick = function(id) {
-	console.log('clicked node ' + id);
-}
+	// TODO: Check to see if we can pick this node before applying this
+	if (this.props.onSelectNode) {
+		this.props.onSelectNode(id);
+	}
+};
 
 /**
  * Handle node drags
@@ -265,7 +270,7 @@ toile.onNodeDragMove = function(id, x, y) {
 	this.setState({
 		nodeData: newNodeData
 	});
-}
+};
 
 /* Export */
 

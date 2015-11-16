@@ -16,7 +16,8 @@ skillNode.getDefaultProps = function() {
 		id: 0,
 		x: 100,
 		y: 100,
-		radius: 20
+		radius: 20,
+		selected: false
 	}
 };
 
@@ -34,6 +35,7 @@ skillNode.render = function() {
 			y = {this.props.y}
 			radius = {this.props.radius}
 			fill = "red"
+			selected = {this.props.selected}
 			onClick = {this.props.onClick}
 			onDragMove = {this.props.onDragMove}
 			onMouseOver = {this.props.onMouseOver}

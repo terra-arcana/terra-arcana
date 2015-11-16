@@ -69,6 +69,7 @@ characterBuilder.render = function() {
 				pickedNodes = {this.state.pickedNodes} 
 				onNodeMouseOver = {this.inspectNode}
 				onNodeMouseOut = {this.uninspect}
+				onSelectNode = {this.selectNode}
 			></Toile>
 			<DetailsPanel
 				id = {this.state.activeNode}
@@ -95,6 +96,27 @@ characterBuilder.uninspect = function() {
 	this.setState({
 		activeNode: 0
 	});
+};
+
+/**
+ * Select a node
+ *
+ * @param {number} id The picked node ID
+ */
+characterBuilder.selectNode = function(id) {
+	var nodeIndex = this.state.pickedNodes.indexOf(id);
+
+	if (nodeIndex === -1) {
+		this.state.pickedNodes[this.state.pickedNodes.length] = id;
+	} else {
+		this.state.pickedNodes.splice(nodeIndex, 1);
+	}
+
+	this.setState({
+		pickedNodes: this.state.pickedNodes
+	});
+
+	console.log(this.state.pickedNodes);
 };
 
 /* Export */
