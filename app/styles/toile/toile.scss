@@ -1,13 +1,16 @@
 .toile-editor {
-	background-color: white;
-
 	.konvajs-content {
+		background-color: white;
 		width: auto !important;
 		height: auto !important;
 
 		canvas {
 			width: auto !important;
 			height: auto !important;
+
+			&:first-child {
+				position: relative !important;
+			}
 		}
 	}
 }

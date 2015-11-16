@@ -38,6 +38,7 @@ node.render = function() {
 			onClick = {this.onClick}
 			onDragMove = {this.onDragMove}
 			onMouseOver = {this.onMouseOver}
+			onMouseOut = {this.props.onMouseOut}
 		></ReactKonva.Circle>
 	);
 };

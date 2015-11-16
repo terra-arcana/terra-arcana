@@ -31,33 +31,10 @@ var pxStringToNumber = function(str) {
  */
 toile.getDefaultProps = function() {
 	return {
-		MAX_HEIGHT: 600,
-		WP_BAR_HEIGHT: 32,
-		initialNodeData: [
-			{
-				id: 1,
-				type: 'normal',
-				x: 300,
-				y: 200
-			},
-			{
-				id: 2,
-				type: 'normal',
-				x: 350,
-				y: 400
-			},
-			{
-				id: 3,
-				type: 'skill',
-				x: 400,
-				y: 100
-			}
-		],
-		initialLinkData: [
-			[1, 2],
-			[2, 3],
-			[1, 3]
-		]
+		initialNodeData: [],
+		initialLinkData: [],
+		activeNode: 0,
+		pickedNodes: []
 	};
 };
 
@@ -84,7 +61,7 @@ toile.render = function() {
 	// the same size as the actual rendering of the stage after resizing, so
 	// putting big values seems to work as intended.
 	return (
-		<div className="toile-editor">
+		<div className="toile-editor col-lg-8 col-sm-12">
 			<ReactKonva.Stage width={2000} height={2000} ref={(ref) => this.stage = ref} draggable="true">
 				<ReactKonva.Layer ref={(ref) => this.linkLayer = ref}>
 					{this.state.linkData.map(function(link) {
@@ -104,14 +81,16 @@ toile.render = function() {
 						// Normal nodes
 						if (node.type === 'normal') {
 							return (
-							   <Node
-								   ref = {(ref) => this.nodes[node.id] = ref}
-								   id = {node.id}
-								   x = {node.x}
-								   y = {node.y}
-								   onClick = {this.onNodeClick}
-								   onDragMove = {this.onNodeDragMove}
-							  ></Node>
+								<Node
+									ref = {(ref) => this.nodes[node.id] = ref}
+									id = {node.id}
+									x = {node.x}
+									y = {node.y}
+									onClick = {this.onNodeClick}
+									onDragMove = {this.onNodeDragMove}
+									onMouseOver = {this.props.onNodeMouseOver}
+									onMouseOut = {this.props.onNodeMouseOut}
+								></Node>
 							);
 						}
 
@@ -125,15 +104,24 @@ toile.render = function() {
 									y = {node.y}
 									onClick = {this.onNodeClick}
 									onDragMove = {this.onNodeDragMove}
+									onMouseOver = {this.props.onNodeMouseOver}
+									onMouseOut = {this.props.onNodeMouseOut}
 								></SkillNode>
 							);
 						}
 					}.bind(this))}
 				</ReactKonva.Layer>
 			</ReactKonva.Stage>
-			<div ref="tooltip" id="toile-editor-tooltip" className="toile-editor-tooltip"/>
 		</div>
 	);
+};
+
+/**
+ * Prepare the component before mounting
+ */
+toile.componentWillMount = function() {
+	this.MAX_HEIGHT = 600;
+	this.WP_BAR_HEIGHT = 32;
 };
 
 /**
@@ -162,10 +150,14 @@ toile.draw = function() {
  * Resizes the editor canvas to its wrapper width
  */
 toile.resizeCanvas = function() {
-	var	editorSize = this.getEditorSize(),
-		root = React.findDOMNode(this);
+	var root = React.findDOMNode(this), 
+		editorSize;
 
-	root.setAttribute('style', 'width: ' + editorSize.w + 'px; height: ' + editorSize.h + 'px;');
+	//root.setAttribute('style', 'width: ' + 0 + 'px; height: ' + 0 + 'px;');
+
+	editorSize = this.getEditorSize();
+
+	//root.setAttribute('style', 'width: ' + editorSize.w + 'px; height: ' + editorSize.h + 'px;');
 
 	for (var i = 0; i < this.canvas.length; i++) {
 		this.canvas[i].width = editorSize.w;
@@ -179,27 +171,21 @@ toile.resizeCanvas = function() {
  * @return {Object} The desired width and height of the editor canvas
  */
  toile.getEditorSize = function() {
-	var	root = React.findDOMNode(this),
+	var root = React.findDOMNode(this),
 	 	editorStyle = window.getComputedStyle(root),
-		parentStyle = window.getComputedStyle(root.parentNode),
-		margins = {
-			left: pxStringToNumber(editorStyle.marginLeft),
-			right: pxStringToNumber(editorStyle.marginRight),
-			top: pxStringToNumber(editorStyle.marginTop),
-			bottom: pxStringToNumber(editorStyle.marginBottom)
-		},
-		parentPaddings = {
-			left: pxStringToNumber(parentStyle.paddingLeft),
-			right: pxStringToNumber(parentStyle.paddingRight)
+		parentStyle = window.getComputedStyle(root.parentNode.parentNode),
+		paddings = {
+			left: pxStringToNumber(editorStyle.paddingLeft),
+			right: pxStringToNumber(editorStyle.paddingRight)
 		},
 		width, height;
 
 	// Calculate width by taking into account paddings and margins
-	width = root.parentNode.offsetWidth - margins.left - margins.right - parentPaddings.left - parentPaddings.right;
+	width = root.offsetWidth - paddings.left - paddings.right;
 	height = Math.min(
 		width * 0.75,
-		window.innerHeight - margins.top - margins.bottom - this.props.WP_BAR_HEIGHT,
-		this.props.MAX_HEIGHT
+		window.innerHeight - this.WP_BAR_HEIGHT,
+		this.MAX_HEIGHT
 	);
 
 	return {
