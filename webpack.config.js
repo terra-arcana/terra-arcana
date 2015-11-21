@@ -17,16 +17,21 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                exclude: /node_modules/,
                 loaders: ["babel-loader"],
+                exclude: /node_modules/
             },
             {
                 test: /\.html$/,
-                loader: "file?name=[name].[ext]",
+                loader: "file?name=[name].[ext]"
             },
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract('css!sass')
+            },
+            {
+                test: /\.js$/, 
+                loader: "eslint-loader", 
+                exclude: /node_modules/
             }
         ],
     },

@@ -1,22 +1,26 @@
-/* jshint ignore:start */
-
 import React from 'react';
 
 require('../../styles/codex/codex.scss');
 
-export default React.createClass({
-	getInitialState: getInitialState,
-	componentDidMount: componentDidMount,
-	render: render
-});
+var codex = {};
 
-function getInitialState() {
+/* Methods */
+
+/**
+ * Set the initial state
+ * 
+ * @return {Object} The initial state
+ */
+codex.getInitialState = function() {
 	return({
 		codexArticles: []
 	});
-}
+};
 
-function componentDidMount() {
+/**
+ * Initialize the component after mounting
+ */
+codex.componentDidMount = function() {
 	jQuery.ajax({
 		url: appLocals.apiTerraPath + 'codex',
 		type: 'get',
@@ -27,9 +31,14 @@ function componentDidMount() {
 			});
 		}.bind(this)
 	});
-}
+};
 
-function render() {
+/**
+ * Render the codex component
+ * 
+ * @return {jsx} The component template
+ */
+codex.render = function() {
 	let codexArticles = this.state.codexArticles.map(function(article, index) {
 		return(
 			<li key={article.ID} className='panel panel-default'>
@@ -51,4 +60,8 @@ function render() {
 			</ul>
 		</div>
 	);
-}
+};
+
+/* Export */
+
+export default React.createClass(codex);

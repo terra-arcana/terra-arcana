@@ -1,16 +1,19 @@
-/* jshint ignore:start */
-
 import React from 'react';
 import Router from 'react-router';
 import { Link } from 'react-router';
 
 require('../styles/sidenav.scss');
 
-export default React.createClass({
-	render: render
-});
+var sidebar = {};
 
-function render() {
+/* Methods */
+
+/**
+ * Render the sidenav template
+ * 
+ * @return {jsx} The component template
+ */
+sidebar.render = function() {
 	return (
 		<nav className="sidenav">
 			<div className="container-fluid">
@@ -22,4 +25,8 @@ function render() {
 			</div>
 		</nav>
 	);
-}
+};
+
+/* Export */
+
+export default React.createClass(sidebar);

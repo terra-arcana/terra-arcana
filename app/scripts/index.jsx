@@ -1,17 +1,24 @@
-/* jshint ignore:start */
-
 import React from 'react';
 
 import Greeting from './greeting.jsx';
 
-export default React.createClass({
-	render: render
-});
+var index = {};
 
-function render() {
+/* Methods */
+
+/**
+ * Render the index component
+ * 
+ * @return {jsx} The component template
+ */
+index.render = function() {
 	return (
 		<div>
 			<Greeting name="World" />
 		</div>
 	);
-}
+};
+
+/* Export */
+
+export default React.createClass(index);

@@ -1,28 +1,27 @@
-/* jshint ignore: start */
-
 import React from 'react';
 import ReactKonva from 'react-konva';
 
 require('../../styles/toile/toile.scss');
 
-export default React.createClass({
-	getDefaultProps: getDefaultProps,
-	render: render,
-	componentDidMount: componentDidMount,
-	draw: draw,
-	getEditorSize: getEditorSize,
-	resizeCanvas: resizeCanvas
-});
+var toile = {};
 
-function getDefaultProps() {
+/* Static methods */
+
+var pxStringToNumber = function(str) {
+	return parseInt(str.substring(0, str.length - 2));
+};
+
+/* Methods */
+
+toile.getDefaultProps = function() {
 	return {
 		canvas: null,
 		MAX_HEIGHT: 600,
 		WP_BAR_HEIGHT: 32
 	};
-}
+};
 
-function render() {
+toile.render = function() {
 	return (
 		<div className="toile-editor">
 			<ReactKonva.Stage ref="stage" draggable="true">
@@ -36,9 +35,9 @@ function render() {
 			<div ref="tooltip" id="toile-editor-tooltip" className="toile-editor-tooltip"/>
 		</div>
 	);
-}
+};
 
-function componentDidMount() {
+toile.componentDidMount = function() {
 	var root = React.findDOMNode(this);
 
 	this.props.canvas = root.firstChild.firstChild.firstChild.getElementsByTagName('canvas');
@@ -47,14 +46,14 @@ function componentDidMount() {
 	this.refs.stage.node.on('dragmove', this.draw);
 
 	this.draw();
-}
+};
 
-function draw() {
+toile.draw = function() {
 	this.resizeCanvas();
 	this.refs.stage.node.draw();
-}
+};
 
-function getEditorSize() {
+toile.getEditorSize = function() {
 	var	root = React.findDOMNode(this),
 	 	editorStyle = window.getComputedStyle(root),
 		margins = {
@@ -77,13 +76,9 @@ function getEditorSize() {
 		w: width,
 		h: height
 	};
-}
+};
 
-function pxStringToNumber(str) {
-	return parseInt(str.substring(0, str.length - 2));
-}
-
-function resizeCanvas() {
+toile.resizeCanvas = function() {
 	var	editorSize = this.getEditorSize(),
 		root = React.findDOMNode(this);
 
@@ -93,4 +88,8 @@ function resizeCanvas() {
 		this.props.canvas[i].width = editorSize.w;
 		this.props.canvas[i].height = editorSize.h;
 	}
-}
+};
+
+/* Export */
+
+export default React.createClass(toile);
