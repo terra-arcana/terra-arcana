@@ -1,6 +1,6 @@
 import React from 'react';
 import Router from 'react-router';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 
 require('../styles/sidenav.scss');
 
@@ -19,7 +19,7 @@ sidebar.render = function() {
 			<div className="container-fluid">
 				<ul className="nav nav-pills nav-stacked">
 					<li><Link to="/">Index</Link></li>
-					<li><Link to="/toile">Toile</Link></li>
+					<li><Link to="/competences">Compétences</Link></li>
 					<li><Link to="/codex">Codex</Link></li>
 				</ul>
 			</div>

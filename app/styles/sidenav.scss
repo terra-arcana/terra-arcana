@@ -19,7 +19,6 @@ $sidebar-width: 250px;
 #sidenav-content-wrapper {
 	width: 100%;
 	position: relative;
-	padding: 1em;
 }
 
 #sidenav-page-wrapper.toggled {
@@ -27,9 +26,5 @@ $sidebar-width: 250px;
 
 	.sidenav {
 		width: $sidebar-width;
-	}
-
-	#sidenav-content-wrapper {
-		margin-right: -$sidebar-width;
 	}
 }

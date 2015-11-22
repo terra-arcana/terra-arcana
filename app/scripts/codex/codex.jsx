@@ -7,7 +7,7 @@ var codex = {};
 /* Methods */
 
 /**
- * Set the initial state
+ * Get the initial state
  * 
  * @return {Object} The initial state
  */
@@ -34,7 +34,7 @@ codex.componentDidMount = function() {
 };
 
 /**
- * Render the codex component
+ * Render the codex archive component
  * 
  * @return {jsx} The component template
  */
