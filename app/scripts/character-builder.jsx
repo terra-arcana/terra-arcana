@@ -23,7 +23,7 @@ export default class CharacterBuilder extends React.Component {
 		 */
 		this.state = {
 			activeNode: 0,
-			pickedNodes: []
+			pickedNodes: this.props.initialPickedNodes
 		};
 
 		this.inspectNode = this.inspectNode.bind(this);
@@ -41,8 +41,9 @@ export default class CharacterBuilder extends React.Component {
 				<Toile
 					initialNodeData = {this.props.nodeData}
 					initialLinkData = {this.props.linkData}
-					activeNode = {this.state.activeNode}
 					pickedNodes = {this.state.pickedNodes} 
+					startNode = {this.props.startNode}
+					activeNode = {this.state.activeNode}
 					onNodeMouseOver = {this.inspectNode}
 					onNodeMouseOut = {this.uninspect}
 					onSelectNode = {this.selectNode}
@@ -118,11 +119,27 @@ CharacterBuilder.defaultProps = {
 			type: 'skill',
 			x: 400,
 			y: 100
+		},
+		{
+			id: 4,
+			type: 'normal',
+			x: 600,
+			y: 300
+		},
+		{
+			id: 5,
+			type: 'skill',
+			x: 500,
+			y: 400
 		}
 	],
 	linkData: [
 		[1, 2],
 		[2, 3],
-		[1, 3]
-	]
+		[1, 3],
+		[2, 5],
+		[4, 5]
+	],
+	initialPickedNodes: [],
+	startNode: 1
 };
