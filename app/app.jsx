@@ -11,8 +11,18 @@ import Codex from './scripts/codex/codex.jsx';
 
 require('./styles/app.scss');
 
-var App = React.createClass({
-	render: function() {
+/**
+ * Main application wrapper
+ * 
+ * @class
+ */
+class App extends React.Component {
+	
+	/**
+	 * @override
+	 * @return {jsx} The component template
+	 */
+	render() {
 		return (
 			<div id="sidenav-page-wrapper" className="toggled">
 				<Sidenav />
@@ -23,9 +33,9 @@ var App = React.createClass({
 					<RouteHandler />
 				</div>
 			</div>
-		)
+		);
 	}
-});
+}
 
 let routes = (
 	<Route name="app" path="/" handler={App}>

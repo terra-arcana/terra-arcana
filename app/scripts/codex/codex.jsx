@@ -2,66 +2,70 @@ import React from 'react';
 
 require('../../styles/codex/codex.scss');
 
-var codex = {};
-
-/* Methods */
-
 /**
- * Get the initial state
+ * Codex archive component
  * 
- * @return {Object} The initial state
+ * @class
  */
-codex.getInitialState = function() {
-	return({
-		codexArticles: []
-	});
-};
+export default class Codex extends React.Component {
+	
+	/**
+	 * @constructor
+	 * @param {Object} props Custom props
+	 */
+	constructor(props) {
+		super(props);
 
-/**
- * Initialize the component after mounting
- */
-codex.componentDidMount = function() {
-	jQuery.ajax({
-		url: appLocals.apiTerraPath + 'codex',
-		type: 'get',
-		dataType: 'JSON',
-		success: function(data) {
-			this.setState({
-				codexArticles: data
-			});
-		}.bind(this)
-	});
-};
+		/**
+		 * @type {Object}
+		 * @private
+		 */
+		this.state = { 
+			codexArticles: []
+		};
+	}
 
-/**
- * Render the codex archive component
- * 
- * @return {jsx} The component template
- */
-codex.render = function() {
-	let codexArticles = this.state.codexArticles.map(function(article, index) {
-		return(
-			<li key={article.ID} className='panel panel-default'>
-				<div className='panel-heading'>
-					<h2 className='panel-title'>{article.post_title}</h2>
-				</div>
-				<div className='panel-body'>
-					{article.post_content}
-				</div>
-			</li>
-		)
-	});
+	/**
+	 * @override
+ 	 */
+	componentDidMount() {
+		jQuery.ajax({
+			url: appLocals.apiTerraPath + 'codex',
+			type: 'get',
+			dataType: 'JSON',
+			success: function(data) {
+				this.setState({
+					codexArticles: data
+				});
+			}.bind(this)
+		});
+	}
 
-	return (
-		<div className='codex-archive'>
-			<h1>Codex</h1>
-			<ul>
-				{codexArticles}
-			</ul>
-		</div>
-	);
-};
+	/**
+	 * @override
+	 * @return {jsx} The component template
+	 */
+	render() {
+		let codexArticles = this.state.codexArticles.map(function(article) {
+			return(
+				<li key={article.ID} className='panel panel-default'>
+					<div className='panel-heading'>
+						<h2 className='panel-title'>{article.post_title}</h2>
+					</div>
+					<div className='panel-body'>
+						{article.post_content}
+					</div>
+				</li>
+			);
+		});
 
-/* Export */
-
-export default React.createClass(codex);
+		return (
+			<div className='codex-archive'>
+				<h1>Codex</h1>
+				<ul>
+					{codexArticles}
+				</ul>
+			</div>
+		);
+	}
+}

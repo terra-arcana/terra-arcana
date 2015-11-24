@@ -3,124 +3,128 @@ import React from 'react';
 import Toile from './toile/toile.jsx';
 import DetailsPanel from './toile/details-panel.jsx';
 
-var characterBuilder = {
-	displayName: 'CharacterBuilder'
-};
-
-/* Methods */
-
 /**
- * Set default props
+ * Character builder component
  *
- * @return {Object} The default props
+ * @class
  */
-characterBuilder.getDefaultProps = function() {
-	return {
-		nodeData: [
-			{
-				id: 1,
-				type: 'normal',
-				x: 300,
-				y: 200
-			},
-			{
-				id: 2,
-				type: 'normal',
-				x: 350,
-				y: 400
-			},
-			{
-				id: 3,
-				type: 'skill',
-				x: 400,
-				y: 100
-			}
-		],
-		linkData: [
-			[1, 2],
-			[2, 3],
-			[1, 3]
-		]
-	};
-};
+export default class CharacterBuilder extends React.Component {
 
-/**
- * Set the initial state
- *
- * @return {Object} The initial state
- */
-characterBuilder.getInitialState = function() {
-	return {
-		activeNode: 0,
-		pickedNodes: []
-	};
-};
+	/**
+	 * @constructor
+	 * @param {Object} props Custom props
+	 */
+	constructor(props) {
+		super(props);
 
-/**
- * Render the character builder
- * 
- * @return {jsx} The component template
- */
-characterBuilder.render = function() {
-	return (
-		<div className="row">
-			<Toile
-				initialNodeData = {this.props.nodeData}
-				initialLinkData = {this.props.linkData}
-				activeNode = {this.state.activeNode}
-				pickedNodes = {this.state.pickedNodes} 
-				onNodeMouseOver = {this.inspectNode}
-				onNodeMouseOut = {this.uninspect}
-				onSelectNode = {this.selectNode}
-			></Toile>
-			<DetailsPanel
-				id = {this.state.activeNode}
-			></DetailsPanel>
-		</div>
-	);	
-};
+		/**
+		 * @type {Object}
+		 * @private
+		 */
+		this.state = {
+			activeNode: 0,
+			pickedNodes: []
+		}
 
-/**
- * Inspect a node and reveal its details
- *
- * @param {number} id The node ID
- */
-characterBuilder.inspectNode = function(id) {
-	this.setState({
-		activeNode: id
-	});
-};
-
-/**
- * Stop inspecting nodes
- */
-characterBuilder.uninspect = function() {
-	this.setState({
-		activeNode: 0
-	});
-};
-
-/**
- * Select a node
- *
- * @param {number} id The picked node ID
- */
-characterBuilder.selectNode = function(id) {
-	var nodeIndex = this.state.pickedNodes.indexOf(id);
-
-	if (nodeIndex === -1) {
-		this.state.pickedNodes[this.state.pickedNodes.length] = id;
-	} else {
-		this.state.pickedNodes.splice(nodeIndex, 1);
+		this.inspectNode = this.inspectNode.bind(this);
+		this.uninspect = this.uninspect.bind(this);
+		this.selectNode = this.selectNode.bind(this);
 	}
 
-	this.setState({
-		pickedNodes: this.state.pickedNodes
-	});
+	/**
+	 * @override
+	 * @return {jsx} The component template
+	 */
+	render() {
+		return (
+			<div className="row">
+				<Toile
+					initialNodeData = {this.props.nodeData}
+					initialLinkData = {this.props.linkData}
+					activeNode = {this.state.activeNode}
+					pickedNodes = {this.state.pickedNodes} 
+					onNodeMouseOver = {this.inspectNode}
+					onNodeMouseOut = {this.uninspect}
+					onSelectNode = {this.selectNode}
+				></Toile>
+				<DetailsPanel
+					id = {this.state.activeNode}
+				></DetailsPanel>
+			</div>
+		);	
+	}
 
-	console.log(this.state.pickedNodes);
+	/**
+	 * Inspect a node and reveal its details
+	 *
+	 * @param {number} id The node ID
+	 */
+	inspectNode(id) {
+		this.setState({
+			activeNode: id
+		});
+	};
+
+	/**
+	 * Stop inspecting nodes
+	 */
+	uninspect() {
+		this.setState({
+			activeNode: 0
+		});
+	};
+
+	/**
+	 * Select a node
+	 *
+	 * @param {number} id The picked node ID
+	 */
+	selectNode(id) {
+		var nodeIndex = this.state.pickedNodes.indexOf(id);
+
+		if (nodeIndex === -1) {
+			this.state.pickedNodes[this.state.pickedNodes.length] = id;
+		} else {
+			this.state.pickedNodes.splice(nodeIndex, 1);
+		}
+
+		this.setState({
+			pickedNodes: this.state.pickedNodes
+		});
+
+		console.log(this.state.pickedNodes);
+	};
+}
+
+/**
+ * Default props
+ * 
+ * @type {Object}
+ */
+CharacterBuilder.defaultProps = {
+	nodeData: [
+		{
+			id: 1,
+			type: 'normal',
+			x: 300,
+			y: 200
+		},
+		{
+			id: 2,
+			type: 'normal',
+			x: 350,
+			y: 400
+		},
+		{
+			id: 3,
+			type: 'skill',
+			x: 400,
+			y: 100
+		}
+	],
+	linkData: [
+		[1, 2],
+		[2, 3],
+		[1, 3]
+	]
 };
-
-/* Export */
-
-export default React.createClass(characterBuilder);

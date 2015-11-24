@@ -1,4 +1,7 @@
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    OnBuildPlugin = require('on-build-webpack'),
+    exec = require('child_process').exec,
+    child;
 
 module.exports = {
     context: __dirname + "/app",
@@ -17,7 +20,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ["babel-loader"],
+                loaders: ["babel-loader", "eslint-loader"],
                 exclude: /node_modules/
             },
             {
@@ -27,11 +30,6 @@ module.exports = {
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract('css!sass')
-            },
-            {
-                test: /\.js$/, 
-                loader: "eslint-loader", 
-                exclude: /node_modules/
             }
         ],
     },
@@ -39,6 +37,23 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin('style.css', {
             allChunks: true
-        } )
+        } ),
+
+        new OnBuildPlugin(function(stats) {
+            child = exec(
+                'esdoc -c esdoc.json', 
+                function (error, stdout, stderr) {
+                    console.log('\nBUILDING DOCUMENTATION\n======================\n' + stdout);
+
+                    if (stderr.length > 0) {
+                        console.log('\nERRORS\n======\n' + stderr);
+                    }
+
+                    if (error !== null) {
+                        console.log('\nEXEC ERRORS\n===========\n' + error);
+                    }
+                } 
+            );
+        } ) 
     ]
 };

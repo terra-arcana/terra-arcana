@@ -2,25 +2,22 @@ import React from 'react';
 
 import Greeting from './greeting.jsx';
 
-var index = {
-	displayName: 'Index'
-};
-
-/* Methods */
-
 /**
- * Render the index component
- * 
- * @return {jsx} The component template
+ * Index page component
+ *
+ * @class
  */
-index.render = function() {
-	return (
-		<div>
-			<Greeting name="World" />
-		</div>
-	);
-};
-
-/* Export */
-
-export default React.createClass(index);
+export default class Index extends React.Component {
+	
+	/**
+	 * @override
+	 * @return {jsx} The component template
+	 */
+	render() {
+		return (
+			<div>
+				<Greeting name="World" />
+			</div>
+		);
+	}
+}

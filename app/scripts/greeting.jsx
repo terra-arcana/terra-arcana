@@ -1,24 +1,21 @@
 import React from "react";
 
-var greeting = {
-	displayName: 'Greeting'
-};
-
-/* Methods */
-
 /**
- * Render the greeting component
- * 
- * @return {jsx} The component template
+ * Greeting component. Used for testing purposes.
+ *
+ * @class
  */
-greeting.render = function() {
-	return (
-		<div className="greeting">
-			Hello, {this.props.name}!
-		</div>
-	);
-};
+export default class Greeting extends React.Component {
 
-/* Export */
-
-export default React.createClass(greeting);
+	/**
+	 * @override
+	 * @return {jsx} The component template
+	 */
+	 render() {
+		return (
+			<div className="greeting">
+				Hello, {this.props.name}!
+			</div>
+		);
+	}
+}

@@ -2,36 +2,31 @@ import React from 'react';
 
 require('../../styles/toile/details-panel.scss');
 
-var detailsPanel = {
-	displayName: 'DetailsPanel'
-};
-
-/* Methods */
-
 /**
- * Set initial props
+ * Details panel component
  *
- * @return {Object} The default props
+ * @class
  */
-detailsPanel.getDefaultProps = function() {
-	return {
-		id: 0
+export default class DetailsPanel extends React.Component {
+	
+	/**
+	 * @override
+	 * @return {jsx} The component template
+	 */
+	render() {
+		return (
+			<div className="toile-editor-details-panel col-lg-4 col-sm-12">
+				Details of node #{this.props.id}
+			</div>
+		);
 	}
-};
+}
 
 /**
- * Render the details panel
- *
- * @return {jsx} The component template
+ * Default props
+ * 
+ * @type {Object}
  */
-detailsPanel.render = function() {
-	return (
-		<div className="toile-editor-details-panel col-lg-4 col-sm-12">
-			Details of node #{this.props.id}
-		</div>
-	);
+DetailsPanel.defaultProps = {
+	id: 0
 };
-
-/* Export */
-
-export default React.createClass(detailsPanel);

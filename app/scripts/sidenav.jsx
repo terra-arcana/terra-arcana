@@ -4,31 +4,36 @@ import {Link} from 'react-router';
 
 require('../styles/sidenav.scss');
 
-var sidenav = {
-	displayName: 'Sidenav'
-};
-
-/* Methods */
-
 /**
- * Render the sidenav template
- * 
- * @return {jsx} The component template
+ * Sidenav component
+ *
+ * @class
  */
-sidenav.render = function() {
-	return (
-		<nav className="sidenav">
-			<div className="container-fluid">
-				<ul className="nav nav-pills nav-stacked">
-					<li><Link to="/">Index</Link></li>
-					<li><Link to="/competences">Compétences</Link></li>
-					<li><Link to="/codex">Codex</Link></li>
-				</ul>
-			</div>
-		</nav>
-	);
-};
+export default class Sidenav extends React.Component {
+	
+	/**
+	 * @constructor
+	 * @param {object} props Default props
+	 */
+	constructor(props) {
+		super(props);
+	}
 
-/* Export */
-
-export default React.createClass(sidenav);
+	/**
+	 * @override
+	 * @return {jsx} The component template
+	 */
+	render() {
+		return (
+			<nav className="sidenav">
+				<div className="container-fluid">
+					<ul className="nav nav-pills nav-stacked">
+						<li><Link to="/">Index</Link></li>
+						<li><Link to="/competences">Compétences</Link></li>
+						<li><Link to="/codex">Codex</Link></li>
+					</ul>
+				</div>
+			</nav>
+		);
+	}
+}
