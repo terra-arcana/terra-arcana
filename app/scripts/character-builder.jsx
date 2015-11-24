@@ -3,7 +3,9 @@ import React from 'react';
 import Toile from './toile/toile.jsx';
 import DetailsPanel from './toile/details-panel.jsx';
 
-var characterBuilder = {};
+var characterBuilder = {
+	displayName: 'CharacterBuilder'
+};
 
 /* Methods */
 

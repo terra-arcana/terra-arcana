@@ -2,7 +2,9 @@ import React from 'react';
 
 require('../../styles/toile/details-panel.scss');
 
-var detailsPanel = {};
+var detailsPanel = {
+	displayName: 'DetailsPanel'
+};
 
 /* Methods */
 

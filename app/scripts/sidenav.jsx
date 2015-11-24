@@ -4,7 +4,9 @@ import {Link} from 'react-router';
 
 require('../styles/sidenav.scss');
 
-var sidebar = {};
+var sidenav = {
+	displayName: 'Sidenav'
+};
 
 /* Methods */
 
@@ -13,7 +15,7 @@ var sidebar = {};
  * 
  * @return {jsx} The component template
  */
-sidebar.render = function() {
+sidenav.render = function() {
 	return (
 		<nav className="sidenav">
 			<div className="container-fluid">
@@ -29,4 +31,4 @@ sidebar.render = function() {
 
 /* Export */
 
-export default React.createClass(sidebar);
+export default React.createClass(sidenav);

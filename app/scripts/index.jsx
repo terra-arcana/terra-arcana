@@ -2,7 +2,9 @@ import React from 'react';
 
 import Greeting from './greeting.jsx';
 
-var index = {};
+var index = {
+	displayName: 'Index'
+};
 
 /* Methods */
 

@@ -8,7 +8,9 @@ import NodeLink from './node-link.jsx';
 
 require('../../styles/toile/toile.scss');
 
-var toile = {};
+var toile = {
+	displayName: 'Toile'
+};
 
 /* Static methods */
 

@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactKonva from 'react-konva';
 
-var node = {};
+var node = {
+	displayName: 'Node'
+};
 
 /* Methods */
 

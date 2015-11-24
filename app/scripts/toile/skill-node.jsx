@@ -2,7 +2,9 @@ import React from 'react';
 
 import Node from './node.jsx';
 
-var skillNode = {};
+var skillNode = {
+	displayName: 'SkillNode'
+};
 
 /* Methods */
 

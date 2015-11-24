@@ -1,6 +1,8 @@
 import React from "react";
 
-var greeting = {};
+var greeting = {
+	displayName: 'Greeting'
+};
 
 /* Methods */
 
