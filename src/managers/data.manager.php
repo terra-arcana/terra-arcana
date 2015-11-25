@@ -14,9 +14,11 @@ namespace terraarcana {
 		private $_cpts = array();
 
 		public function __construct() {
-			$this->_cpts = array(
-				'codex' 	=> new Codex()
-			);
+			if (class_exists('WP_REST_Controller')) {
+				$this->_cpts = array(
+					'codex' 	=> new Codex()
+				);
+			}
 		}
 
 		private function __clone() {}
