@@ -3,6 +3,7 @@ import ReactKonva from 'react-konva';
 
 import Node from './node.jsx';
 import SkillNode from './skill-node.jsx';
+import UpgradeNode from './upgrade-node.jsx';
 import NodeLink from './node-link.jsx';
 
 require('../../styles/toile/toile.scss');
@@ -105,6 +106,25 @@ export default class Toile extends React.Component {
 									></SkillNode>
 								);
 							}
+
+							// Upgrade nodes
+							else if (node.type === 'upgrade') {
+								return (
+									<UpgradeNode
+										ref = {(ref) => this.nodes[node.id] = ref}
+										id = {node.id}
+										x = {node.x}
+										y = {node.y}
+										selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
+										onClick = {this.onNodeClick}
+										onDragMove = {this.onNodeDragMove}
+										onMouseOver = {this.props.onNodeMouseOver}
+										onMouseOut = {this.props.onNodeMouseOut}
+									></UpgradeNode>
+								);
+							}
+
+							return null;
 						}.bind(this))}
 					</ReactKonva.Layer>
 				</ReactKonva.Stage>
@@ -198,7 +218,7 @@ export default class Toile extends React.Component {
 	/**
 	 * Return the data of a particular node by ID
 	 *
-	 * @param {Number} id The node ID
+	 * @param {String} id The node ID
 	 * @return {Node|null} The node
 	 */
 	getNodeDataById(id) {
@@ -216,8 +236,8 @@ export default class Toile extends React.Component {
 	/**
 	 * Return all nodes linked to a particular node
 	 *
-	 * @param {Number} id The node ID
-	 * @return {Array<Number>} The linked node IDs
+	 * @param {String} id The node ID
+	 * @return {Array<String>} The linked node IDs
 	 */
 	getLinkedNodesById(id) {
 		var linkedNodes = [];
@@ -236,7 +256,7 @@ export default class Toile extends React.Component {
 	/**
 	 * Determines whether or not a node can be picked
 	 * 
-	 * @param {Number} id The node ID
+	 * @param {String} id The node ID
 	 * @return {Boolean} This node is pickable
 	 */
 	isNodePickable(id) {
@@ -256,7 +276,7 @@ export default class Toile extends React.Component {
 	 * Determines whether or not a node can be unpicked without leaving 
 	 * orphan nodes
 	 * 
-	 * @param {Number} id The node ID
+	 * @param {String} id The node ID
 	 * @return {Boolean} This node is unpickable
 	 */
 	isNodeUnpickable(id) {
@@ -287,8 +307,8 @@ export default class Toile extends React.Component {
 	 * passing by specific nodes. If there is no start node yet, this will 
 	 * always return false.
 	 * 
-	 * @param  {Number} source The starting node
-	 * @param  {Array<Number>} without The nodes to exclude in the search
+	 * @param  {String} source The starting node
+	 * @param  {Array<String>} without The nodes to exclude in the search
 	 * @return {Boolean} The node has an alternate path to start
 	 */
 	hasAlternatePathToStart(source, without) {
@@ -338,7 +358,7 @@ export default class Toile extends React.Component {
 	/**
 	 * Handle node clicks
 	 * 
-	 * @param {Number} id The node ID
+	 * @param {String} id The node ID
 	 */
 	onNodeClick(id) {
 		var isPicked = (this.props.pickedNodes.indexOf(id) !== -1),
@@ -354,7 +374,7 @@ export default class Toile extends React.Component {
 	/**
 	 * Handle node drags
 	 *
-	 * @param {Number} id The node ID
+	 * @param {String} id The node ID
 	 * @param {Number} x The new X coordinate
 	 * @param {Number} y The new Y coordinate
 	 */
@@ -387,6 +407,6 @@ Toile.defaultProps = {
 	initialNodeData: [],
 	initialLinkData: [],
 	pickedNodes: [],
-	startNode: 0,
-	activeNode: 0
+	startNode: '',
+	activeNode: ''
 };
