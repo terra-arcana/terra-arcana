@@ -9,7 +9,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "github.com/ferdbold/terra-arcana.git"
+    "url": "https://github.com/ferdbold/terra-arcana.git"
   },
   "author": "Frédéric Bolduc <bolducfrederic@gmail.com>",
   "license": "BSD-2-Clause",
