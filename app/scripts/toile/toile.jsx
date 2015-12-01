@@ -407,6 +407,5 @@ Toile.defaultProps = {
 	initialNodeData: [],
 	initialLinkData: [],
 	pickedNodes: [],
-	startNode: '',
-	activeNode: ''
+	startNode: ''
 };

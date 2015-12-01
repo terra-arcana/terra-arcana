@@ -6,7 +6,7 @@ import { Route, DefaultRoute, RouteHandler } from 'react-router';
 
 import Sidenav from './scripts/sidenav.jsx';
 import Index from './scripts/index.jsx';
-import CharacterBuilder from './scripts/character-builder.jsx';
+import CharacterBuilder from './scripts/toile/character-builder.jsx';
 import Codex from './scripts/codex/codex.jsx';
 
 require('./styles/app.scss');

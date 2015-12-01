@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Toile from './toile/toile.jsx';
-import DetailsPanel from './toile/details-panel.jsx';
+import Toile from './toile.jsx';
+import SkillTooltip from './skill-tooltip.jsx';
+import CharacterSkillsPanel from './character-skills-panel.jsx';
 
 /**
  * Character builder component
@@ -22,11 +23,14 @@ export default class CharacterBuilder extends React.Component {
 		 * @private
 		 */
 		this.state = {
-			activeNode: '',
+			activeSkill: {
+				id: '',
+				upgrades: []
+			},
 			pickedNodes: this.props.initialPickedNodes
 		};
 
-		this.inspectNode = this.inspectNode.bind(this);
+		this.inspectSkill = this.inspectSkill.bind(this);
 		this.uninspect = this.uninspect.bind(this);
 		this.selectNode = this.selectNode.bind(this);
 	}
@@ -36,6 +40,15 @@ export default class CharacterBuilder extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
+		var skillTooltip = null;
+		if (this.state.activeSkill.id !== '') {
+			skillTooltip = (
+				<SkillTooltip
+					skill = {this.state.activeSkill}
+				></SkillTooltip>
+			);
+		}
+
 		return (
 			<div className="row">
 				<Toile
@@ -43,35 +56,41 @@ export default class CharacterBuilder extends React.Component {
 					initialLinkData = {this.props.linkData}
 					pickedNodes = {this.state.pickedNodes} 
 					startNode = {this.props.startNode}
-					activeNode = {this.state.activeNode}
-					onNodeMouseOver = {this.inspectNode}
+					onNodeMouseOver = {this.inspectSkill}
 					onNodeMouseOut = {this.uninspect}
 					onSelectNode = {this.selectNode}
 				></Toile>
-				<DetailsPanel
-					id = {this.state.activeNode}
-				></DetailsPanel>
+				<CharacterSkillsPanel
+					nodes = {this.state.pickedNodes}
+					onMouseOver = {this.inspectSkill}
+					onMouseOut = {this.uninspect}
+				></CharacterSkillsPanel>
+				
+				{skillTooltip}
 			</div>
 		);	
 	}
 
 	/**
-	 * Inspect a node and reveal its details
+	 * Inspect a skill and reveal its details
 	 *
-	 * @param {String} id The node ID
+	 * @param {Object} skill The skill object, containing an `id` string and an `upgrades` array of string ids
 	 */
-	inspectNode(id) {
+	inspectSkill(skill) {
 		this.setState({
-			activeNode: id
+			activeSkill: skill
 		});
 	}
 
 	/**
-	 * Stop inspecting nodes
+	 * Stop inspecting skills
 	 */
 	uninspect() {
 		this.setState({
-			activeNode: ''
+			activeSkill: {
+				id: '',
+				upgrades: []
+			}
 		});
 	}
 
@@ -131,6 +150,12 @@ CharacterBuilder.defaultProps = {
 			type: 'upgrade',
 			x: 500,
 			y: 200
+		},
+		{
+			id: '4-2',
+			type: 'upgrade',
+			x: 550,
+			y: 200
 		}
 	],
 	linkData: [
@@ -138,7 +163,8 @@ CharacterBuilder.defaultProps = {
 		['2', '3'],
 		['1', '3'],
 		['2', '4'],
-		['4', '4-1']
+		['4', '4-1'],
+		['4', '4-2']
 	],
 	initialPickedNodes: [],
 	startNode: '1'
