@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactKonva from 'react-konva';
-import Konva from 'konva';
 
 import Node from './node.jsx';
 import SkillNode from './skill-node.jsx';
@@ -29,7 +28,7 @@ export default class Toile extends React.Component {
 		this.state = {
 			nodeData: this.props.initialNodeData,
 			linkData: this.props.initialLinkData
-		}
+		};
 
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onNodeDragMove = this.onNodeDragMove.bind(this);
@@ -136,6 +135,10 @@ export default class Toile extends React.Component {
 	componentDidMount() {
 		var root = React.findDOMNode(this);
 
+		/**
+		 * Canvas DOM elements
+		 * @type {Array<HTMLElement>}
+		 */
 		this.canvas = root.getElementsByTagName('canvas');
 
 		window.addEventListener('resize', this.draw);
@@ -156,10 +159,7 @@ export default class Toile extends React.Component {
  	 * Resizes the editor canvas to its wrapper width
  	 */
 	resizeCanvas() {
-		var root = React.findDOMNode(this), 
-			editorSize;
-
-		editorSize = this.getEditorSize();
+		var editorSize = this.getEditorSize();
 
 		for (var i = 0; i < this.canvas.length; i++) {
 			this.canvas[i].width = editorSize.w;
@@ -174,8 +174,7 @@ export default class Toile extends React.Component {
 	 */
 	getEditorSize() {
 		var root = React.findDOMNode(this),
-		 	editorStyle = window.getComputedStyle(root),
-			parentStyle = window.getComputedStyle(root.parentNode.parentNode),
+			editorStyle = window.getComputedStyle(root),
 			paddings = {
 				left: Toile.pxStringToNumber(editorStyle.paddingLeft),
 				right: Toile.pxStringToNumber(editorStyle.paddingRight)

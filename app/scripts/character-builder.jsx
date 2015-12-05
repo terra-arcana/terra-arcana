@@ -24,7 +24,7 @@ export default class CharacterBuilder extends React.Component {
 		this.state = {
 			activeNode: 0,
 			pickedNodes: []
-		}
+		};
 
 		this.inspectNode = this.inspectNode.bind(this);
 		this.uninspect = this.uninspect.bind(this);
@@ -63,7 +63,7 @@ export default class CharacterBuilder extends React.Component {
 		this.setState({
 			activeNode: id
 		});
-	};
+	}
 
 	/**
 	 * Stop inspecting nodes
@@ -72,7 +72,7 @@ export default class CharacterBuilder extends React.Component {
 		this.setState({
 			activeNode: 0
 		});
-	};
+	}
 
 	/**
 	 * Select a node
@@ -91,9 +91,7 @@ export default class CharacterBuilder extends React.Component {
 		this.setState({
 			pickedNodes: this.state.pickedNodes
 		});
-
-		console.log(this.state.pickedNodes);
-	};
+	}
 }
 
 /**

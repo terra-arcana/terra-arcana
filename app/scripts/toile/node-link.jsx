@@ -28,7 +28,7 @@ export default class NodeLink extends React.Component {
 				tension = {0}
 			></ReactKonva.Line>
 		);
-	};
+	}
 }
 
 /**
@@ -45,4 +45,4 @@ NodeLink.defaultProps = {
 		x: 0, 
 		y: 0
 	}
-}
+};

@@ -1,5 +1,4 @@
 import React from 'react';
-import Router from 'react-router';
 import {Link} from 'react-router';
 
 require('../styles/sidenav.scss');

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * Greeting component. Used for testing purposes.
@@ -11,7 +11,7 @@ export default class Greeting extends React.Component {
 	 * @override
 	 * @return {jsx} The component template
 	 */
-	 render() {
+	render() {
 		return (
 			<div className="greeting">
 				Hello, {this.props.name}!
