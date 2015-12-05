@@ -59,8 +59,8 @@ namespace terraarcana {
                 array(
                     'jsPath' => trailingslashit( get_template_directory_uri() ) . 'app/',
                     'scssPath' => trailingslashit( get_template_directory_uri() ) . 'app/styles/',
-                    'apiCorePath' => trailingslashit( site_url() ) . '/wp-json/wp/v2/',
-                    'apiTerraPath' => trailingslashit( site_url() ) . '/wp-json/terraarcana/v1/'
+                    'apiCorePath' => trailingslashit( site_url() ) . 'wp-json/wp/v2/',
+                    'apiTerraPath' => trailingslashit( site_url() ) . 'wp-json/terraarcana/v1/'
                 )
             );
         }
