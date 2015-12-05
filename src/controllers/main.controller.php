@@ -4,7 +4,7 @@ namespace terraarcana {
     require_once(ROOT . '/src/managers/data.manager.php');
     require_once(ROOT . '/src/managers/script.manager.php');
 
-    require_once(ROOT . '/lib/tgm/class-tgm-plugin-activation.php');
+    require_once(ROOT . '/vendor/tgmpa/tgm-plugin-activation/class-tgm-plugin-activation.php');
 
     /**
     * @name MainController

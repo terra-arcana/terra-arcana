@@ -1,0 +1,12 @@
+{
+    "name": "terra-arcana/terra-arcana",
+    "require": {
+        "tgmpa/tgm-plugin-activation": "^2.5"
+    },
+    "authors": [
+        {
+            "name": "Frédéric Bolduc",
+            "email": "bolducfrederic@gmail.com"
+        }
+    ]
+}
