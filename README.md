@@ -1,7 +1,7 @@
 # Terra Arcana
 http://www.gnterraarcana.com
 
-Bienvenue au futur du site web de Terra Arcana! Le site refera prochainement peau neuve, avec un nouveau thème WordPress supportant des technologies modernes telles que **WP REST API**, **React.js** et **Konva**.
+Bienvenue au futur du site web de Terra Arcana! Le site refera prochainement peau neuve, avec un nouveau thème WordPress supportant des technologies modernes telles que **WP REST API**, **ReactJS** et **Konva**.
 
 Avec celle nouvelle approche, nous nous tournons vers GitHub et la communauté open-source québécoise, pour faire de Terra Arcana le leader en site de GN au Québec.
 
@@ -15,13 +15,14 @@ Avec celle nouvelle approche, nous nous tournons vers GitHub et la communauté o
   * Assurez-vous dans votre fichier `httpd.conf` que AllowOverride est bien configuré à All et non à None pour votre dossier qui vous sert de racine web (normalement `htdocs` ou `/var/www`)
   
 4. Clonez le repositoire de Terra Arcana dans le dossier wp-content/themes/ de votre installation WordPress.
-  
-5. Exécutez les commandes suivantes pour installer toutes les dépendances du projet:
+
+5. Exécutez les commandes suivantes pour installer toutes les dépendances du projet (installez préalablement [NPM](https://www.npmjs.com) et [Composer](https://getcomposer.org) si ce n'est pas déjà fait):
 ```bash
-npm install             // Installe toutes les dépendances locales
+npm install             // Installe toutes les dépendances JavaScript dans /node_modules
 npm install -g webpack  // Installe webpack globalement (nécessaire pour générer les fichiers HTML/CSS/JS distribués)
 npm install -g esdoc    // Installe esdoc globalement (nécessaire pour générer la documentation)
-webpack                 // Génère une première fois les fichiers distribués
+composer install        // Installe toutes les dépendances PHP dans /vendor
+webpack                 // Génère une première fois les fichiers distribués dans /dist et la documentation dans /docs
 ```
 
 6. Connectez-vous dans le panneau d'administration de WordPress (à `{votre URL local}/wp-admin`) et rendez-vous dans Apparence dans le menu de gauche pour activer le thème Terra Arcana.
@@ -36,13 +37,7 @@ La documentation du projet est générée par [ESDoc](https://esdoc.org), et est
 
 ## Arborescence
 * `src`
-
    Tout le back-end PHP du thème. Le point d'entrée officiel de WordPress étant functions.php, celui-ci ne sert qu'à charger la classe mère de l'application, située à `src/controllers/main-controller.class.php`.
 
 * `app`
-
    Tout le front-end Javascript/JSX. Les points d'entrée sont `app/app.js` et `app/index.html`.
-   
-* `lib`
-
-   Sous-modules Git pour inclure des modules externes PHP. Contient actuellement TGM Plugin Activation pour gérer les plugins WordPress nécessaires au maintien du thème.
