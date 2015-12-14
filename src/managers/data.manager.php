@@ -5,6 +5,10 @@ namespace terraarcana {
 
 	require_once(ROOT . '/src/cpt/codex.class.php');
 
+	require_once(ROOT . '/src/cpt/rules.class.php');
+	require_once(ROOT . '/src/cpt/character-class.class.php');
+	require_once(ROOT . '/src/cpt/skill.class.php');
+
 	/**
 	 * @name DataManager
 	 * @desc Handles the creation and maintenance of the data layer
@@ -16,7 +20,10 @@ namespace terraarcana {
 		public function __construct() {
 			if (class_exists('WP_REST_Controller')) {
 				$this->_cpts = array(
-					'codex' 	=> new Codex()
+					'codex' => new Codex(),
+					'rules' => new Rules(),
+					'characterClass' => new CharacterClass(),
+					'skill' => new Skill()
 				);
 			}
 		}
