@@ -75,18 +75,26 @@ namespace terraarcana {
 
             $plugins = array(
                 array(
-                    'name'      => 'WP REST API',
-                    'slug'      => 'rest-api',
-                    'required'  => true,
+                    'name' => 'WP REST API',
+                    'slug' => 'rest-api',
+                    'required' => true,
                 ),
 
                 array(
-                    'name'          => 'OAuth Server',
-                    'slug'          => 'OAuth1-master',
-                    'source'        => 'https://github.com/WP-API/OAuth1/archive/master.zip',
-                    'required'      => true,
-                    'external_url'  => 'https://github.com/WP-API/OAuth1',
+                    'name' => 'OAuth Server',
+                    'slug' => 'OAuth1-master',
+                    'source' => 'https://github.com/WP-API/OAuth1/archive/master.zip',
+                    'required' => true,
+                    'external_url' => 'https://github.com/WP-API/OAuth1',
                 ),
+
+                array(
+                    'name' => 'Advanced Custom Fields',
+                    'slug' => 'advanced-custom-fields',
+                    'source' => 'http://connect.advancedcustomfields.com/index.php?p=pro&a=download',
+                    'required' => true,
+                    'external_url' => 'http://www.advancedcustomfields.com'
+                )
             );
 
             $config = array(
