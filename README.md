@@ -36,8 +36,11 @@ Le projet utilise également [ESLint](http://eslint.org/) pour vérifier la synt
 La documentation du projet est générée par [ESDoc](https://esdoc.org), et est disponible dans le dossier `docs` de votre projet une fois webpack exécuté au moins une fois. Consultez [la documentation](https://esdoc.org/tags.html) pour la liste des tags disponibles.
 
 ## Arborescence
-* `src`
+* `src`  
    Tout le back-end PHP du thème. Le point d'entrée officiel de WordPress étant functions.php, celui-ci ne sert qu'à charger la classe mère de l'application, située à `src/controllers/main-controller.class.php`.
 
-* `app`
+* `app`  
    Tout le front-end Javascript/JSX. Les points d'entrée sont `app/app.js` et `app/index.html`.
+
+* `acf-json`  
+  Fichiers JSON générés par [ACF Pro](http://www.advancedcustomfields.com) représentant les modèles de données des [types de contenu](https://codex.wordpress.org/Post_Types) créés par le thème. Ne pas toucher directement.
