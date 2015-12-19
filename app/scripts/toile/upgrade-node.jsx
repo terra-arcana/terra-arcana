@@ -3,12 +3,15 @@ import React from 'react';
 import Node from './node.jsx';
 
 /**
- * A SkillNode is a canvas element representing a skill on a Toile.
+ * An UpgradeNode is a canvas element representing an upgrade of a 
+ * single {@link SkillNode} on a {@link Toile}. An UpgradeNode should always have 
+ * a single link, either to its parent SkillNode or to another UpgradeNode related 
+ * to the same SkillNode.
  *
  * @class
  */
-export default class SkillNode extends React.Component {
-
+export default class UpgradeNode extends React.Component {
+	
 	/**
 	 * @override
 	 * @return {jsx} The component template
@@ -21,7 +24,7 @@ export default class SkillNode extends React.Component {
 				x = {this.props.x}
 				y = {this.props.y}
 				radius = {this.props.radius}
-				fill = "red"
+				fill = "purple"
 				selected = {this.props.selected}
 				onClick = {this.props.onClick}
 				onDragMove = {this.props.onDragMove}
@@ -30,26 +33,17 @@ export default class SkillNode extends React.Component {
 			></Node>
 		);
 	}
-
-	/**
-	 * Return the position of the node
-	 * 
-	 * @return {Object} The X and Y coordinates
-	 */
-	getPosition() {
-		return this.node.node.getPosition();
-	}
 }
 
 /**
  * Default props
- * 
+ *
  * @type {Object}
  */
-SkillNode.defaultProps = {
+UpgradeNode.defaultProps = {
 	id: '',
-	x: 100,
-	y: 100,
-	radius: 20,
+	x: 0,
+	y: 0,
+	radius: 8,
 	selected: false
 };

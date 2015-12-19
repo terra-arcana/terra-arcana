@@ -111,7 +111,7 @@ export default class Node extends React.Component {
  * @type {Object}
  */
 Node.defaultProps = {
-	id: 0,
+	id: '',
 	x: 100,
 	y: 100,
 	radius: 15,

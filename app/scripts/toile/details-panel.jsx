@@ -28,5 +28,5 @@ export default class DetailsPanel extends React.Component {
  * @type {Object}
  */
 DetailsPanel.defaultProps = {
-	id: 0
+	id: ''
 };

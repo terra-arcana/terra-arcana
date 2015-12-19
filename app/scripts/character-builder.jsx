@@ -22,8 +22,8 @@ export default class CharacterBuilder extends React.Component {
 		 * @private
 		 */
 		this.state = {
-			activeNode: 0,
-			pickedNodes: []
+			activeNode: '',
+			pickedNodes: this.props.initialPickedNodes
 		};
 
 		this.inspectNode = this.inspectNode.bind(this);
@@ -41,8 +41,9 @@ export default class CharacterBuilder extends React.Component {
 				<Toile
 					initialNodeData = {this.props.nodeData}
 					initialLinkData = {this.props.linkData}
-					activeNode = {this.state.activeNode}
 					pickedNodes = {this.state.pickedNodes} 
+					startNode = {this.props.startNode}
+					activeNode = {this.state.activeNode}
 					onNodeMouseOver = {this.inspectNode}
 					onNodeMouseOut = {this.uninspect}
 					onSelectNode = {this.selectNode}
@@ -57,7 +58,7 @@ export default class CharacterBuilder extends React.Component {
 	/**
 	 * Inspect a node and reveal its details
 	 *
-	 * @param {number} id The node ID
+	 * @param {String} id The node ID
 	 */
 	inspectNode(id) {
 		this.setState({
@@ -70,14 +71,14 @@ export default class CharacterBuilder extends React.Component {
 	 */
 	uninspect() {
 		this.setState({
-			activeNode: 0
+			activeNode: ''
 		});
 	}
 
 	/**
 	 * Select a node
 	 *
-	 * @param {number} id The picked node ID
+	 * @param {String} id The picked node ID
 	 */
 	selectNode(id) {
 		var nodeIndex = this.state.pickedNodes.indexOf(id);
@@ -102,27 +103,43 @@ export default class CharacterBuilder extends React.Component {
 CharacterBuilder.defaultProps = {
 	nodeData: [
 		{
-			id: 1,
+			id: '1',
 			type: 'normal',
 			x: 300,
 			y: 200
 		},
 		{
-			id: 2,
+			id: '2',
 			type: 'normal',
 			x: 350,
 			y: 400
 		},
 		{
-			id: 3,
+			id: '3',
 			type: 'skill',
 			x: 400,
 			y: 100
+		},
+		{
+			id: '4',
+			type: 'skill',
+			x: 500,
+			y: 400
+		},
+		{
+			id: '4-1',
+			type: 'upgrade',
+			x: 500,
+			y: 200
 		}
 	],
 	linkData: [
-		[1, 2],
-		[2, 3],
-		[1, 3]
-	]
+		['1', '2'],
+		['2', '3'],
+		['1', '3'],
+		['2', '4'],
+		['4', '4-1']
+	],
+	initialPickedNodes: [],
+	startNode: '1'
 };

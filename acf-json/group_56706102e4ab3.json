@@ -1,0 +1,711 @@
+{
+    "key": "group_56706102e4ab3",
+    "title": "Comp\u00e9tences - C\u00f4t\u00e9",
+    "fields": [
+        {
+            "key": "field_566f1505b9255",
+            "label": "Type",
+            "name": "type",
+            "type": "select",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "instant": "Instant",
+                "self-buff": "Puissance",
+                "ally-buff": "Inspiration",
+                "item-buff": "Enchantement",
+                "form": "Forme",
+                "passive": "Passif"
+            },
+            "default_value": {
+                "instant": "instant"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_566f2786a877f",
+            "label": "Co\u00fbt",
+            "name": "cost",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "instant"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "self-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "ally-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "item-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "form"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 1,
+            "max": 1,
+            "layout": "block",
+            "button_label": "Ajouter un \u00e9l\u00e9ment",
+            "sub_fields": [
+                {
+                    "key": "field_566f2897a8780",
+                    "label": "\u00c9nergie",
+                    "name": "energy",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "points d'\u00e9nergie",
+                    "min": 0,
+                    "max": "",
+                    "step": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_566f290da8781",
+                    "label": "Ingr\u00e9dients",
+                    "name": "ingredients",
+                    "type": "repeater",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "collapsed": "field_566f2953a8783",
+                    "min": "",
+                    "max": "",
+                    "layout": "table",
+                    "button_label": "Ajouter un ingr\u00e9dient",
+                    "sub_fields": [
+                        {
+                            "key": "field_566f292ca8782",
+                            "label": "Montant",
+                            "name": "amount",
+                            "type": "number",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "min": 0,
+                            "max": "",
+                            "step": "",
+                            "readonly": 0,
+                            "disabled": 0
+                        },
+                        {
+                            "key": "field_566f2953a8783",
+                            "label": "Ingr\u00e9dient",
+                            "name": "ingredient",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "racine": "Racine",
+                                "petale": "P\u00e9tale",
+                                "pierre": "Pierre",
+                                "fer": "Fer",
+                                "gemme": "Gemme",
+                                "os": "Os",
+                                "oeil": "Oeil",
+                                "sang": "Sang"
+                            },
+                            "default_value": [],
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 1,
+                            "ajax": 0,
+                            "placeholder": "",
+                            "disabled": 0,
+                            "readonly": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_56705fcc6bc59",
+            "label": "Utilisations limit\u00e9es",
+            "name": "uses",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "instant"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "self-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "ally-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "item-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "form"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 1,
+            "max": 1,
+            "layout": "table",
+            "button_label": "Ajouter un \u00e9l\u00e9ment",
+            "sub_fields": [
+                {
+                    "key": "field_56705fe66bc5a",
+                    "label": "Nombre",
+                    "name": "amount",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": 0,
+                    "max": "",
+                    "step": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_56705ff76bc5b",
+                    "label": "Type",
+                    "name": "type",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "combat": "Combat",
+                        "period": "P\u00e9riode"
+                    },
+                    "default_value": [],
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "disabled": 0,
+                    "readonly": 0
+                }
+            ]
+        },
+        {
+            "key": "field_566f2273ae87f",
+            "label": "Incantation",
+            "name": "cast",
+            "type": "select",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "instant"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "self-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "ally-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "item-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "form"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "I": "Instantan\u00e9e",
+                "XXS": "5 secondes",
+                "XS": "10 secondes",
+                "S": "15 secondes",
+                "M": "30 secondes",
+                "L": "1 minute",
+                "XL": "10 minutes"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_566f20f65025c",
+            "label": "Dur\u00e9e",
+            "name": "duration",
+            "type": "select",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "self-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "ally-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "item-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "form"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "I": "Instantan\u00e9e",
+                "XS": "10 secondes",
+                "S": "30 secondes",
+                "M": "2 minutes",
+                "L": "10 minutes",
+                "XL": "1 heure",
+                "P": "P\u00e9riode",
+                "C": "Combat"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_566f260724373",
+            "label": "Port\u00e9e",
+            "name": "range",
+            "type": "select",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "instant"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "self-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "ally-buff"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_566f1505b9255",
+                        "operator": "==",
+                        "value": "item-buff"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "P": "Personnelle",
+                "C": "Contact",
+                "S": "Courte (3 m\u00e8tres)",
+                "L": "Longue (10 m\u00e8tres)",
+                "V": "Voix"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_566f2e297ce74",
+            "label": "Niveaux",
+            "name": "perks",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 1,
+            "max": 1,
+            "layout": "block",
+            "button_label": "Ajouter un \u00e9l\u00e9ment",
+            "sub_fields": [
+                {
+                    "key": "field_567063bf464b6",
+                    "label": "Puissance",
+                    "name": "power",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "niveaux",
+                    "min": 0,
+                    "max": "",
+                    "step": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_566f2e5e7ce75",
+                    "label": "Incantation",
+                    "name": "cast",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "instant"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "self-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "ally-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "item-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "form"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "niveaux",
+                    "min": 0,
+                    "max": "",
+                    "step": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_566f2ee67ce7a",
+                    "label": "Dur\u00e9e",
+                    "name": "duration",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "self-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "ally-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "item-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "form"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "niveaux",
+                    "min": 0,
+                    "max": "",
+                    "step": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_566f2f247ce7b",
+                    "label": "Port\u00e9e",
+                    "name": "range",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "instant"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "self-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "ally-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "item-buff"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": 49,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "niveaux",
+                    "min": 0,
+                    "max": "",
+                    "step": "",
+                    "readonly": 0,
+                    "disabled": 0
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "skill"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1450216115
+}
