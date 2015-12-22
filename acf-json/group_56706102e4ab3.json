@@ -192,7 +192,7 @@
         },
         {
             "key": "field_56705fcc6bc59",
-            "label": "Utilisations limit\u00e9es",
+            "label": "Utilisations",
             "name": "uses",
             "type": "repeater",
             "instructions": "",
@@ -510,7 +510,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": 50,
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -569,7 +569,7 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": 50,
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -621,7 +621,7 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": 50,
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -673,7 +673,66 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": 49,
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "niveaux",
+                    "min": 0,
+                    "max": "",
+                    "step": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_5678b8c310452",
+                    "label": "Utilisations",
+                    "name": "uses",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "instant"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "self-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "ally-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "item-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "form"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -707,5 +766,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1450216115
+    "modified": 1450752660
 }

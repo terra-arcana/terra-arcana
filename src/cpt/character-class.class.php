@@ -22,28 +22,28 @@ namespace terraarcana {
 			public function register_post_type() {
 				register_post_type($this->postTypeName, array(
 					'labels' => array(
-						'name' 				=> 'Zodiaques',
-						'singular_name' 	=> 'Zodiaque',
-						'menu_name' 		=> 'Zodiaques',
-						'all_items' 		=> 'Zodiaques',
-						'add_new'	 		=> 'Ajouter un zodiaque',
-						'add_new_item'		=> 'Ajouter un zodiaque',
-						'edit_item' 		=> 'Modifier le zodiaque',
-						'new_item' 			=> 'Nouveau zodiaque',
-						'view_item' 		=> 'Voir le zodiaque',
-						'search_items' 		=> 'Rechercher les zodiaques',
-						'not_found' 		=> 'Aucun zodiaque trouvé',
-						'not_found_in_trash' => 'Aucun zodiaque trouvé dans la corbeille'
+						'name' 				=> 'Signes',
+						'singular_name' 	=> 'Signe',
+						'menu_name' 		=> 'Signes',
+						'all_items' 		=> 'Signes',
+						'add_new'	 		=> 'Ajouter un signe',
+						'add_new_item'		=> 'Ajouter un signe',
+						'edit_item' 		=> 'Modifier le signe',
+						'new_item' 			=> 'Nouveau signe',
+						'view_item' 		=> 'Voir le signe',
+						'search_items' 		=> 'Rechercher les signes',
+						'not_found' 		=> 'Aucun signe trouvé',
+						'not_found_in_trash' => 'Aucun signe trouvé dans la corbeille'
 					),
 					'rewrite' 				=> array(
-						'slug' 					=> 'zodiaque'
+						'slug' 					=> 'signe'
 					),
 					'menu_icon' 			=> 'dashicons-shield',
-					'description' 			=> 'Zodiaques du système de jeu',
+					'description' 			=> 'Signes du zodiaque (toile du système de jeu)',
 					'public' 				=> true,
 					'show_in_menu' 			=> 'edit.php?post_type=rules',
 					'show_in_rest' 			=> true,
-					'rest_base' 			=> 'zodiaque',
+					'rest_base' 			=> 'signe',
 					'hierarchical' 			=> false,
 					'supports' => array(
 						'title',
