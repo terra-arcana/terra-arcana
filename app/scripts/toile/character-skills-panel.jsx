@@ -24,8 +24,11 @@ export default class CharacterSkillsPanel extends React.Component {
 		 * @private
 		 */
 		this.state = {
-			skills: []
+			skills: [],
+			displaySkills: true
 		};
+
+		this.toggleSkills = this.toggleSkills.bind(this);
 	}
 
 	/**
@@ -65,6 +68,26 @@ export default class CharacterSkillsPanel extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
+		var toggleSkillsButtonText = this.state.displaySkills ? 'Masquer' : 'Afficher',
+			skillsList = null;
+
+		if (this.state.displaySkills) {
+			skillsList = (
+				<ul className='list-group skills-list'>
+					{this.state.skills.map(function(skill) {
+						return (
+							<CharacterSkillsPanelSkillElement
+								id = {skill.id}
+								upgrades = {skill.upgrades}
+								onMouseOver = {this.props.onMouseOver}
+								onMouseOut = {this.props.onMouseOut}
+							></CharacterSkillsPanelSkillElement>
+						);
+					}.bind(this))}
+				</ul>
+			);
+		}
+
 		return (
 			<div className='toile-editor-character-skills-panel'>
 				<div className='panel panel-default'>
@@ -81,23 +104,23 @@ export default class CharacterSkillsPanel extends React.Component {
 							<li>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</li>
 							<li>Points dessence: {this.props.pp.current}/{this.props.pp.total}</li>
 						</ul>
+
+						<h3>Compétences <button className='btn btn-link btn-sm' onClick={this.toggleSkills}>{toggleSkillsButtonText}</button></h3>
 					</div>
 
-					<ul className='list-group skills-list'>
-						{this.state.skills.map(function(skill) {
-							return (
-								<CharacterSkillsPanelSkillElement
-									id = {skill.id}
-									upgrades = {skill.upgrades}
-									onMouseOver = {this.props.onMouseOver}
-									onMouseOut = {this.props.onMouseOut}
-								></CharacterSkillsPanelSkillElement>
-							);
-						}.bind(this))}
-					</ul>
+					{skillsList}
 				</div>
 			</div>
 		);
+	}
+
+	/**
+	 * Toggles display of the skills list
+	 */
+	toggleSkills() {
+		this.setState({
+			displaySkills: !this.state.displaySkills
+		});
 	}
 }
 
