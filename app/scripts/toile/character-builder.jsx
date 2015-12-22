@@ -62,8 +62,9 @@ export default class CharacterBuilder extends React.Component {
 				></Toile>
 				<CharacterSkillsPanel
 					nodes = {this.state.pickedNodes}
-					onMouseOver = {this.inspectSkill}
-					onMouseOut = {this.uninspect}
+					activeSkill = {this.state.activeSkill}
+					onSelectSkill = {this.inspectSkill}
+					onUnselectSkill = {this.uninspect}
 				></CharacterSkillsPanel>
 				
 				{skillTooltip}

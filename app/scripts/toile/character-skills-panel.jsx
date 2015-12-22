@@ -11,7 +11,7 @@ require('../../styles/toile/character-skills-panel.scss');
  * @class
  */
 export default class CharacterSkillsPanel extends React.Component {
-	
+
 	/**
 	 * @constructor
 	 * @param {Object} props Custom props
@@ -29,6 +29,7 @@ export default class CharacterSkillsPanel extends React.Component {
 		};
 
 		this.toggleSkills = this.toggleSkills.bind(this);
+		this.onSelectSkill = this.onSelectSkill.bind(this);
 	}
 
 	/**
@@ -39,6 +40,7 @@ export default class CharacterSkillsPanel extends React.Component {
 		var skills = [],
 			splitID;
 
+		// Build new skill list based on nodes received from props
 		for (var i = 0; i < props.nodes.length; i++) {
 			splitID = props.nodes[i].split('-');
 
@@ -58,6 +60,7 @@ export default class CharacterSkillsPanel extends React.Component {
 			}
 		}
 
+		// Update state
 		this.setState({
 			skills: skills
 		});
@@ -79,8 +82,8 @@ export default class CharacterSkillsPanel extends React.Component {
 							<CharacterSkillsPanelSkillElement
 								id = {skill.id}
 								upgrades = {skill.upgrades}
-								onMouseOver = {this.props.onMouseOver}
-								onMouseOut = {this.props.onMouseOut}
+								active = {skill.id === this.props.activeSkill.id}
+								onSelect = {this.onSelectSkill}
 							></CharacterSkillsPanelSkillElement>
 						);
 					}.bind(this))}
@@ -102,10 +105,10 @@ export default class CharacterSkillsPanel extends React.Component {
 						<ul>
 							<li>Points d'énergie: {this.props.energy}</li>
 							<li>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</li>
-							<li>Points dessence: {this.props.pp.current}/{this.props.pp.total}</li>
+							<li>Points d'essence: {this.props.pp.current}/{this.props.pp.total}</li>
 						</ul>
 
-						<h3>Compétences <button className='btn btn-link btn-sm' onClick={this.toggleSkills}>{toggleSkillsButtonText}</button></h3>
+						<h3>Compétences <button type='button' className='btn btn-link btn-sm' onClick={this.toggleSkills}>{toggleSkillsButtonText}</button></h3>
 					</div>
 
 					{skillsList}
@@ -122,11 +125,28 @@ export default class CharacterSkillsPanel extends React.Component {
 			displaySkills: !this.state.displaySkills
 		});
 	}
+
+	/**
+	 * Select a skill in the list and display its details
+	 *
+	 * @param {Object} info The skill info, with its id and selected upgrades
+	 */
+	onSelectSkill(info) {
+		if (this.props.activeSkill.id !== info.id) {
+			if (this.props.onSelectSkill) {
+				this.props.onSelectSkill(info);
+			}
+		} else {
+			if (this.props.onUnselectSkill) {
+				this.props.onUnselectSkill();
+			}
+		}
+	}
 }
 
 /**
  * Default props
- * 
+ *
  * @type {Object}
  */
 CharacterSkillsPanel.defaultProps = {

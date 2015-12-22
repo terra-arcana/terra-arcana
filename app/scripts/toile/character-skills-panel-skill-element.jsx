@@ -15,7 +15,7 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.onMouseOver = this.onMouseOver.bind(this);
+		this.onClick = this.onClick.bind(this);
 	}
 
 	/**
@@ -23,8 +23,15 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
+		var classes = ['list-group-item'];
+
+		if (this.props.active) {
+			classes.push('active');
+		}
+
+
 		return (
-			<li className='list-group-item' onMouseOver={this.onMouseOver} onMouseOut={this.props.onMouseOut}>
+			<a href='#' className={classes.join(' ')} onClick={this.onClick}>
 				Skill #{this.props.id}
 				<ul>
 					{this.props.upgrades.map(function(upgrade) {
@@ -33,16 +40,16 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
 						);
 					})}
 				</ul>
-			</li>
+			</a>
 		);
 	}
 
 	/**
-	 * Handle mouse over events
+	 * Handle click events
 	 */
-	onMouseOver() {
-		if (this.props.onMouseOver) {
-			this.props.onMouseOver({
+	onClick() {
+		if (this.props.onSelect) {
+			this.props.onSelect({
 				id: this.props.id,
 				upgrades: this.props.upgrades
 			});
@@ -57,5 +64,6 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
  */
 CharacterSkillsPanelSkillElement.defaultProps = {
 	id: '',
-	upgrades: []
+	upgrades: [],
+	active: false
 };
