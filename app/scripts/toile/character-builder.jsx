@@ -27,7 +27,9 @@ export default class CharacterBuilder extends React.Component {
 				id: '',
 				upgrades: []
 			},
-			pickedNodes: this.props.initialPickedNodes
+			pickedNodes: this.props.initialPickedNodes,
+			nodeData: props.initialNodeData,
+			linkData: props.initialLinkData
 		};
 
 		this.inspectSkill = this.inspectSkill.bind(this);
@@ -52,8 +54,8 @@ export default class CharacterBuilder extends React.Component {
 		return (
 			<div className="row">
 				<Toile
-					initialNodeData = {this.props.nodeData}
-					initialLinkData = {this.props.linkData}
+					initialNodeData = {this.state.nodeData}
+					initialLinkData = {this.state.linkData}
 					pickedNodes = {this.state.pickedNodes} 
 					startNode = {this.props.startNode}
 					onNodeMouseOver = {this.inspectSkill}
@@ -70,6 +72,18 @@ export default class CharacterBuilder extends React.Component {
 				{skillTooltip}
 			</div>
 		);	
+	}
+
+	/**
+	 * @override
+	 */
+	componentDidMount() {
+		jQuery.get(appLocals.apiTerraPath + 'skill/graph-data', function(result) {
+			this.setState({
+				nodeData: result.nodes,
+				linkData: result.links
+			});
+		}.bind(this));
 	}
 
 	/**
@@ -121,7 +135,7 @@ export default class CharacterBuilder extends React.Component {
  * @type {Object}
  */
 CharacterBuilder.defaultProps = {
-	nodeData: [
+	initialNodeData: [
 		{
 			id: '1',
 			type: 'normal',
@@ -159,7 +173,7 @@ CharacterBuilder.defaultProps = {
 			y: 200
 		}
 	],
-	linkData: [
+	initialLinkData: [
 		['1', '2'],
 		['2', '3'],
 		['1', '3'],
