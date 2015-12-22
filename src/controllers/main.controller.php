@@ -47,27 +47,6 @@ namespace terraarcana {
         }
 
         /**
-        * @name activate
-        * @desc Plugin activation script. Adds required database tables.
-        */
-        public function activate() {
-            global $wpdb;
-            $table_name = $wpdb->prefix . 'voies';
-
-            $sql = "CREATE TABLE $table_name (
-                id mediumint(9) NOT NULL AUTO_INCREMENT,
-                slug_voie tinytext NOT NULL,
-                nom_voie text NOT NULL,
-                UNIQUE KEY id (id)
-            );";
-
-            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
-
-            add_option('estrella-db-version', ESTRELLA_GLOBALS::DB_VERSION);
-        }
-
-        /**
         * @name register_plugin_dependencies
         * @desc Registers all dependent plugins for proper theme functionality
         */
