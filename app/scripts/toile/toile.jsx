@@ -77,6 +77,7 @@ export default class Toile extends React.Component {
 							if (node.type === 'normal') {
 								return (
 									<Node
+										key = {node.id}
 										ref = {(ref) => this.nodes[node.id] = ref}
 										id = {node.id}
 										x = {node.x}
@@ -94,6 +95,7 @@ export default class Toile extends React.Component {
 							else if (node.type === 'skill') {
 								return (
 									<SkillNode
+										key = {node.id}
 										ref = {(ref) => this.nodes[node.id] = ref}
 										id = {node.id}
 										x = {node.x}
@@ -111,6 +113,7 @@ export default class Toile extends React.Component {
 							else if (node.type === 'upgrade') {
 								return (
 									<UpgradeNode
+										key = {node.id}
 										ref = {(ref) => this.nodes[node.id] = ref}
 										id = {node.id}
 										x = {node.x}
@@ -165,6 +168,17 @@ export default class Toile extends React.Component {
 		this.stage.node.on('dragmove', this.draw);
 
 		this.draw();
+	}
+
+	/**
+	 * @override
+	 * @param {Object} props New props
+	 */
+	componentWillReceiveProps(props) {
+		this.setState({
+			nodeData: props.initialNodeData,
+			linkData: props.initialLinkData
+		});
 	}
 
 	/**
@@ -407,6 +421,5 @@ Toile.defaultProps = {
 	initialNodeData: [],
 	initialLinkData: [],
 	pickedNodes: [],
-	startNode: '',
-	activeNode: ''
+	startNode: ''
 };

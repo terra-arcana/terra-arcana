@@ -91,7 +91,17 @@ export default class Node extends React.Component {
 	 */
 	onMouseOver() {
 		if (this.props.onMouseOver) {
-			this.props.onMouseOver(this.props.id);
+			var splitID = this.props.id.split('-'),
+				nodeObj = {
+					id: splitID[0],
+					upgrades: []
+				};
+
+			if (splitID[1] !== undefined) {
+				nodeObj.upgrades.push(splitID[1]);
+			}
+
+			this.props.onMouseOver(nodeObj);
 		}
 	}
 

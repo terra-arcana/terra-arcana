@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Toile from './toile/toile.jsx';
-import DetailsPanel from './toile/details-panel.jsx';
+import Toile from './toile.jsx';
+import SkillTooltip from './skill-tooltip.jsx';
+import CharacterSkillsPanel from './character-skills-panel.jsx';
 
 /**
  * Character builder component
@@ -22,11 +23,16 @@ export default class CharacterBuilder extends React.Component {
 		 * @private
 		 */
 		this.state = {
-			activeNode: '',
-			pickedNodes: this.props.initialPickedNodes
+			activeSkill: {
+				id: '',
+				upgrades: []
+			},
+			pickedNodes: this.props.initialPickedNodes,
+			nodeData: props.initialNodeData,
+			linkData: props.initialLinkData
 		};
 
-		this.inspectNode = this.inspectNode.bind(this);
+		this.inspectSkill = this.inspectSkill.bind(this);
 		this.uninspect = this.uninspect.bind(this);
 		this.selectNode = this.selectNode.bind(this);
 	}
@@ -36,42 +42,70 @@ export default class CharacterBuilder extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
+		var skillTooltip = null;
+		if (this.state.activeSkill.id !== '') {
+			skillTooltip = (
+				<SkillTooltip
+					skill = {this.state.activeSkill}
+				></SkillTooltip>
+			);
+		}
+
 		return (
 			<div className="row">
 				<Toile
-					initialNodeData = {this.props.nodeData}
-					initialLinkData = {this.props.linkData}
+					initialNodeData = {this.state.nodeData}
+					initialLinkData = {this.state.linkData}
 					pickedNodes = {this.state.pickedNodes} 
 					startNode = {this.props.startNode}
-					activeNode = {this.state.activeNode}
-					onNodeMouseOver = {this.inspectNode}
+					onNodeMouseOver = {this.inspectSkill}
 					onNodeMouseOut = {this.uninspect}
 					onSelectNode = {this.selectNode}
 				></Toile>
-				<DetailsPanel
-					id = {this.state.activeNode}
-				></DetailsPanel>
+				<CharacterSkillsPanel
+					nodes = {this.state.pickedNodes}
+					activeSkill = {this.state.activeSkill}
+					onSelectSkill = {this.inspectSkill}
+					onUnselectSkill = {this.uninspect}
+				></CharacterSkillsPanel>
+				
+				{skillTooltip}
 			</div>
 		);	
 	}
 
 	/**
-	 * Inspect a node and reveal its details
-	 *
-	 * @param {String} id The node ID
+	 * @override
 	 */
-	inspectNode(id) {
+	componentDidMount() {
+		jQuery.get(appLocals.apiTerraPath + 'skill/graph-data', function(result) {
+			this.setState({
+				nodeData: result.nodes,
+				linkData: result.links
+			});
+		}.bind(this));
+	}
+
+	/**
+	 * Inspect a skill and reveal its details
+	 *
+	 * @param {Object} skill The skill object, containing an `id` string and an `upgrades` array of string ids
+	 */
+	inspectSkill(skill) {
 		this.setState({
-			activeNode: id
+			activeSkill: skill
 		});
 	}
 
 	/**
-	 * Stop inspecting nodes
+	 * Stop inspecting skills
 	 */
 	uninspect() {
 		this.setState({
-			activeNode: ''
+			activeSkill: {
+				id: '',
+				upgrades: []
+			}
 		});
 	}
 
@@ -101,7 +135,7 @@ export default class CharacterBuilder extends React.Component {
  * @type {Object}
  */
 CharacterBuilder.defaultProps = {
-	nodeData: [
+	initialNodeData: [
 		{
 			id: '1',
 			type: 'normal',
@@ -131,14 +165,21 @@ CharacterBuilder.defaultProps = {
 			type: 'upgrade',
 			x: 500,
 			y: 200
+		},
+		{
+			id: '4-2',
+			type: 'upgrade',
+			x: 550,
+			y: 200
 		}
 	],
-	linkData: [
+	initialLinkData: [
 		['1', '2'],
 		['2', '3'],
 		['1', '3'],
 		['2', '4'],
-		['4', '4-1']
+		['4', '4-1'],
+		['4', '4-2']
 	],
 	initialPickedNodes: [],
 	startNode: '1'

@@ -6,7 +6,9 @@ namespace terraarcana {
 
 		/**
 		 * Represents the Skill CPT, where character skills can be added to the
-		 * game database
+		 * game database.
+		 * NOTE: Skill upgrade IDs are one-indexed! This means the second upgrade 
+		 * to a skill has id XX-2, and not XX-1.
 		 */
 		class Skill extends CPT {
 
@@ -110,29 +112,100 @@ namespace terraarcana {
 			 * @inheritdoc
 			 */
 			public function register_rest_data() {
-				register_rest_route(API_PREFIX . '/v1', '/metadata/skill', array(
+				register_rest_route(API_PREFIX . '/v1', '/skill/graph-data', array(
 					'methods' => 'GET',
-					'callback' => array($this, 'custom_field_metadata')
+					'callback' => array($this, 'graph_data')
 				));
 			}
 
 			/**
-			 * Return all custom field metadata related to skills
+			 * Return all skill graph data
 			 * 
 			 * @param WP_REST_Request $request The current request
-			 * @return array The metadata
+			 * @return array The graph data
 			 */
-			public function custom_field_metadata(\WP_REST_Request $request) {
-				$result = array_merge(
-					acf_get_fields_by_id(13), 
-					acf_get_fields_by_id(82)
+			public function graph_data(\WP_REST_Request $request) {
+				$result = array(
+					'nodes' => array(),
+					'links' => array()
 				);
+				
+				$skills = get_posts(array(
+					'post_type' => 'skill',
+					'posts_per_page' => -1
+				));
 
-				if (empty($result)) {
+				// Exit early if no skills are found
+				if (empty($skills)) {
 					return new \WP_Error('terraarcana_no_field_data', 'Aucun champ trouvé', array('status' => 404));
 				}
 
+				foreach($skills as $skill) {
+					$skillGraphData = get_field('field_566f2d31054d9', $skill->ID);
+
+					// Add the skill to the graph data
+					array_push($result['nodes'], array(
+						'id' => (string)$skill->ID,
+						'type' => 'skill',
+						'x' => intval($skillGraphData[0]['x']),
+						'y' => intval($skillGraphData[0]['y'])
+					));
+
+					// Add links to the skill to the graph data
+					if ($skillGraphData[0]['links']) {
+						foreach ($skillGraphData[0]['links'] as $link) {
+							$this->push_unique_link($result['links'], (string)$skill->ID, $link['id']);
+						}
+					}
+
+					// Add any upgrades to the graph data
+					$skillUpgrades = get_field('field_566f2c49054d1', $skill->ID);
+
+					if ($skillUpgrades) {
+						for ($i = 0; $i < count($skillUpgrades); $i++) {
+							$upgrade = $skillUpgrades[$i];
+							$upgradeID = (string)$skill->ID . '-' . (string)($i+1); // Ensure one-indexation of skill upgrades
+
+							array_push($result['nodes'], array(
+								'id' => $upgradeID,
+								'type' => 'upgrade',
+								'x' => intval($upgrade['graph-data'][0]['x']),
+								'y' => intval($upgrade['graph-data'][0]['y'])
+							));
+
+							// Add any links from the upgrades to the graph data
+							if ($upgrade['graph-data'][0]['links']) {
+								foreach ($upgrade['graph-data'][0]['links'] as $link) {
+									$this->push_unique_link($result['links'], $upgradeID, $link['id']);
+								}
+							}
+						}
+					}
+				}
+
 				return $result;
+			}
+
+			/**
+			 * Adds a skill link to a link array, ensuring there are no duplicates.
+			 * 
+			 * @param &array $linkArray The link array containing all current links
+			 * @param string $from The first link element
+			 * @param string $to The second link element
+			 * @return array The new link array
+			 */
+			private function push_unique_link(array &$linkArray, $from, $to) {
+				foreach ($linkArray as $link) {
+					// If we find a duplicate, exit eraly before pushing the new link
+					if (($link[0] == $from && $link[1] == $to) || 
+						($link[0] == $to && $link[1] == $from)) {
+						return $linkArray;
+					}
+				}
+
+				// Push the new link as they were no duplicates
+				array_push($linkArray, array($from, $to));
+				return $linkArray;
 			}
 		}
 	}

@@ -1,0 +1,26 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
+
+.toile-editor-skill-tooltip {
+	@include make-sm-column(12);
+	@include make-lg-column(4);
+
+	.upgrade-panel {
+		margin-bottom: 0;
+	}
+
+	@media screen and (min-width: $screen-lg-min) {
+		margin-top: 0;
+	}
+}
+
+.skill-details-table {
+	td:first-child {
+		$cell-color: darkgrey;
+
+		background-color: $cell-color;
+		border-color: darken($cell-color, 10%);
+		border-right-color: $cell-color;
+		color: white;
+	}
+}

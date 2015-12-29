@@ -26,7 +26,7 @@
             "default_value": {
                 "instant": "instant"
             },
-            "allow_null": 0,
+            "allow_null": 1,
             "multiple": 0,
             "ui": 1,
             "ajax": 0,
@@ -178,7 +178,7 @@
                                 "sang": "Sang"
                             },
                             "default_value": [],
-                            "allow_null": 0,
+                            "allow_null": 1,
                             "multiple": 0,
                             "ui": 1,
                             "ajax": 0,
@@ -192,7 +192,7 @@
         },
         {
             "key": "field_56705fcc6bc59",
-            "label": "Utilisations limit\u00e9es",
+            "label": "Utilisations",
             "name": "uses",
             "type": "repeater",
             "instructions": "",
@@ -286,9 +286,9 @@
                         "period": "P\u00e9riode"
                     },
                     "default_value": [],
-                    "allow_null": 0,
+                    "allow_null": 1,
                     "multiple": 0,
-                    "ui": 0,
+                    "ui": 1,
                     "ajax": 0,
                     "placeholder": "",
                     "disabled": 0,
@@ -302,7 +302,7 @@
             "name": "cast",
             "type": "select",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": [
                 [
                     {
@@ -355,7 +355,7 @@
                 "XL": "10 minutes"
             },
             "default_value": [],
-            "allow_null": 0,
+            "allow_null": 1,
             "multiple": 0,
             "ui": 1,
             "ajax": 0,
@@ -369,7 +369,7 @@
             "name": "duration",
             "type": "select",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": [
                 [
                     {
@@ -416,7 +416,7 @@
                 "C": "Combat"
             },
             "default_value": [],
-            "allow_null": 0,
+            "allow_null": 1,
             "multiple": 0,
             "ui": 1,
             "ajax": 0,
@@ -430,7 +430,7 @@
             "name": "range",
             "type": "select",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": [
                 [
                     {
@@ -474,7 +474,7 @@
                 "V": "Voix"
             },
             "default_value": [],
-            "allow_null": 0,
+            "allow_null": 1,
             "multiple": 0,
             "ui": 1,
             "ajax": 0,
@@ -510,7 +510,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": 50,
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -569,7 +569,7 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": 50,
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -621,7 +621,7 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": 50,
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -673,7 +673,66 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": 49,
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "niveaux",
+                    "min": 0,
+                    "max": "",
+                    "step": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_5678b8c310452",
+                    "label": "Utilisations",
+                    "name": "uses",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "instant"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "self-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "ally-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "item-buff"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_566f1505b9255",
+                                "operator": "==",
+                                "value": "form"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -707,5 +766,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1450216115
+    "modified": 1450854439
 }
