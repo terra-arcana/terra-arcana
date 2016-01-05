@@ -2,7 +2,7 @@ import React from 'react';
 
 import CharacterSkillsPanelSkillElement from './character-skills-panel-skill-element.jsx';
 
-require('../../styles/toile/character-skills-panel.scss');
+require('../../styles/zodiac/character-skills-panel.scss');
 
 /**
  * A character skills panel displays details about a character and all her 
@@ -92,7 +92,7 @@ export default class CharacterSkillsPanel extends React.Component {
 		}
 
 		return (
-			<div className='toile-editor-character-skills-panel'>
+			<div className='skill-graph-editor-character-skills-panel'>
 				<div className='panel panel-default'>
 					<div className='panel-heading'>
 						<h2 className='panel-title'>

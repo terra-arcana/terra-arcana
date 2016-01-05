@@ -4,7 +4,7 @@ import Node from './node.jsx';
 
 /**
  * An UpgradeNode is a canvas element representing an upgrade of a 
- * single {@link SkillNode} on a {@link Toile}. An UpgradeNode should always have 
+ * single {@link SkillNode} on a {@link SkillGraph}. An UpgradeNode should always have 
  * a single link, either to its parent SkillNode or to another UpgradeNode related 
  * to the same SkillNode.
  *

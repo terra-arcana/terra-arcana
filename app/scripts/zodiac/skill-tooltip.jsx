@@ -1,6 +1,6 @@
 import React from 'react';
 
-require('../../styles/toile/skill-tooltip.scss');
+require('../../styles/zodiac/skill-tooltip.scss');
 
 /**
  * Details panel component
@@ -108,7 +108,7 @@ export default class SkillTooltip extends React.Component {
 				null;
 
 			return (
-				<div className='toile-editor-skill-tooltip'>
+				<div className='skill-graph-editor-skill-tooltip'>
 					{this.props.skill.upgrades.map(function(upgrade) {
 						return (
 							<div className='panel panel-info upgrade-panel'>
@@ -139,7 +139,7 @@ export default class SkillTooltip extends React.Component {
 			);
 		} else {
 			return (
-				<div className='toile-editor-skill-tooltip'>
+				<div className='skill-graph-editor-skill-tooltip'>
 					<div className='panel panel-default'>
 						<div className='panel-heading'>
 							<h2 className='panel-title'>Chargement...</h2>

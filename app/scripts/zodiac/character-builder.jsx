@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Toile from './toile.jsx';
+import SkillGraph from './skill-graph.jsx';
 import SkillTooltip from './skill-tooltip.jsx';
 import CharacterSkillsPanel from './character-skills-panel.jsx';
 
@@ -53,7 +53,7 @@ export default class CharacterBuilder extends React.Component {
 
 		return (
 			<div className="row">
-				<Toile
+				<SkillGraph
 					initialNodeData = {this.state.nodeData}
 					initialLinkData = {this.state.linkData}
 					pickedNodes = {this.state.pickedNodes} 
@@ -61,7 +61,7 @@ export default class CharacterBuilder extends React.Component {
 					onNodeMouseOver = {this.inspectSkill}
 					onNodeMouseOut = {this.uninspect}
 					onSelectNode = {this.selectNode}
-				></Toile>
+				></SkillGraph>
 				<CharacterSkillsPanel
 					nodes = {this.state.pickedNodes}
 					activeSkill = {this.state.activeSkill}

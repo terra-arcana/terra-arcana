@@ -6,14 +6,14 @@ import SkillNode from './skill-node.jsx';
 import UpgradeNode from './upgrade-node.jsx';
 import NodeLink from './node-link.jsx';
 
-require('../../styles/toile/toile.scss');
+require('../../styles/zodiac/skill-graph.scss');
 
 /**
  * Skill graph component
  *
  * @class
  */
-export default class Toile extends React.Component {
+export default class SkillGraph extends React.Component {
 
 	/**
 	 * @constructor
@@ -56,7 +56,7 @@ export default class Toile extends React.Component {
 		// the same size as the actual rendering of the stage after resizing, so
 		// putting big values seems to work as intended.
 		return (
-			<div className="toile-editor col-lg-8 col-sm-12">
+			<div className="skill-graph-editor col-lg-8 col-sm-12">
 				<ReactKonva.Stage width={2000} height={2000} ref={(ref) => this.stage = ref} draggable="true">
 					<ReactKonva.Layer ref={(ref) => this.linkLayer = ref}>
 						{this.state.linkData.map(function(link) {
@@ -210,8 +210,8 @@ export default class Toile extends React.Component {
 		var root = React.findDOMNode(this),
 			editorStyle = window.getComputedStyle(root),
 			paddings = {
-				left: Toile.pxStringToNumber(editorStyle.paddingLeft),
-				right: Toile.pxStringToNumber(editorStyle.paddingRight)
+				left: SkillGraph.pxStringToNumber(editorStyle.paddingLeft),
+				right: SkillGraph.pxStringToNumber(editorStyle.paddingRight)
 			},
 			width, height;
 
@@ -417,7 +417,7 @@ export default class Toile extends React.Component {
  * 
  * @type {Object}
  */
-Toile.defaultProps = {
+SkillGraph.defaultProps = {
 	initialNodeData: [],
 	initialLinkData: [],
 	pickedNodes: [],
