@@ -78,7 +78,7 @@ export default class CharacterBuilder extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		jQuery.get(appLocals.apiTerraPath + 'skill/graph-data', function(result) {
+		jQuery.get(appLocals.api.terra + 'skill/graph-data', function(result) {
 			this.setState({
 				nodeData: result.nodes,
 				linkData: result.links

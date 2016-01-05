@@ -10,8 +10,7 @@ namespace terraarcana {
 	require_once(ROOT . '/src/cpt/skill.class.php');
 
 	/**
-	 * @name DataManager
-	 * @desc Handles the creation and maintenance of the data layer
+	 * Handles the creation and maintenance of the data layer
 	 */
 	class DataManager {
 
@@ -31,8 +30,7 @@ namespace terraarcana {
 		private function __clone() {}
 
 		/**
-		 * @name init
-		 * @desc Run on WP init hook
+		 * Initializes the manager. Runs on WP init hook
 		 */
 		public function init() {
 			// Run init() on all CPTs

@@ -29,7 +29,7 @@ export default class Codex extends React.Component {
 	 * @override
  	 */
 	componentDidMount() {
-		jQuery.get(appLocals.apiCorePath + 'codex', function(result) {
+		jQuery.get(appLocals.api.core + 'codex', function(result) {
 			this.setState({
 				codexArticles: result
 			});

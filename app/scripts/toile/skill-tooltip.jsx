@@ -29,7 +29,7 @@ export default class SkillTooltip extends React.Component {
 	 * @override
 	 */
 	componentWillMount() {
-		jQuery.get(appLocals.apiCorePath + 'skill/' + this.props.skill.id, function(result) {
+		jQuery.get(appLocals.api.core + 'skill/' + this.props.skill.id, function(result) {
 			this.setState({
 				skill: result
 			});
