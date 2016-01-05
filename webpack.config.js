@@ -60,10 +60,10 @@ module.exports = [
 	},
 	
 	{
-		context: __dirname + '/src/views',
+		context: __dirname + '/src/views/zodiac',
 
 		entry: {
-			javascript: './zodiac.jsx',
+			javascript: './zodiac-admin-app.jsx',
 			html: './zodiac.html'
 		},
 

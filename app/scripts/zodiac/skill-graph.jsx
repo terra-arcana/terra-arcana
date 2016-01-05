@@ -83,6 +83,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										selected = {(this.props.startNode === node.id || this.props.pickedNodes.indexOf(node.id) !== -1)}
+										draggable ={this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
 										onMouseOver = {this.props.onNodeMouseOver}
@@ -101,6 +102,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										selected = {(this.props.startNode === node.id || this.props.pickedNodes.indexOf(node.id) !== -1)}
+										draggable = {this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
 										onMouseOver = {this.props.onNodeMouseOver}
@@ -119,6 +121,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
+										draggable = {this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
 										onMouseOver = {this.props.onNodeMouseOver}
@@ -379,8 +382,9 @@ export default class SkillGraph extends React.Component {
 			canBeToggled = ((!isPicked && this.isNodePickable(id)) ||
 							(isPicked && this.isNodeUnpickable(id)));
 	
-		// Only go through click processing if node can be toggled
-		if (!this.props.contiguousSelection || (canBeToggled && this.props.onSelectNode)) {
+		// Only go through click processing if node can be toggled or if 
+		// contiguous selection is disabled
+		if (!(this.props.contiguousSelection) || (canBeToggled && this.props.onSelectNode)) {
 			this.props.onSelectNode(id);
 		}
 	}
@@ -422,5 +426,6 @@ SkillGraph.defaultProps = {
 	initialLinkData: [],
 	pickedNodes: [],
 	startNode: '',
-	contiguousSelection: true
+	contiguousSelection: true,
+	canDragNodes: false
 };

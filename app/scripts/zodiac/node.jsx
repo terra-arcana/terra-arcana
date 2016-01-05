@@ -18,6 +18,7 @@ export default class Node extends React.Component {
 		this.onClick = this.onClick.bind(this);
 		this.onDragMove = this.onDragMove.bind(this);
 		this.onMouseOver = this.onMouseOver.bind(this);
+		this.onMouseOut = this.onMouseOut.bind(this);
 	}
 
 	/**
@@ -35,12 +36,12 @@ export default class Node extends React.Component {
 				radius = {this.props.radius}
 				fill = {this.props.fill}
 				stroke = {stroke}
-				draggable = "true"
-				listening = "true"
+				draggable = {this.props.draggable}
+				listening = {true}
 				onClick = {this.onClick}
 				onDragMove = {this.onDragMove}
 				onMouseOver = {this.onMouseOver}
-				onMouseOut = {this.props.onMouseOut}
+				onMouseOut = {this.onMouseOut}
 			></ReactKonva.Circle>
 		);
 	}
@@ -79,6 +80,7 @@ export default class Node extends React.Component {
 
 	/**
 	 * Handle mouse click events
+	 * @private
 	 */
 	onClick() {
 		if (this.props.onClick) {
@@ -88,6 +90,7 @@ export default class Node extends React.Component {
 
 	/**
 	 * Handle mouse over events
+	 * @private
 	 */
 	onMouseOver() {
 		if (this.props.onMouseOver) {
@@ -106,7 +109,18 @@ export default class Node extends React.Component {
 	}
 
 	/**
+	 * Handle mouse out events
+	 * @private
+	 */
+	onMouseOut() {
+		if (this.props.onMouseOut) {
+			this.props.onMouseOut();
+		}
+	}
+
+	/**
 	 * Handle drag move events
+	 * @private
 	 */
 	onDragMove() {
 		if (this.props.onDragMove) {
@@ -126,5 +140,6 @@ Node.defaultProps = {
 	y: 100,
 	radius: 15,
 	fill: 'green',
+	draggable: false,
 	selected: false
 };

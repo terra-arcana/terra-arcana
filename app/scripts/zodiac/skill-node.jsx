@@ -23,6 +23,7 @@ export default class SkillNode extends React.Component {
 				radius = {this.props.radius}
 				fill = "red"
 				selected = {this.props.selected}
+				draggable = {this.props.draggable}
 				onClick = {this.props.onClick}
 				onDragMove = {this.props.onDragMove}
 				onMouseOver = {this.props.onMouseOver}

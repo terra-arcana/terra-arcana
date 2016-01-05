@@ -26,6 +26,7 @@ export default class UpgradeNode extends React.Component {
 				radius = {this.props.radius}
 				fill = "purple"
 				selected = {this.props.selected}
+				draggable = {this.props.draggable}
 				onClick = {this.props.onClick}
 				onDragMove = {this.props.onDragMove}
 				onMouseOver = {this.props.onMouseOver}

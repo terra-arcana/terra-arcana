@@ -1,0 +1,18 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
+
+.skill-graph-editor-control-panel {
+	@include make-sm-column(12);
+	@include make-lg-column(4);
+
+	margin-bottom: 1em;
+
+	.skill-graph-editor-control-panel-title {
+		/* Account for button in panel heading */
+		margin-top: 0.4em;
+	}
+}
+
+.skill-graph-editor-node-details {
+	margin-top: 1em;
+}

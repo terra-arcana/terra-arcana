@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "konva": "^0.9.5",
+    "lodash": "^4.0.0",
     "react": "~0.13.3",
     "react-konva": "^0.4.2",
     "react-router": "^0.13.3"

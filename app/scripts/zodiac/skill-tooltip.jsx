@@ -23,13 +23,35 @@ export default class SkillTooltip extends React.Component {
 		this.state = {
 			skill: {}
 		};
+
+		this.fetchSkillInfo = this.fetchSkillInfo.bind(this);
 	}
 
 	/**
 	 * @override
 	 */
 	componentWillMount() {
-		jQuery.get(appLocals.api.core + 'skill/' + this.props.skill.id, function(result) {
+		this.fetchSkillInfo(this.props.skill.id);
+	}
+
+	/**
+	 * @override
+	 */
+	componentWillReceiveProps(nextProps) {
+		// Empty state upon receiving new props to prevent desync
+		this.setState({
+			skill: {}
+		});
+		this.fetchSkillInfo(nextProps.skill.id);
+	}
+
+	/**
+	 * Retrieve detailed skill info from the API and store it in component state
+	 * @param {Number} skillID The ID of the skill to retrieve
+	 * @private
+	 */
+	fetchSkillInfo(skillID) {
+		jQuery.get(appLocals.api.core + 'skill/' + skillID, function(result) {
 			this.setState({
 				skill: result
 			});
@@ -98,11 +120,13 @@ export default class SkillTooltip extends React.Component {
 				skillInfoTable = (costRow || castRow || durationRow || usesRow || rangeRow) ? 
 				(
 					<table className='skill-details-table table table-bordered table-condensed'>
-						{costRow}
-						{usesRow}
-						{castRow}
-						{durationRow}
-						{rangeRow}
+						<tbody>
+							{costRow}
+							{usesRow}
+							{castRow}
+							{durationRow}
+							{rangeRow}
+						</tbody>
 					</table>
 				) :
 				null;

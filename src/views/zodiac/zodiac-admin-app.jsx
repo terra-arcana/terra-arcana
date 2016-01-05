@@ -1,13 +1,13 @@
 import React from 'react';
 
-import CharacterBuilder from '../../app/scripts/zodiac/character-builder.jsx';
+import ZodiacEditor from './zodiac-editor.jsx';
 
 /**
  * Admin zodiac edition wrapper
  *
  * @class
  */
-class ZodiacAdminApp extends React.Component {
+export default class ZodiacAdminApp extends React.Component {
 	
 	/**
 	 * @override
@@ -15,7 +15,7 @@ class ZodiacAdminApp extends React.Component {
 	 */
 	render() {
 		return (
-			<CharacterBuilder/>
+			<ZodiacEditor/>
 		);
 	}
 }
