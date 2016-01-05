@@ -3,6 +3,7 @@
 namespace terraarcana {
 	require_once(ROOT . '/src/managers/data.manager.php');
 	require_once(ROOT . '/src/managers/script.manager.php');
+	require_once(ROOT . '/src/controllers/admin.controller.php');
 
 	require_once(ROOT . '/vendor/tgmpa/tgm-plugin-activation/class-tgm-plugin-activation.php');
 
@@ -14,10 +15,12 @@ namespace terraarcana {
 		private static $_instance;
 		private $_dataManager;
 		private $_scriptManager;
+		private $_adminController;
 
 		public function __construct() {
 			$this->_dataManager = new DataManager();
 			$this->_scriptManager = new ScriptManager();
+			$this->_adminController = new AdminController();
 
 			add_action('init', array($this, 'init'));
 			add_action('tgmpa_register', array($this, 'register_plugin_dependencies'));
@@ -41,6 +44,7 @@ namespace terraarcana {
 		public function init() {
 			$this->_dataManager->init();
 			$this->_scriptManager->init();
+			$this->_adminController->init();
 		}
 
 		/**
