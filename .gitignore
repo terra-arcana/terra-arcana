@@ -4,3 +4,6 @@ docs
 node_modules
 
 /vendor/
+
+### Vagrant ###
+.vagrant/
