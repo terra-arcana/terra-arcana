@@ -11,7 +11,6 @@ Vagrant.configure(2) do |config|
       "--memory", "256",
       "--natpf1", 'guesthttp,tcp,127.0.0.1,8080,,80',
       "--natpf1", 'guesthttps,tcp,127.0.0.1,4433,,443',
-      #"--natpf3", 'guestssh,tcp,,2222,,22',
     ]
   end
 end
