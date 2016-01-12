@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CharacterBuilder from '../../app/scripts/toile/character-builder.jsx';
+import CharacterBuilder from '../../app/scripts/zodiac/character-builder.jsx';
 
 /**
  * Admin zodiac edition wrapper

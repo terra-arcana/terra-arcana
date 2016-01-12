@@ -52,12 +52,13 @@ export default class CharacterBuilder extends React.Component {
 		}
 
 		return (
-			<div className="row">
+			<div className='row'>
 				<SkillGraph
 					initialNodeData = {this.state.nodeData}
 					initialLinkData = {this.state.linkData}
 					pickedNodes = {this.state.pickedNodes} 
 					startNode = {this.props.startNode}
+					contiguousSelection = 'true'
 					onNodeMouseOver = {this.inspectSkill}
 					onNodeMouseOut = {this.uninspect}
 					onSelectNode = {this.selectNode}

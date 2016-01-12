@@ -380,7 +380,7 @@ export default class SkillGraph extends React.Component {
 							(isPicked && this.isNodeUnpickable(id)));
 	
 		// Only go through click processing if node can be toggled
-		if (canBeToggled && this.props.onSelectNode) {
+		if (!this.props.contiguousSelection || (canBeToggled && this.props.onSelectNode)) {
 			this.props.onSelectNode(id);
 		}
 	}
@@ -421,5 +421,6 @@ SkillGraph.defaultProps = {
 	initialNodeData: [],
 	initialLinkData: [],
 	pickedNodes: [],
-	startNode: ''
+	startNode: '',
+	contiguousSelection: true
 };
