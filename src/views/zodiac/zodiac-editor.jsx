@@ -33,11 +33,14 @@ export default class ZodiacEditor extends React.Component {
 				y: ''
 			},
 			nodeData: [],
-			linkData: []
+			linkData: [],
+			prompt: null
 		};
 
 		this.uninspect = this.uninspect.bind(this);
 		this.onNodeClick = this.onNodeClick.bind(this);
+		this.onPromptClose = this.onPromptClose.bind(this);
+		this.saveZodiac = this.saveZodiac.bind(this);
 	}
 
 	/**
@@ -60,6 +63,7 @@ export default class ZodiacEditor extends React.Component {
 		var skillTooltip = null,
 			activeNodeData = null,
 			nodeDetails = null,
+			savePrompt = null,
 			rawNodeID = [this.state.activeSkill.id].concat(this.state.activeSkill.upgrades).join('-');
 
 		if (this.state.activeSkill.id !== '') {
@@ -82,22 +86,37 @@ export default class ZodiacEditor extends React.Component {
 			);
 		}
 
+		if (this.state.prompt !== null) {
+			savePrompt = (
+				<div className={'col-xs-12 col-lg-4 alert ' + this.state.prompt.type} role='alert'>
+					<button type='button' className='close' aria-label='Close' onClick={this.onPromptClose}>
+						<span aria-hidden='true'>&times;</span>
+					</button>
+					{this.state.prompt.message}
+				</div>
+			);
+		}
+
 		return (
 			<div className="row">
 				<SkillGraph 
+					ref = {(ref) => this.graph = ref}
 					initialNodeData = {this.state.nodeData}
 					initialLinkData = {this.state.linkData}
 					pickedNodes = {[rawNodeID]}
 					canDragNodes = {true}
 					contiguousSelection = {false}
-					onSelectNode = {this.onNodeClick}
+					onNodeSelect = {this.onNodeClick}
+					onNodeDrag = {this.onNodeDrag}
 				></SkillGraph>
+
+				{savePrompt}
 
 				<div className='skill-graph-editor-control-panel'>
 					<div className='panel panel-primary'>
 						<div className='panel-heading clearfix'>
 							<h2 className='skill-graph-editor-control-panel-title panel-title pull-left'>Panneau de contrôle</h2>
-							<button type='button' className='btn btn-default btn-sm pull-right'>Sauvegarder</button>
+							<button type='button' className='btn btn-default btn-sm pull-right' onClick={this.saveZodiac}>Sauvegarder</button>
 						</div>
 						<div className='panel-body'>
 							<button type='button' className='btn btn-default'>Ajouter un noeud d'énergie</button>
@@ -156,6 +175,50 @@ export default class ZodiacEditor extends React.Component {
 				activeSkill: nodeObj
 			});
 		}
+	}
+
+	/**
+	 * Handle prompt close
+	 */
+	onPromptClose() {
+		this.setState({
+			prompt: null
+		});
+	}
+
+	/**
+	 * Save to the API the new state of the zodiac
+	 */
+	saveZodiac() {
+		var data = {
+			nodes: this.graph.getNodeData(),
+			links: this.graph.getLinkData()
+		};
+
+		this.setState({
+			prompt: {
+				type: 'alert-info',
+				message: 'Sauvegarde en cours...'
+			}
+		});
+
+		jQuery.post(appLocals.api.terra + 'skill/graph-data', data, function(result, status) {
+			if (status === 'success') {
+				this.setState({
+					prompt: {
+						type: 'alert-success',
+						message: result
+					}
+				});
+			} else {
+				this.setState({
+					prompt: {
+						type: 'alert-danger',
+						message: result
+					}
+				});
+			}
+		}.bind(this));
 	}
 
 	/**

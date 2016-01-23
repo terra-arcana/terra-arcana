@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactKonva from 'react-konva';
+import Lodash from 'lodash';
 
 import Node from './node.jsx';
 import SkillNode from './skill-node.jsx';
@@ -375,8 +376,8 @@ export default class SkillGraph extends React.Component {
 	
 		// Only go through click processing if node can be toggled or if 
 		// contiguous selection is disabled
-		if (!(this.props.contiguousSelection) || (canBeToggled && this.props.onSelectNode)) {
-			this.props.onSelectNode(id);
+		if (!(this.props.contiguousSelection) || (canBeToggled && this.props.onNodeSelect)) {
+			this.props.onNodeSelect(id);
 		}
 	}
 
@@ -403,6 +404,22 @@ export default class SkillGraph extends React.Component {
 		this.setState({
 			nodeData: newNodeData
 		});
+	}
+
+	/**
+	 * Get current graph node data
+	 * @return {Object}
+	 */
+	getNodeData() {
+		return Lodash.cloneDeep(this.state.nodeData);
+	}
+
+	/**
+	 * Get current graph link data
+	 * @return {Object}
+	 */
+	getLinkData() {
+		return Lodash.cloneDeep(this.state.linkData);
 	}
 }
 

@@ -60,7 +60,7 @@ export default class CharacterBuilder extends React.Component {
 					contiguousSelection = 'true'
 					onNodeMouseOver = {this.inspectSkill}
 					onNodeMouseOut = {this.uninspect}
-					onSelectNode = {this.selectNode}
+					onNodeSelect = {this.selectNode}
 				></SkillGraph>
 				<CharacterSkillsPanel
 					nodes = {this.state.pickedNodes}

@@ -113,8 +113,15 @@ namespace terraarcana {
 			 */
 			public function register_rest_data() {
 				register_rest_route(API_PREFIX . '/v1', '/skill/graph-data', array(
-					'methods' => 'GET',
-					'callback' => array($this, 'graph_data')
+					array(
+						'methods' => \WP_REST_Server::READABLE,
+						'callback' => array($this, 'get_graph_data')
+					),
+					array(
+						'methods' => \WP_REST_Server::EDITABLE,
+						'callback' => array($this, 'update_graph_data'),
+						'args' => $this->get_endpoint_args_for_item_schema(false)
+					)
 				));
 			}
 
@@ -123,7 +130,7 @@ namespace terraarcana {
 			 * @param WP_REST_Request $request The current request
 			 * @return array The graph data
 			 */
-			public function graph_data(\WP_REST_Request $request) {
+			public function get_graph_data(\WP_REST_Request $request) {
 				$result = array(
 					'nodes' => array(),
 					'links' => array()
@@ -183,6 +190,33 @@ namespace terraarcana {
 				}
 
 				return $result;
+			}
+
+			/**
+			 * Save new graph data to WordPress
+			 * @param WP_REST_Request $request The request containing the updated data
+			 * @return WP_Error|WP_REST_Request
+			 */
+			public function update_graph_data(\WP_REST_Request $request) {
+				$params = $request->get_params();
+
+				foreach($params['nodes'] as $node) {
+					// Skill nodes
+					if ($node['type'] == 'skill') {
+						update_sub_field(array($this->fields['graph-data']['key'], 1, 'x'), $node['x'], $node['id']);
+						update_sub_field(array($this->fields['graph-data']['key'], 1, 'y'), $node['y'], $node['id']);
+					}
+					// Upgrade nodes
+					else if ($node['type'] == 'upgrade') {
+						$idFragments = explode('-', $node['id']);
+						update_sub_field(array($this->fields['upgrades']['key'], $idFragments[1], 'graph-data', 1, 'x'), $node['x'], $idFragments[0]);
+						update_sub_field(array($this->fields['upgrades']['key'], $idFragments[1], 'graph-data', 1, 'y'), $node['y'], $idFragments[0]);
+					}
+				}
+
+				// TODO: Update link data
+				
+				return new \WP_REST_Response('Zodiaque sauvegardé avec succès!', 200);
 			}
 
 			/**
