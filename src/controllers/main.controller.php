@@ -38,7 +38,7 @@ namespace terraarcana {
 		private $_adminController;
 
 		public function __construct() {
-			$this->_dataController = new DataController();
+			$this->_dataController = DataController::getInstance();
 			$this->_scriptController = new ScriptController();
 			$this->_adminController = new AdminController();
 
