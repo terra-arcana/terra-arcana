@@ -4,7 +4,6 @@ require('../../styles/codex/codex.scss');
 
 /**
  * Codex archive component
- * 
  * @class
  */
 export default class Codex extends React.Component {

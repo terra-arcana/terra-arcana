@@ -120,7 +120,6 @@ namespace terraarcana {
 
 			/**
 			 * Return all skill graph data
-			 * 
 			 * @param WP_REST_Request $request The current request
 			 * @return array The graph data
 			 */
@@ -188,7 +187,6 @@ namespace terraarcana {
 
 			/**
 			 * Adds a skill link to a link array, ensuring there are no duplicates.
-			 * 
 			 * @param &array $linkArray The link array containing all current links
 			 * @param string $from The first link element
 			 * @param string $to The second link element

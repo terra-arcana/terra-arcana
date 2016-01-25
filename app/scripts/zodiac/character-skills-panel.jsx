@@ -7,7 +7,6 @@ require('../../styles/zodiac/character-skills-panel.scss');
 /**
  * A character skills panel displays details about a character and all her 
  * skills currently selected.
- *
  * @class
  */
 export default class CharacterSkillsPanel extends React.Component {
@@ -128,7 +127,6 @@ export default class CharacterSkillsPanel extends React.Component {
 
 	/**
 	 * Select a skill in the list and display its details
-	 *
 	 * @param {Object} info The skill info, with its id and selected upgrades
 	 */
 	onSelectSkill(info) {
@@ -146,7 +144,6 @@ export default class CharacterSkillsPanel extends React.Component {
 
 /**
  * Default props
- *
  * @type {Object}
  */
 CharacterSkillsPanel.defaultProps = {

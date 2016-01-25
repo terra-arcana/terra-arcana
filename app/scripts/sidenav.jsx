@@ -5,7 +5,6 @@ require('../styles/sidenav.scss');
 
 /**
  * Sidenav component
- *
  * @class
  */
 export default class Sidenav extends React.Component {

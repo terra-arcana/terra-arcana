@@ -5,13 +5,13 @@ namespace terraarcana {
 	/**
 	 * Handles the queuing of public scripts
 	 */
-	class ScriptManager {
+	class ScriptController {
 
 		public function __construct() {}
 		private function __clone() {}
 
 		/**
-		 * Initializes the manager. Runs on WP init hook.
+		 * Initializes the controller. Runs on WP init hook.
 		 */
 		public function init() {
 			add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));

@@ -3,7 +3,6 @@ import ReactKonva from 'react-konva';
 
 /**
  * Node component
- *
  * @class
  */
 export default class Node extends React.Component {
@@ -52,7 +51,6 @@ export default class Node extends React.Component {
 	componentWillMount() {
 		/**
 		 * The fatness of the stroke displayed on a selected node
-		 * 
 		 * @type {Number}
 		 */
 		this.SELECTED_STROKE = 5;
@@ -68,7 +66,6 @@ export default class Node extends React.Component {
 
 	/**
 	 * Return the position of the node
-	 *
 	 * @return {Object} The X and Y coordinates
 	 */
 	getPosition() {
@@ -131,7 +128,6 @@ export default class Node extends React.Component {
 
 /**
  * Default props
- * 
  * @type {Object}
  */
 Node.defaultProps = {

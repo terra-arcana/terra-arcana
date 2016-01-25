@@ -6,7 +6,6 @@ import CharacterSkillsPanel from './character-skills-panel.jsx';
 
 /**
  * Character builder component
- *
  * @class
  */
 export default class CharacterBuilder extends React.Component {
@@ -89,7 +88,6 @@ export default class CharacterBuilder extends React.Component {
 
 	/**
 	 * Inspect a skill and reveal its details
-	 *
 	 * @param {Object} skill The skill object, containing an `id` string and an `upgrades` array of string ids
 	 */
 	inspectSkill(skill) {
@@ -112,7 +110,6 @@ export default class CharacterBuilder extends React.Component {
 
 	/**
 	 * Select a node
-	 *
 	 * @param {String} id The picked node ID
 	 */
 	selectNode(id) {
@@ -132,7 +129,6 @@ export default class CharacterBuilder extends React.Component {
 
 /**
  * Default props
- * 
  * @type {Object}
  */
 CharacterBuilder.defaultProps = {

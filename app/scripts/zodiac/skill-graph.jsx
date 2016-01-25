@@ -10,7 +10,6 @@ require('../../styles/zodiac/skill-graph.scss');
 
 /**
  * Skill graph component
- *
  * @class
  */
 export default class SkillGraph extends React.Component {
@@ -38,7 +37,6 @@ export default class SkillGraph extends React.Component {
 
 	/**
 	 * Converts a string like "14px" to a number
-	 *
 	 * @param {String} str The string to convert
 	 * @return {Number} The number
 	 */
@@ -206,7 +204,6 @@ export default class SkillGraph extends React.Component {
 
 	/**
 	 * Get the desired size of the editor canvas
-	 *
 	 * @return {Object} The desired width and height of the editor canvas
 	 */
 	getEditorSize() {
@@ -234,7 +231,6 @@ export default class SkillGraph extends React.Component {
 
 	/**
 	 * Return the data of a particular node by ID
-	 *
 	 * @param {String} id The node ID
 	 * @return {Node|null} The node
 	 */
@@ -252,7 +248,6 @@ export default class SkillGraph extends React.Component {
 
 	/**
 	 * Return all nodes linked to a particular node
-	 *
 	 * @param {String} id The node ID
 	 * @return {Array<String>} The linked node IDs
 	 */
@@ -272,7 +267,6 @@ export default class SkillGraph extends React.Component {
 
 	/**
 	 * Determines whether or not a node can be picked
-	 * 
 	 * @param {String} id The node ID
 	 * @return {Boolean} This node is pickable
 	 */
@@ -292,7 +286,6 @@ export default class SkillGraph extends React.Component {
 	/**
 	 * Determines whether or not a node can be unpicked without leaving 
 	 * orphan nodes
-	 * 
 	 * @param {String} id The node ID
 	 * @return {Boolean} This node is unpickable
 	 */
@@ -323,7 +316,6 @@ export default class SkillGraph extends React.Component {
 	 * Checks to see if a source node is connected to the start node without 
 	 * passing by specific nodes. If there is no start node yet, this will 
 	 * always return false.
-	 * 
 	 * @param  {String} source The starting node
 	 * @param  {Array<String>} without The nodes to exclude in the search
 	 * @return {Boolean} The node has an alternate path to start
@@ -374,7 +366,6 @@ export default class SkillGraph extends React.Component {
 
 	/**
 	 * Handle node clicks
-	 * 
 	 * @param {String} id The node ID
 	 */
 	onNodeClick(id) {
@@ -391,7 +382,6 @@ export default class SkillGraph extends React.Component {
 
 	/**
 	 * Handle node drags
-	 *
 	 * @param {String} id The node ID
 	 * @param {Number} x The new X coordinate
 	 * @param {Number} y The new Y coordinate
@@ -418,7 +408,6 @@ export default class SkillGraph extends React.Component {
 
 /**
  * Default props
- * 
  * @type {Object}
  */
 SkillGraph.defaultProps = {

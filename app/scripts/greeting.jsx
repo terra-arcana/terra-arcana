@@ -2,7 +2,6 @@ import React from 'react';
 
 /**
  * Greeting component. Used for testing purposes.
- *
  * @class
  */
 export default class Greeting extends React.Component {

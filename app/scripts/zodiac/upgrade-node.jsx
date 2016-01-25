@@ -7,7 +7,6 @@ import Node from './node.jsx';
  * single {@link SkillNode} on a {@link SkillGraph}. An UpgradeNode should always have 
  * a single link, either to its parent SkillNode or to another UpgradeNode related 
  * to the same SkillNode.
- *
  * @class
  */
 export default class UpgradeNode extends React.Component {
@@ -38,7 +37,6 @@ export default class UpgradeNode extends React.Component {
 
 /**
  * Default props
- *
  * @type {Object}
  */
 UpgradeNode.defaultProps = {

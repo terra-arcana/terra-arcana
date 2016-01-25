@@ -4,7 +4,6 @@ import Node from './node.jsx';
 
 /**
  * A SkillNode is a canvas element representing a skill on a SkillGraph.
- *
  * @class
  */
 export default class SkillNode extends React.Component {
@@ -34,7 +33,6 @@ export default class SkillNode extends React.Component {
 
 	/**
 	 * Return the position of the node
-	 * 
 	 * @return {Object} The X and Y coordinates
 	 */
 	getPosition() {
@@ -44,7 +42,6 @@ export default class SkillNode extends React.Component {
 
 /**
  * Default props
- * 
  * @type {Object}
  */
 SkillNode.defaultProps = {

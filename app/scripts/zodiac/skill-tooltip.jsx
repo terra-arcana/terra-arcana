@@ -4,7 +4,6 @@ require('../../styles/zodiac/skill-tooltip.scss');
 
 /**
  * Details panel component
- *
  * @class
  */
 export default class SkillTooltip extends React.Component {
@@ -180,7 +179,6 @@ export default class SkillTooltip extends React.Component {
 
 /**
  * Default props
- * 
  * @type {Object}
  */
 SkillTooltip.defaultProps = {

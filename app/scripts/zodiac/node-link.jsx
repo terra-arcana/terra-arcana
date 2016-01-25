@@ -3,7 +3,6 @@ import ReactKonva from 'react-konva';
 
 /**
  * Node link component
- *
  * @class
  */
 export default class NodeLink extends React.Component {
@@ -33,7 +32,6 @@ export default class NodeLink extends React.Component {
 
 /**
  * Default props
- * 
  * @type {Object}
  */
 NodeLink.defaultProps = {

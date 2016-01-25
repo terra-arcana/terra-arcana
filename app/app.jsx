@@ -11,7 +11,6 @@ require('./styles/app.scss');
 
 /**
  * Main application wrapper
- *
  * @class
  */
 class App extends React.Component {

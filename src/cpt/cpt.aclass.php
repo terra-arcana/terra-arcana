@@ -54,7 +54,6 @@ namespace terraarcana {
 
 			/**
 			 * Get a custom field value. Callback from register_rest_field()
-			 *
 			 * @param array $object Details of current post.
 			 * @param string $field_name Name of field.
 			 * @param WP_REST_Request $request The current request
@@ -79,7 +78,6 @@ namespace terraarcana {
 			/**
 			 * Get a custom field value from a select field, appending the rendered value
 			 * as well as the literal value of the field. Callback from register_rest_field()
-			 *
 			 * @param array $object Details of current post.
 			 * @param string $field_name Name of field.
 			 * @param WP_REST_Request $request The current request
@@ -110,7 +108,6 @@ namespace terraarcana {
 			 * Get a custom field value from a repeater field, overriding the automatic fetching of any 
 			 * subfields specified into the `override` property of this field's entry. 
 			 * Callback from register_rest_field()
-			 *
 			 * @param array $object Details of current post.
 			 * @param string $field_name Name of field.
 			 * @param WP_REST_Request $request The current request

@@ -4,7 +4,6 @@ import ZodiacEditor from './zodiac-editor.jsx';
 
 /**
  * Admin zodiac edition wrapper
- *
  * @class
  */
 export default class ZodiacAdminApp extends React.Component {

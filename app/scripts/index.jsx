@@ -4,7 +4,6 @@ import Greeting from './greeting.jsx';
 
 /**
  * Index page component
- *
  * @class
  */
 export default class Index extends React.Component {

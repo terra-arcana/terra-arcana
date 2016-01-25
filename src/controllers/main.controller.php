@@ -1,8 +1,8 @@
 <?php
 
 namespace terraarcana {
-	require_once(ROOT . '/src/managers/data.manager.php');
-	require_once(ROOT . '/src/managers/script.manager.php');
+	require_once(ROOT . '/src/controllers/data.controller.php');
+	require_once(ROOT . '/src/controllers/script.controller.php');
 	require_once(ROOT . '/src/controllers/admin.controller.php');
 
 	require_once(ROOT . '/vendor/tgmpa/tgm-plugin-activation/class-tgm-plugin-activation.php');
@@ -13,13 +13,13 @@ namespace terraarcana {
 	class MainController {
 
 		private static $_instance;
-		private $_dataManager;
-		private $_scriptManager;
+		private $_dataController;
+		private $_scriptController;
 		private $_adminController;
 
 		public function __construct() {
-			$this->_dataManager = new DataManager();
-			$this->_scriptManager = new ScriptManager();
+			$this->_dataController = new DataController();
+			$this->_scriptController = new ScriptController();
 			$this->_adminController = new AdminController();
 
 			add_action('init', array($this, 'init'));
@@ -42,8 +42,8 @@ namespace terraarcana {
 		 * Initializes the controller. Called on init WP hook.
 		 */
 		public function init() {
-			$this->_dataManager->init();
-			$this->_scriptManager->init();
+			$this->_dataController->init();
+			$this->_scriptController->init();
 			$this->_adminController->init();
 		}
 

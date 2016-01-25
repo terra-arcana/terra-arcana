@@ -8,7 +8,6 @@ require('./zodiac-editor.scss');
 
 /**
  * Admin editor for the skill graph. Only displayed in WordPress backend.
- *
  * @class
  */
 export default class ZodiacEditor extends React.Component {

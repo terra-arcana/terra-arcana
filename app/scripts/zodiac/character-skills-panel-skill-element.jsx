@@ -3,7 +3,6 @@ import React from 'react';
 /**
  * A character skills panel skill element is a skill and its selected upgrades 
  * displayed in a character skills panel.
- *
  * @class
  */
 export default class CharacterSkillsPanelSkillElement extends React.Component {
@@ -59,7 +58,6 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
 
 /**
  * Default props
- * 
  * @type {Object}
  */
 CharacterSkillsPanelSkillElement.defaultProps = {

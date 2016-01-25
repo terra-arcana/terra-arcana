@@ -12,7 +12,7 @@ namespace terraarcana {
 	/**
 	 * Handles the creation and maintenance of the data layer
 	 */
-	class DataManager {
+	class DataController {
 
 		private $_cpts = array();
 
@@ -30,7 +30,7 @@ namespace terraarcana {
 		private function __clone() {}
 
 		/**
-		 * Initializes the manager. Runs on WP init hook
+		 * Initializes the controller. Runs on WP init hook
 		 */
 		public function init() {
 			// Run init() on all CPTs
