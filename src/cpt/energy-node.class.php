@@ -57,8 +57,8 @@ namespace terraarcana {
 				'rest_base' 			=> 'energy-node',
 				'hierarchical' 			=> false,
 				'supports' => array(
-					'title' => true,
-					'editor' => true
+					'title' => false,
+					'editor' => false
 				)
 			));
 		}
