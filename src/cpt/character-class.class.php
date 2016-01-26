@@ -11,7 +11,7 @@ namespace terraarcana {
 		class characterClass extends CPT {
 
 			public function __construct() {
-				$this->postTypeName = 'character-class';
+				$this->_postTypeName = 'character-class';
 			}
 
 			private function __clone() {}
@@ -20,7 +20,7 @@ namespace terraarcana {
 			 * @inheritdoc
 			 */
 			public function register_post_type() {
-				register_post_type($this->postTypeName, array(
+				register_post_type($this->_postTypeName, array(
 					'labels' => array(
 						'name' 				=> 'Signes',
 						'singular_name' 	=> 'Signe',

@@ -13,21 +13,21 @@ namespace terraarcana {
 		class Skill extends CPT {
 
 			public function __construct() {
-				$this->postTypeName = 'skill';
-				$this->fields = array(
+				$this->_postTypeName = 'skill';
+				$this->_fields = array(
 					'effect' => array(
 						'key' => 'field_566f24d16f2b3'
 					),
-					'flavor-text' => array(
+					'flavor_text' => array(
 						'key' => 'field_566f24f36f2b4'
 					),
 					'upgrades' => array(
 						'key' => 'field_566f2c49054d1'
 					),
-					'graph-data' => array(
+					'graph_data' => array(
 						'key' => 'field_566f2d31054d9'
 					),
-					'skill-type' => array(
+					'skill_type' => array(
 						'key' => 'field_566f1505b9255',
 						'select' => true
 					),
@@ -77,7 +77,7 @@ namespace terraarcana {
 			 * @inheritdoc
 			 */
 			public function register_post_type() {
-				register_post_type($this->postTypeName, array(
+				register_post_type($this->_postTypeName, array(
 					'labels' => array(
 						'name'				=> 'Compétences',
 						'singular_name' 	=> 'Compétence',
@@ -168,13 +168,13 @@ namespace terraarcana {
 							array_push($result['nodes'], array(
 								'id' => $upgradeID,
 								'type' => 'upgrade',
-								'x' => intval($upgrade['graph-data'][0]['x']),
-								'y' => intval($upgrade['graph-data'][0]['y'])
+								'x' => intval($upgrade['graph_data'][0]['x']),
+								'y' => intval($upgrade['graph_data'][0]['y'])
 							));
 
 							// Add any links from the upgrades to the graph data
-							if ($upgrade['graph-data'][0]['links']) {
-								foreach ($upgrade['graph-data'][0]['links'] as $link) {
+							if ($upgrade['graph_data'][0]['links']) {
+								foreach ($upgrade['graph_data'][0]['links'] as $link) {
 									$this->push_unique_link($result['links'], $upgradeID, $link['id']);
 								}
 							}

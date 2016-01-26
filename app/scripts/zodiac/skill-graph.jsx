@@ -128,7 +128,7 @@ export default class SkillGraph extends React.Component {
 								);
 							}
 
-							return null;
+							return <noscript/>;
 						}.bind(this))}
 					</ReactKonva.Layer>
 				</ReactKonva.Stage>

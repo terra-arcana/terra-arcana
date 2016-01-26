@@ -12,9 +12,29 @@ namespace terraarcana {
 	 */
 	class MainController {
 
+		/**
+		 * Singleton instance reference
+		 * @var MainController
+		 * @static
+		 */
 		private static $_instance;
+
+		/**
+		 * Data controller reference
+		 * @var DataController
+		 */
 		private $_dataController;
+
+		/**
+		 * Script controller reference
+		 * @var ScriptController
+		 */
 		private $_scriptController;
+		
+		/**
+		 * Admin controller reference
+		 * @var AdminController
+		 */
 		private $_adminController;
 
 		public function __construct() {

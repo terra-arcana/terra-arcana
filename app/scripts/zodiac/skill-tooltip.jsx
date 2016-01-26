@@ -147,7 +147,7 @@ export default class SkillTooltip extends React.Component {
 						<div className='panel-heading'>
 							<h2 className='panel-title'><span dangerouslySetInnerHTML={{__html: skill.title.rendered}}></span>&emsp;
 								<small>
-									<span dangerouslySetInnerHTML={{__html: skill['skill-type'].rendered}}></span>&nbsp;|&nbsp;
+									<span dangerouslySetInnerHTML={{__html: skill['skill_type'].rendered}}></span>&nbsp;|&nbsp;
 									<span>[SIGNE]</span>
 								</small>
 							</h2>
@@ -155,7 +155,7 @@ export default class SkillTooltip extends React.Component {
 						<div className='panel-body'>
 							<div dangerouslySetInnerHTML={{__html: skill.effect}}></div>
 							{skillInfoTable}
-							<em dangerouslySetInnerHTML={{__html: skill['flavor-text']}}></em>
+							<em dangerouslySetInnerHTML={{__html: skill['flavor_text']}}></em>
 						</div>
 					</div>
 				</div>
