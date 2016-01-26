@@ -5,6 +5,7 @@ import Lodash from 'lodash';
 import Node from './node.jsx';
 import SkillNode from './skill-node.jsx';
 import UpgradeNode from './upgrade-node.jsx';
+import PointNode from './point-node.jsx';
 import NodeLink from './node-link.jsx';
 
 require('../../styles/zodiac/skill-graph.scss');
@@ -126,6 +127,26 @@ export default class SkillGraph extends React.Component {
 										onMouseOver = {this.props.onNodeMouseOver}
 										onMouseOut = {this.props.onNodeMouseOut}
 									></UpgradeNode>
+								);
+							}
+
+							// Point nodes
+							else if (node.type === 'perk' || node.type === 'life') {
+								return (
+									<PointNode
+										key = {node.id}
+										ref = {(ref) => this.nodes[node.id] = ref}
+										id = {node.id}
+										x = {node.x}
+										y = {node.y}
+										type = {node.type}
+										selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
+										draggable = {(this.props.canDragNodes)}
+										onClick = {this.onNodeClick}
+										onDragMove = {this.onNodeDragMove}
+										onMouseOver = {this.props.onNodeMouseOver}
+										onMouseOut = {this.props.onNodeMouseOut}
+									></PointNode>
 								);
 							}
 
