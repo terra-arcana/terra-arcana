@@ -2,6 +2,7 @@ import React from 'react';
 
 import SkillGraph from './skill-graph.jsx';
 import SkillTooltip from './skill-tooltip.jsx';
+import PointNodeInspector from './point-node-inspector.jsx';
 import CharacterSkillsPanel from './character-skills-panel.jsx';
 
 /**
@@ -22,8 +23,9 @@ export default class CharacterBuilder extends React.Component {
 		 * @private
 		 */
 		this.state = {
-			activeSkill: {
+			activeNode: {
 				id: '',
+				type: '',
 				upgrades: []
 			},
 			pickedNodes: this.props.initialPickedNodes,
@@ -41,13 +43,25 @@ export default class CharacterBuilder extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var skillTooltip = null;
-		if (this.state.activeSkill.id !== '') {
-			skillTooltip = (
-				<SkillTooltip
-					skill = {this.state.activeSkill}
-				></SkillTooltip>
-			);
+		var tooltip = null;
+		if (this.state.activeNode.id !== '') {
+			switch(this.state.activeNode.type) {
+			case 'skill':
+			case 'upgrade':
+				tooltip = (
+					<SkillTooltip
+						skill = {this.state.activeNode}
+					></SkillTooltip>
+				);
+				break;
+			case 'perk':
+			case 'life':
+				tooltip = (
+					<PointNodeInspector
+						pointNode = {this.getNodeDataById(this.state.activeNode.id)}
+					></PointNodeInspector>
+				);
+			}
 		}
 
 		return (
@@ -64,12 +78,12 @@ export default class CharacterBuilder extends React.Component {
 				></SkillGraph>
 				<CharacterSkillsPanel
 					nodes = {this.state.pickedNodes}
-					activeSkill = {this.state.activeSkill}
+					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
 				></CharacterSkillsPanel>
 				
-				{skillTooltip}
+				{tooltip}
 			</div>
 		);	
 	}
@@ -87,12 +101,26 @@ export default class CharacterBuilder extends React.Component {
 	}
 
 	/**
-	 * Inspect a skill and reveal its details
-	 * @param {Object} skill The skill object, containing an `id` string and an `upgrades` array of string ids
+	 * Inspect a node and reveal its details
+	 * @param {String} id The picked node id
 	 */
-	inspectSkill(skill) {
+	inspectSkill(id) {
+		var nodeData = this.getNodeDataById(id),
+			splitID = id.split('-'),
+			nodeObj = {
+				id: splitID[0],
+				type: nodeData.type,
+				upgrades: []
+			};
+
+		if (nodeData.type === 'skill' || nodeData.type === 'upgrade') {
+			if (splitID[1] !== undefined) {
+				nodeObj.upgrades.push(splitID[1]);
+			}
+		}
+
 		this.setState({
-			activeSkill: skill
+			activeNode: nodeObj
 		});
 	}
 
@@ -101,8 +129,9 @@ export default class CharacterBuilder extends React.Component {
 	 */
 	uninspect() {
 		this.setState({
-			activeSkill: {
+			activeNode: {
 				id: '',
+				type: '',
 				upgrades: []
 			}
 		});
@@ -125,10 +154,26 @@ export default class CharacterBuilder extends React.Component {
 			pickedNodes: this.state.pickedNodes
 		});
 	}
+
+	/**
+	 * Return the data of a particular node by ID
+	 * @param {String} id The node ID
+	 * @return {Object|null} The node data
+	 */
+	getNodeDataById(id) {
+		var nodeData = null;
+
+		this.state.nodeData.map(function(node) {
+			if (node.id === id) {
+				nodeData = node;
+			}
+		}.bind(this));
+
+		return nodeData;
+	}
 }
 
 /**
- * Default props
  * @type {Object}
  */
 CharacterBuilder.defaultProps = {
@@ -180,4 +225,25 @@ CharacterBuilder.defaultProps = {
 	],
 	initialPickedNodes: [],
 	startNode: '1'
+};
+
+/**
+ * @type {Object}
+ */
+CharacterBuilder.propTypes = {
+	initialNodeData: React.PropTypes.arrayOf(
+		React.PropTypes.shape({
+			id: React.PropTypes.string.isRequired,
+			type: React.PropTypes.string.isRequired,
+			x: React.PropTypes.number.isRequired,
+			y: React.PropTypes.number.isRequired
+		})
+	).isRequired,
+	initialLinkData: React.PropTypes.arrayOf(
+		React.PropTypes.arrayOf(
+			React.PropTypes.string.isRequired
+		)
+	).isRequired,
+	initialPickedNodes: React.PropTypes.array,
+	startNode: React.PropTypes.string
 };

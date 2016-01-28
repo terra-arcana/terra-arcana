@@ -91,17 +91,7 @@ export default class Node extends React.Component {
 	 */
 	onMouseOver() {
 		if (this.props.onMouseOver) {
-			var splitID = this.props.id.split('-'),
-				nodeObj = {
-					id: splitID[0],
-					upgrades: []
-				};
-
-			if (splitID[1] !== undefined) {
-				nodeObj.upgrades.push(splitID[1]);
-			}
-
-			this.props.onMouseOver(nodeObj);
+			this.props.onMouseOver(this.props.id);
 		}
 	}
 
@@ -127,7 +117,6 @@ export default class Node extends React.Component {
 }
 
 /**
- * Default props
  * @type {Object}
  */
 Node.defaultProps = {
@@ -138,4 +127,17 @@ Node.defaultProps = {
 	fill: 'green',
 	draggable: false,
 	selected: false
+};
+
+/**
+ * @type {Object}
+ */
+Node.propTypes = {
+	id: React.PropTypes.string.isRequired,
+	x: React.PropTypes.number.isRequired,
+	y: React.PropTypes.number.isRequired,
+	radius: React.PropTypes.number,
+	fill: React.PropTypes.string,
+	draggable: React.PropTypes.bool,
+	selected: React.PropTypes.bool
 };

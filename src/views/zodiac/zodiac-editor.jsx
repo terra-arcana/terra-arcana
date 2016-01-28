@@ -3,6 +3,7 @@ import Lodash from 'lodash';
 
 import SkillGraph from '../../../app/scripts/zodiac/skill-graph.jsx';
 import SkillTooltip from '../../../app/scripts/zodiac/skill-tooltip.jsx';
+import PointNodeInspector from '../../../app/scripts/zodiac/point-node-inspector.jsx';
 
 require('./zodiac-editor.scss');
 
@@ -24,14 +25,11 @@ export default class ZodiacEditor extends React.Component {
 		 * @private
 		 */
 		this.state = {
-			activeSkill: {
+			activeNode: {
 				id: '',
+				type: '',
 				upgrades: []
 			}, 
-			activeSkillCoordinates: {
-				x: '',
-				y: ''
-			},
 			nodeData: [],
 			linkData: [],
 			prompt: null
@@ -60,32 +58,50 @@ export default class ZodiacEditor extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var skillTooltip = null,
+		var tooltip = null,
 			activeNodeData = null,
 			nodeDetails = null,
 			savePrompt = null,
-			rawNodeID = [this.state.activeSkill.id].concat(this.state.activeSkill.upgrades).join('-');
+			rawNodeID = [this.state.activeNode.id].concat(this.state.activeNode.upgrades).join('-'); // TODO: Test for emptiness
 
-		if (this.state.activeSkill.id !== '') {
-			skillTooltip = (
-				<SkillTooltip
-					skill = {this.state.activeSkill}
-				></SkillTooltip>
-			);
+		if (!Lodash.isEmpty(this.state.activeNode)) {
+			// Render inspector
+			switch(this.state.activeNode.type) {
+			case 'skill':
+			case 'upgrade':
+				tooltip = (
+					<SkillTooltip
+						skill = {this.state.activeNode}
+					></SkillTooltip>
+				);
+				break;
+			case 'life':
+			case 'perk':
+				tooltip = (
+					<PointNodeInspector
+						pointNode = {this.getNodeDataById(this.state.activeNode.id)}
+					></PointNodeInspector>
+				);
+				break;
+			}
 
+			// Render node details panel
 			activeNodeData = this.getNodeDataById(rawNodeID);
 
-			nodeDetails = (
-				<div className='skill-graph-editor-node-details panel panel-info'>
-					<div className='panel-heading'>
-						<h3 className='panel-title'>Noeud #{activeNodeData.id}</h3>
+			if (activeNodeData) {
+				nodeDetails = (
+					<div className='skill-graph-editor-node-details panel panel-info'>
+						<div className='panel-heading'>
+							<h3 className='panel-title'>Détails du noeud</h3>
+						</div>
+						<div className='panel-body'>
+						</div>
 					</div>
-					<div className='panel-body'>
-					</div>
-				</div>
-			);
+				);
+			}
 		}
 
+		// Render save prompt
 		if (this.state.prompt !== null) {
 			savePrompt = (
 				<div className={'col-xs-12 col-lg-4 alert ' + this.state.prompt.type} role='alert'>
@@ -119,15 +135,15 @@ export default class ZodiacEditor extends React.Component {
 							<button type='button' className='btn btn-default btn-sm pull-right' onClick={this.saveZodiac}>Sauvegarder</button>
 						</div>
 						<div className='panel-body'>
-							<button type='button' className='btn btn-default'>Ajouter un noeud d'énergie</button>
-							<button type='button' className='btn btn-default'>Ajouter un noeud d'essence</button>
+							{/*<button type='button' className='btn btn-default'>Ajouter un noeud d'énergie</button>*/}
+							{/*<button type='button' className='btn btn-default'>Ajouter un noeud d'essence</button>*/}
 							
 							{nodeDetails}
 						</div>
 					</div>
 				</div>
 
-				{skillTooltip}
+				{tooltip}
 			</div>
 		);
 	}
@@ -138,13 +154,10 @@ export default class ZodiacEditor extends React.Component {
 	 */
 	uninspect() {
 		this.setState({
-			activeSkill: {
+			activeNode: {
 				id: '',
+				type: '',
 				upgrades: []
-			},
-			activeSkillCoordinates: {
-				x: '',
-				y: ''
 			}
 		});
 	}
@@ -152,27 +165,29 @@ export default class ZodiacEditor extends React.Component {
 	/**
 	 * Select or unselect a node
 	 * @param {String} id The picked node ID
-	 * @private
 	 */
 	onNodeClick(id) {
 		// Build node obj
-		var splitID = id.split('-'),
+		var nodeData = this.getNodeDataById(id),
+			splitID = id.split('-'),
 			nodeObj = {
-				id: splitID[0],
+				id: splitID[0], 
+				type: nodeData.type,
 				upgrades: []
 			};
 
-		if (splitID[1] !== undefined) {
-			nodeObj.upgrades.push(splitID[1]);
+		if (nodeData.type === 'skill' || nodeData.type === 'upgrade') {
+			if (splitID[1] !== undefined) {
+				nodeObj.upgrades.push(splitID[1]);
+			}
 		}
 
 		// Unselect active node if clicked, select new node otherwise
-		if (Lodash.isEqual(this.state.activeSkill, nodeObj)) {
+		if (Lodash.isEqual(this.state.activeNode, nodeObj)) {
 			this.uninspect();
 		} else {
-			// TODO: Fetch active skill coords from graph
 			this.setState({
-				activeSkill: nodeObj
+				activeNode: nodeObj
 			});
 		}
 	}
@@ -188,6 +203,7 @@ export default class ZodiacEditor extends React.Component {
 
 	/**
 	 * Save to the API the new state of the zodiac
+	 * @private
 	 */
 	saveZodiac() {
 		var data = {
@@ -224,17 +240,18 @@ export default class ZodiacEditor extends React.Component {
 	/**
 	 * Return the data of a particular node by ID
 	 * @param {String} id The node ID
-	 * @return {Node|null} The node
+	 * @return {Object|null} The node data
+	 * @private
 	 */
 	getNodeDataById(id) {
-		var returnNode = null;
+		var nodeData = null;
 
 		this.state.nodeData.map(function(node) {
 			if (node.id === id) {
-				returnNode = node;
+				nodeData = node;
 			}
 		}.bind(this));
 
-		return returnNode;
+		return nodeData;
 	}
 }

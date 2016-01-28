@@ -10,7 +10,7 @@ import Node from './node.jsx';
  * @class
  */
 export default class UpgradeNode extends React.Component {
-	
+
 	/**
 	 * @override
 	 * @return {jsx} The component template
@@ -36,7 +36,6 @@ export default class UpgradeNode extends React.Component {
 }
 
 /**
- * Default props
  * @type {Object}
  */
 UpgradeNode.defaultProps = {
@@ -45,4 +44,20 @@ UpgradeNode.defaultProps = {
 	y: 0,
 	radius: 8,
 	selected: false
+};
+
+/**
+ * @type {Object}
+ */
+UpgradeNode.propTypes = {
+	id: React.PropTypes.string.isRequired,
+	x: React.PropTypes.number.isRequired,
+	y: React.PropTypes.number.isRequired,
+	radius: React.PropTypes.number,
+	selected: React.PropTypes.bool,
+
+	onClick: React.PropTypes.func,
+	onDragMove: React.PropTypes.func,
+	onMouseOver: React.PropTypes.func,
+	onMouseOut: React.PropTypes.func
 };

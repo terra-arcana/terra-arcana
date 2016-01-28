@@ -41,7 +41,6 @@ export default class SkillNode extends React.Component {
 }
 
 /**
- * Default props
  * @type {Object}
  */
 SkillNode.defaultProps = {
@@ -49,5 +48,23 @@ SkillNode.defaultProps = {
 	x: 100,
 	y: 100,
 	radius: 20,
-	selected: false
+	selected: false,
+	draggable: false
+};
+
+/**
+ * @type {Object}
+ */
+SkillNode.propTypes = {
+	id: React.PropTypes.string.isRequired,
+	x: React.PropTypes.number.isRequired,
+	y: React.PropTypes.number.isRequired,
+	radius: React.PropTypes.number,
+	selected: React.PropTypes.bool,
+	draggable: React.PropTypes.bool,
+
+	onClick: React.PropTypes.func,
+	onDragMove: React.PropTypes.func,
+	onMouseOver: React.PropTypes.func,
+	onMouseOut: React.PropTypes.func
 };
