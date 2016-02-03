@@ -1,8 +1,8 @@
 import React from 'react';
 
 /**
- * A character skills panel skill element is a skill and its selected upgrades 
- * displayed in a character skills panel.
+ * A CharacterSkillsPanelSkillElement is a skill and its selected upgrades 
+ * displayed in a {@link CharacterSkillsPanel}.
  * @class
  */
 export default class CharacterSkillsPanelSkillElement extends React.Component {
