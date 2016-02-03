@@ -22,7 +22,7 @@ namespace terraarcana {
 		 * Register all custom admin pages
 		 */
 		public function register_admin_pages() {
-			add_submenu_page('edit.php?post_type=rules', 'Éditer le Zodiaque', 'Zodiaque', 'manage_options', 'terraarcana/terraarcana-zodiac.php', array($this, 'render_zodiac_page'));
+			add_submenu_page('edit.php?post_type=rules', 'Éditer le Zodiaque', 'Zodiaque', 'manage_options', 'terraarcana_zodiac', array($this, 'render_zodiac_page'));
 		}
 
 		/**
@@ -32,7 +32,7 @@ namespace terraarcana {
 		function enqueue_admin_scripts($slug) {
 			$base = get_stylesheet_directory_uri() . '/';
 			
-			if ($slug === 'rules_page_terraarcana/terraarcana-zodiac') {
+			if ($slug === 'rules_page_terraarcana_zodiac') {
 				wp_register_script('bootstrap-min', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js', array('jquery'));
 				wp_enqueue_script('zodiac-admin', $base . 'dist/admin/zodiac/zodiac.js', array('bootstrap-min'), null, true);
 

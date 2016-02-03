@@ -47,9 +47,6 @@ namespace terraarcana {
 					$callback = array($this, 'get_repeater_field');
 				}
 
-				if ($this->_postTypeName == 'energyNode') {
-					error_log('Registering ' . $this->_postTypeName . ':' . $field_name);
-				}
 				register_rest_field($this->_postTypeName, $field_name, array(
 					'get_callback' => $callback
 				));
@@ -67,8 +64,6 @@ namespace terraarcana {
 		 * @return string The skill type
 		 */
 		public function get_field(array $object, $field_name, \WP_REST_Request $request, $post_type, $parent_field_name = NULL, $field_data = NULL) {
-			error_log('Getting ' . $field_name . ' from post #' . $object['id']);
-
 			if (function_exists('get_field')) {
 				if (is_null($field_data)) {
 					$field_data = $this->_fields;
@@ -93,8 +88,6 @@ namespace terraarcana {
 		 * @return string The skill type
 		 */
 		public function get_select_field(array $object, $field_name, \WP_REST_Request $request, $post_type, $parent_field_name = NULL, $field_data = NULL) {
-			error_log('Getting ' . $field_name . ' from post #' . $object['id']);
-
 			if (function_exists('get_field_object')) {
 				if (is_null($field_data)) {
 					$field_data = $this->_fields;
