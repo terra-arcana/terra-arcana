@@ -60,3 +60,8 @@ mv composer.phar /usr/local/bin/composer
 # install nodejs and npm
 sudo apt-get -q -y -f install nodejs
 sudo apt-get -q -y -f install npm
+
+# Install wp-cli
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+mv wp-
