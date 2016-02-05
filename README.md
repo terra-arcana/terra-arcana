@@ -1,3 +1,5 @@
+Staging - [![Build Status](http://yu-shan.net:5555/job/Terra%20Arcana%202.0%20Staging/badge/icon)](http://yu-shan.net:5555/job/Terra%20Arcana%202.0%20Staging/)
+
 # Terra Arcana
 http://www.gnterraarcana.com
 
