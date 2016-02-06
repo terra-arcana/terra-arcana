@@ -20,5 +20,6 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 RUN wp core install --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL
 
 #Add Terra theme
-RUN mkdir /var/www/html/wp-content/themes/terra
-copy . /var/www/html/wp-content/themes/terra
+RUN mkdir /var/www/html/wp-content/themes/terra-arcana
+COPY . /var/www/html/wp-content/themes/terra-arcana
+RUN wp theme activate terra-arcana
