@@ -85,8 +85,8 @@ namespace terraarcana {
 					'external_url' 	=> 'https://github.com/WP-API/OAuth1',
 				),
 				array(
-					'name' 			=> 'Advanced Custom Fields',
-					'slug' 			=> 'advanced-custom-fields',
+					'name' 			=> 'Advanced Custom Fields Pro',
+					'slug' 			=> 'advanced-custom-fields-pro',
 					'source' 		=> 'http://connect.advancedcustomfields.com/index.php?p=pro&a=download',
 					'required' 		=> true,
 					'external_url' 	=> 'http://www.advancedcustomfields.com'
