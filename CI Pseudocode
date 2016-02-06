@@ -12,3 +12,17 @@ create wordpress container
 
 download desired version of terra theme
 docker run
+
+----------------------------------------------
+
+[Provision slave]
+
+### Unit tests ###
+Get latest commit
+Run unit tests
+
+### Post build ###
+Build container
+Commit container
+SSH into apropriate environment
+Update container
