@@ -6,7 +6,7 @@ var React = require('react/addons'),
 	SkillGraph = require('../../scripts/zodiac/skill-graph.jsx');
 
 describe('SkillGraph', function() {
-	it('have constants defined', function() {
+	it('has constants defined', function() {
 		var graph = TestUtils.renderIntoDocument(
 			<SkillGraph/>
 		);
