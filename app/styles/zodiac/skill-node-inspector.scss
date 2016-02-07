@@ -1,10 +1,7 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
 
-.skill-graph-editor-skill-tooltip {
-	@include make-sm-column(12);
-	@include make-lg-column(4);
-
+.skill-graph-editor-skill-node-inspector {
 	.upgrade-panel {
 		margin-bottom: 0;
 	}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SkillGraph from './skill-graph.jsx';
-import SkillTooltip from './skill-tooltip.jsx';
+import SkillNodeInspector from './skill-node-inspector.jsx';
 import PointNodeInspector from './point-node-inspector.jsx';
 import CharacterSkillsPanel from './character-skills-panel.jsx';
 
@@ -44,20 +44,20 @@ export default class CharacterBuilder extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var tooltip = null;
+		var inspector = null;
 		if (this.state.activeNode.id !== '') {
 			switch(this.state.activeNode.type) {
 			case 'skill':
 			case 'upgrade':
-				tooltip = (
-					<SkillTooltip
+				inspector = (
+					<SkillNodeInspector
 						skill = {this.state.activeNode}
-					></SkillTooltip>
+					></SkillNodeInspector>
 				);
 				break;
 			case 'perk':
 			case 'life':
-				tooltip = (
+				inspector = (
 					<PointNodeInspector
 						pointNode = {this.getNodeDataById(this.state.activeNode.id)}
 					></PointNodeInspector>
@@ -84,7 +84,7 @@ export default class CharacterBuilder extends React.Component {
 					onUnselectSkill = {this.uninspect}
 				></CharacterSkillsPanel>
 				
-				{tooltip}
+				{inspector}
 			</div>
 		);	
 	}

@@ -1,12 +1,14 @@
 import React from 'react';
+import Lodash from 'lodash';
 
-require('../../styles/zodiac/skill-tooltip.scss');
+require('../../styles/zodiac/skill-node-inspector.scss');
 
 /**
- * Details panel component
+ * A SkillNodeInspector shows details about a {@link SkillNode} or {@link UpgradeNode}. 
+ * It is meant for use in conjunction with a {@link SkillGraph} for zodiac viewing purposes.
  * @class
  */
-export default class SkillTooltip extends React.Component {
+export default class SkillNodeInspector extends React.Component {
 
 	/**
 	 * @constructor
@@ -74,9 +76,11 @@ export default class SkillTooltip extends React.Component {
 						costElements.push(cost.energy + ' Énergie');
 					}
 
-					for (var i = 0; i < cost.ingredients.length; i++) {
-						if (cost.ingredients[i].amount) {
-							costElements.push(cost.ingredients[i].amount + ' ' + cost.ingredients[i].ingredient.rendered);
+					if (Lodash.isArray(cost.ingredients)) {
+						for (var i = 0; i < cost.ingredients.length; i++) {
+							if (cost.ingredients[i].amount) {
+								costElements.push(cost.ingredients[i].amount + ' ' + cost.ingredients[i].ingredient.rendered);
+							}
 						}
 					}
 
@@ -131,7 +135,7 @@ export default class SkillTooltip extends React.Component {
 				null;
 
 			return (
-				<div className='skill-graph-editor-skill-tooltip'>
+				<div className='col-sm-12 col-lg-4 skill-graph-editor-skill-node-inspector'>
 					{this.props.skill.upgrades.map(function(upgrade) {
 						return (
 							<div className='panel panel-info upgrade-panel'>
@@ -162,7 +166,7 @@ export default class SkillTooltip extends React.Component {
 			);
 		} else {
 			return (
-				<div className='skill-graph-editor-skill-tooltip'>
+				<div className='col-sm-12 col-lg-4 skill-graph-editor-skill-node-inspector'>
 					<div className='panel panel-default'>
 						<div className='panel-heading'>
 							<h2 className='panel-title'>Chargement...</h2>
@@ -180,7 +184,7 @@ export default class SkillTooltip extends React.Component {
 /**
  * @type {Object}
  */
-SkillTooltip.defaultProps = {
+SkillNodeInspector.defaultProps = {
 	skill: {
 		id: '',
 		upgrades: []
@@ -190,7 +194,7 @@ SkillTooltip.defaultProps = {
 /**
  * @type {Object}
  */
-SkillTooltip.propTypes = {
+SkillNodeInspector.propTypes = {
 	skill: React.PropTypes.shape({
 		id: React.PropTypes.string.isRequired,
 		upgrades: React.PropTypes.arrayOf(

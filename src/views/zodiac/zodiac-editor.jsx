@@ -2,7 +2,7 @@ import React from 'react';
 import Lodash from 'lodash';
 
 import SkillGraph from '../../../app/scripts/zodiac/skill-graph.jsx';
-import SkillTooltip from '../../../app/scripts/zodiac/skill-tooltip.jsx';
+import SkillNodeInspector from '../../../app/scripts/zodiac/skill-node-inspector.jsx';
 import PointNodeInspector from '../../../app/scripts/zodiac/point-node-inspector.jsx';
 
 require('./zodiac-editor.scss');
@@ -58,7 +58,7 @@ export default class ZodiacEditor extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var tooltip = null,
+		var inspector = null,
 			activeNodeData = null,
 			nodeDetails = null,
 			savePrompt = null,
@@ -69,15 +69,15 @@ export default class ZodiacEditor extends React.Component {
 			switch(this.state.activeNode.type) {
 			case 'skill':
 			case 'upgrade':
-				tooltip = (
-					<SkillTooltip
+				inspector = (
+					<SkillNodeInspector
 						skill = {this.state.activeNode}
-					></SkillTooltip>
+					></SkillNodeInspector>
 				);
 				break;
 			case 'life':
 			case 'perk':
-				tooltip = (
+				inspector = (
 					<PointNodeInspector
 						pointNode = {this.getNodeDataById(this.state.activeNode.id)}
 					></PointNodeInspector>
@@ -143,7 +143,7 @@ export default class ZodiacEditor extends React.Component {
 					</div>
 				</div>
 
-				{tooltip}
+				{inspector}
 			</div>
 		);
 	}
