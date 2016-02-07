@@ -5,7 +5,7 @@ import CharacterSkillsPanelSkillElement from './character-skills-panel-skill-ele
 require('../../styles/zodiac/character-skills-panel.scss');
 
 /**
- * A character skills panel displays details about a character and all her 
+ * A CharacterSkillsPanel displays details about a character and all her 
  * skills currently selected.
  * @class
  */
@@ -143,7 +143,6 @@ export default class CharacterSkillsPanel extends React.Component {
 }
 
 /**
- * Default props
  * @type {Object}
  */
 CharacterSkillsPanel.defaultProps = {
@@ -158,4 +157,26 @@ CharacterSkillsPanel.defaultProps = {
 		current: 0,
 		total: 0
 	}
+};
+
+/**
+ * @type {Object}
+ */
+CharacterSkillsPanel.propTypes = {
+	characterName: React.PropTypes.string,
+	nodes: React.PropTypes.arrayOf(
+		React.PropTypes.string
+	),
+	energy: React.PropTypes.number,
+	xp: React.PropTypes.shape({
+		current: React.PropTypes.number.isRequired,
+		total: React.PropTypes.number.isRequired
+	}),
+	pp: React.PropTypes.shape({
+		current: React.PropTypes.number.isRequired,
+		total: React.PropTypes.number.isRequired
+	}),
+
+	onSelectSkill: React.PropTypes.func,
+	onUnselectSkill: React.PropTypes.func
 };

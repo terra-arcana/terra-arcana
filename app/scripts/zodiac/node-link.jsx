@@ -2,7 +2,7 @@ import React from 'react';
 import ReactKonva from 'react-konva';
 
 /**
- * Node link component
+ * A NodeLink links two {@link Node} components together in a {@link SkillGraph}.
  * @class
  */
 export default class NodeLink extends React.Component {
@@ -31,7 +31,6 @@ export default class NodeLink extends React.Component {
 }
 
 /**
- * Default props
  * @type {Object}
  */
 NodeLink.defaultProps = {
@@ -43,4 +42,18 @@ NodeLink.defaultProps = {
 		x: 0, 
 		y: 0
 	}
+};
+
+/**
+ * @type {Object}
+ */
+NodeLink.propTypes = {
+	from: React.PropTypes.shape({
+		x: React.PropTypes.number.isRequired,
+		y: React.PropTypes.number.isRequired
+	}),
+	to: React.PropTypes.shape({
+		x: React.PropTypes.number.isRequired,
+		y: React.PropTypes.number.isRequired
+	})
 };

@@ -178,7 +178,6 @@ export default class SkillTooltip extends React.Component {
 }
 
 /**
- * Default props
  * @type {Object}
  */
 SkillTooltip.defaultProps = {
@@ -186,4 +185,16 @@ SkillTooltip.defaultProps = {
 		id: '',
 		upgrades: []
 	}
+};
+
+/**
+ * @type {Object}
+ */
+SkillTooltip.propTypes = {
+	skill: React.PropTypes.shape({
+		id: React.PropTypes.string.isRequired,
+		upgrades: React.PropTypes.arrayOf(
+			React.PropTypes.string
+		).isRequired
+	})
 };

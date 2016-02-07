@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * A PointNodeInspector component displays the details of a energy(life) 
- * or perk node that has been selected by the user in a SkillGraph.
+ * or perk node that has been selected by the user in a {@link SkillGraph}.
  * @class
  */
 export default class PointNodeInspector extends React.Component {

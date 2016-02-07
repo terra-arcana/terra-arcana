@@ -3,7 +3,7 @@ import React from 'react';
 import Node from './node.jsx';
 
 /**
- * A PointNode is a node containing a certain amount of points of a given currency.
+ * A PointNode is a {@link Node} containing a certain amount of points of a given currency.
  * @class
  */
 export default class PointNode extends React.Component {
@@ -75,8 +75,8 @@ PointNode.propTypes = {
 	x: React.PropTypes.number.isRequired,
 	y: React.PropTypes.number.isRequired,
 	type: React.PropTypes.string.isRequired,
-	selected: React.PropTypes.boolean,
-	draggable: React.PropTypes.boolean,
+	selected: React.PropTypes.bool,
+	draggable: React.PropTypes.bool,
 
 	onClick: React.PropTypes.func,
 	onDragMove: React.PropTypes.func,

@@ -8,7 +8,7 @@ import PointNodeInspector from '../../../app/scripts/zodiac/point-node-inspector
 require('./zodiac-editor.scss');
 
 /**
- * Admin editor for the skill graph. Only displayed in WordPress backend.
+ * A ZodiacEditor renders an editable {@link SkillGraph}. Only displayed in WordPress backend.
  * @class
  */
 export default class ZodiacEditor extends React.Component {

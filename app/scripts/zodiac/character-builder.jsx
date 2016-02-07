@@ -6,7 +6,8 @@ import PointNodeInspector from './point-node-inspector.jsx';
 import CharacterSkillsPanel from './character-skills-panel.jsx';
 
 /**
- * Character builder component
+ * A CharacterBuilder allows editing of a character build by displaying a {@link SkillGraph} that 
+ * enabled conditional node picking by adjacency rules.
  * @class
  */
 export default class CharacterBuilder extends React.Component {
@@ -71,7 +72,7 @@ export default class CharacterBuilder extends React.Component {
 					initialLinkData = {this.state.linkData}
 					pickedNodes = {this.state.pickedNodes} 
 					startNode = {this.props.startNode}
-					contiguousSelection = 'true'
+					contiguousSelection = {true}
 					onNodeMouseOver = {this.inspectSkill}
 					onNodeMouseOut = {this.uninspect}
 					onNodeSelect = {this.selectNode}

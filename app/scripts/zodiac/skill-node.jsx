@@ -3,7 +3,7 @@ import React from 'react';
 import Node from './node.jsx';
 
 /**
- * A SkillNode is a canvas element representing a skill on a SkillGraph.
+ * A SkillNode is a canvas element representing a skill on a {@link SkillGraph}.
  * @class
  */
 export default class SkillNode extends React.Component {

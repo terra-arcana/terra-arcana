@@ -2,7 +2,9 @@ import React from 'react';
 import ReactKonva from 'react-konva';
 
 /**
- * Node component
+ * A Node component displays a single element in a {@link SkillGraph}. This is not 
+ * intended to be rendered in the graph as-is, but rather extended through components 
+ * such as {@link SkillNode}, {@link UpgradeNode} or {@link PointNode}.
  * @class
  */
 export default class Node extends React.Component {
@@ -139,5 +141,10 @@ Node.propTypes = {
 	radius: React.PropTypes.number,
 	fill: React.PropTypes.string,
 	draggable: React.PropTypes.bool,
-	selected: React.PropTypes.bool
+	selected: React.PropTypes.bool,
+
+	onClick: React.PropTypes.func,
+	onMouseOver: React.PropTypes.func,
+	onMouseOut: React.PropTypes.func,
+	onDragMove: React.PropTypes.func
 };

@@ -57,11 +57,21 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
 }
 
 /**
- * Default props
  * @type {Object}
  */
 CharacterSkillsPanelSkillElement.defaultProps = {
 	id: '',
 	upgrades: [],
 	active: false
+};
+
+/**
+ * @type {Object}
+ */
+CharacterSkillsPanelSkillElement.propTypes = {
+	id: React.PropTypes.string.isRequired,
+	upgrades: React.PropTypes.arrayOf(
+		React.PropTypes.string
+	),
+	active: React.PropTypes.bool
 };

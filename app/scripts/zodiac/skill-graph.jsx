@@ -11,7 +11,8 @@ import NodeLink from './node-link.jsx';
 require('../../styles/zodiac/skill-graph.scss');
 
 /**
- * Skill graph component
+ * A SkillGraph component renders a Konva stage in which {@link Node} and {@link NodeLink} 
+ * components are rendered to form a graph.
  * @class
  */
 export default class SkillGraph extends React.Component {
@@ -445,7 +446,6 @@ export default class SkillGraph extends React.Component {
 }
 
 /**
- * Default props
  * @type {Object}
  */
 SkillGraph.defaultProps = {
@@ -455,4 +455,33 @@ SkillGraph.defaultProps = {
 	startNode: '',
 	contiguousSelection: true,
 	canDragNodes: false
+};
+
+/**
+ * @type {Object}
+ */
+SkillGraph.propTypes = {
+	initialNodeData: React.PropTypes.arrayOf(
+		React.PropTypes.shape({
+			id: React.PropTypes.string.isRequired,
+			type: React.PropTypes.string.isRequired,
+			x: React.PropTypes.number.isRequired,
+			y: React.PropTypes.number.isRequired
+		})
+	).isRequired,
+	initialLinkData: React.PropTypes.arrayOf(
+		React.PropTypes.arrayOf(
+			React.PropTypes.string.isRequired
+		)
+	).isRequired,
+	pickedNodes: React.PropTypes.arrayOf(
+		React.PropTypes.string
+	),
+	startNode: React.PropTypes.string,
+	contiguousSelection: React.PropTypes.bool,
+	canDragNodes: React.PropTypes.bool,
+
+	onNodeSelect: React.PropTypes.func,
+	onNodeMouseOver: React.PropTypes.func,
+	onNodeMouseOut: React.PropTypes.func
 };
