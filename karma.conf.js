@@ -8,6 +8,7 @@ module.exports = function(config) {
 		singleRun: true,
 		frameworks: ['mocha'],
 		files: [
+			'node_modules/jquery/dist/jquery.min.js',
 			'webpack.tests.js'
 		],
 		preprocessors: {

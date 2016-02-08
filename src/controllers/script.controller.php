@@ -34,8 +34,6 @@ namespace terraarcana {
 				// FIXME: Enqueue minified scripts in production
 				wp_enqueue_script('app', $base . 'dist/app.js', array('bootstrap-min'), null, true);
 			}
-
-			$this->localize_scripts();
 		}
 
 		/**
@@ -47,26 +45,6 @@ namespace terraarcana {
 			wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
 			wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
 			wp_enqueue_style('app', $base . 'dist/style.css');
-		}
-
-		/**
-		 * Serve localization data and generic useful data to public app
-		 */
-		private function localize_scripts() {
-			wp_localize_script(
-				'app',
-				'appLocals',
-				array(
-					'paths' => array(
-						'js' => trailingslashit(get_template_directory_uri()) . 'app/',
-						'scss' => trailingslashit(get_template_directory_uri()) . 'app/styles/'
-					),
-					'api' => array(
-						'core' => trailingslashit(site_url()) . 'wp-json/wp/v2/',
-						'terra' => trailingslashit(site_url()) . 'wp-json/terraarcana/v1/'
-					)
-				)
-			);
 		}
 	}
 }

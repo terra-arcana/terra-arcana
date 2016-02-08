@@ -93,7 +93,7 @@ export default class CharacterBuilder extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		jQuery.get(appLocals.api.terra + 'graph-data', function(result) {
+		jQuery.get('http://' + location.hostname + '/wp-json/terraarcana/v1/graph-data', function(result) {
 			this.setState({
 				nodeData: result.nodes,
 				linkData: result.links

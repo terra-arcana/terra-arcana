@@ -45,7 +45,7 @@ export default class ZodiacEditor extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		jQuery.get(appLocals.api.terra + 'graph-data', function(result) {
+		jQuery.get('http://' + location.hostname + '/wp-json/terraarcana/v1/graph-data', function(result) {
 			this.setState({
 				nodeData: result.nodes,
 				linkData: result.links
@@ -218,7 +218,7 @@ export default class ZodiacEditor extends React.Component {
 			}
 		});
 
-		jQuery.post(appLocals.api.terra + 'graph-data', data, function(result, status) {
+		jQuery.post('http://' + location.hostname + '/wp-json/terraarcana/v1/graph-data', data, function(result, status) {
 			if (status === 'success') {
 				this.setState({
 					prompt: {

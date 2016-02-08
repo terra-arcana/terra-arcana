@@ -36,21 +36,6 @@ namespace terraarcana {
 				wp_register_script('bootstrap-min', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js', array('jquery'));
 				wp_enqueue_script('zodiac-admin', $base . 'dist/admin/zodiac/zodiac.js', array('bootstrap-min'), null, true);
 
-				wp_localize_script(
-					'zodiac-admin',
-					'appLocals',
-					array(
-						'paths' => array(
-							'js' => trailingslashit(get_template_directory_uri()) . 'app/',
-							'scss' => trailingslashit(get_template_directory_uri()) . 'app/styles/'
-						),
-						'api' => array(
-							'core' => trailingslashit(site_url()) . 'wp-json/wp/v2/',
-							'terra' => trailingslashit(site_url()) . 'wp-json/terraarcana/v1/'
-						)
-					)
-				);
-
 				wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
 				wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
 				wp_enqueue_style('zodiac-admin', $base . 'dist/admin/zodiac/style.css');

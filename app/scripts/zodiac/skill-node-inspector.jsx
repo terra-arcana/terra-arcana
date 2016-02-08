@@ -52,7 +52,7 @@ export default class SkillNodeInspector extends React.Component {
 	 * @private
 	 */
 	fetchSkillInfo(skillID) {
-		jQuery.get(appLocals.api.core + 'skill/' + skillID, function(result) {
+		jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/skill/' + skillID, function(result) {
 			this.setState({
 				skill: result
 			});
