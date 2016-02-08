@@ -1,7 +1,6 @@
 /* global describe, it */
 
-var React = require('react/addons'),
-	TestUtils = React.addons.TestUtils,
+var TestUtils = require('react-addons-test-utils'),
 	expect = require('expect'),
 	SkillGraph = require('../../scripts/zodiac/skill-graph.jsx');
 

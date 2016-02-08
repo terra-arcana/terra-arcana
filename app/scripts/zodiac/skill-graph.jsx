@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import ReactKonva from 'react-konva';
 import Lodash from 'lodash';
 
@@ -180,7 +181,7 @@ export default class SkillGraph extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		var root = React.findDOMNode(this);
+		var root = ReactDOM.findDOMNode(this);
 
 		/**
 		 * Canvas DOM elements
@@ -230,7 +231,7 @@ export default class SkillGraph extends React.Component {
 	 * @return {Object} The desired width and height of the editor canvas
 	 */
 	getEditorSize() {
-		var root = React.findDOMNode(this),
+		var root = ReactDOM.findDOMNode(this),
 			editorStyle = window.getComputedStyle(root),
 			paddings = {
 				left: SkillGraph.pxStringToNumber(editorStyle.paddingLeft),
