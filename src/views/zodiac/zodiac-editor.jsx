@@ -72,7 +72,7 @@ export default class ZodiacEditor extends React.Component {
 				inspector = (
 					<SkillNodeInspector
 						skill = {this.state.activeNode}
-					></SkillNodeInspector>
+					/>
 				);
 				break;
 			case 'life':
@@ -80,7 +80,7 @@ export default class ZodiacEditor extends React.Component {
 				inspector = (
 					<PointNodeInspector
 						pointNode = {this.getNodeDataById(this.state.activeNode.id)}
-					></PointNodeInspector>
+					/>
 				);
 				break;
 			}
@@ -124,7 +124,7 @@ export default class ZodiacEditor extends React.Component {
 					contiguousSelection = {false}
 					onNodeSelect = {this.onNodeClick}
 					onNodeDrag = {this.onNodeDrag}
-				></SkillGraph>
+				/>
 
 				{savePrompt}
 

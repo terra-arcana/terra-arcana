@@ -52,7 +52,7 @@ export default class CharacterBuilder extends React.Component {
 				inspector = (
 					<SkillNodeInspector
 						skill = {this.state.activeNode}
-					></SkillNodeInspector>
+					/>
 				);
 				break;
 			case 'perk':
@@ -60,7 +60,7 @@ export default class CharacterBuilder extends React.Component {
 				inspector = (
 					<PointNodeInspector
 						pointNode = {this.getNodeDataById(this.state.activeNode.id)}
-					></PointNodeInspector>
+					/>
 				);
 			}
 		}
@@ -76,13 +76,13 @@ export default class CharacterBuilder extends React.Component {
 					onNodeMouseOver = {this.inspectSkill}
 					onNodeMouseOut = {this.uninspect}
 					onNodeSelect = {this.selectNode}
-				></SkillGraph>
+				/>
 				<CharacterSkillsPanel
 					nodes = {this.state.pickedNodes}
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
-				></CharacterSkillsPanel>
+				/>
 				
 				{inspector}
 			</div>

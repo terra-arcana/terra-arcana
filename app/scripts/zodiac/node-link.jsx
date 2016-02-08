@@ -25,7 +25,7 @@ export default class NodeLink extends React.Component {
 				points = {points}
 				stroke = "black"
 				tension = {0}
-			></ReactKonva.Line>
+			/>
 		);
 	}
 }

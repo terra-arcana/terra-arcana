@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import {Route, DefaultRoute, RouteHandler} from 'react-router';
 
@@ -43,5 +44,5 @@ let routes = (
 );
 
 Router.run(routes, Router.HistoryLocation, function (Handler) {
-	React.render(<Handler/>, document.getElementById('main'));
+	ReactDOM.render(<Handler/>, document.getElementById('main'));
 });

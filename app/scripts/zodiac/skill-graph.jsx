@@ -34,6 +34,8 @@ export default class SkillGraph extends React.Component {
 			linkData: this.props.initialLinkData
 		};
 
+		this.nodes = [];
+
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onNodeDragMove = this.onNodeDragMove.bind(this);
 		this.draw = this.draw.bind(this);
@@ -69,7 +71,7 @@ export default class SkillGraph extends React.Component {
 									key = {[link[0], link[1]].join('-')}
 									from = {{x: fromNode.x, y: fromNode.y}}
 									to = {{x: toNode.x, y: toNode.y}}
-								></NodeLink>
+								/>
 							);
 						}.bind(this))}
 					</ReactKonva.Layer>
@@ -90,7 +92,7 @@ export default class SkillGraph extends React.Component {
 										onDragMove = {this.onNodeDragMove}
 										onMouseOver = {this.props.onNodeMouseOver}
 										onMouseOut = {this.props.onNodeMouseOut}
-									></Node>
+									/>
 								);
 							}
 
@@ -109,7 +111,7 @@ export default class SkillGraph extends React.Component {
 										onDragMove = {this.onNodeDragMove}
 										onMouseOver = {this.props.onNodeMouseOver}
 										onMouseOut = {this.props.onNodeMouseOut}
-									></SkillNode>
+									/>
 								);
 							}
 
@@ -128,7 +130,7 @@ export default class SkillGraph extends React.Component {
 										onDragMove = {this.onNodeDragMove}
 										onMouseOver = {this.props.onNodeMouseOver}
 										onMouseOut = {this.props.onNodeMouseOut}
-									></UpgradeNode>
+									/>
 								);
 							}
 
@@ -148,7 +150,7 @@ export default class SkillGraph extends React.Component {
 										onDragMove = {this.onNodeDragMove}
 										onMouseOver = {this.props.onNodeMouseOver}
 										onMouseOut = {this.props.onNodeMouseOut}
-									></PointNode>
+									/>
 								);
 							}
 

@@ -50,7 +50,7 @@ export default class PointNode extends React.Component {
 				onDragMove = {this.props.onDragMove}
 				onMouseOver = {this.props.onMouseOver}
 				onMouseOut = {this.props.onMouseOut}
-			></Node>
+			/>
 		);
 	}
 }
