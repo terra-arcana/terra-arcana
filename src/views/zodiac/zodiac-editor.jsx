@@ -204,6 +204,8 @@ export default class ZodiacEditor extends React.Component {
 		};
 
 		this.setState({
+			nodeData: data.nodes,
+			linkData: data.links,
 			prompt: {
 				type: 'alert-info',
 				message: 'Sauvegarde en cours...'

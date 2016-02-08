@@ -417,16 +417,12 @@ export default class SkillGraph extends React.Component {
 	 * @param {Number} y The new Y coordinate
 	 */
 	onNodeDragMove(id, x, y) {
-		var linkedNodes = this.getLinkedNodesById(id),
-			newNodeData = jQuery.extend([], this.state.nodeData),
-			i, j;
+		var i, newNodeData = Lodash.cloneDeep(this.state.nodeData);
 
-		for (i = 0; i < linkedNodes.length; i++) {
-			for (j = 0; j < newNodeData.length; j++) {
-				if (newNodeData[j].id === id) {
-					newNodeData[j].x = x;
-					newNodeData[j].y = y;
-				}
+		for (i = 0; i < newNodeData.length; i++) {
+			if (newNodeData[i].id === id) {
+				newNodeData[i].x = x;
+				newNodeData[i].y = y;
 			}
 		}
 
