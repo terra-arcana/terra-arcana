@@ -69,19 +69,11 @@ export default class ZodiacEditor extends React.Component {
 			switch(this.state.activeNode.type) {
 			case 'skill':
 			case 'upgrade':
-				inspector = (
-					<SkillNodeInspector
-						skill = {this.state.activeNode}
-					/>
-				);
+				inspector = <SkillNodeInspector skill={this.state.activeNode} />;
 				break;
 			case 'life':
 			case 'perk':
-				inspector = (
-					<PointNodeInspector
-						pointNode = {this.getNodeDataById(this.state.activeNode.id)}
-					/>
-				);
+				inspector = <PointNodeInspector pointNode={this.getNodeDataById(this.state.activeNode.id)} />;
 				break;
 			}
 

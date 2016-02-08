@@ -47,12 +47,19 @@ export default class SkillNodeInspector extends React.Component {
 	}
 
 	/**
+	 * @override
+	 */
+	componentWillUnmount() {
+		this.fetchSkillRequest.abort();
+	}
+
+	/**
 	 * Retrieve detailed skill info from the API and store it in component state
 	 * @param {Number} skillID The ID of the skill to retrieve
 	 * @private
 	 */
 	fetchSkillInfo(skillID) {
-		jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/skill/' + skillID, function(result) {
+		this.fetchSkillRequest = jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/skill/' + skillID, function(result) {
 			this.setState({
 				skill: result
 			});
@@ -138,7 +145,7 @@ export default class SkillNodeInspector extends React.Component {
 				<div className='col-sm-12 col-lg-4 skill-graph-editor-skill-node-inspector'>
 					{this.props.skill.upgrades.map(function(upgrade) {
 						return (
-							<div className='panel panel-info upgrade-panel'>
+							<div key={upgrade} className='panel panel-info upgrade-panel'>
 								<div className='panel-heading'>
 									<h3 className='panel-title' dangerouslySetInnerHTML={{__html: skill.upgrades[upgrade-1].title}}></h3>
 								</div>

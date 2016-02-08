@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactKonva from 'react-konva';
+import {Stage, Layer} from 'react-konva';
 import Lodash from 'lodash';
 
 import Node from './node.jsx';
@@ -60,22 +60,26 @@ export default class SkillGraph extends React.Component {
 		// the same size as the actual rendering of the stage after resizing, so
 		// putting big values seems to work as intended.
 		return (
-			<div className="skill-graph-editor col-lg-8 col-sm-12">
-				<ReactKonva.Stage width={2000} height={2000} ref={(ref) => this.stage = ref} draggable="true">
-					<ReactKonva.Layer ref={(ref) => this.linkLayer = ref}>
+			<div className='skill-graph-editor col-lg-8 col-sm-12'>
+				<Stage
+					ref = {(ref) => this.stage = ref}
+					width = {2000}
+					height = {2000}
+					draggable = {true}>
+					<Layer ref={(ref) => this.linkLayer = ref}>
 						{this.state.linkData.map(function(link) {
 							var fromNode = this.getNodeDataById(link[0]);
 							var toNode = this.getNodeDataById(link[1]);
 							return (
 								<NodeLink
-									key = {[link[0], link[1]].join('-')}
-									from = {{x: fromNode.x, y: fromNode.y}}
-									to = {{x: toNode.x, y: toNode.y}}
+									key={[link[0], link[1]].join('-')}
+									from={{x: fromNode.x, y: fromNode.y}}
+									to={{x: toNode.x, y: toNode.y}}
 								/>
 							);
 						}.bind(this))}
-					</ReactKonva.Layer>
-					<ReactKonva.Layer ref={(ref) => this.nodeLayer = ref}>
+					</Layer>
+					<Layer ref={(ref) => this.nodeLayer = ref}>
 						{this.state.nodeData.map(function(node) {
 							// Normal nodes
 							if (node.type === 'normal') {
@@ -87,7 +91,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										selected = {(this.props.startNode === node.id || this.props.pickedNodes.indexOf(node.id) !== -1)}
-										draggable ={this.props.canDragNodes}
+										draggable = {this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
 										onMouseOver = {this.props.onNodeMouseOver}
@@ -113,7 +117,7 @@ export default class SkillGraph extends React.Component {
 										onMouseOut = {this.props.onNodeMouseOut}
 									/>
 								);
-							}
+							} 
 
 							// Upgrade nodes
 							else if (node.type === 'upgrade') {
@@ -154,10 +158,10 @@ export default class SkillGraph extends React.Component {
 								);
 							}
 
-							return <noscript/>;
+							return <noscript />;
 						}.bind(this))}
-					</ReactKonva.Layer>
-				</ReactKonva.Stage>
+					</Layer>
+				</Stage>
 			</div>
 		);
 	}
