@@ -135,8 +135,10 @@ namespace terraarcana {
 				));
 
 				// Add links to the skill to the graph data
-				foreach ($skillGraphData[0]['links'] as $link) {
-					array_push($result['links'], array((string)$skill->ID, $link['id']));
+				if (!empty($skillGraphData[0]['links'])) {
+					foreach ($skillGraphData[0]['links'] as $link) {
+						array_push($result['links'], array((string)$skill->ID, $link['id']));
+					}
 				}
 
 				// Add any upgrades to the graph data

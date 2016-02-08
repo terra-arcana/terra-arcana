@@ -8,7 +8,7 @@ namespace terraarcana {
 	require_once(ROOT . '/src/cpt/rules.class.php');
 	require_once(ROOT . '/src/cpt/character-class.class.php');
 	require_once(ROOT . '/src/cpt/skill.class.php');
-	require_once(ROOT . '/src/cpt/energy-node.class.php');
+	require_once(ROOT . '/src/cpt/point-node.class.php');
 
 	require_once(ROOT . '/src/routes/graph-data.route.php');
 
@@ -29,7 +29,7 @@ namespace terraarcana {
 					'rules' => new Rules(),
 					'character-class' => new CharacterClass(),
 					'skill' => new Skill(),
-					'energy-node' => new EnergyNode()
+					'point-node' => new PointNode()
 				);
 
 				$this->_routes = array(

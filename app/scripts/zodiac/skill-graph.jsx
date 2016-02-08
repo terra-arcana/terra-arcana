@@ -81,8 +81,9 @@ export default class SkillGraph extends React.Component {
 					</Layer>
 					<Layer ref={(ref) => this.nodeLayer = ref}>
 						{this.state.nodeData.map(function(node) {
+							switch (node.type) {
 							// Normal nodes
-							if (node.type === 'normal') {
+							case 'normal':
 								return (
 									<Node
 										key = {node.id}
@@ -98,10 +99,9 @@ export default class SkillGraph extends React.Component {
 										onMouseOut = {this.props.onNodeMouseOut}
 									/>
 								);
-							}
 
 							// Skill nodes
-							else if (node.type === 'skill') {
+							case 'skill':
 								return (
 									<SkillNode
 										key = {node.id}
@@ -117,10 +117,9 @@ export default class SkillGraph extends React.Component {
 										onMouseOut = {this.props.onNodeMouseOut}
 									/>
 								);
-							} 
 
 							// Upgrade nodes
-							else if (node.type === 'upgrade') {
+							case 'upgrade':
 								return (
 									<UpgradeNode
 										key = {node.id}
@@ -136,10 +135,10 @@ export default class SkillGraph extends React.Component {
 										onMouseOut = {this.props.onNodeMouseOut}
 									/>
 								);
-							}
 
 							// Point nodes
-							else if (node.type === 'perk' || node.type === 'life') {
+							case 'perk':
+							case 'life':
 								return (
 									<PointNode
 										key = {node.id}
@@ -148,6 +147,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										type = {node.type}
+										value = {node.value}
 										selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
 										draggable = {(this.props.canDragNodes)}
 										onClick = {this.onNodeClick}
@@ -156,9 +156,10 @@ export default class SkillGraph extends React.Component {
 										onMouseOut = {this.props.onNodeMouseOut}
 									/>
 								);
-							}
 
-							return <noscript />;
+							default:
+								return <noscript />;
+							}
 						}.bind(this))}
 					</Layer>
 				</Stage>

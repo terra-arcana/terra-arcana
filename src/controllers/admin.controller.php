@@ -23,6 +23,15 @@ namespace terraarcana {
 		 */
 		public function register_admin_pages() {
 			add_submenu_page('edit.php?post_type=rules', 'Éditer le Zodiaque', 'Zodiaque', 'manage_options', 'terraarcana_zodiac', array($this, 'render_zodiac_page'));
+		
+			if (function_exists('acf_add_options_page')) {
+				acf_add_options_page(array(
+					'page_title' => 'Réglages de Terra Arcana',
+					'menu_title' => 'Terra Arcana',
+					'menu_slug' => 'terra-settings',
+					'parent_slug' => 'options-general.php'
+				));
+			}
 		}
 
 		/**

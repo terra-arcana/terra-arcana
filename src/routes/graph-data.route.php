@@ -31,16 +31,16 @@ namespace terraarcana {
 				);
 
 				$skillGraphData = DataController::getInstance()->getCPT('skill')->get_graph_data();
-				$energyGraphData = DataController::getInstance()->getCPT('energy-node')->get_graph_data();
+				$pointGraphData = DataController::getInstance()->getCPT('point-node')->get_graph_data();
 
 				// Exit early if no skills are found
-				if (empty($skillGraphData) && empty($energyGraphData)) {
+				if (empty($skillGraphData) && empty($pointGraphData)) {
 					return new \WP_Error('terraarcana_no_field_data', 'Aucun champ trouvé', array('status' => 404));
 				}
 
-				$result['nodes'] = array_merge($skillGraphData['nodes'], $energyGraphData['nodes']);
+				$result['nodes'] = array_merge($skillGraphData['nodes'], $pointGraphData['nodes']);
 
-				$links = array_merge($skillGraphData['links'], $energyGraphData['links']);
+				$links = array_merge($skillGraphData['links'], $skillGraphData['links']);
 				foreach($links as $link) {
 					$this->push_unique_link($result['links'], $link[0], $link[1]);
 				}
@@ -56,20 +56,42 @@ namespace terraarcana {
 			public function update_items(\WP_REST_Request $request) {
 				$params = $request->get_params();
 
-				foreach($params['nodes'] as $node) {					
-					// Skill nodes
-					if ($node['type'] == 'skill') {
-						DataController::getInstance()->getCPT('skill')->update_skill_graph_data($node);
+				// First pass to create all new nodes and replace their temp ID with their true ID
+				if (!empty($params['newNodeIndexes'])) {
+					foreach($params['newNodeIndexes'] as $nodeIndex) {
+						$postID = '';
+
+						switch($params['nodes'][$nodeIndex]['type']) {
+						case 'life':
+						case 'perk':
+							$postID = DataController::getInstance()->getCPT('point-node')->create($params['nodes'][$nodeIndex]);
+							break;
+						}
+
+						$params['nodes'][$nodeIndex]['id'] = $postID;
+
+						// TODO: Replace all instances of the temp ID with the newly inserted one in link data
 					}
+				}
+
+				// Update all data on all nodes
+				foreach($params['nodes'] as $node) {					
+					switch($node['type']) {
+					// Skill nodes
+					case 'skill':
+						DataController::getInstance()->getCPT('skill')->update_skill_graph_data($node);
+						break;
 
 					// Upgrade nodes
-					else if ($node['type'] == 'upgrade') {
+					case 'upgrade':
 						DataController::getInstance()->getCPT('skill')->update_upgrade_graph_data($node);
-					}
+						break;
 
-					// Energy nodes
-					else if ($node['type'] == 'perk' || $node['type'] == 'energy') {
-						DataController::getInstance()->getCPT('energy-node')->update_graph_data($node);
+					// Point nodes
+					case 'life':
+					case 'perk':
+						DataController::getInstance()->getCPT('point-node')->update_graph_data($node);
+						break;
 					}
 				}
 				

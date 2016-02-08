@@ -4,13 +4,13 @@ namespace terraarcana {
 	require_once(ROOT . '/src/cpt/cpt.aclass.php' );
 
 	/**
-	 * Represents the Energy node CPT, where distinct energy and 
+	 * Represents the point node CPT, where distinct energy and 
 	 * perk nodes can be added to the game system database.
 	 */
-	class EnergyNode extends CPT {
+	class PointNode extends CPT {
 		
 		public function __construct() {
-			$this->_postTypeName = 'energy-node';
+			$this->_postTypeName = 'point-node';
 			$this->_fields = array(
 				'node_type' => array(
 					'key' => 'field_56a663aef4f97',
@@ -20,7 +20,13 @@ namespace terraarcana {
 					'key' => 'field_56a663d7f4f98'
 				),
 				'graph_data' => array(
-					'key' => 'field_566f2d31054d9'
+					'key' => 'field_566f2d31054d9',
+					'x' => array(
+						'key' => 'field_566f2d72054db'
+					),
+					'y' => array(
+						'key' => 'field_566f2d7b054dc'
+					)
 				)
 			);
 		}
@@ -54,7 +60,7 @@ namespace terraarcana {
 				'public' 				=> true,
 				'show_in_menu' 			=> 'edit.php?post_type=rules',
 				'show_in_rest' 			=> true,
-				'rest_base' 			=> 'energy-node',
+				'rest_base' 			=> 'point-node',
 				'hierarchical' 			=> false,
 				'supports' => array(
 					'title' => false,
@@ -73,12 +79,12 @@ namespace terraarcana {
 				'links' => array()
 			);
 			
-			$energyNodes = get_posts(array(
-				'post_type' => 'energy-node',
+			$pointNodes = get_posts(array(
+				'post_type' => 'point-node',
 				'posts_per_page' => -1
 			));
 
-			foreach($energyNodes as $node) {
+			foreach($pointNodes as $node) {
 				$graphData = get_field($this->_fields['graph_data']['key'], $node->ID);
 				$nodeType = get_field($this->_fields['node_type']['key'], $node->ID);
 				$value = get_field($this->_fields['value']['key'], $node->ID);
@@ -93,8 +99,10 @@ namespace terraarcana {
 				));
 
 				// Add links to the skill to the graph data
-				foreach ($graphData[0]['links'] as $link) {
-					array_push($result['links'], array((string)$node->ID, $link['id']));
+				if (!empty($graphData[0]['links'])) {
+					foreach ($graphData[0]['links'] as $link) {
+						array_push($result['links'], array((string)$node->ID, $link['id']));
+					}					
 				}
 			}
 
@@ -102,10 +110,52 @@ namespace terraarcana {
 		}
 
 		/**
-		 * Update a graph data node (X/Y coordinates and link IDs)
+		 * Create a new point node in the database. 
+		 * This does not create any custom fields, use {@link update_graph_data} afterwards.
+		 * @param array $data The new node data
+		 * @return int The ID of the inserted WordPress node
+		 */
+		public function create($data) {
+			$id = -1;
+			$choices = get_field_object($this->_fields['node_type']['key'])['choices'];
+			$post_title = $choices[$data['type']];
+			$post_content = '';
+
+			while (have_rows('point_nodes', 'option')) {
+				the_row();
+				while (have_rows('post_content')) {
+					the_row();
+					$post_content = get_sub_field($data['type']);
+				}
+			}
+
+			$id = wp_insert_post(array(
+				'post_type' => $this->_postTypeName,
+				'post_title' => $post_title,
+				'post_content' => $post_content,
+				'post_status' => 'publish'
+			));
+
+			// Create stub graph_data repeater row so it will be ready for update_graph_data, 
+			// since that function can't handle creating new rows
+			// @see http://www.advancedcustomfields.com/resources/update_sub_field/
+			add_row($this->_fields['graph_data']['key'], array(
+				'x' => 0,
+				'y' => 0,
+				'links' => array()
+			), $id);
+
+			return $id;
+		}
+
+		/**
+		 * Update a graph data node (X/Y coordinates and link IDs). At this point, 
+		 * all nodes entering here should already exist in DB
 		 * @param Object $node An object containing the new `x`, `y` and `links` properties of a node `id`
 		 */
 		public function update_graph_data($node) {
+			update_field($this->_fields['node_type']['key'], $node['type'], $node['id']);
+			update_field($this->_fields['value']['key'], $node['value'], $node['id']);
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'x'), $node['x'], $node['id']);
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'y'), $node['y'], $node['id']);
 

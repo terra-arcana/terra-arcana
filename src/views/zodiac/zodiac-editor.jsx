@@ -35,10 +35,14 @@ export default class ZodiacEditor extends React.Component {
 			prompt: null
 		};
 
+		this.newNodeCount = 0;
+
 		this.uninspect = this.uninspect.bind(this);
+		this.createPointNode = this.createPointNode.bind(this);
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onPromptClose = this.onPromptClose.bind(this);
 		this.saveZodiac = this.saveZodiac.bind(this);
+		this.getNewNodeIndexes = this.getNewNodeIndexes.bind(this);
 	}
 
 	/**
@@ -127,8 +131,20 @@ export default class ZodiacEditor extends React.Component {
 							<button type='button' className='btn btn-default btn-sm pull-right' onClick={this.saveZodiac}>Sauvegarder</button>
 						</div>
 						<div className='panel-body'>
-							{/*<button type='button' className='btn btn-default'>Ajouter un noeud d'énergie</button>*/}
-							{/*<button type='button' className='btn btn-default'>Ajouter un noeud d'essence</button>*/}
+							{<button 
+								ref = {(ref) => this.addLifeNodeButton = ref}
+								type = 'button'
+								className = 'btn btn-default'
+								onClick = {this.createPointNode.bind(this, 'life')}>
+								Ajouter un noeud d'énergie
+							</button>}
+							{<button 
+								ref = {(ref) => this.addPerkNodeButton = ref}
+								type = 'button'
+								className = 'btn btn-default'
+								onClick = {this.createPointNode.bind(this, 'perk')}>
+								Ajouter un noeud d'essence
+							</button>}
 							
 							{nodeDetails}
 						</div>
@@ -151,6 +167,28 @@ export default class ZodiacEditor extends React.Component {
 				type: '',
 				upgrades: []
 			}
+		});
+	}
+
+	/**
+	 * Creates a new point node and adds it to the graph
+	 * @param {string} type The new type of the node, `life` or `perk`
+	 */
+	createPointNode(type) {
+		var newNodeData = Lodash.cloneDeep(this.state.nodeData);
+
+		newNodeData.push({
+			id: 'n' + this.newNodeCount,
+			type: type,
+			value: '0',
+			x: 0,
+			y: 0
+		});
+
+		this.newNodeCount++;
+
+		this.setState({
+			nodeData: newNodeData
 		});
 	}
 
@@ -179,6 +217,8 @@ export default class ZodiacEditor extends React.Component {
 			this.uninspect();
 		} else {
 			this.setState({
+				nodeData: this.graph.getNodeData(),
+				linkData: this.graph.getLinkData(),
 				activeNode: nodeObj
 			});
 		}
@@ -200,8 +240,11 @@ export default class ZodiacEditor extends React.Component {
 	saveZodiac() {
 		var data = {
 			nodes: this.graph.getNodeData(),
-			links: this.graph.getLinkData()
+			links: this.graph.getLinkData(),
+			newNodeIndexes: this.getNewNodeIndexes()
 		};
+
+		console.log(data.newNodeIndexes);
 
 		this.setState({
 			nodeData: data.nodes,
@@ -247,5 +290,23 @@ export default class ZodiacEditor extends React.Component {
 		}.bind(this));
 
 		return nodeData;
+	}
+
+	/**
+	 * Get all indexes of newly created nodes in the graph node data
+	 * @return {Array}
+	 * @private
+	 */
+	getNewNodeIndexes() {
+		var nodeData = this.graph.getNodeData(),
+			result = [];
+
+		for (var i = 0; i < nodeData.length; i++) {
+			if (nodeData[i].id[0] === 'n') {
+				result.push(i);
+			}
+		}
+
+		return result;
 	}
 }
