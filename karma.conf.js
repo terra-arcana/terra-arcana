@@ -14,7 +14,7 @@ module.exports = function(config) {
 		preprocessors: {
 			'webpack.tests.js': ['webpack']
 		},
-		reporters: ['dots'],
+		reporters: ['dots', 'junit'],
 		webpack: {
 			module: {
 				loaders: [
@@ -39,6 +39,12 @@ module.exports = function(config) {
 		},
 		webpackServer: {
 			noInfo: true
+		},
+		junitReporter: {
+			outputDir: 'build-reports',
+			outputFile: undefined,
+			suite: '',
+			useBrowserName: true
 		}
 	});
 };
