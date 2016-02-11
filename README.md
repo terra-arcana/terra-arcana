@@ -1,7 +1,7 @@
 # Terra Arcana
 http://www.gnterraarcana.com
 
-Bienvenue au futur du site web de Terra Arcana! Le site refera prochainement peau neuve, avec un nouveau thème WordPress supportant des technologies modernes telles que **WP REST API**, **ReactJS** et **Konva**.
+Bienvenue au futur du site web du GN Terra Arcana! Le site refera prochainement peau neuve, avec un nouveau thème WordPress supportant des technologies modernes telles que **WP REST API**, **ReactJS** et **Konva**.
 
 Avec celle nouvelle approche, nous nous tournons vers GitHub et la communauté open-source québécoise, pour faire de Terra Arcana le leader en site de GN au Québec.
 
