@@ -244,8 +244,6 @@ export default class ZodiacEditor extends React.Component {
 			newNodeIndexes: this.getNewNodeIndexes()
 		};
 
-		console.log(data.newNodeIndexes);
-
 		this.setState({
 			nodeData: data.nodes,
 			linkData: data.links,

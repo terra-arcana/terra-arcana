@@ -24,15 +24,15 @@ describe('ZodiacEditor', function() {
 				<ZodiacEditor/>
 			),
 			defaultLifeNode = {
-				id: 'new-1',
+				id: 'n0',
 				type: 'life',
 				value: '0',
-				x: '0',
-				y: '0'
+				x: 0,
+				y: 0
 			};
 
 		TestUtils.Simulate.click(editor.addLifeNodeButton);
 
-		expect(Lodash.isEqual(editor.getNodeDataById('new-1'), defaultLifeNode)).toEqual(true);
+		expect(Lodash.isEqual(editor.getNodeDataById('n0'), defaultLifeNode)).toEqual(true);
 	});
 });
