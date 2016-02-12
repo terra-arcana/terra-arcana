@@ -34,6 +34,11 @@ export default class SkillGraph extends React.Component {
 			linkData: this.props.initialLinkData
 		};
 
+		/**
+		 * References to all the {@link Node} elements of the graph
+		 * @type {Array}
+		 * @private
+		 */
 		this.nodes = [];
 
 		this.onNodeClick = this.onNodeClick.bind(this);

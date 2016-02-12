@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactKonva from 'react-konva';
 
 import Node from './node.jsx';
 
@@ -29,6 +30,8 @@ export default class PointNode extends React.Component {
 			'life': 'green',
 			'perk': 'orange'
 		};
+
+		this.onDragMove = this.onDragMove.bind(this);
 	}
 
 	/**
@@ -37,21 +40,46 @@ export default class PointNode extends React.Component {
 	 */
 	render() {
 		return (
-			<Node
-				ref = {(ref) => this.node = ref}
-				id = {this.props.id}
+			<ReactKonva.Group
+				ref = {(ref) => this.group = ref}
 				x = {this.props.x}
 				y = {this.props.y}
-				radius = {this.NODE_RADIUS}
-				fill = {this.NODE_COLORS[this.props.type]}
-				selected = {this.props.selected}
 				draggable = {this.props.draggable}
-				onClick = {this.props.onClick}
-				onDragMove = {this.props.onDragMove}
-				onMouseOver = {this.props.onMouseOver}
-				onMouseOut = {this.props.onMouseOut}
-			/>
+				onDragMove = {this.onDragMove}
+			>
+				<Node
+					ref = {(ref) => this.node = ref}
+					id = {this.props.id}
+					radius = {this.NODE_RADIUS}
+					fill = {this.NODE_COLORS[this.props.type]}
+					selected = {this.props.selected}
+					draggable = {false}
+					onClick = {this.props.onClick}
+					onMouseOver = {this.props.onMouseOver}
+					onMouseOut = {this.props.onMouseOut}
+				/>
+				<ReactKonva.Text
+					ref = {(ref) => this.label = ref}
+					x = {-5}
+					y = {-9}
+					text = {this.props.value}
+					fontSize = {18}
+					fontStyle = 'bold'
+					align = 'center'
+					listening = {false}
+				/>
+			</ReactKonva.Group>
 		);
+	}
+
+	/**
+	 * Handle drag move events
+	 * @private
+	 */
+	onDragMove() {
+		if (this.props.onDragMove) {
+			this.props.onDragMove(this.props.id, this.group.x(), this.group.y());
+		}
 	}
 }
 
@@ -63,6 +91,7 @@ PointNode.defaultProps = {
 	x: 0,
 	y: 0, 
 	type: 'life',
+	value: '0',
 	selected: false,
 	draggable: false
 };
@@ -75,6 +104,7 @@ PointNode.propTypes = {
 	x: React.PropTypes.number.isRequired,
 	y: React.PropTypes.number.isRequired,
 	type: React.PropTypes.string.isRequired,
+	value: React.PropTypes.string.isRequired,
 	selected: React.PropTypes.bool,
 	draggable: React.PropTypes.bool,
 

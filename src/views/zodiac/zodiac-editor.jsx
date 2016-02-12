@@ -35,12 +35,18 @@ export default class ZodiacEditor extends React.Component {
 			prompt: null
 		};
 
+		/**
+		 * Number of new nodes that have been created during this session
+		 * @type {Number}
+		 * @private
+		 */
 		this.newNodeCount = 0;
 
 		this.uninspect = this.uninspect.bind(this);
 		this.createPointNode = this.createPointNode.bind(this);
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onPromptClose = this.onPromptClose.bind(this);
+		this.onPointNodeValueChange = this.onPointNodeValueChange.bind(this);
 		this.saveZodiac = this.saveZodiac.bind(this);
 		this.getNewNodeIndexes = this.getNewNodeIndexes.bind(this);
 	}
@@ -63,12 +69,16 @@ export default class ZodiacEditor extends React.Component {
 	 */
 	render() {
 		var inspector = null,
+			detailsBody = null,
 			activeNodeData = null,
 			nodeDetails = null,
 			savePrompt = null,
 			rawNodeID = [this.state.activeNode.id].concat(this.state.activeNode.upgrades).join('-'); // TODO: Test for emptiness
 
 		if (!Lodash.isEmpty(this.state.activeNode)) {
+			// Render node details panel
+			activeNodeData = this.getNodeDataById(rawNodeID);
+
 			// Render inspector
 			switch(this.state.activeNode.type) {
 			case 'skill':
@@ -77,12 +87,21 @@ export default class ZodiacEditor extends React.Component {
 				break;
 			case 'life':
 			case 'perk':
-				inspector = <PointNodeInspector pointNode={this.getNodeDataById(this.state.activeNode.id)} />;
+				inspector = <PointNodeInspector pointNode={activeNodeData} />;
+				detailsBody = (
+					<div className="input-group">
+						<input
+							ref = {(ref) => this.pointNodeValueInput = ref}
+							type = 'number'
+							className = 'form-control'
+							value = {activeNodeData.value}
+							onChange = {this.onPointNodeValueChange}
+						/>
+						<span className="input-group-addon">points</span>
+					</div>
+				);
 				break;
 			}
-
-			// Render node details panel
-			activeNodeData = this.getNodeDataById(rawNodeID);
 
 			if (activeNodeData) {
 				nodeDetails = (
@@ -91,6 +110,7 @@ export default class ZodiacEditor extends React.Component {
 							<h3 className='panel-title'>Détails du noeud</h3>
 						</div>
 						<div className='panel-body'>
+							{detailsBody}
 						</div>
 					</div>
 				);
@@ -119,7 +139,6 @@ export default class ZodiacEditor extends React.Component {
 					canDragNodes = {true}
 					contiguousSelection = {false}
 					onNodeSelect = {this.onNodeClick}
-					onNodeDrag = {this.onNodeDrag}
 				/>
 
 				{savePrompt}
@@ -194,7 +213,7 @@ export default class ZodiacEditor extends React.Component {
 
 	/**
 	 * Select or unselect a node
-	 * @param {String} id The picked node ID
+	 * @param {string} id The picked node ID
 	 */
 	onNodeClick(id) {
 		// Build node obj
@@ -230,6 +249,26 @@ export default class ZodiacEditor extends React.Component {
 	onPromptClose() {
 		this.setState({
 			prompt: null
+		});
+	}
+
+	/**
+	 * Handle point node value changes through user input
+	 * @param {SyntheticEvent} e The change event
+	 */
+	onPointNodeValueChange(e) {
+		var nodeData = this.graph.getNodeData(),
+			linkData = this.graph.getLinkData();
+
+		for (var i = 0; i < nodeData.length; i++) {
+			if (nodeData[i].id === this.state.activeNode.id) {
+				nodeData[i].value = e.target.value;
+			}
+		}
+
+		this.setState({
+			nodeData: nodeData,
+			linkData: linkData
 		});
 	}
 
@@ -274,7 +313,7 @@ export default class ZodiacEditor extends React.Component {
 
 	/**
 	 * Return the data of a particular node by ID
-	 * @param {String} id The node ID
+	 * @param {string} id The node ID
 	 * @return {Object|null} The node data
 	 * @private
 	 */

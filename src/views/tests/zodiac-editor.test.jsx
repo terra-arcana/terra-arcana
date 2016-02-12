@@ -35,4 +35,30 @@ describe('ZodiacEditor', function() {
 
 		expect(Lodash.isEqual(editor.getNodeDataById('n0'), defaultLifeNode)).toEqual(true);
 	});
+
+	it('correctly edits life node values', function() {
+		var editor = TestUtils.renderIntoDocument(
+			<ZodiacEditor />
+		);
+
+		editor.setState({
+			nodeData: [{
+				id: '0',
+				x: 0,
+				y: 0,
+				type: 'life',
+				value: '1'
+			}],
+			activeNode: {
+				id: '0',
+				type: 'life',
+				upgrades: []
+			}
+		});
+
+		editor.pointNodeValueInput.value = '5';
+		TestUtils.Simulate.change(editor.pointNodeValueInput);
+
+		expect(editor.getNodeDataById('0').value).toEqual('5');
+	});
 });

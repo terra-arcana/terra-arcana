@@ -123,8 +123,8 @@ export default class Node extends React.Component {
  */
 Node.defaultProps = {
 	id: '',
-	x: 100,
-	y: 100,
+	x: 0,
+	y: 0,
 	radius: 15,
 	fill: 'green',
 	draggable: false,
