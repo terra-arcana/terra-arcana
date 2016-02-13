@@ -61,4 +61,67 @@ describe('ZodiacEditor', function() {
 
 		expect(editor.getNodeDataById('0').value).toEqual('5');
 	});
+
+	it('correctly deletes life nodes', function() {
+		var editor = TestUtils.renderIntoDocument(
+			<ZodiacEditor />
+		);
+
+		editor.setState({
+			nodeData: [
+				{
+					id: '12',
+					x: 0,
+					y: 0,
+					type: 'skill'
+				},
+				{
+					id: '18',
+					x: 100,
+					y: 100,
+					type: 'life',
+					value: '1'
+				},
+				{
+					id: '20',
+					x: 200,
+					y: 200,
+					type: 'perk',
+					value: '3'
+				}
+			],
+			activeNode: {
+				id: '18',
+				type: 'life',
+				upgrades: []
+			},
+			deletedNodes: []
+		});
+
+		TestUtils.Simulate.click(editor.deletePointNodeButton);
+
+		expect(Lodash.isEqual(editor.state.nodeData, [
+			{
+				id: '12',
+				x: 0,
+				y: 0,
+				type: 'skill'
+			},
+			{
+				id: '20',
+				x: 200,
+				y: 200,
+				type: 'perk',
+				value: '3'
+			}
+		])).toEqual(true);
+
+		expect(Lodash.isEqual(editor.state.activeNode, {
+			id: '',
+			type: '',
+			upgrades: []
+		})).toEqual(true);
+
+		expect(Lodash.isEqual(editor.state.deletedNodes, ['18'])).toEqual(true);
+	});
 });

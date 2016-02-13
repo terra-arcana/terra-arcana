@@ -94,6 +94,11 @@ namespace terraarcana {
 						break;
 					}
 				}
+
+				// Delete removed nodes
+				foreach($params['deletedNodes'] as $node) {
+					wp_delete_post($node, true);
+				}
 				
 				return new \WP_REST_Response('Zodiaque sauvegardé avec succès!', 200);
 			}

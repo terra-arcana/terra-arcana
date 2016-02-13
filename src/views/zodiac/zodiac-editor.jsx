@@ -32,6 +32,7 @@ export default class ZodiacEditor extends React.Component {
 			}, 
 			nodeData: [],
 			linkData: [],
+			deletedNodes: [],
 			prompt: null
 		};
 
@@ -44,6 +45,7 @@ export default class ZodiacEditor extends React.Component {
 
 		this.uninspect = this.uninspect.bind(this);
 		this.createPointNode = this.createPointNode.bind(this);
+		this.deletePointNode = this.deletePointNode.bind(this);
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onPromptClose = this.onPromptClose.bind(this);
 		this.onPointNodeValueChange = this.onPointNodeValueChange.bind(this);
@@ -89,15 +91,19 @@ export default class ZodiacEditor extends React.Component {
 			case 'perk':
 				inspector = <PointNodeInspector pointNode={activeNodeData} />;
 				detailsBody = (
-					<div className="input-group">
-						<input
-							ref = {(ref) => this.pointNodeValueInput = ref}
-							type = 'number'
-							className = 'form-control'
-							value = {activeNodeData.value}
-							onChange = {this.onPointNodeValueChange}
-						/>
-						<span className="input-group-addon">points</span>
+					<div>
+						<div className="input-group">
+							<input
+								ref = {(ref) => this.pointNodeValueInput = ref}
+								type = 'number'
+								className = 'form-control'
+								value = {activeNodeData.value}
+								onChange = {this.onPointNodeValueChange}
+							/>
+							<span className="input-group-addon">points</span>
+						</div>
+
+						<button type='button' className='btn btn-danger pull-right' data-toggle='modal' data-target='#deletePointNodeModal'>Supprimer le noeud</button>
 					</div>
 				);
 				break;
@@ -130,47 +136,75 @@ export default class ZodiacEditor extends React.Component {
 		}
 
 		return (
-			<div className="row">
-				<SkillGraph 
-					ref = {(ref) => this.graph = ref}
-					initialNodeData = {this.state.nodeData}
-					initialLinkData = {this.state.linkData}
-					pickedNodes = {[rawNodeID]}
-					canDragNodes = {true}
-					contiguousSelection = {false}
-					onNodeSelect = {this.onNodeClick}
-				/>
+			<div>
+				<div className="row">
+					<SkillGraph 
+						ref = {(ref) => this.graph = ref}
+						initialNodeData = {this.state.nodeData}
+						initialLinkData = {this.state.linkData}
+						pickedNodes = {[rawNodeID]}
+						canDragNodes = {true}
+						contiguousSelection = {false}
+						onNodeSelect = {this.onNodeClick}
+					/>
 
-				{savePrompt}
+					{savePrompt}
 
-				<div className='skill-graph-editor-control-panel'>
-					<div className='panel panel-primary'>
-						<div className='panel-heading clearfix'>
-							<h2 className='skill-graph-editor-control-panel-title panel-title pull-left'>Panneau de contrôle</h2>
-							<button type='button' className='btn btn-default btn-sm pull-right' onClick={this.saveZodiac}>Sauvegarder</button>
+					<div className='skill-graph-editor-control-panel'>
+						<div className='panel panel-primary'>
+							<div className='panel-heading clearfix'>
+								<h2 className='skill-graph-editor-control-panel-title panel-title pull-left'>Panneau de contrôle</h2>
+								<button type='button' className='btn btn-default btn-sm pull-right' onClick={this.saveZodiac}>Sauvegarder</button>
+							</div>
+							<div className='panel-body'>
+								{<button 
+									ref = {(ref) => this.addLifeNodeButton = ref}
+									type = 'button'
+									className = 'btn btn-default'
+									onClick = {this.createPointNode.bind(this, 'life')}>
+									Ajouter un noeud d'énergie
+								</button>}
+								{<button 
+									ref = {(ref) => this.addPerkNodeButton = ref}
+									type = 'button'
+									className = 'btn btn-default'
+									onClick = {this.createPointNode.bind(this, 'perk')}>
+									Ajouter un noeud d'essence
+								</button>}
+								
+								{nodeDetails}
+							</div>
 						</div>
-						<div className='panel-body'>
-							{<button 
-								ref = {(ref) => this.addLifeNodeButton = ref}
-								type = 'button'
-								className = 'btn btn-default'
-								onClick = {this.createPointNode.bind(this, 'life')}>
-								Ajouter un noeud d'énergie
-							</button>}
-							{<button 
-								ref = {(ref) => this.addPerkNodeButton = ref}
-								type = 'button'
-								className = 'btn btn-default'
-								onClick = {this.createPointNode.bind(this, 'perk')}>
-								Ajouter un noeud d'essence
-							</button>}
-							
-							{nodeDetails}
+					</div>
+
+					{inspector}
+				</div>
+
+				<div className='modal fade' id='deletePointNodeModal' tabIndex='-1' role='dialog'>
+					<div className='modal-dialog' role='document'>
+						<div className='modal-content'>
+							<div className='modal-header'>
+								<button type='button' className='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+								<h4 className='modal-title'>Confirmation de suppression</h4>
+							</div>
+							<div className='modal-body'>
+								Êtes-vous certain de vouloir supprimer ce noeud?
+							</div>
+							<div className='modal-footer'>
+								<button type='button' className='btn btn-default' data-dismiss='modal'>Annuler</button>
+								<button
+									ref = {(ref) => this.deletePointNodeButton = ref}
+									type = 'button'
+									className = 'btn btn-danger'
+									data-dismiss = 'modal'
+									onClick = {this.deletePointNode}
+								>
+									Supprimer
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
-
-				{inspector}
 			</div>
 		);
 	}
@@ -194,7 +228,7 @@ export default class ZodiacEditor extends React.Component {
 	 * @param {string} type The new type of the node, `life` or `perk`
 	 */
 	createPointNode(type) {
-		var newNodeData = Lodash.cloneDeep(this.state.nodeData);
+		var newNodeData = Lodash.cloneDeep(this.graph.getNodeData());
 
 		newNodeData.push({
 			id: 'n' + this.newNodeCount,
@@ -208,6 +242,32 @@ export default class ZodiacEditor extends React.Component {
 
 		this.setState({
 			nodeData: newNodeData
+		});
+	}
+
+	/**
+	 * Deletes a point node from the graph
+	 */
+	deletePointNode() {
+		var newNodeData = Lodash.cloneDeep(this.graph.getNodeData()),
+			newDeletedNodes = Lodash.cloneDeep(this.state.deletedNodes);
+
+		for (var i = 0; i < this.state.nodeData.length; i++) {
+			if (this.state.nodeData[i].id === this.state.activeNode.id) {
+				newNodeData.splice(i, 1);
+			}
+		}
+
+		newDeletedNodes.push(this.state.activeNode.id);
+
+		this.setState({
+			nodeData: newNodeData,
+			deletedNodes: newDeletedNodes,
+			activeNode: {
+				id: '',
+				type: '',
+				upgrades: []
+			}
 		});
 	}
 
@@ -280,7 +340,8 @@ export default class ZodiacEditor extends React.Component {
 		var data = {
 			nodes: this.graph.getNodeData(),
 			links: this.graph.getLinkData(),
-			newNodeIndexes: this.getNewNodeIndexes()
+			newNodeIndexes: this.getNewNodeIndexes(),
+			deletedNodes: this.state.deletedNodes
 		};
 
 		this.setState({
