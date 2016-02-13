@@ -31,6 +31,9 @@ namespace terraarcana {
 					'key' => 'field_566f1505b9255',
 					'select' => true
 				),
+				'character_class' => array(
+					'key' => 'field_56bf9ccd4d4e3'
+				),
 				'cost' => array(
 					'key' => 'field_566f2786a877f',
 					'override' => array(

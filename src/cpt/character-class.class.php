@@ -42,7 +42,7 @@ namespace terraarcana {
 				'public' 				=> true,
 				'show_in_menu' 			=> 'edit.php?post_type=rules',
 				'show_in_rest' 			=> true,
-				'rest_base' 			=> 'signe',
+				'rest_base' 			=> 'character-class',
 				'hierarchical' 			=> false,
 				'supports' => array(
 					'title',

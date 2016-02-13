@@ -92,7 +92,8 @@ export default class ZodiacEditor extends React.Component {
 				inspector = <PointNodeInspector pointNode={activeNodeData} />;
 				detailsBody = (
 					<div>
-						<div className="input-group">
+						<div className='input-group'>
+							<span className='input-group-addon'>Valeur</span>
 							<input
 								ref = {(ref) => this.pointNodeValueInput = ref}
 								type = 'number'
@@ -100,7 +101,7 @@ export default class ZodiacEditor extends React.Component {
 								value = {activeNodeData.value}
 								onChange = {this.onPointNodeValueChange}
 							/>
-							<span className="input-group-addon">points</span>
+							<span className='input-group-addon'>points</span>
 						</div>
 
 						<button type='button' className='btn btn-danger pull-right' data-toggle='modal' data-target='#deletePointNodeModal'>Supprimer le noeud</button>
@@ -137,7 +138,7 @@ export default class ZodiacEditor extends React.Component {
 
 		return (
 			<div>
-				<div className="row">
+				<div className='row'>
 					<SkillGraph 
 						ref = {(ref) => this.graph = ref}
 						initialNodeData = {this.state.nodeData}

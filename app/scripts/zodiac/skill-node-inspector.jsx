@@ -65,9 +65,16 @@ export default class SkillNodeInspector extends React.Component {
 		 * @private
 		 */
 		this.fetchSkillRequest = jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/skill/' + skillID, function(result) {
-			this.setState({
-				skill: result
-			});
+			var skillInfo = result;
+
+			// Replace character class ID with full character class object
+			this.fetchSkillRequest = jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/character-class/' + skillInfo.character_class, function(result) {
+				skillInfo.character_class = result;
+
+				this.setState({
+					skill: skillInfo
+				});
+			}.bind(this));
 		}.bind(this));
 	}
 
@@ -163,8 +170,8 @@ export default class SkillNodeInspector extends React.Component {
 						<div className='panel-heading'>
 							<h2 className='panel-title'><span dangerouslySetInnerHTML={{__html: skill.title.rendered}}></span>&emsp;
 								<small>
-									<span dangerouslySetInnerHTML={{__html: skill['skill_type'].rendered}}></span>&nbsp;|&nbsp;
-									<span>[SIGNE]</span>
+									<span dangerouslySetInnerHTML={{__html: skill.skill_type.rendered}}></span>&nbsp;|&nbsp;
+									<span dangerouslySetInnerHTML={{__html: skill.character_class.title.rendered}}></span>
 								</small>
 							</h2>
 						</div>

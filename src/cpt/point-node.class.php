@@ -59,8 +59,7 @@ namespace terraarcana {
 				'description' 			=> 'Noeuds d\'énergie et d\'essence présents dans le Zodiaque',
 				'public' 				=> true,
 				'show_in_menu' 			=> 'edit.php?post_type=rules',
-				'show_in_rest' 			=> true,
-				'rest_base' 			=> 'point-node',
+				'show_in_rest' 			=> false,
 				'hierarchical' 			=> false,
 				'supports' => array(
 					'title' => false,

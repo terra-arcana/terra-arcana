@@ -41,7 +41,7 @@ namespace terraarcana {
 				'description' 			=> 'Pages de règlements du système de jeu',
 				'show_in_menu' 			=> true,
 				'show_in_rest' 			=> true,
-				'rest_base' 			=> 'reglement',
+				'rest_base' 			=> 'rules',
 				'public' 				=> true,
 				'hierarchical' 			=> true,
 				'supports' => array(
