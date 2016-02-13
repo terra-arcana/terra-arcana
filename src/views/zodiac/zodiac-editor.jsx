@@ -4,6 +4,7 @@ import Lodash from 'lodash';
 import SkillGraph from '../../../app/scripts/zodiac/skill-graph.jsx';
 import SkillNodeInspector from '../../../app/scripts/zodiac/skill-node-inspector.jsx';
 import PointNodeInspector from '../../../app/scripts/zodiac/point-node-inspector.jsx';
+import NodeDetailsLinkElement from './node-details-link-element.jsx';
 
 require('./zodiac-editor.scss');
 
@@ -33,6 +34,7 @@ export default class ZodiacEditor extends React.Component {
 			nodeData: [],
 			linkData: [],
 			deletedNodes: [],
+			highlightedOutboundLink: null,
 			prompt: null
 		};
 
@@ -46,6 +48,10 @@ export default class ZodiacEditor extends React.Component {
 		this.uninspect = this.uninspect.bind(this);
 		this.createPointNode = this.createPointNode.bind(this);
 		this.deletePointNode = this.deletePointNode.bind(this);
+		this.deleteLink = this.deleteLink.bind(this);
+		this.onAddLinkButtonClick = this.onAddLinkButtonClick.bind(this);
+		this.highlightLink = this.highlightLink.bind(this);
+		this.unhighlightLink = this.unhighlightLink.bind(this);
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onPromptClose = this.onPromptClose.bind(this);
 		this.onPointNodeValueChange = this.onPointNodeValueChange.bind(this);
@@ -71,69 +77,127 @@ export default class ZodiacEditor extends React.Component {
 	 */
 	render() {
 		var inspector = null,
-			detailsBody = null,
 			activeNodeData = null,
 			nodeDetails = null,
 			savePrompt = null,
+			savePromptGlyphicon = null,
+			nodeDetailsTitle = null,
+			deletePointNodeButton = null,
+			pointNodeValueInput = null,
+			highlightedLinks = [],
 			rawNodeID = [this.state.activeNode.id].concat(this.state.activeNode.upgrades).join('-'); // TODO: Test for emptiness
 
-		if (!Lodash.isEmpty(this.state.activeNode)) {
-			// Render node details panel
+		if (!Lodash.isEmpty(this.state.activeNode) && !!this.state.activeNode.id) {
 			activeNodeData = this.getNodeDataById(rawNodeID);
-
+			
 			// Render inspector
 			switch(this.state.activeNode.type) {
 			case 'skill':
 			case 'upgrade':
+				nodeDetailsTitle = (activeNodeData.type === 'skill') ? 'Noeud de compétence' : 'Noeud d\'amélioration';
 				inspector = <SkillNodeInspector skill={this.state.activeNode} />;
 				break;
+			
 			case 'life':
 			case 'perk':
+				nodeDetailsTitle = (activeNodeData.type === 'life') ? 'Noeud d\'énergie' : 'Noeud d\'essence';
 				inspector = <PointNodeInspector pointNode={activeNodeData} />;
-				detailsBody = (
-					<div>
-						<div className='input-group'>
-							<span className='input-group-addon'>Valeur</span>
-							<input
-								ref = {(ref) => this.pointNodeValueInput = ref}
-								type = 'number'
-								className = 'form-control'
-								value = {activeNodeData.value}
-								onChange = {this.onPointNodeValueChange}
-							/>
-							<span className='input-group-addon'>points</span>
-						</div>
-
-						<button type='button' className='btn btn-danger pull-right' data-toggle='modal' data-target='#deletePointNodeModal'>Supprimer le noeud</button>
+				deletePointNodeButton = (
+					<button 
+						type = 'button'
+						className = 'btn btn-danger btn-sm pull-right'
+						data-toggle = 'modal'
+						data-target = '#deletePointNodeModal'>
+						<span className='glyphicon glyphicon-remove' />&nbsp;
+						Supprimer
+					</button>
+				);
+				pointNodeValueInput = (
+					<div className='input-group'>
+						<span className='input-group-addon'>Valeur</span>
+						<input
+							ref = {(ref) => this.pointNodeValueInput = ref}
+							type = 'number'
+							className = 'form-control'
+							value = {activeNodeData.value}
+							onChange = {this.onPointNodeValueChange}
+						/>
+						<span className='input-group-addon'>points</span>
 					</div>
 				);
 				break;
 			}
 
-			if (activeNodeData) {
-				nodeDetails = (
-					<div className='skill-graph-editor-node-details panel panel-info'>
-						<div className='panel-heading'>
-							<h3 className='panel-title'>Détails du noeud</h3>
+			// Render node details panel
+			nodeDetails = (
+				<div className='skill-graph-editor-control-panel-node-details'>
+					{deletePointNodeButton}
+					<h3>{nodeDetailsTitle}</h3>
+
+					{pointNodeValueInput}
+
+					<div className='skill-graph-editor-control-panel-links panel panel-info'>
+						<div className='panel-heading clearfix'>
+							<h4 className='panel-title'>Liens</h4>
 						</div>
+						<table className='table'>
+							<colgroup>
+								<col span='1' style={{width: '90%'}} />
+								<col span='1' style={{width: '10%'}} />
+							</colgroup>
+							<tbody>
+								{this.graph.getLinkedNodesById(rawNodeID).map(function(link) {
+									return (
+										<NodeDetailsLinkElement 
+											key = {link}
+											node = {this.getNodeDataById(link)}
+											highlight = {this.state.highlightedOutboundLink === link}
+											onMouseOver = {this.highlightLink.bind(this, link)}
+											onMouseOut = {this.unhighlightLink}
+											onDelete = {this.deleteLink.bind(this, rawNodeID, link)}
+										/>
+									);
+								}.bind(this))}
+							</tbody>
+						</table>
 						<div className='panel-body'>
-							{detailsBody}
+							<button 
+								ref = {(ref) => this.addLinkButton = ref}
+								type = 'button'
+								className = 'btn btn-success btn-sm'
+								onClick = {this.onAddLinkButtonClick.bind(this, rawNodeID)}>
+								<span className='glyphicon glyphicon-plus' />&nbsp;
+								Ajouter un lien
+							</button>
 						</div>
 					</div>
-				);
-			}
+				</div>
+			);
 		}
 
 		// Render save prompt
 		if (this.state.prompt !== null) {
+			if (this.state.prompt.type === 'alert-success') {
+				savePromptGlyphicon = 'glyphicon-floppy-saved';
+			} else if (this.state.prompt.type === 'alert-info') {
+				savePromptGlyphicon = 'glyphicon-floppy-open';
+			}
 			savePrompt = (
-				<div className={'col-xs-12 col-lg-4 alert ' + this.state.prompt.type} role='alert'>
-					<button type='button' className='close' aria-label='Close' onClick={this.onPromptClose}>
-						<span aria-hidden='true'>&times;</span>
-					</button>
-					{this.state.prompt.message}
+				<div className='col-xs-12 col-lg-4'>
+					<div className={'alert ' + this.state.prompt.type} role='alert'>
+						<button type='button' className='close' aria-label='Close' onClick={this.onPromptClose}>
+							<span aria-hidden='true'>&times;</span>
+						</button>
+						<span className={'glyphicon ' + savePromptGlyphicon} />&nbsp;
+						{this.state.prompt.message}
+					</div>
 				</div>
 			);
+		}
+
+		// Build highlighted links data
+		if (this.state.highlightedLink !== null) {
+			highlightedLinks.push([rawNodeID, this.state.highlightedOutboundLink]);
 		}
 
 		return (
@@ -146,32 +210,43 @@ export default class ZodiacEditor extends React.Component {
 						pickedNodes = {[rawNodeID]}
 						canDragNodes = {true}
 						contiguousSelection = {false}
+						highlightedLinks = {highlightedLinks}
 						onNodeSelect = {this.onNodeClick}
 					/>
 
 					{savePrompt}
 
-					<div className='skill-graph-editor-control-panel'>
+					<div className='col-xs-12 col-lg-4 skill-graph-editor-control-panel'>
 						<div className='panel panel-primary'>
 							<div className='panel-heading clearfix'>
 								<h2 className='skill-graph-editor-control-panel-title panel-title pull-left'>Panneau de contrôle</h2>
-								<button type='button' className='btn btn-default btn-sm pull-right' onClick={this.saveZodiac}>Sauvegarder</button>
+								<button 
+									type = 'button' 
+									className = 'btn btn-default btn-sm pull-right' 
+									onClick = {this.saveZodiac}>
+									<span className='glyphicon glyphicon-floppy-disk' />&nbsp;
+									Sauvegarder
+								</button>
 							</div>
 							<div className='panel-body'>
-								{<button 
-									ref = {(ref) => this.addLifeNodeButton = ref}
-									type = 'button'
-									className = 'btn btn-default'
-									onClick = {this.createPointNode.bind(this, 'life')}>
-									Ajouter un noeud d'énergie
-								</button>}
-								{<button 
-									ref = {(ref) => this.addPerkNodeButton = ref}
-									type = 'button'
-									className = 'btn btn-default'
-									onClick = {this.createPointNode.bind(this, 'perk')}>
-									Ajouter un noeud d'essence
-								</button>}
+								<div className='btn-group' role='group'>
+									<button 
+										ref = {(ref) => this.addLifeNodeButton = ref}
+										type = 'button'
+										className = 'btn btn-sm btn-success'
+										onClick = {this.createPointNode.bind(this, 'life')}>
+										<span className='glyphicon glyphicon-plus' />&nbsp;
+										Noeud d'énergie
+									</button>
+									<button 
+										ref = {(ref) => this.addPerkNodeButton = ref}
+										type = 'button'
+										className = 'btn btn-sm btn-success'
+										onClick = {this.createPointNode.bind(this, 'perk')}>
+										<span className='glyphicon glyphicon-plus' />&nbsp;
+										Noeud d'essence
+									</button>
+								</div>
 								
 								{nodeDetails}
 							</div>
@@ -198,8 +273,7 @@ export default class ZodiacEditor extends React.Component {
 									type = 'button'
 									className = 'btn btn-danger'
 									data-dismiss = 'modal'
-									onClick = {this.deletePointNode}
-								>
+									onClick = {this.deletePointNode}>
 									Supprimer
 								</button>
 							</div>
@@ -227,6 +301,7 @@ export default class ZodiacEditor extends React.Component {
 	/**
 	 * Creates a new point node and adds it to the graph
 	 * @param {string} type The new type of the node, `life` or `perk`
+	 * @private
 	 */
 	createPointNode(type) {
 		var newNodeData = Lodash.cloneDeep(this.graph.getNodeData());
@@ -248,6 +323,7 @@ export default class ZodiacEditor extends React.Component {
 
 	/**
 	 * Deletes a point node from the graph
+	 * @private
 	 */
 	deletePointNode() {
 		var newNodeData = Lodash.cloneDeep(this.graph.getNodeData()),
@@ -269,6 +345,46 @@ export default class ZodiacEditor extends React.Component {
 				type: '',
 				upgrades: []
 			}
+		});
+	}
+
+	/**
+	 * Deletes a link from two nodes
+	 * @param {string} from The first link
+	 * @param {string} to The second link
+	 * @private
+	 */
+	deleteLink(from, to) {
+		// TODO: Implement this
+		console.log('delete link [' + from + ', ' + to + ']');
+	}
+
+	/**
+	 * Enter link creation mode after user input
+	 * @param {string} from The source node
+	 * @private
+	 */
+	onAddLinkButtonClick(from) {
+		// TODO: Implement this
+		console.log('add link from ' + from);
+	}
+
+	/**
+	 * Highlight an outbound link
+	 * @param {string} target Target node ID
+	 */
+	highlightLink(target) {
+		this.setState({
+			highlightedOutboundLink: target
+		});
+	}
+
+	/**
+	 * Unhighlight links
+	 */
+	unhighlightLink() {
+		this.setState({
+			highlightedOutboundLink: null
 		});
 	}
 
@@ -306,6 +422,7 @@ export default class ZodiacEditor extends React.Component {
 
 	/**
 	 * Handle prompt close
+	 * @private
 	 */
 	onPromptClose() {
 		this.setState({
@@ -316,6 +433,7 @@ export default class ZodiacEditor extends React.Component {
 	/**
 	 * Handle point node value changes through user input
 	 * @param {SyntheticEvent} e The change event
+	 * @private
 	 */
 	onPointNodeValueChange(e) {
 		var nodeData = this.graph.getNodeData(),

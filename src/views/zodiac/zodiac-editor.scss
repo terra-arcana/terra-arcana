@@ -2,9 +2,6 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
 
 .skill-graph-editor-control-panel {
-	@include make-sm-column(12);
-	@include make-lg-column(4);
-
 	margin-bottom: 1em;
 
 	.skill-graph-editor-control-panel-title {
@@ -13,6 +10,16 @@
 	}
 }
 
-.skill-graph-editor-node-details {
+.skill-graph-editor-control-panel-links {
 	margin-top: 1em;
+}
+
+.skill-graph-editor-control-panel-node-details .panel .table td {
+	&:first-child {
+		padding-left: $panel-body-padding;
+	}
+
+	&:last-child {
+		padding-right: $panel-body-padding;
+	}
 }

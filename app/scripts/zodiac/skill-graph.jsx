@@ -73,13 +73,24 @@ export default class SkillGraph extends React.Component {
 					draggable = {true}>
 					<Layer ref={(ref) => this.linkLayer = ref}>
 						{this.state.linkData.map(function(link) {
-							var fromNode = this.getNodeDataById(link[0]);
-							var toNode = this.getNodeDataById(link[1]);
+							var fromNode = this.getNodeDataById(link[0]),
+								toNode = this.getNodeDataById(link[1]),
+								highlighted = false;
+
+							for (var i = 0; i < this.props.highlightedLinks.length; i++) {
+								if ((this.props.highlightedLinks[i][0] === link[0] && this.props.highlightedLinks[i][1] === link[1]) ||
+									(this.props.highlightedLinks[i][0] === link[1] && this.props.highlightedLinks[i][1] === link[0])) {
+									highlighted = true;
+									break;
+								}
+							}
+
 							return (
 								<NodeLink
-									key={[link[0], link[1]].join('-')}
-									from={{x: fromNode.x, y: fromNode.y}}
-									to={{x: toNode.x, y: toNode.y}}
+									key = {[link[0], link[1]].join('-')}
+									from = {{x: fromNode.x, y: fromNode.y}}
+									to = {{x: toNode.x, y: toNode.y}}
+									highlighted = {highlighted}
 								/>
 							);
 						}.bind(this))}
@@ -463,7 +474,8 @@ SkillGraph.defaultProps = {
 	pickedNodes: [],
 	startNode: '',
 	contiguousSelection: true,
-	canDragNodes: false
+	canDragNodes: false,
+	highlightedLinks: []
 };
 
 /**
@@ -489,6 +501,11 @@ SkillGraph.propTypes = {
 	startNode: React.PropTypes.string,
 	contiguousSelection: React.PropTypes.bool,
 	canDragNodes: React.PropTypes.bool,
+	highlightedLinks: React.PropTypes.arrayOf(
+		React.PropTypes.arrayOf(
+			React.PropTypes.string
+		)
+	),
 
 	onNodeSelect: React.PropTypes.func,
 	onNodeMouseOver: React.PropTypes.func,

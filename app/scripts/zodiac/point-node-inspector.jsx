@@ -15,7 +15,7 @@ export default class PointNodeInspector extends React.Component {
 		var titleText = this.props.pointNode.value + ' points',
 			bodyText = '';
 
-		// Fetch those values from ACF
+		// TODO: Fetch those values from ACF
 		switch(this.props.pointNode.type) {
 		case 'life':
 			titleText += ' d\'énergie';
