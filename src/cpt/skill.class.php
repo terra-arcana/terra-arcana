@@ -173,24 +173,45 @@ namespace terraarcana {
 		/**
 		 * Update a graph data skill node (X/Y coordinates and link IDs)
 		 * @param Object $node An object containing the new `x`, `y` and `links` properties of a node `id`
+		 * @param array $links The IDs of the nodes linked to this skill
 		 */
-		public function update_skill_graph_data($node) {
+		public function update_skill_graph_data($node, $links) {
+			$acfLinks = array();
+			foreach($links as $link) {
+				$acfLinks[] = array(
+					'id' => $link
+				);
+			}
+
+			// Update coordinates
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'x'), $node['x'], $node['id']);
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'y'), $node['y'], $node['id']);
 
-			// TODO: Update links
+			// Update links
+			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'links'), $acfLinks, $node['id']);
 		}
 
 		/**
 		 * Update a graph data upgrade node (X/Y coordinates and link IDs)
 		 * @param Object $node An object containing the new `x`, `y` and `links` properties of a node `id`
+		 * @param array $links The IDs of the nodes linked to this skill
 		 */
-		public function update_upgrade_graph_data($node) {
+		public function update_upgrade_graph_data($node, $links) {
+			$acfLinks = array();
+			foreach($links as $link) {
+				$acfLinks[] = array(
+					'id' => $link
+				);
+			}
+
 			$idFragments = explode('-', $node['id']);
+			
+			// Update coordinates
 			update_sub_field(array($this->_fields['upgrades']['key'], $idFragments[1], 'graph_data', 1, 'x'), $node['x'], $idFragments[0]);
 			update_sub_field(array($this->_fields['upgrades']['key'], $idFragments[1], 'graph_data', 1, 'y'), $node['y'], $idFragments[0]);
 
-			// TODO: Update links
+			// Update links
+			update_sub_field(array($this->_fields['upgrades']['key'], $idFragments[1], 'graph_data', 1, 'links'), $acfLinks, $idFragments[0]);
 		}
 	}
 }

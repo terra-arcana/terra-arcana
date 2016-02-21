@@ -35,7 +35,8 @@ export default class ZodiacEditor extends React.Component {
 			linkData: [],
 			deletedNodes: [],
 			highlightedOutboundLink: null,
-			prompt: null
+			prompt: null,
+			addingLinkFrom: null
 		};
 
 		/**
@@ -48,6 +49,7 @@ export default class ZodiacEditor extends React.Component {
 		this.uninspect = this.uninspect.bind(this);
 		this.createPointNode = this.createPointNode.bind(this);
 		this.deletePointNode = this.deletePointNode.bind(this);
+		this.addLink = this.addLink.bind(this);
 		this.deleteLink = this.deleteLink.bind(this);
 		this.onAddLinkButtonClick = this.onAddLinkButtonClick.bind(this);
 		this.highlightLink = this.highlightLink.bind(this);
@@ -80,7 +82,6 @@ export default class ZodiacEditor extends React.Component {
 			activeNodeData = null,
 			nodeDetails = null,
 			savePrompt = null,
-			savePromptGlyphicon = null,
 			nodeDetailsTitle = null,
 			deletePointNodeButton = null,
 			pointNodeValueInput = null,
@@ -147,6 +148,7 @@ export default class ZodiacEditor extends React.Component {
 							</colgroup>
 							<tbody>
 								{this.graph.getLinkedNodesById(rawNodeID).map(function(link) {
+
 									return (
 										<NodeDetailsLinkElement 
 											key = {link}
@@ -177,18 +179,13 @@ export default class ZodiacEditor extends React.Component {
 
 		// Render save prompt
 		if (this.state.prompt !== null) {
-			if (this.state.prompt.type === 'alert-success') {
-				savePromptGlyphicon = 'glyphicon-floppy-saved';
-			} else if (this.state.prompt.type === 'alert-info') {
-				savePromptGlyphicon = 'glyphicon-floppy-open';
-			}
 			savePrompt = (
 				<div className='col-xs-12 col-lg-4'>
 					<div className={'alert ' + this.state.prompt.type} role='alert'>
 						<button type='button' className='close' aria-label='Close' onClick={this.onPromptClose}>
 							<span aria-hidden='true'>&times;</span>
 						</button>
-						<span className={'glyphicon ' + savePromptGlyphicon} />&nbsp;
+						<span className={'glyphicon ' + this.state.prompt.icon} />&nbsp;
 						{this.state.prompt.message}
 					</div>
 				</div>
@@ -349,14 +346,50 @@ export default class ZodiacEditor extends React.Component {
 	}
 
 	/**
+	 * Adds a new link to the zodiac
+	 * @param {string} from The origin node
+	 * @param {string} to The destination node
+	 */
+	addLink(from, to) {
+		var newLinkData = Lodash.cloneDeep(this.state.linkData);
+
+		newLinkData.push([from, to]);
+
+		this.setState({
+			linkData: newLinkData,
+			addingLinkFrom: null,
+			prompt: {
+				type: 'alert-success',
+				icon: 'glyphicon-ok',
+				message: 'Lien ajouté avec succès!'
+			}
+		});
+	}
+
+	/**
 	 * Deletes a link from two nodes
 	 * @param {string} from The first link
 	 * @param {string} to The second link
 	 * @private
 	 */
 	deleteLink(from, to) {
-		// TODO: Implement this
-		console.log('delete link [' + from + ', ' + to + ']');
+		var newLinkData = Lodash.cloneDeep(this.state.linkData),
+			link = [];
+
+		for (var i = 0; i < newLinkData.length; i++) {
+			link = newLinkData[i];
+
+			if ((link[0] === from && link[1] === to) ||
+				(link[1] === from && link[0] === to)) {
+				break;
+			}
+		}
+
+		newLinkData.splice(i, 1);
+
+		this.setState({
+			linkData: newLinkData
+		});
 	}
 
 	/**
@@ -365,8 +398,14 @@ export default class ZodiacEditor extends React.Component {
 	 * @private
 	 */
 	onAddLinkButtonClick(from) {
-		// TODO: Implement this
-		console.log('add link from ' + from);
+		this.setState({
+			addingLinkFrom: from,
+			prompt: {
+				type: 'alert-info',
+				icon: 'glyphicon-link',
+				message: 'Choisir le noeud de destination...'
+			}
+		});
 	}
 
 	/**
@@ -402,21 +441,29 @@ export default class ZodiacEditor extends React.Component {
 				upgrades: []
 			};
 
-		if (nodeData.type === 'skill' || nodeData.type === 'upgrade') {
-			if (splitID[1] !== undefined) {
-				nodeObj.upgrades.push(splitID[1]);
-			}
+		// Link insertion mode
+		if (this.state.addingLinkFrom) {
+			this.addLink(this.state.addingLinkFrom, id);
 		}
 
-		// Unselect active node if clicked, select new node otherwise
-		if (Lodash.isEqual(this.state.activeNode, nodeObj)) {
-			this.uninspect();
-		} else {
-			this.setState({
-				nodeData: this.graph.getNodeData(),
-				linkData: this.graph.getLinkData(),
-				activeNode: nodeObj
-			});
+		// Selection mode
+		else {
+			if (nodeData.type === 'skill' || nodeData.type === 'upgrade') {
+				if (splitID[1] !== undefined) {
+					nodeObj.upgrades.push(splitID[1]);
+				}
+			}
+
+			// Unselect active node if clicked, select new node otherwise
+			if (Lodash.isEqual(this.state.activeNode, nodeObj)) {
+				this.uninspect();
+			} else {
+				this.setState({
+					nodeData: this.graph.getNodeData(),
+					linkData: this.graph.getLinkData(),
+					activeNode: nodeObj
+				});
+			}
 		}
 	}
 
@@ -468,6 +515,7 @@ export default class ZodiacEditor extends React.Component {
 			linkData: data.links,
 			prompt: {
 				type: 'alert-info',
+				icon: 'glyphicon-floppy-open',
 				message: 'Sauvegarde en cours...'
 			}
 		});
@@ -477,6 +525,7 @@ export default class ZodiacEditor extends React.Component {
 				this.setState({
 					prompt: {
 						type: 'alert-success',
+						icon: 'glyphicon-floppy-saved',
 						message: result
 					}
 				});
@@ -484,6 +533,7 @@ export default class ZodiacEditor extends React.Component {
 				this.setState({
 					prompt: {
 						type: 'alert-danger',
+						icon: 'glyphicon-floppy-remove',
 						message: result
 					}
 				});

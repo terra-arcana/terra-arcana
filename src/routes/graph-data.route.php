@@ -40,7 +40,7 @@ namespace terraarcana {
 
 				$result['nodes'] = array_merge($skillGraphData['nodes'], $pointGraphData['nodes']);
 
-				$links = array_merge($skillGraphData['links'], $skillGraphData['links']);
+				$links = array_merge($skillGraphData['links'], $pointGraphData['links']);
 				foreach($links as $link) {
 					$this->push_unique_link($result['links'], $link[0], $link[1]);
 				}
@@ -75,22 +75,30 @@ namespace terraarcana {
 				}
 
 				// Update all data on all nodes
-				foreach($params['nodes'] as $node) {					
+				foreach($params['nodes'] as $node) {	
+					$links = $this->get_linked_nodes_from_id($node['id'], $params['links']);
+
 					switch($node['type']) {
 					// Skill nodes
 					case 'skill':
-						DataController::getInstance()->getCPT('skill')->update_skill_graph_data($node);
+						DataController::getInstance()
+							->getCPT('skill')
+							->update_skill_graph_data($node, $links);
 						break;
 
 					// Upgrade nodes
 					case 'upgrade':
-						DataController::getInstance()->getCPT('skill')->update_upgrade_graph_data($node);
+						DataController::getInstance()
+							->getCPT('skill')
+							->update_upgrade_graph_data($node, $links);
 						break;
 
 					// Point nodes
 					case 'life':
 					case 'perk':
-						DataController::getInstance()->getCPT('point-node')->update_graph_data($node);
+						DataController::getInstance()
+							->getCPT('point-node')
+							->update_graph_data($node, $links);
 						break;
 					}
 				}
@@ -122,6 +130,26 @@ namespace terraarcana {
 				// Push the new link as they were no duplicates
 				array_push($linkArray, array($from, $to));
 				return $linkArray;
+			}
+
+			/**
+			 * Returns all linked nodes to a given node ID
+			 * @param string $from The origin node ID
+			 * @param array $linkData The entire link data array
+			 * @return array An arrays of all node IDs linked to $from
+			 */
+			private function get_linked_nodes_from_id($from, array $linkData) {
+				$resultLinks = array();
+
+				foreach($linkData as $link) {
+					if ($link[0] == $from) {
+						$resultLinks[] = $link[1];
+					} else if ($link[1] == $from) {
+						$resultLinks[] = $link[0];
+					}
+				}
+
+				return $resultLinks;
 			}
 		}
 	}
