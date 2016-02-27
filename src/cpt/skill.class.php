@@ -134,7 +134,8 @@ namespace terraarcana {
 					'id' => (string)$skill->ID,
 					'type' => 'skill',
 					'x' => intval($skillGraphData[0]['x']),
-					'y' => intval($skillGraphData[0]['y'])
+					'y' => intval($skillGraphData[0]['y']),
+					'start' => $skillGraphData[0]['start']
 				));
 
 				// Add links to the skill to the graph data

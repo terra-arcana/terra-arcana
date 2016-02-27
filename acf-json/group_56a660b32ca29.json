@@ -106,6 +106,22 @@
                             "disabled": 0
                         }
                     ]
+                },
+                {
+                    "key": "field_56d12cd71e05e",
+                    "label": "Noeud de d\u00e9part",
+                    "name": "start",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0
                 }
             ]
         }
@@ -134,5 +150,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1454967472
+    "modified": 1456549353
 }

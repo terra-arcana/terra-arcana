@@ -26,6 +26,9 @@ namespace terraarcana {
 					),
 					'y' => array(
 						'key' => 'field_566f2d7b054dc'
+					),
+					'start' => array(
+						'key' => 'field_56d12cd71e05e'
 					)
 				)
 			);
@@ -92,9 +95,10 @@ namespace terraarcana {
 				array_push($result['nodes'], array(
 					'id' => (string)$node->ID,
 					'type' => $nodeType,
-					'value' => $value,
 					'x' => intval($graphData[0]['x']),
-					'y' => intval($graphData[0]['y'])
+					'y' => intval($graphData[0]['y']),
+					'start' => $graphData[0]['start'],
+					'value' => $value,
 				));
 
 				// Add links to the skill to the graph data

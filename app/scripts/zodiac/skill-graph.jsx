@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {Stage, Layer} from 'react-konva';
 import Lodash from 'lodash';
 
-import Node from './node.jsx';
 import SkillNode from './skill-node.jsx';
 import UpgradeNode from './upgrade-node.jsx';
 import PointNode from './point-node.jsx';
@@ -41,9 +40,19 @@ export default class SkillGraph extends React.Component {
 		 */
 		this.nodes = [];
 
+		this.draw = this.draw.bind(this);
+		this.resizeCanvas = this.resizeCanvas.bind(this);
+		this.getEditorSize = this.getEditorSize.bind(this);
+		this.getNodeDataById = this.getNodeDataById.bind(this);
+		this.getLinkedNodesById = this.getLinkedNodesById.bind(this);
+		this.getStartNodes = this.getStartNodes.bind(this);
+		this.isNodePickable = this.isNodePickable.bind(this);
+		this.isNodeUnpickable = this.isNodeUnpickable.bind(this);
+		this.hasAlternatePathToStart = this.hasAlternatePathToStart.bind(this);
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onNodeDragMove = this.onNodeDragMove.bind(this);
-		this.draw = this.draw.bind(this);
+		this.getNodeData = this.getNodeData.bind(this);
+		this.getLinkData = this.getLinkData.bind(this);
 	}
 
 	/**
@@ -87,7 +96,7 @@ export default class SkillGraph extends React.Component {
 
 							return (
 								<NodeLink
-									key = {[link[0], link[1]].join('-')}
+									key = {link.join('-')}
 									from = {{x: fromNode.x, y: fromNode.y}}
 									to = {{x: toNode.x, y: toNode.y}}
 									highlighted = {highlighted}
@@ -98,23 +107,6 @@ export default class SkillGraph extends React.Component {
 					<Layer ref={(ref) => this.nodeLayer = ref}>
 						{this.state.nodeData.map(function(node) {
 							switch (node.type) {
-							// Normal nodes
-							case 'normal':
-								return (
-									<Node
-										key = {node.id}
-										ref = {(ref) => this.nodes[node.id] = ref}
-										id = {node.id}
-										x = {node.x}
-										y = {node.y}
-										selected = {(this.props.startNode === node.id || this.props.pickedNodes.indexOf(node.id) !== -1)}
-										draggable = {this.props.canDragNodes}
-										onClick = {this.onNodeClick}
-										onDragMove = {this.onNodeDragMove}
-										onMouseOver = {this.props.onNodeMouseOver}
-										onMouseOut = {this.props.onNodeMouseOut}
-									/>
-								);
 
 							// Skill nodes
 							case 'skill':
@@ -125,7 +117,7 @@ export default class SkillGraph extends React.Component {
 										id = {node.id}
 										x = {node.x}
 										y = {node.y}
-										selected = {(this.props.startNode === node.id || this.props.pickedNodes.indexOf(node.id) !== -1)}
+										selected = {(node.start || this.props.pickedNodes.indexOf(node.id) !== -1)}
 										draggable = {this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
@@ -164,7 +156,7 @@ export default class SkillGraph extends React.Component {
 										y = {node.y}
 										type = {node.type}
 										value = {node.value}
-										selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
+										selected = {(node.start || this.props.pickedNodes.indexOf(node.id) !== -1)}
 										draggable = {(this.props.canDragNodes)}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
@@ -313,6 +305,22 @@ export default class SkillGraph extends React.Component {
 	}
 
 	/**
+	 * Get all nodes that has the start attribute
+	 * @return {Array<String>} The IDs of all start nodes
+	 */
+	getStartNodes() {
+		var startNodes = [];
+
+		this.state.nodeData.map(function(node) {
+			if (node.start) {
+				startNodes.push(node.id);
+			}
+		});
+
+		return startNodes;
+	}
+
+	/**
 	 * Determines whether or not a node can be picked
 	 * @param {String} id The node ID
 	 * @return {Boolean} This node is pickable
@@ -322,7 +330,9 @@ export default class SkillGraph extends React.Component {
 
 		// Check siblings for a picked node
 		for (var i = 0; i < siblings.length; i++) {
-			if (this.props.pickedNodes.indexOf(siblings[i]) !== -1 || this.props.startNode === siblings[i]) {
+			var siblingData = this.getNodeDataById(siblings[i]);
+
+			if (this.props.pickedNodes.indexOf(siblings[i]) !== -1 || !!siblingData.start ) {
 				return true;
 			}
 		}
@@ -370,10 +380,11 @@ export default class SkillGraph extends React.Component {
 	hasAlternatePathToStart(source, without) {
 		var seen = [source],
 			path = [source],
-			cursor, siblings;
+			cursor, cursorData,
+			siblings, siblingData;
 
 		// Early exit if there is no start node
-		if (this.props.startNode === 0) {
+		if (this.getStartNodes().length === 0) {
 			return false;
 		}
 
@@ -384,17 +395,20 @@ export default class SkillGraph extends React.Component {
 
 		while(path.length > 0) {
 			cursor = path.pop();
+			cursorData = this.getNodeDataById(cursor);
 
-			// We exit as soon as we find the cursor
-			if (cursor === this.props.startNode) {
+			// If we find a start node, we exit immediately
+			if (cursorData.start) {
 				return true;
 			}
 
 			siblings = this.getLinkedNodesById(cursor);
 			for (var i = 0; i < siblings.length; i++) {
+				siblingData = this.getNodeDataById(siblings[i]);
+
 				// Exclude non-picked nodes and nodes in without from the search
 				// NOTE: Start node is never considered picked, so we have to make sure we aren't excluding it here
-				if (this.props.startNode !== siblings[i] && 
+				if (!siblingData.start && 
 					(this.props.pickedNodes.indexOf(siblings[i]) === -1 || without.indexOf(siblings[i]) !== -1)) {
 					continue;
 				}
@@ -472,7 +486,6 @@ SkillGraph.defaultProps = {
 	initialNodeData: [],
 	initialLinkData: [],
 	pickedNodes: [],
-	startNode: '',
 	contiguousSelection: true,
 	canDragNodes: false,
 	highlightedLinks: []
@@ -487,7 +500,9 @@ SkillGraph.propTypes = {
 			id: React.PropTypes.string.isRequired,
 			type: React.PropTypes.string.isRequired,
 			x: React.PropTypes.number.isRequired,
-			y: React.PropTypes.number.isRequired
+			y: React.PropTypes.number.isRequired,
+			start: React.PropTypes.bool,
+			value: React.PropTypes.string
 		})
 	).isRequired,
 	initialLinkData: React.PropTypes.arrayOf(
@@ -498,7 +513,6 @@ SkillGraph.propTypes = {
 	pickedNodes: React.PropTypes.arrayOf(
 		React.PropTypes.string
 	),
-	startNode: React.PropTypes.string,
 	contiguousSelection: React.PropTypes.bool,
 	canDragNodes: React.PropTypes.bool,
 	highlightedLinks: React.PropTypes.arrayOf(
