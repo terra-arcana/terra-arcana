@@ -8,8 +8,8 @@ ENV WP_ADMIN_PASSWORD="admin"
 ENV WP_ADMIN_EMAIL="test@test.test"
 
 #Some boilerplate
-RUN mkdir /var/stuff
-RUN cd /var/stuff
+RUN apt-get update
+RUN apt-get install wget
 
 #Install WP-CLI
 RUN apt-get install wget
