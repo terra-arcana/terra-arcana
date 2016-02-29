@@ -24,7 +24,7 @@ RUN apt-get install wget
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;chmod +x wp-cli.phar;mv wp-cli.phar /usr/local/bin/wp
 
 #Install npm
-RUN apt-get install node npm -y
+RUN apt-get install node-js-legacy npm -y
 
 #Install global NodeJS packages
 RUN npm install -g webpack esdoc
