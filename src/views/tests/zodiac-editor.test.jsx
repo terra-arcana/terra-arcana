@@ -124,4 +124,35 @@ describe('ZodiacEditor', function() {
 
 		expect(Lodash.isEqual(editor.state.deletedNodes, ['18'])).toEqual(true);
 	});
+
+	it('edits start node properties', function() {
+		var editor = TestUtils.renderIntoDocument(
+			<ZodiacEditor />
+		);
+
+		editor.setState({
+			nodeData: [
+				{
+					id: '4',
+					x: 100,
+					y: 100,
+					type: 'skill',
+					start: false
+				}
+			],
+			activeNode: {
+				id: '4',
+				type: 'skill',
+				upgrades: []
+			}
+		});
+
+		TestUtils.Simulate.change(editor.startNodeButton, {
+			target: {
+				checked: true
+			}
+		});
+
+		expect(editor.getNodeDataById('4').start).toEqual(true);
+	});
 });

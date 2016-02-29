@@ -74,7 +74,7 @@ export default class SkillGraph extends React.Component {
 		// the same size as the actual rendering of the stage after resizing, so
 		// putting big values seems to work as intended.
 		return (
-			<div className='skill-graph-editor col-lg-8 col-sm-12'>
+			<div className='skill-graph-editor col-lg-8 col-xs-12'>
 				<Stage
 					ref = {(ref) => this.stage = ref}
 					width = {2000}
