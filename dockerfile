@@ -9,16 +9,15 @@ ENV WP_TITLE="Test"
 ENV WP_ADMIN_USER="admin"
 ENV WP_ADMIN_PASSWORD="admin"
 ENV WP_ADMIN_EMAIL="test@test.test"
-ENV DB_NAME="terra"
+ENV DB_NAME="wordpress"
 ENV DB_USER="admin"
-ENV DB_PASS="admin"
-ENV DB_LOCATION="localhost"
+ENV DB_PASSWORD="admin"
+ENV DB_HOST="localhost"
 
 #Some boilerplate
 RUN apt-get update
 RUN apt-get install wget sudo -y
 WORKDIR /usr/src/wordpress
-RUN sudo -u www-data ps -aux
 
 #Install WP-CLI
 RUN apt-get install wget
@@ -42,13 +41,5 @@ RUN npm install
 RUN composer install
 RUN webpack
 
-#Initialize wordpress
-USER www-data
-RUN wp core config
-RUN wp core install --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL
-USER root
-
-#Activate Terra theme
-USER www-data
-RUN wp theme activate terra-arcana
-USER root
+#Finalize
+CMD sudo -u www-data /usr/src/wordpress/wp-content/themes/terra-arcana/entrypoint.sh
