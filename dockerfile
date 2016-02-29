@@ -43,4 +43,4 @@ RUN composer install
 RUN webpack
 
 #Finalize
-CMD sudo -u www-data ./usr/src/wordpress/wp-content/themes/terra-arcana/entrypoint.sh
+CMD sudo -u www-data bash /usr/src/wordpress/wp-content/themes/terra-arcana/entrypoint.sh
