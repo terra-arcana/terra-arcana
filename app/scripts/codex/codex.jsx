@@ -28,7 +28,7 @@ export default class Codex extends React.Component {
 	 * @override
  	 */
 	componentDidMount() {
-		jQuery.get(appLocals.api.core + 'codex', function(result) {
+		jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/codex', function(result) {
 			this.setState({
 				codexArticles: result
 			});

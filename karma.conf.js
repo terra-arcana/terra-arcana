@@ -8,12 +8,13 @@ module.exports = function(config) {
 		singleRun: true,
 		frameworks: ['mocha'],
 		files: [
+			'node_modules/jquery/dist/jquery.min.js',
 			'webpack.tests.js'
 		],
 		preprocessors: {
 			'webpack.tests.js': ['webpack']
 		},
-		reporters: ['dots'],
+		reporters: ['dots', 'junit'],
 		webpack: {
 			module: {
 				loaders: [
@@ -38,6 +39,12 @@ module.exports = function(config) {
 		},
 		webpackServer: {
 			noInfo: true
+		},
+		junitReporter: {
+			outputDir: 'build-reports',
+			outputFile: undefined,
+			suite: '',
+			useBrowserName: true
 		}
 	});
 };

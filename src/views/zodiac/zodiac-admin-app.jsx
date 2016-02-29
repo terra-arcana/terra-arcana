@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import ZodiacEditor from './zodiac-editor.jsx';
 
@@ -19,4 +20,4 @@ export default class ZodiacAdminApp extends React.Component {
 	}
 }
 
-React.render(<ZodiacAdminApp/>, document.getElementById('main'));
+ReactDOM.render(<ZodiacAdminApp/>, document.getElementById('main'));

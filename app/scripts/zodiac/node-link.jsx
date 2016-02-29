@@ -23,9 +23,9 @@ export default class NodeLink extends React.Component {
 				x = {this.props.from.x}
 				y = {this.props.from.y}
 				points = {points}
-				stroke = "black"
+				stroke = {(this.props.highlighted) ? 'red' : 'black'}
 				tension = {0}
-			></ReactKonva.Line>
+			/>
 		);
 	}
 }
@@ -41,7 +41,8 @@ NodeLink.defaultProps = {
 	to: {
 		x: 0, 
 		y: 0
-	}
+	},
+	highlighted: false
 };
 
 /**
@@ -55,5 +56,6 @@ NodeLink.propTypes = {
 	to: React.PropTypes.shape({
 		x: React.PropTypes.number.isRequired,
 		y: React.PropTypes.number.isRequired
-	})
+	}),
+	highlighted: React.PropTypes.bool
 };

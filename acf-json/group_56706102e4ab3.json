@@ -35,6 +35,28 @@
             "readonly": 0
         },
         {
+            "key": "field_56bf9ccd4d4e3",
+            "label": "Signe",
+            "name": "character-class",
+            "type": "post_object",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "character-class"
+            ],
+            "taxonomy": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "id",
+            "ui": 1
+        },
+        {
             "key": "field_566f2786a877f",
             "label": "Co\u00fbt",
             "name": "cost",
@@ -766,5 +788,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1450854439
+    "modified": 1455399760
 }

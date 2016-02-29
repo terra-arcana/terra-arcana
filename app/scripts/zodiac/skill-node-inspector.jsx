@@ -47,15 +47,34 @@ export default class SkillNodeInspector extends React.Component {
 	}
 
 	/**
+	 * @override
+	 */
+	componentWillUnmount() {
+		this.fetchSkillRequest.abort();
+	}
+
+	/**
 	 * Retrieve detailed skill info from the API and store it in component state
 	 * @param {Number} skillID The ID of the skill to retrieve
 	 * @private
 	 */
 	fetchSkillInfo(skillID) {
-		jQuery.get(appLocals.api.core + 'skill/' + skillID, function(result) {
-			this.setState({
-				skill: result
-			});
+		/**
+		 * REST request to the details about the active skill node
+		 * @type {jqXHR}
+		 * @private
+		 */
+		this.fetchSkillRequest = jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/skill/' + skillID, function(result) {
+			var skillInfo = result;
+
+			// Replace character class ID with full character class object
+			this.fetchSkillRequest = jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/character-class/' + skillInfo.character_class, function(result) {
+				skillInfo.character_class = result;
+
+				this.setState({
+					skill: skillInfo
+				});
+			}.bind(this));
 		}.bind(this));
 	}
 
@@ -138,7 +157,7 @@ export default class SkillNodeInspector extends React.Component {
 				<div className='col-sm-12 col-lg-4 skill-graph-editor-skill-node-inspector'>
 					{this.props.skill.upgrades.map(function(upgrade) {
 						return (
-							<div className='panel panel-info upgrade-panel'>
+							<div key={upgrade} className='panel panel-info upgrade-panel'>
 								<div className='panel-heading'>
 									<h3 className='panel-title' dangerouslySetInnerHTML={{__html: skill.upgrades[upgrade-1].title}}></h3>
 								</div>
@@ -151,8 +170,8 @@ export default class SkillNodeInspector extends React.Component {
 						<div className='panel-heading'>
 							<h2 className='panel-title'><span dangerouslySetInnerHTML={{__html: skill.title.rendered}}></span>&emsp;
 								<small>
-									<span dangerouslySetInnerHTML={{__html: skill['skill_type'].rendered}}></span>&nbsp;|&nbsp;
-									<span>[SIGNE]</span>
+									<span dangerouslySetInnerHTML={{__html: skill.skill_type.rendered}}></span>&nbsp;|&nbsp;
+									<span dangerouslySetInnerHTML={{__html: skill.character_class.title.rendered}}></span>
 								</small>
 							</h2>
 						</div>

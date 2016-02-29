@@ -43,7 +43,7 @@ export default class Node extends React.Component {
 				onDragMove = {this.onDragMove}
 				onMouseOver = {this.onMouseOver}
 				onMouseOut = {this.onMouseOut}
-			></ReactKonva.Circle>
+			/>
 		);
 	}
 
@@ -62,8 +62,8 @@ export default class Node extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		this.circle.node.on('mouseover', this.onMouseOver);
-		this.circle.node.on('dragmove', this.onDragMove);
+		this.circle.on('mouseover', this.onMouseOver);
+		this.circle.on('dragmove', this.onDragMove);
 	}
 
 	/**
@@ -113,7 +113,7 @@ export default class Node extends React.Component {
 	 */
 	onDragMove() {
 		if (this.props.onDragMove) {
-			this.props.onDragMove(this.props.id, this.circle.node.x(), this.circle.node.y());
+			this.props.onDragMove(this.props.id, this.circle.x(), this.circle.y());
 		}
 	}
 }
@@ -123,8 +123,8 @@ export default class Node extends React.Component {
  */
 Node.defaultProps = {
 	id: '',
-	x: 100,
-	y: 100,
+	x: 0,
+	y: 0,
 	radius: 15,
 	fill: 'green',
 	draggable: false,

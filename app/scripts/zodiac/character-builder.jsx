@@ -52,7 +52,7 @@ export default class CharacterBuilder extends React.Component {
 				inspector = (
 					<SkillNodeInspector
 						skill = {this.state.activeNode}
-					></SkillNodeInspector>
+					/>
 				);
 				break;
 			case 'perk':
@@ -60,7 +60,7 @@ export default class CharacterBuilder extends React.Component {
 				inspector = (
 					<PointNodeInspector
 						pointNode = {this.getNodeDataById(this.state.activeNode.id)}
-					></PointNodeInspector>
+					/>
 				);
 			}
 		}
@@ -70,19 +70,18 @@ export default class CharacterBuilder extends React.Component {
 				<SkillGraph
 					initialNodeData = {this.state.nodeData}
 					initialLinkData = {this.state.linkData}
-					pickedNodes = {this.state.pickedNodes} 
-					startNode = {this.props.startNode}
+					pickedNodes = {this.state.pickedNodes}
 					contiguousSelection = {true}
 					onNodeMouseOver = {this.inspectSkill}
 					onNodeMouseOut = {this.uninspect}
 					onNodeSelect = {this.selectNode}
-				></SkillGraph>
+				/>
 				<CharacterSkillsPanel
 					nodes = {this.state.pickedNodes}
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
-				></CharacterSkillsPanel>
+				/>
 				
 				{inspector}
 			</div>
@@ -93,7 +92,7 @@ export default class CharacterBuilder extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		jQuery.get(appLocals.api.terra + 'graph-data', function(result) {
+		jQuery.get('http://' + location.hostname + '/wp-json/terraarcana/v1/graph-data', function(result) {
 			this.setState({
 				nodeData: result.nodes,
 				linkData: result.links
@@ -178,54 +177,7 @@ export default class CharacterBuilder extends React.Component {
  * @type {Object}
  */
 CharacterBuilder.defaultProps = {
-	initialNodeData: [
-		{
-			id: '1',
-			type: 'normal',
-			x: 300,
-			y: 200
-		},
-		{
-			id: '2',
-			type: 'normal',
-			x: 350,
-			y: 400
-		},
-		{
-			id: '3',
-			type: 'skill',
-			x: 400,
-			y: 100
-		},
-		{
-			id: '4',
-			type: 'skill',
-			x: 500,
-			y: 400
-		},
-		{
-			id: '4-1',
-			type: 'upgrade',
-			x: 500,
-			y: 200
-		},
-		{
-			id: '4-2',
-			type: 'upgrade',
-			x: 550,
-			y: 200
-		}
-	],
-	initialLinkData: [
-		['1', '2'],
-		['2', '3'],
-		['1', '3'],
-		['2', '4'],
-		['4', '4-1'],
-		['4', '4-2']
-	],
-	initialPickedNodes: [],
-	startNode: '1'
+	initialPickedNodes: []
 };
 
 /**
@@ -245,6 +197,7 @@ CharacterBuilder.propTypes = {
 			React.PropTypes.string.isRequired
 		)
 	).isRequired,
-	initialPickedNodes: React.PropTypes.array,
-	startNode: React.PropTypes.string
+	initialPickedNodes: React.PropTypes.arrayOf(
+		React.PropTypes.string.isRequired
+	)
 };

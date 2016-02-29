@@ -83,7 +83,7 @@ export default class CharacterSkillsPanel extends React.Component {
 								upgrades = {skill.upgrades}
 								active = {skill.id === this.props.activeSkill.id}
 								onSelect = {this.onSelectSkill}
-							></CharacterSkillsPanelSkillElement>
+							/>
 						);
 					}.bind(this))}
 				</ul>

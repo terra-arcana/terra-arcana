@@ -27,7 +27,7 @@ export default class SkillNode extends React.Component {
 				onDragMove = {this.props.onDragMove}
 				onMouseOver = {this.props.onMouseOver}
 				onMouseOut = {this.props.onMouseOut}
-			></Node>
+			/>
 		);
 	}
 
