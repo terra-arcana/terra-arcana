@@ -15,7 +15,7 @@ describe('SkillGraph', function() {
 		expect(graph.WP_BAR_HEIGHT).toEqual(32);
 	});
 
-	it('correctly return start nodes', function() {
+	it('returns start nodes', function() {
 		var graph = TestUtils.renderIntoDocument(
 			<SkillGraph
 				initialNodeData = {[
