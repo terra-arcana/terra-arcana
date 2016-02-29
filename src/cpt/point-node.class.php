@@ -154,7 +154,7 @@ namespace terraarcana {
 		/**
 		 * Update a graph data node (X/Y coordinates and link IDs). At this point, 
 		 * all nodes entering here should already exist in DB
-		 * @param Object $node An object containing the new `x`, `y` and `links` properties of a node `id`
+		 * @param Object $node An object containing the new `x`, `y`, `start` and `links` properties of a node `id`
 		 * @param array $links The IDs of the nodes linked to this skill
 		 */
 		public function update_graph_data($node, $links) {
@@ -175,6 +175,9 @@ namespace terraarcana {
 
 			// Update links
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'links'), $acfLinks, $node['id']);
+		
+			// Update start node status
+			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'start'), ($node['start'] === 'true'), $node['id']);
 		}
 	}
 }
