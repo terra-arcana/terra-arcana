@@ -13,9 +13,7 @@ RUN apt-get install wget -y
 
 #Install WP-CLI
 RUN apt-get install wget
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;chmod +x wp-cli.phar;mv wp-cli.phar /usr/local/bin/wp
 
 #Install npm
 RUN apt-get install nodejs npm -y
