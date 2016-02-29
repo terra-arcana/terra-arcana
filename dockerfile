@@ -9,7 +9,7 @@ ENV WP_ADMIN_EMAIL="test@test.test"
 
 #Some boilerplate
 RUN apt-get update
-RUN apt-get install wget
+RUN apt-get install wget -y
 
 #Install WP-CLI
 RUN apt-get install wget
