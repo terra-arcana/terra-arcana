@@ -37,6 +37,7 @@ RUN mkdir /usr/src/wordpress/wp-content/themes/terra-arcana
 COPY . /usr/src/wordpress/wp-content/themes/terra-arcana
 
 #Build Terra theme
+WORKDIR wp-content/themes/terra-arcana
 RUN npm install
 RUN composer install
 RUN webpack
