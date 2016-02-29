@@ -10,6 +10,7 @@ ENV WP_ADMIN_EMAIL="test@test.test"
 #Some boilerplate
 RUN apt-get update
 RUN apt-get install wget -y
+WORKDIR /usr/src/wordpress
 
 #Install WP-CLI
 RUN apt-get install wget
@@ -30,8 +31,8 @@ RUN wp core install --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER 
 USER root
 
 #Add Terra theme
-RUN mkdir /var/www/html/wp-content/themes/terra-arcana
-COPY . /var/www/html/wp-content/themes/terra-arcana
+RUN mkdir /usr/src/wordpress/wp-content/themes/terra-arcana
+COPY . /usr/src/wordpress/wp-content/themes/terra-arcana
 
 #Build Terra theme
 RUN npm install
