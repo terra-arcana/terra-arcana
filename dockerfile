@@ -25,7 +25,9 @@ RUN npm install -g webpack esdoc
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 #Initialize wordpress
+USER www-data
 RUN wp core install --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL
+USER root
 
 #Add Terra theme
 RUN mkdir /var/www/html/wp-content/themes/terra-arcana
@@ -37,4 +39,6 @@ RUN composer install
 RUN webpack
 
 #Activate Terra theme
+USER www-data
 RUN wp theme activate terra-arcana
+USER root
