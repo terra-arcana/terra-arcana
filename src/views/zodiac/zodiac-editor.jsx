@@ -57,6 +57,7 @@ export default class ZodiacEditor extends React.Component {
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onPromptClose = this.onPromptClose.bind(this);
 		this.onPointNodeValueChange = this.onPointNodeValueChange.bind(this);
+		this.onStartNodeButtonClick = this.onStartNodeButtonClick.bind(this);
 		this.saveZodiac = this.saveZodiac.bind(this);
 		this.getNewNodeIndexes = this.getNewNodeIndexes.bind(this);
 	}
@@ -82,6 +83,7 @@ export default class ZodiacEditor extends React.Component {
 			activeNodeData = null,
 			nodeDetails = null,
 			savePrompt = null,
+			startNodeCheckbox = null,
 			nodeDetailsTitle = null,
 			deletePointNodeButton = null,
 			pointNodeValueInput = null,
@@ -129,13 +131,40 @@ export default class ZodiacEditor extends React.Component {
 				break;
 			}
 
+			// Render start node checkbox
+			if (this.state.activeNode.type == 'skill' || 
+				this.state.activeNode.type == 'life' || 
+				this.state.activeNode.type == 'perk') {
+				startNodeCheckbox = (
+					<div className='col-xs-4'>
+						<div className='checkbox-inline'>
+							<label>
+								<input
+									ref = {(ref) => this.startNodeButton = ref}
+									type = 'checkbox'
+									checked = {this.getNodeDataById(rawNodeID).start}
+									onChange = {this.onStartNodeButtonClick}
+								/>
+								Départ
+							</label>
+						</div>
+					</div>
+				);
+			}
+
 			// Render node details panel
 			nodeDetails = (
 				<div className='skill-graph-editor-control-panel-node-details'>
 					{deletePointNodeButton}
 					<h3>{nodeDetailsTitle}</h3>
 
-					{pointNodeValueInput}
+					<div className='row'>
+						{startNodeCheckbox}
+
+						<div className='col-xs-8'>
+							{pointNodeValueInput}
+						</div>
+					</div>
 
 					<div className='skill-graph-editor-control-panel-links panel panel-info'>
 						<div className='panel-heading clearfix'>
@@ -495,6 +524,26 @@ export default class ZodiacEditor extends React.Component {
 		this.setState({
 			nodeData: nodeData,
 			linkData: linkData
+		});
+	}
+
+	/**
+	 * Handle start node property toggling
+	 * @param {SyntheticEvent} e The click event
+	 */
+	onStartNodeButtonClick(e) {
+		var rawActiveNodeID = [this.state.activeNode.id].concat(this.state.activeNode.upgrades).join('-'), // TODO: Test for emptiness
+			newNodeData = this.state.nodeData.slice();
+
+		for (var i = 0; i < newNodeData.length; i++) {
+			if (newNodeData[i].id === rawActiveNodeID) {
+				newNodeData[i].start = e.target.checked;
+				break;
+			}
+		}
+
+		this.setState({
+			nodeData: newNodeData
 		});
 	}
 
