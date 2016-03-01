@@ -16,7 +16,7 @@ ENV DB_HOST="localhost"
 
 #Some boilerplate
 RUN apt-get update
-RUN apt-get install wget sudo git -y
+RUN apt-get install wget sudo git mysql-client -y
 WORKDIR /usr/src/wordpress
 
 #Install WP-CLI
