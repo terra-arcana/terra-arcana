@@ -33,9 +33,7 @@ RUN npm install -g webpack esdoc
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 #Add Terra theme
-RUN mkdir /var/www/html/wp-content
-RUN mkdir /var/www/html/wp-content/themes
-RUN mkdir /var/www/html/wp-content/themes/terra-arcana
+RUN mkdir -p /var/www/html/wp-content/themes/terra-arcana
 COPY . /var/www/html/wp-content/themes/terra-arcana
 
 #Build Terra theme
