@@ -24,7 +24,7 @@ RUN apt-get install wget
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;chmod +x wp-cli.phar;mv wp-cli.phar /usr/local/bin/wp
 
 #Install npm
-RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -;apt-get install nodejs npm -y
+RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -;apt-get install nodejs -y
 
 #Install global NodeJS packages
 RUN npm install -g webpack esdoc
