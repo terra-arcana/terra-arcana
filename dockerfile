@@ -17,6 +17,7 @@ ENV DB_HOST="localhost"
 #Some boilerplate
 RUN apt-get update
 RUN apt-get install wget sudo git mysql-client -y
+RUN mkdir -p /var/www/html/wp-content/themes/terra-arcana
 WORKDIR /var/www/html/wp-content/themes/terra-arcana
 
 #Install WP-CLI
