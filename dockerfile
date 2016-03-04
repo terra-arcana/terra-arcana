@@ -17,7 +17,7 @@ ENV DB_HOST="localhost"
 #Some boilerplate
 RUN apt-get update
 RUN apt-get install wget sudo git mysql-client -y
-WORKDIR /var/www/html
+WORKDIR /var/www/html/wp-content/themes/terra-arcana
 
 #Install WP-CLI
 RUN apt-get install wget
@@ -37,7 +37,6 @@ RUN mkdir -p /var/www/html/wp-content/themes/terra-arcana
 COPY . /var/www/html/wp-content/themes/terra-arcana
 
 #Build Terra theme
-WORKDIR wp-content/themes/terra-arcana
 RUN npm install
 RUN composer install
 RUN webpack
