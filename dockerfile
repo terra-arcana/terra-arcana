@@ -36,6 +36,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 #Add Terra theme
 COPY . /usr/src/wordpress/wp-content/themes/terra-arcana
+RUN chmod +x entrypoint.sh
 
 #Build Terra theme
 RUN npm install
