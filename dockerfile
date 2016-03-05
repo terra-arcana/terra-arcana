@@ -18,8 +18,8 @@ ENV DB_HOST="localhost"
 USER root
 RUN apt-get update
 RUN apt-get install wget sudo git mysql-client -y
-RUN mkdir -p /var/www/html/wp-content/themes/terra-arcana
-WORKDIR /var/www/html/wp-content/themes/terra-arcana
+RUN mkdir -p /usr/src/wordpress/wp-content/themes/terra-arcana
+WORKDIR /usr/src/wordpress/wp-content/themes/terra-arcana
 
 #Install WP-CLI
 RUN apt-get install wget
@@ -35,8 +35,7 @@ RUN npm install -g webpack esdoc
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 #Add Terra theme
-RUN mkdir -p /var/www/html/wp-content/themes/terra-arcana
-COPY . /var/www/html/wp-content/themes/terra-arcana
+COPY . /usr/src/wordpress/wp-content/themes/terra-arcana
 
 #Build Terra theme
 RUN npm install
@@ -44,4 +43,4 @@ RUN composer install
 RUN webpack
 
 #Finalize
-CMD sudo -u www-data bash /var/www/html/wp-content/themes/terra-arcana/entrypoint.sh
+CMD sudo -u www-data bash /usr/src/wordpress/wp-content/themes/terra-arcana/entrypoint.sh
