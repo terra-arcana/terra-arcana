@@ -55,6 +55,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 			chown www-data:www-data .htaccess
 		fi
 	fi
+fi
 
 echo $WORDPRESS_DB_NAME
 echo $WORDPRESS_DB_USER
