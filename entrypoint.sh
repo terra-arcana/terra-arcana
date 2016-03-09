@@ -67,6 +67,9 @@ sleep 20
 echo "Creating wp-config.php"
 sudo -u www-data wp core config --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST
 
+echo "Creating database"
+sudo -u www-data wp db create
+
 echo "Creating tables"
 sudo -u www-data wp core install --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL
 
