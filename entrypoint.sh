@@ -166,9 +166,10 @@ $mysql->close();
 EOPHP
 fi
 
+cd /var/www/html
 echo "Installing Terra theme"
-echo $(ls)
-sudo -u www-data wp core install --path=/var/www/html --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL
-sudo -u www-data wp theme activate --path=/var/www/html terra-arcana
+echo $(ls /var/www/html)
+sudo -u www-data wp core install --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL
+sudo -u www-data wp theme activate terra-arcana
 
 exec "$@"
