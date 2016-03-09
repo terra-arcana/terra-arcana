@@ -1,6 +1,13 @@
 #!/bin/bash
 cd /var/www/html
 
+echo $WORDPRESS_DB_NAME
+echo $WORDPRESS_DB_USER
+echo $WORDPRESS_DB_PASSWORD
+echo $WORDPRESS_DB_HOST
+
+sleep 20
+
 echo "Downloading Wordpress"
 sudo -u www-data wp core download
 

@@ -9,10 +9,6 @@ ENV WP_TITLE="Test"
 ENV WP_ADMIN_USER="admin"
 ENV WP_ADMIN_PASSWORD="admin"
 ENV WP_ADMIN_EMAIL="test@test.test"
-ENV DB_NAME="wordpress"
-ENV DB_USER="admin"
-ENV DB_PASSWORD="admin"
-ENV DB_HOST="localhost"
 
 #Some boilerplate
 USER root
