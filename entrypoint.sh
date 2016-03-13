@@ -79,4 +79,7 @@ if [ ! -d /var/html/www/wp-content/themes/terra-arcana]
 	sudo -u www-data wp theme activate terra-arcana
 fi
 
+sudo -u www-data wp plugin install rest-api
+sudo -u www-data wp plugin install OAuth1-master
+
 exec "$@"
