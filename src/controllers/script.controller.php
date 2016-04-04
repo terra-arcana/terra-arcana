@@ -1,17 +1,21 @@
 <?php
 
 namespace terraarcana {
+	require_once(ROOT . '/src/controllers/controller.aclass.php');
 
 	/**
 	 * Handles the queuing of public scripts
 	 */
-	class ScriptController {
+	class ScriptController extends Controller {
 
-		public function __construct() {}
+		public function __construct() {
+			parent::__construct();
+		}
+
 		private function __clone() {}
 
 		/**
-		 * Initializes the controller. Runs on WP init hook.
+		 * @override
 		 */
 		public function init() {
 			add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));

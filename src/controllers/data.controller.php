@@ -3,8 +3,9 @@
 namespace terraarcana {
 	define('API_PREFIX', 'terraarcana');
 
-	require_once(ROOT . '/src/cpt/codex.class.php');
+	require_once(ROOT . '/src/controllers/controller.aclass.php');
 
+	require_once(ROOT . '/src/cpt/codex.class.php');
 	require_once(ROOT . '/src/cpt/rules.class.php');
 	require_once(ROOT . '/src/cpt/character-class.class.php');
 	require_once(ROOT . '/src/cpt/skill.class.php');
@@ -15,7 +16,7 @@ namespace terraarcana {
 	/**
 	 * Handles the creation and maintenance of the data layer
 	 */
-	class DataController {
+	class DataController extends Controller {
 
 		private static $_instance;
 
@@ -23,6 +24,8 @@ namespace terraarcana {
 		private $_routes = array();
 
 		protected function __construct() {
+			parent::__construct();
+
 			if (class_exists('WP_REST_Controller')) {
 				$this->_cpts = array(
 					'codex' => new Codex(),
@@ -57,7 +60,7 @@ namespace terraarcana {
 		}
 
 		/**
-		 * Initializes the controller. Runs on WP init hook
+		 * @override
 		 */
 		public function init() {
 			// Run init() on all CPTs
