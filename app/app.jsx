@@ -11,11 +11,49 @@ import Codex from './scripts/codex/codex.jsx';
 require('./styles/app.scss');
 
 /**
- * Main application wrapper
+ * An App is the main application wrapper. It is the single most top-level React component.
  * @class
  */
 class App extends React.Component {
-	
+
+	/**
+	 * @constructor
+	 * @param {Object} Default props
+	 */
+	constructor(props) {
+		super(props);
+
+		/**
+		 * @type {Object}
+		 * @private
+		 */
+		this.state = {
+			currentUser: undefined
+		};
+	}
+
+	componentDidMount() {
+		jQuery.ajax({
+			url: WP_API_Settings.root + 'wp/v2/users/me',
+			method: 'GET',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+			},
+			statusCode: {
+				401: function() {
+					this.setState({
+						currentUser: null
+					});
+				}.bind(this)
+			},
+			success: function(response) {
+				this.setState({
+					currentUser: response
+				})
+			}.bind(this)
+		});
+	}
+
 	/**
 	 * @override
 	 * @return {jsx} The component template
@@ -23,7 +61,9 @@ class App extends React.Component {
 	render() {
 		return (
 			<div id="sidenav-page-wrapper" className="toggled">
-				<Sidenav />
+				<Sidenav
+					currentUser = {this.state.currentUser}
+				/>
 				<div id="sidenav-content-wrapper" className="container-fluid">
 					<div className="row">
 						<h1 className="col-xs-12">Terra Arcana</h1>
@@ -38,8 +78,8 @@ class App extends React.Component {
 let routes = (
 	<Route name="app" path="/" handler={App}>
 		<DefaultRoute handler={Index} />
-		<Route path="/competences" handler={CharacterBuilder} />
 		<Route path="/codex" handler={Codex} />
+		<Route path="/zodiaque" handler={CharacterBuilder} />
 	</Route>
 );
 
