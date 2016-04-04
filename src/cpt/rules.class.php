@@ -1,10 +1,10 @@
 <?php
 
 namespace terraarcana {
-	require_once(ROOT . '/src/cpt/cpt.aclass.php' );
+	require_once(ROOT . '/src/cpt/cpt.aclass.php');
 
 	/**
-	 * Represents the Rules CPT, where the rules of the game 
+	 * Represents the Rules CPT, where the rules of the game
 	 * system can be added to the game database
 	 */
 	class Rules extends CPT {
@@ -12,8 +12,6 @@ namespace terraarcana {
 		public function __construct() {
 			$this->_postTypeName = 'rules';
 		}
-
-		private function __clone() {}
 
 		/**
 		 * @inheritdoc

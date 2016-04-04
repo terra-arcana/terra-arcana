@@ -1,14 +1,14 @@
 <?php
 
 namespace terraarcana {
-	require_once(ROOT . '/src/cpt/cpt.aclass.php' );
+	require_once(ROOT . '/src/cpt/cpt.aclass.php');
 
 	/**
-	 * Represents the point node CPT, where distinct energy and 
+	 * Represents the point node CPT, where distinct energy and
 	 * perk nodes can be added to the game system database.
 	 */
 	class PointNode extends CPT {
-		
+
 		public function __construct() {
 			$this->_postTypeName = 'point-node';
 			$this->_fields = array(
@@ -33,8 +33,6 @@ namespace terraarcana {
 				)
 			);
 		}
-
-		private function __clone() {}
 
 		/**
 		 * @inheritdoc
@@ -70,7 +68,7 @@ namespace terraarcana {
 				)
 			));
 		}
-		
+
 		/**
 		 * Return all skill graph data
 		 * @return array The graph data
@@ -80,7 +78,7 @@ namespace terraarcana {
 				'nodes' => array(),
 				'links' => array()
 			);
-			
+
 			$pointNodes = get_posts(array(
 				'post_type' => 'point-node',
 				'posts_per_page' => -1
@@ -105,7 +103,7 @@ namespace terraarcana {
 				if (!empty($graphData[0]['links'])) {
 					foreach ($graphData[0]['links'] as $link) {
 						array_push($result['links'], array((string)$node->ID, $link['id']));
-					}					
+					}
 				}
 			}
 
@@ -113,7 +111,7 @@ namespace terraarcana {
 		}
 
 		/**
-		 * Create a new point node in the database. 
+		 * Create a new point node in the database.
 		 * This does not create any custom fields, use {@link update_graph_data} afterwards.
 		 * @param array $data The new node data
 		 * @return int The ID of the inserted WordPress node
@@ -139,7 +137,7 @@ namespace terraarcana {
 				'post_status' => 'publish'
 			));
 
-			// Create stub graph_data repeater row so it will be ready for update_graph_data, 
+			// Create stub graph_data repeater row so it will be ready for update_graph_data,
 			// since that function can't handle creating new rows
 			// @see http://www.advancedcustomfields.com/resources/update_sub_field/
 			add_row($this->_fields['graph_data']['key'], array(
@@ -152,7 +150,7 @@ namespace terraarcana {
 		}
 
 		/**
-		 * Update a graph data node (X/Y coordinates and link IDs). At this point, 
+		 * Update a graph data node (X/Y coordinates and link IDs). At this point,
 		 * all nodes entering here should already exist in DB
 		 * @param Object $node An object containing the new `x`, `y`, `start` and `links` properties of a node `id`
 		 * @param array $links The IDs of the nodes linked to this skill
@@ -168,14 +166,14 @@ namespace terraarcana {
 			// Update point node values
 			update_field($this->_fields['node_type']['key'], $node['type'], $node['id']);
 			update_field($this->_fields['value']['key'], $node['value'], $node['id']);
-			
+
 			// Update coordinates
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'x'), $node['x'], $node['id']);
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'y'), $node['y'], $node['id']);
 
 			// Update links
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'links'), $acfLinks, $node['id']);
-		
+
 			// Update start node status
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'start'), ($node['start'] === 'true'), $node['id']);
 		}

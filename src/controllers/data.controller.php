@@ -5,11 +5,12 @@ namespace terraarcana {
 
 	require_once(ROOT . '/src/controllers/controller.aclass.php');
 
-	require_once(ROOT . '/src/cpt/codex.class.php');
-	require_once(ROOT . '/src/cpt/rules.class.php');
+	require_once(ROOT . '/src/cpt/character.class.php');
 	require_once(ROOT . '/src/cpt/character-class.class.php');
-	require_once(ROOT . '/src/cpt/skill.class.php');
+	require_once(ROOT . '/src/cpt/codex.class.php');
 	require_once(ROOT . '/src/cpt/point-node.class.php');
+	require_once(ROOT . '/src/cpt/rules.class.php');
+	require_once(ROOT . '/src/cpt/skill.class.php');
 
 	require_once(ROOT . '/src/routes/graph-data.route.php');
 
@@ -28,11 +29,12 @@ namespace terraarcana {
 
 			if (class_exists('WP_REST_Controller')) {
 				$this->_cpts = array(
-					'codex' => new Codex(),
-					'rules' => new Rules(),
+					'character' => new Character(),
 					'character-class' => new CharacterClass(),
-					'skill' => new Skill(),
-					'point-node' => new PointNode()
+					'codex' => new Codex(),
+					'point-node' => new PointNode(),
+					'rules' => new Rules(),
+					'skill' => new Skill()
 				);
 
 				$this->_routes = array(

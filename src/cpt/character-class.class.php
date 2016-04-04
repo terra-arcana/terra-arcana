@@ -1,10 +1,10 @@
 <?php
 
 namespace terraarcana {
-	require_once(ROOT . '/src/cpt/cpt.aclass.php' );
+	require_once(ROOT . '/src/cpt/cpt.aclass.php');
 
 	/**
-	 * Represents the CharacterClass CPT, where character classes  
+	 * Represents the CharacterClass CPT, where character classes
 	 * can be added to the game database
 	 */
 	class CharacterClass extends CPT {
@@ -12,8 +12,6 @@ namespace terraarcana {
 		public function __construct() {
 			$this->_postTypeName = 'character-class';
 		}
-
-		private function __clone() {}
 
 		/**
 		 * @inheritdoc
