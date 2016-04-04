@@ -14,6 +14,7 @@ namespace terraarcana {
 	require_once(ROOT . '/src/cpt/user.class.php');
 
 	require_once(ROOT . '/src/routes/graph-data.route.php');
+	require_once(ROOT . '/src/routes/user-characters.route.php');
 
 	/**
 	 * Handles the creation and maintenance of the data layer
@@ -40,7 +41,8 @@ namespace terraarcana {
 				);
 
 				$this->_routes = array(
-					'graph-data' => new GraphDataRoute()
+					'graph-data' => new GraphDataRoute(),
+					'user-characters' => new UserCharactersRoute()
 				);
 
 				foreach ($this->_routes as $route) {

@@ -3,6 +3,10 @@
 namespace terraarcana {
 	if (class_exists('WP_REST_Controller') && class_exists('WP_REST_Server')) {
 
+		/**
+		 * The GraphDataRoute lists the entire contents of the Zodiac graph in a easily parsable
+		 * format. It is accessible at `terraarcana/v1/graph-data`.
+		 */
 		class GraphDataRoute extends \WP_REST_Controller {
 
 			public function register_routes() {
@@ -75,7 +79,7 @@ namespace terraarcana {
 				}
 
 				// Update all data on all nodes
-				foreach($params['nodes'] as $node) {	
+				foreach($params['nodes'] as $node) {
 					$links = $this->get_linked_nodes_from_id($node['id'], $params['links']);
 
 					switch($node['type']) {
@@ -107,7 +111,7 @@ namespace terraarcana {
 				foreach($params['deletedNodes'] as $node) {
 					wp_delete_post($node, true);
 				}
-				
+
 				return new \WP_REST_Response('Zodiaque sauvegardé avec succès!', 200);
 			}
 
@@ -121,7 +125,7 @@ namespace terraarcana {
 			private function push_unique_link(array &$linkArray, $from, $to) {
 				foreach ($linkArray as $link) {
 					// If we find a duplicate, exit early before pushing the new link
-					if (($link[0] == $from && $link[1] == $to) || 
+					if (($link[0] == $from && $link[1] == $to) ||
 						($link[0] == $to && $link[1] == $from)) {
 						return $linkArray;
 					}
