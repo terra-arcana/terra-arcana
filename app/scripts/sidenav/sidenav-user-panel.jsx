@@ -1,6 +1,6 @@
 import React from 'react';
 
-require('../styles/sidenav-user-panel.scss');
+require('../../styles/sidenav/sidenav-user-panel.scss');
 
 export default class SidenavUserPanel extends React.Component {
 

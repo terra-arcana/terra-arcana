@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import {Route, DefaultRoute, RouteHandler} from 'react-router';
 
-import Sidenav from './scripts/sidenav.jsx';
+import Sidenav from './scripts/sidenav/sidenav.jsx';
 import Index from './scripts/index.jsx';
 import CharacterBuilder from './scripts/zodiac/character-builder.jsx';
 import Codex from './scripts/codex/codex.jsx';
