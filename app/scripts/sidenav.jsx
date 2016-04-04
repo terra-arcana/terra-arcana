@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+import SidenavUserPanel from './sidenav-user-panel.jsx';
+
 require('../styles/sidenav.scss');
 
 /**
@@ -14,35 +16,6 @@ export default class Sidenav extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var userPanel = <noscript />;
-
-		if (this.props.currentUser) {
-			userPanel = (
-				<div className="panel panel-default navbar-fixed-bottom">
-					<div className="panel-heading">
-						<h2 className="panel-title"><a href="#">{this.props.currentUser.name}</a> <small>incarne</small></h2>
-					</div>
-					<div className="list-group">
-						<a className="list-group-item" href="#">
-							<h3 className="list-group-item-heading">Boba Fett</h3>
-							<p className="list-group-item-text">Gars badass galicien</p>
-						</a>
-						<a className="list-group-item" href={WP_Theme_Settings.logoutURL}>Déconnexion</a>
-					</div>
-				</div>
-			);
-		} else if (this.props.currentUser === null) {
-			userPanel = (
-				<div className="panel panel-default navbar-fixed-bottom">
-
-					<ul className="list-group">
-						<li className="list-group-item"><a href="/wp-login.php">Connexion</a></li>
-						<li className="list-group-item list-group-item-success"><a href="/wp-register.php">Inscription</a></li>
-					</ul>
-				</div>
-			);
-		}
-
 		return (
 			<nav className="ta-sidenav">
 				<div className="container-fluid">
@@ -55,9 +28,7 @@ export default class Sidenav extends React.Component {
 						<li><Link to="/zodiaque">Zodiaque</Link></li>
 					</ul>
 
-					<div className="ta-sidenav-user-panel">
-						{userPanel}
-					</div>
+					<SidenavUserPanel currentUser={this.props.currentUser}/>
 				</div>
 			</nav>
 		);
