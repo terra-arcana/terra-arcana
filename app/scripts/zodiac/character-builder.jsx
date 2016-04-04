@@ -6,7 +6,7 @@ import PointNodeInspector from './point-node-inspector.jsx';
 import CharacterSkillsPanel from './character-skills-panel.jsx';
 
 /**
- * A CharacterBuilder allows editing of a character build by displaying a {@link SkillGraph} that 
+ * A CharacterBuilder allows editing of a character build by displaying a {@link SkillGraph} that
  * enabled conditional node picking by adjacency rules.
  * @class
  */
@@ -82,17 +82,17 @@ export default class CharacterBuilder extends React.Component {
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
 				/>
-				
+
 				{inspector}
 			</div>
-		);	
+		);
 	}
 
 	/**
 	 * @override
 	 */
 	componentDidMount() {
-		jQuery.get('http://' + location.hostname + '/wp-json/terraarcana/v1/graph-data', function(result) {
+		jQuery.get(WP_API_Settings.root + 'terraarcana/v1/graph-data', function(result) {
 			this.setState({
 				nodeData: result.nodes,
 				linkData: result.links

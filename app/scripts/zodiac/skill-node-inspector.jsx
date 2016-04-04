@@ -4,7 +4,7 @@ import Lodash from 'lodash';
 require('../../styles/zodiac/skill-node-inspector.scss');
 
 /**
- * A SkillNodeInspector shows details about a {@link SkillNode} or {@link UpgradeNode}. 
+ * A SkillNodeInspector shows details about a {@link SkillNode} or {@link UpgradeNode}.
  * It is meant for use in conjunction with a {@link SkillGraph} for zodiac viewing purposes.
  * @class
  */
@@ -64,11 +64,11 @@ export default class SkillNodeInspector extends React.Component {
 		 * @type {jqXHR}
 		 * @private
 		 */
-		this.fetchSkillRequest = jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/skill/' + skillID, function(result) {
+		this.fetchSkillRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/skill/' + skillID, function(result) {
 			var skillInfo = result;
 
 			// Replace character class ID with full character class object
-			this.fetchSkillRequest = jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/character-class/' + skillInfo.character_class, function(result) {
+			this.fetchSkillRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/character-class/' + skillInfo.character_class, function(result) {
 				skillInfo.character_class = result;
 
 				this.setState({
@@ -139,7 +139,7 @@ export default class SkillNodeInspector extends React.Component {
 					</tr>
 				) : null,
 
-				skillInfoTable = (costRow || castRow || durationRow || usesRow || rangeRow) ? 
+				skillInfoTable = (costRow || castRow || durationRow || usesRow || rangeRow) ?
 				(
 					<table className='skill-details-table table table-bordered table-condensed'>
 						<tbody>
