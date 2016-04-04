@@ -1,5 +1,7 @@
 import React from 'react';
 
+import SidenavCharacterSwitcher from './sidenav-character-switcher.jsx';
+
 require('../../styles/sidenav/sidenav-user-panel.scss');
 
 export default class SidenavUserPanel extends React.Component {
@@ -20,9 +22,13 @@ export default class SidenavUserPanel extends React.Component {
 					</div>
 					<div className="list-group">
 						<a className="list-group-item" href="#">
+							<button type="button" className="ta-sidenav-character-switcher-toggle btn btn-link pull-right collapsed" data-toggle="collapse" data-target="#ta-sidenav-character-switcher">
+								<span className="glyphicon"></span>
+							</button>
 							<h3 className="list-group-item-heading">Boba Fett</h3>
 							<p className="list-group-item-text">Gars badass galicien</p>
 						</a>
+						<SidenavCharacterSwitcher />
 						<a className="list-group-item" href={WP_Theme_Settings.logoutURL}>Déconnexion</a>
 					</div>
 				</div>
@@ -50,6 +56,9 @@ export default class SidenavUserPanel extends React.Component {
 	}
 }
 
+/**
+ * @type {Object}
+ */
 SidenavUserPanel.propTypes = {
 	currentUser: React.PropTypes.object
 };
