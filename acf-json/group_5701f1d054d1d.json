@@ -1,0 +1,144 @@
+{
+    "key": "group_5701f1d054d1d",
+    "title": "Personnage",
+    "fields": [
+        {
+            "key": "field_5701f211be271",
+            "label": "Description publique",
+            "name": "public_description",
+            "type": "wysiwyg",
+            "instructions": "Visible par tous les joueurs",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0
+        },
+        {
+            "key": "field_5701f1d8be270",
+            "label": "Background",
+            "name": "private_description",
+            "type": "wysiwyg",
+            "instructions": "Visible par seulement l'auteur et l'organisation",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0
+        },
+        {
+            "key": "field_5701f279be273",
+            "label": "Comp\u00e9tences actuelles",
+            "name": "current_build",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": "",
+            "max": "",
+            "layout": "table",
+            "button_label": "Ajouter un \u00e9l\u00e9ment",
+            "sub_fields": [
+                {
+                    "key": "field_5701f2dabe274",
+                    "label": "Noeud",
+                    "name": "id",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "readonly": 0,
+                    "disabled": 0
+                }
+            ]
+        },
+        {
+            "key": "field_5701f2f9be275",
+            "label": "Comp\u00e9tences valid\u00e9es",
+            "name": "last_validated_build",
+            "type": "repeater",
+            "instructions": "Le dernier build confirm\u00e9 par le joueur (celui du dernier GN auquel il a particip\u00e9)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": "",
+            "max": "",
+            "layout": "table",
+            "button_label": "Ajouter un \u00e9l\u00e9ment",
+            "sub_fields": [
+                {
+                    "key": "field_5701f2f9be276",
+                    "label": "Noeud",
+                    "name": "id",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "readonly": 0,
+                    "disabled": 0
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "character"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1459746455
+}
