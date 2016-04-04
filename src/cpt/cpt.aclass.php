@@ -38,6 +38,8 @@ namespace terraarcana {
 		 * Register all custom fields to the API
 		 */
 		public function register_fields() {
+			// TODO: Private fields
+			
 			foreach($this->_fields as $field_name => $field) {
 				$callback = array($this, 'get_field');
 

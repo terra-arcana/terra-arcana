@@ -7,6 +7,29 @@ namespace terraarcana {
 
 		public function __construct() {
 			$this->_postTypeName = 'character';
+			$this->_fields = array(
+				'public_description' => array(
+					'key' => 'field_5701f211be271'
+				),
+				'private_description' => array(
+					'key' => 'field_5701f1d8be270'
+				),
+				'current_build' => array(
+					'key' => 'field_5701f279be273'
+				),
+				'last_validated_build' => array(
+					'key' => 'field_5701f2f9be275'
+				),
+				'photo' => array(
+					'key' => 'field_5701f25fbe272'
+				),
+				'bonus_xp' => array(
+					'key' => 'field_5701f339be277'
+				),
+				'bonus_perk' => array(
+					'key' => 'field_5701f381be278'
+				)
+			);
 		}
 
 		/**
@@ -39,7 +62,8 @@ namespace terraarcana {
 				'rest_base' 			=> 'character',
 				'hierarchical' 			=> false,
 				'supports' => array(
-					'title'
+					'title',
+					'author'
 				)
 			));
 		}
