@@ -8,6 +8,7 @@ $glyphicon-chevron-down: '\e114';
 	margin-bottom: 0;
 	transition: left 0.5s ease;
 
+	// Set character switch button icon to chevron up/down depending on collapse state
 	.ta-sidenav-character-switcher-toggle {
 		&.collapsed .glyphicon:before {
 			content: $glyphicon-chevron-down;
