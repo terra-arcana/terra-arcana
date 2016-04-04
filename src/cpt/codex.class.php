@@ -1,7 +1,7 @@
 <?php
 
 namespace terraarcana {
-	require_once(ROOT . '/src/cpt/cpt.aclass.php' );
+	require_once(ROOT . '/src/cpt/cpt.aclass.php');
 
 	/**
 	 * Represents the Codex CPT, where lore articles can be added to the
@@ -12,8 +12,6 @@ namespace terraarcana {
 		public function __construct() {
 			$this->_postTypeName = 'codex';
 		}
-
-		private function __clone() {}
 
 		/**
 		 * @inheritdoc

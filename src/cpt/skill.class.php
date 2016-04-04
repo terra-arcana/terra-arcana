@@ -1,13 +1,12 @@
 <?php
 
 namespace terraarcana {
-
-	require_once(ROOT . '/src/cpt/cpt.aclass.php' );
+	require_once(ROOT . '/src/cpt/cpt.aclass.php');
 
 	/**
 	 * Represents the Skill CPT, where character skills can be added to the
 	 * game database.
-	 * NOTE: Skill upgrade IDs are one-indexed! This means the second upgrade 
+	 * NOTE: Skill upgrade IDs are one-indexed! This means the second upgrade
 	 * to a skill has id XX-2, and not XX-1.
 	 */
 	class Skill extends CPT {
@@ -74,8 +73,6 @@ namespace terraarcana {
 			);
 		}
 
-		private function __clone() {}
-
 		/**
 		 * @inheritdoc
 		 */
@@ -120,7 +117,7 @@ namespace terraarcana {
 				'nodes' => array(),
 				'links' => array()
 			);
-			
+
 			$skills = get_posts(array(
 				'post_type' => 'skill',
 				'posts_per_page' => -1
@@ -209,7 +206,7 @@ namespace terraarcana {
 			}
 
 			$idFragments = explode('-', $node['id']);
-			
+
 			// Update coordinates
 			update_sub_field(array($this->_fields['upgrades']['key'], $idFragments[1], 'graph_data', 1, 'x'), $node['x'], $idFragments[0]);
 			update_sub_field(array($this->_fields['upgrades']['key'], $idFragments[1], 'graph_data', 1, 'y'), $node['y'], $idFragments[0]);
