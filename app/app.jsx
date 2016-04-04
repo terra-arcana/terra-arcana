@@ -49,7 +49,7 @@ class App extends React.Component {
 			success: function(response) {
 				this.setState({
 					currentUser: response
-				})
+				});
 			}.bind(this)
 		});
 	}
