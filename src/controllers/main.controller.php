@@ -1,6 +1,8 @@
 <?php
 
 namespace terraarcana {
+	require_once(ROOT . '/src/controllers/controller.aclass.php');
+
 	require_once(ROOT . '/src/controllers/data.controller.php');
 	require_once(ROOT . '/src/controllers/script.controller.php');
 	require_once(ROOT . '/src/controllers/admin.controller.php');
@@ -11,7 +13,7 @@ namespace terraarcana {
 	/**
 	 * Main app controller
 	 */
-	class MainController {
+	class MainController extends Controller {
 
 		/**
 		 * Singleton instance reference
@@ -45,12 +47,13 @@ namespace terraarcana {
 		private $_loginController;
 
 		public function __construct() {
+			parent::__construct();
+
 			$this->_dataController = DataController::getInstance();
 			$this->_scriptController = new ScriptController();
 			$this->_adminController = new AdminController();
 			$this->_loginController = new LoginController();
 
-			add_action('init', array($this, 'init'));
 			add_action('tgmpa_register', array($this, 'register_plugin_dependencies'));
 		}
 
@@ -67,14 +70,9 @@ namespace terraarcana {
 		}
 
 		/**
-		 * Initializes the controller. Called on init WP hook.
+		 * @override
 		 */
-		public function init() {
-			$this->_dataController->init();
-			$this->_scriptController->init();
-			$this->_adminController->init();
-			$this->_loginController->init();
-		}
+		public function init() {}
 
 		/**
 		 * Registers all dependent plugins for proper theme functionality
