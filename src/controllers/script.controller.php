@@ -34,6 +34,15 @@ namespace terraarcana {
 				// FIXME: Enqueue minified scripts in production
 				wp_enqueue_script('app', $base . 'dist/app.js', array('bootstrap-min'), null, true);
 			}
+
+			wp_localize_script('app', 'WP_Theme_Settings', array(
+				'imageRoot' => get_template_directory_uri() . '/dist/images/',
+				'logoutURL' => wp_logout_url(home_url())
+			));
+			wp_localize_script('app', 'WP_API_Settings', array(
+				'root' => esc_url_raw(rest_url()),
+				'nonce' => wp_create_nonce('wp_rest')
+			));
 		}
 
 		/**

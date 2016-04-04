@@ -28,7 +28,8 @@
         "experimentalObjectRestSpread": true
     },
     "globals": {
-        "appLocals": false,
+        "WP_API_Settings": false,
+        "WP_Theme_Settings": false,
         "jQuery": false,
         "require": false
     },
