@@ -7,7 +7,7 @@ require('../../styles/codex/codex.scss');
  * @class
  */
 export default class Codex extends React.Component {
-	
+
 	/**
 	 * @constructor
 	 * @param {Object} props Custom props
@@ -19,7 +19,7 @@ export default class Codex extends React.Component {
 		 * @type {Object}
 		 * @private
 		 */
-		this.state = { 
+		this.state = {
 			codexArticles: []
 		};
 	}
@@ -28,7 +28,7 @@ export default class Codex extends React.Component {
 	 * @override
  	 */
 	componentDidMount() {
-		jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/codex', function(result) {
+		jQuery.get(WP_API_Settings.root + 'wp/v2/codex', function(result) {
 			this.setState({
 				codexArticles: result
 			});
@@ -46,7 +46,7 @@ export default class Codex extends React.Component {
 					<div className = 'panel-heading'>
 						<h2 className = 'panel-title'>{article.title.rendered}</h2>
 					</div>
-					<div 
+					<div
 						className = 'panel-body'
 						dangerouslySetInnerHTML = {{__html: article.content.rendered}}
 					></div>
