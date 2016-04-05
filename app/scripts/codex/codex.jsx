@@ -42,7 +42,7 @@ export default class Codex extends React.Component {
 	render() {
 		let codexArticles = this.state.codexArticles.map(function(article) {
 			return(
-				<li key={article.ID} className='panel panel-default'>
+				<li key={article.id} className='panel panel-default'>
 					<div className = 'panel-heading'>
 						<h2 className = 'panel-title'>{article.title.rendered}</h2>
 					</div>
