@@ -69,9 +69,6 @@ class App extends React.Component {
 					onSwitchActiveCharacter = {this.switchActiveCharacter}
 				/>
 				<div id="sidenav-content-wrapper" className="container-fluid">
-					<div className="row">
-						<h1 className="col-xs-12">Terra Arcana</h1>
-					</div>
 					<RouteHandler />
 				</div>
 			</div>
