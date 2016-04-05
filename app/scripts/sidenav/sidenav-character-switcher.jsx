@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 /**
  * A SidenavCharacterSwitcher lists all characters belonging to a user, except
@@ -27,16 +28,16 @@ export default class SidenavCharacterSwitcher extends React.Component {
 			<div id="ta-sidenav-character-switcher" className="ta-sidenav-character-switcher collapse">
 				{this.props.characters.map(function(character) {
 					return (
-						<button
+						<Link
+							to={'/personnage/' + character.slug + '/'}
 							key={character.id}
-							type="button"
 							className="btn list-group-item list-group-item-info"
 							onClick={this.onCharacterClick}
 							data-character-id={character.id}
 						>
 							<h4 className="list-group-item-heading no-events">{character.title.rendered}</h4>
 							<p className="list-group-item-text no-events">Gars badass galicien</p>
-						</button>
+						</Link>
 					);
 				}.bind(this))}
 				<a href="#" className="list-group-item list-group-item-success">

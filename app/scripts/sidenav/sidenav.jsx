@@ -24,8 +24,8 @@ export default class Sidenav extends React.Component {
 					</Link>
 
 					<ul className="nav nav-pills nav-stacked">
-						<li><Link to="/codex">Codex Arcanum</Link></li>
-						<li><Link to="/zodiaque">Zodiaque</Link></li>
+						<li><Link to="/codex/">Codex Arcanum</Link></li>
+						<li><Link to="/zodiaque/">Zodiaque</Link></li>
 					</ul>
 
 					<SidenavUserPanel

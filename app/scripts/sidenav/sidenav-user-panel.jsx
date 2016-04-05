@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 import SidenavCharacterSwitcher from './sidenav-character-switcher.jsx';
 
@@ -70,7 +71,7 @@ export default class SidenavUserPanel extends React.Component {
 			incarnatesLabel = <small>incarne</small>;
 
 			activeCharacterButton = (
-				<a className="list-group-item" href="#">
+				<Link to={'/personnage/' + activeCharacterData.slug + '/'} className="list-group-item">
 					<button
 						ref = {(ref) => this.characterSwitcherToggle = ref}
 						type="button"
@@ -82,7 +83,7 @@ export default class SidenavUserPanel extends React.Component {
 					</button>
 					<h3 className="list-group-item-heading">{activeCharacterData.title.rendered}</h3>
 					<p className="list-group-item-text">Gars badass galicien</p>
-				</a>
+				</Link>
 			);
 		}
 
