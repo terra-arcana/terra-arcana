@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import {Route, DefaultRoute, RouteHandler} from 'react-router';
+import Lodash from 'lodash';
 
 import Sidenav from './scripts/sidenav/sidenav.jsx';
 import Index from './scripts/index.jsx';
@@ -30,6 +31,8 @@ class App extends React.Component {
 		this.state = {
 			currentUser: undefined
 		};
+
+		this.switchActiveCharacter = this.switchActiveCharacter.bind(this);
 	}
 
 	componentDidMount() {
@@ -63,6 +66,7 @@ class App extends React.Component {
 			<div id="sidenav-page-wrapper" className="toggled">
 				<Sidenav
 					currentUser = {this.state.currentUser}
+					onSwitchActiveCharacter = {this.switchActiveCharacter}
 				/>
 				<div id="sidenav-content-wrapper" className="container-fluid">
 					<div className="row">
@@ -72,6 +76,22 @@ class App extends React.Component {
 				</div>
 			</div>
 		);
+	}
+
+	/**
+	 * Changes the current user's active character to a new one.
+	 * @param {number} id The new active character's ID
+	 */
+	switchActiveCharacter(id) {
+		var currentUser = Lodash.cloneDeep(this.state.currentUser);
+
+		currentUser['active_character'] = id;
+
+		this.setState({
+			currentUser: currentUser
+		});
+
+		// TODO: Update user model on WordPress
 	}
 }
 

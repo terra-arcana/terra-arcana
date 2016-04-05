@@ -20,32 +20,27 @@ export default class SidenavUserPanel extends React.Component {
 		super(props);
 
 		this.state = {
-			userCharacters: [
-				{
-					id: 1,
-					title: {
-						rendered: 'Zilane Astaldo'
-					}
-				},
-				{
-					id: 2,
-					title: {
-						rendered: 'Boba Fett'
-					}
-				},
-				{
-					id: 3,
-					title: {
-						rendered: 'Noko Chasca'
-					}
-				}
-			],
-			activeCharacter: 1
+			loadingCharacters: true,
+			userCharacters: []
 		};
 
 		this.getActiveCharacterData = this.getActiveCharacterData.bind(this);
 		this.getInactiveCharactersData = this.getInactiveCharactersData.bind(this);
-		this.switchActiveCharacter = this.switchActiveCharacter.bind(this);
+		this.onSwitchActiveCharacter = this.onSwitchActiveCharacter.bind(this);
+	}
+
+	/**
+	 * @override
+	 */
+	componentDidUpdate() {
+		if (this.props.currentUser) {
+			jQuery.get(WP_API_Settings.root + 'wp/v2/users/' + this.props.currentUser.id + '/characters', function(result) {
+				this.setState({
+					loadingCharacters: false,
+					userCharacters: result
+				});
+			}.bind(this));
+		}
 	}
 
 	/**
@@ -53,33 +48,68 @@ export default class SidenavUserPanel extends React.Component {
 	 * @return {jsx} Component template
 	 */
 	render() {
-		var contents = <noscript/>,
+		var contents = (
+				<div className="panel panel-default navbar-fixed-bottom">
+					<ul className="list-group">
+						<li className="list-group-item text-center">
+							<span className="glyphicon glyphicon-asterisk glyphicon-spin text-center" />
+						</li>
+					</ul>
+				</div>
+			),
+			activeCharacterButton = (
+				<li className="list-group-item text-center">
+					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
+				</li>
+			),
+			incarnatesLabel = <noscript />,
 			activeCharacterData = this.getActiveCharacterData();
+
+		// There is an active character
+		if (activeCharacterData) {
+			incarnatesLabel = <small>incarne</small>;
+
+			activeCharacterButton = (
+				<a className="list-group-item" href="#">
+					<button
+						ref = {(ref) => this.characterSwitcherToggle = ref}
+						type="button"
+						className="ta-sidenav-character-switcher-toggle btn btn-link pull-right collapsed"
+						data-toggle="collapse"
+						data-target="#ta-sidenav-character-switcher"
+					>
+						<span className="glyphicon"></span>
+					</button>
+					<h3 className="list-group-item-heading">{activeCharacterData.title.rendered}</h3>
+					<p className="list-group-item-text">Gars badass galicien</p>
+				</a>
+			);
+		}
+
+		// No active character
+		else if (!this.state.loadingCharacters) {
+			activeCharacterButton = (
+				<a className="list-group-item list-group-item-success" href="#">
+					<span className="glyphicon glyphicon-plus pull-right"></span>
+					Créer un personnage
+				</a>
+			);
+		}
 
 		// Logged in
 		if (this.props.currentUser) {
 			contents = (
 				<div className="panel panel-default navbar-fixed-bottom">
 					<div className="panel-heading">
-						<h2 className="panel-title"><a href="#">{this.props.currentUser.name}</a> <small>incarne</small></h2>
+						<h2 className="panel-title">
+							<a href="#">{this.props.currentUser.name}</a> {incarnatesLabel}
+						</h2>
 					</div>
 					<div className="list-group">
-						<a className="list-group-item" href="#">
-							<button
-								ref = {(ref) => this.characterSwitcherToggle = ref}
-								type="button"
-								className="ta-sidenav-character-switcher-toggle btn btn-link pull-right collapsed"
-								data-toggle="collapse"
-								data-target="#ta-sidenav-character-switcher"
-							>
-								<span className="glyphicon"></span>
-							</button>
-							<h3 className="list-group-item-heading">{activeCharacterData.title.rendered}</h3>
-							<p className="list-group-item-text">Gars badass galicien</p>
-						</a>
+						{activeCharacterButton}
 						<SidenavCharacterSwitcher
 							characters = {this.getInactiveCharactersData()}
-							onCharacterClick = {this.switchActiveCharacter}
+							onCharacterClick = {this.onSwitchActiveCharacter}
 						/>
 
 						<a className="list-group-item" href={WP_Theme_Settings.logoutURL}>Déconnexion</a>
@@ -115,10 +145,12 @@ export default class SidenavUserPanel extends React.Component {
 	getActiveCharacterData() {
 		var character;
 
-		for (var i = 0, len = this.state.userCharacters.length; i < len; i++) {
-			character = this.state.userCharacters[i];
-			if (character.id === this.state.activeCharacter) {
-				return character;
+		if (this.props.currentUser) {
+			for (var i = 0, len = this.state.userCharacters.length; i < len; i++) {
+				character = this.state.userCharacters[i];
+				if (character.id === this.props.currentUser['active_character']) {
+					return character;
+				}
 			}
 		}
 
@@ -133,10 +165,12 @@ export default class SidenavUserPanel extends React.Component {
 		var inactiveCharacters = [],
 			character;
 
-		for (var i = 0, len = this.state.userCharacters.length; i < len; i++) {
-			character = this.state.userCharacters[i];
-			if (character.id !== this.state.activeCharacter) {
-				inactiveCharacters.push(character);
+		if (this.props.currentUser) {
+			for (var i = 0, len = this.state.userCharacters.length; i < len; i++) {
+				character = this.state.userCharacters[i];
+				if (character.id !== this.props.currentUser['active_character']) {
+					inactiveCharacters.push(character);
+				}
 			}
 		}
 
@@ -144,18 +178,16 @@ export default class SidenavUserPanel extends React.Component {
 	}
 
 	/**
-	 * Changes the current user's active character to a new one.
-	 * @param {number} id The new active character's ID
+	 * Handle character switches
+	 * @param {Number} id The new active character's ID
 	 */
-	switchActiveCharacter(id) {
-		this.setState({
-			activeCharacter: id
-		});
+	onSwitchActiveCharacter(id) {
+		if (this.props.onSwitchActiveCharacter) {
+			this.props.onSwitchActiveCharacter(id);
 
-		// Close the character switcher
-		this.characterSwitcherToggle.click();
-
-		// TODO: Store this new value in the user model on WordPress
+			// Close the character switcher
+			this.characterSwitcherToggle.click();
+		}
 	}
 }
 
@@ -163,5 +195,7 @@ export default class SidenavUserPanel extends React.Component {
  * @type {Object}
  */
 SidenavUserPanel.propTypes = {
-	currentUser: React.PropTypes.object
+	currentUser: React.PropTypes.object,
+
+	onSwitchActiveCharacter: React.PropTypes.func
 };

@@ -28,7 +28,10 @@ export default class Sidenav extends React.Component {
 						<li><Link to="/zodiaque">Zodiaque</Link></li>
 					</ul>
 
-					<SidenavUserPanel currentUser={this.props.currentUser}/>
+					<SidenavUserPanel
+						currentUser = {this.props.currentUser}
+						onSwitchActiveCharacter = {this.props.onSwitchActiveCharacter}
+					/>
 				</div>
 			</nav>
 		);
@@ -39,5 +42,7 @@ export default class Sidenav extends React.Component {
  * @type {Object}
  */
 Sidenav.propTypes = {
-	currentUser: React.PropTypes.object
+	currentUser: React.PropTypes.object,
+
+	onSwitchActiveCharacter: React.PropTypes.func
 };
