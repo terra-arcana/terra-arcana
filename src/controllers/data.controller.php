@@ -11,8 +11,10 @@ namespace terraarcana {
 	require_once(ROOT . '/src/cpt/point-node.class.php');
 	require_once(ROOT . '/src/cpt/rules.class.php');
 	require_once(ROOT . '/src/cpt/skill.class.php');
+	require_once(ROOT . '/src/cpt/user.class.php');
 
 	require_once(ROOT . '/src/routes/graph-data.route.php');
+	require_once(ROOT . '/src/routes/user-characters.route.php');
 
 	/**
 	 * Handles the creation and maintenance of the data layer
@@ -34,11 +36,13 @@ namespace terraarcana {
 					'codex' => new Codex(),
 					'point-node' => new PointNode(),
 					'rules' => new Rules(),
-					'skill' => new Skill()
+					'skill' => new Skill(),
+					'user' => new User()
 				);
 
 				$this->_routes = array(
-					'graph-data' => new GraphDataRoute()
+					'graph-data' => new GraphDataRoute(),
+					'user-characters' => new UserCharactersRoute('character')
 				);
 
 				foreach ($this->_routes as $route) {

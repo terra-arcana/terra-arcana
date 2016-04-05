@@ -38,21 +38,25 @@ namespace terraarcana {
 		 * Register all custom fields to the API
 		 */
 		public function register_fields() {
+			$updateCallback = null;
+
 			// TODO: Private fields
-			
+
 			foreach($this->_fields as $field_name => $field) {
-				$callback = array($this, 'get_field');
+				$getCallback = array($this, 'get_field');
+				$updateCallback = array($this, 'update_field');
 
 				if (array_key_exists('select', $field)) {
-					$callback = array($this, 'get_select_field');
+					$getCallback = array($this, 'get_select_field');
 				}
 
 				if (array_key_exists('override', $field)) {
-					$callback = array($this, 'get_repeater_field');
+					$getCallback = array($this, 'get_repeater_field');
 				}
 
 				register_rest_field($this->_postTypeName, $field_name, array(
-					'get_callback' => $callback
+					'get_callback' => $getCallback,
+					'update_callback' => $updateCallback
 				));
 			}
 		}
@@ -150,6 +154,18 @@ namespace terraarcana {
 				}
 
 				return $field;
+			}
+		}
+
+		/**
+		 * Update a custom field value. Callback from `register_rest_field`
+		 * @param mixed $value The value of the field
+		 * @param object $object The object from the response
+		 * @param string $field_name Name of field
+		 */
+		public function update_field($value, $object, $field_name) {
+			if (function_exists('update_field')) {
+				update_field($this->_fields[$field_name]['key'], $value, $object['id']);
 			}
 		}
 	}
