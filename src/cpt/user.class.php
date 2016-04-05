@@ -35,5 +35,14 @@ namespace terraarcana {
 				}
 			}
 		}
+
+		/**
+		 * @override
+		 */
+		public function update_field($value, \WP_User $object, $field_name) {
+			if (function_exists('update_field')) {
+				update_field($this->_fields[$field_name]['key'], $value, 'user_' . $object->ID);
+			}
+		}
 	}
 }

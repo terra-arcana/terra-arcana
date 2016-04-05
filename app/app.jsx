@@ -39,7 +39,7 @@ class App extends React.Component {
 		jQuery.ajax({
 			url: WP_API_Settings.root + 'wp/v2/users/me',
 			method: 'GET',
-			beforeSend: function (xhr) {
+			beforeSend: function(xhr) {
 				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
 			},
 			statusCode: {
@@ -91,7 +91,17 @@ class App extends React.Component {
 			currentUser: currentUser
 		});
 
-		// TODO: Update user model on WordPress
+		// Update WordPress user model
+		jQuery.ajax({
+			url: WP_API_Settings.root + 'wp/v2/users/' + currentUser['id'],
+			method: 'POST',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+			},
+			data: {
+				'active_character': id
+			}
+		});
 	}
 }
 

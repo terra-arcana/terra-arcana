@@ -42,7 +42,7 @@ namespace terraarcana {
 
 				$this->_routes = array(
 					'graph-data' => new GraphDataRoute(),
-					'user-characters' => new UserCharactersRoute()
+					'user-characters' => new UserCharactersRoute('character')
 				);
 
 				foreach ($this->_routes as $route) {
