@@ -31,7 +31,7 @@ export default class SidenavCharacterSwitcher extends React.Component {
 						<Link
 							to={'/personnage/' + character.slug + '/'}
 							key={character.id}
-							className="btn list-group-item list-group-item-info"
+							className="list-group-item list-group-item-info"
 							onClick={this.onCharacterClick}
 							data-character-id={character.id}
 						>
