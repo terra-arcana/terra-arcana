@@ -20,6 +20,12 @@ export default class CharacterProfile extends React.Component {
 		this.state = {
 			character: undefined
 		};
+
+		this.fetchCharacterData = this.fetchCharacterData.bind(this);
+	}
+
+	componentDidMount() {
+		this.fetchCharacterData(this.props.params.characterSlug);
 	}
 
 	/**
@@ -27,17 +33,14 @@ export default class CharacterProfile extends React.Component {
 	 * @param {Object} nextProps
 	 */
 	componentWillReceiveProps(nextProps) {
-		// Reset state so spinner can be displayed
-		this.setState({
-			character: undefined
-		});
-
-		// Load new character data from API
-		jQuery.get(WP_API_Settings.root + 'wp/v2/character?slug=' + nextProps.params.characterSlug, function(response) {
+		// Only update character if something changed
+		if (nextProps.params.characterSlug !== this.props.params.characterSlug) {
 			this.setState({
-				character: response[0]
+				character: undefined
 			});
-		}.bind(this));
+
+			this.fetchCharacterData(nextProps.params.characterSlug);
+		}
 	}
 
 	/**
@@ -64,11 +67,21 @@ export default class CharacterProfile extends React.Component {
 			</div>
 		);
 	}
+
+	fetchCharacterData(slug) {
+		jQuery.get(WP_API_Settings.root + 'wp/v2/character?slug=' + slug, function(response) {
+			this.setState({
+				character: response[0]
+			});
+		}.bind(this));
+	}
 }
 
 /**
  * @type {Object}
  */
 CharacterProfile.propTypes = {
-	params: React.PropTypes.object.isRequired
+	params: React.PropTypes.shape({
+		characterSlug: React.PropTypes.string.isRequired
+	}).isRequired
 };
