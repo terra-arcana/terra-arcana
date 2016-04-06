@@ -5,7 +5,7 @@ import CharacterSkillsPanelSkillElement from './character-skills-panel-skill-ele
 require('../../styles/zodiac/character-skills-panel.scss');
 
 /**
- * A CharacterSkillsPanel displays details about a character and all her 
+ * A CharacterSkillsPanel displays details about a character and all her
  * skills currently selected.
  * @class
  */
@@ -79,6 +79,7 @@ export default class CharacterSkillsPanel extends React.Component {
 					{this.state.skills.map(function(skill) {
 						return (
 							<CharacterSkillsPanelSkillElement
+								key = {skill.id}
 								id = {skill.id}
 								upgrades = {skill.upgrades}
 								active = {skill.id === this.props.activeSkill.id}

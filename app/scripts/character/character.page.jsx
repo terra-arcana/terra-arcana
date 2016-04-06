@@ -27,7 +27,7 @@ export default class CharacterPage extends React.Component {
 			activeTab: 'profile'
 		};
 
-		this.tabLinks = [];
+		this.tabLinks = {};
 
 		this.fetchCharacterData = this.fetchCharacterData.bind(this);
 		this.onTabButtonClick = this.onTabButtonClick.bind(this);
@@ -68,10 +68,16 @@ export default class CharacterPage extends React.Component {
 			var nav = (
 					<nav className="col-xs-12">
 						<ul className="nav nav-tabs">
-							<li ref={(ref) => this.tabLinks['profile'] = ref} className="active">
+							<li
+								ref = {(ref) => this.tabLinks['profile'] = ref}
+								className = {(this.state.activeTab === 'profile') ? 'active' : ''}
+							>
 								<a href="#" onClick={this.onTabButtonClick} data-tab="profile">Profil</a>
 							</li>
-							<li ref={(ref) => this.tabLinks['builder'] = ref}>
+							<li
+								ref = {(ref) => this.tabLinks['builder'] = ref}
+								className = {(this.state.activeTab === 'builder') ? 'active' : ''}
+							>
 								<a href="#" onClick={this.onTabButtonClick} data-tab="builder">Zodiaque</a>
 							</li>
 						</ul>
@@ -130,15 +136,16 @@ export default class CharacterPage extends React.Component {
 	 * @param {MouseSyntheticEvent} e The event thrown
 	 */
 	onTabButtonClick(e) {
-		var tabName = e.target.dataset.tab;
+		var newActiveTab = e.target.dataset.tab;
 
 		e.preventDefault();
 
+		// Update tab active state
 		jQuery(this.tabLinks[this.state.activeTab]).toggleClass('active');
-		jQuery(this.tabLinks[tabName]).toggleClass('active');
+		jQuery(this.tabLinks[newActiveTab]).toggleClass('active');
 
 		this.setState({
-			activeTab: tabName
+			activeTab: newActiveTab
 		});
 	}
 }
