@@ -6,8 +6,8 @@ import Lodash from 'lodash';
 
 import Sidenav from './scripts/sidenav/sidenav.jsx';
 import IndexPage from './scripts/index.page.jsx';
-import CharacterBuilderPage from './scripts/zodiac/character-builder.page.jsx';
-import CharacterProfilePage from './scripts/character/character-profile.page.jsx';
+import CharacterPage from './scripts/character/character.page.jsx';
+import CharacterBuilder from './scripts/character/character-builder.jsx';
 import CodexPage from './scripts/codex/codex.page.jsx';
 
 require('./styles/app.scss');
@@ -106,9 +106,9 @@ class App extends React.Component {
 let routes = (
 	<Route name="app" path="/" handler={App}>
 		<DefaultRoute handler={IndexPage} />
-		<Route path="/codex/" handler={CodexPage} />
-		<Route path="/zodiaque/" handler={CharacterBuilderPage} />
-		<Route path="/personnage/:characterSlug/" handler={CharacterProfilePage} />
+		<Route path='/codex/' handler={CodexPage} />
+		<Route path='/zodiaque/' handler={CharacterBuilder} />
+		<Route path='/personnage/:characterSlug/' handler={CharacterPage} />
 	</Route>
 );
 

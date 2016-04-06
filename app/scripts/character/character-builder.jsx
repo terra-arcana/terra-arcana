@@ -1,16 +1,16 @@
 import React from 'react';
 
-import SkillGraph from './skill-graph.jsx';
-import SkillNodeInspector from './skill-node-inspector.jsx';
-import PointNodeInspector from './point-node-inspector.jsx';
-import CharacterSkillsPanel from './character-skills-panel.jsx';
+import SkillGraph from '../zodiac/skill-graph.jsx';
+import SkillNodeInspector from '../zodiac/skill-node-inspector.jsx';
+import PointNodeInspector from '../zodiac/point-node-inspector.jsx';
+import CharacterSkillsPanel from '../zodiac/character-skills-panel.jsx';
 
 /**
  * A CharacterBuilderPage allows editing of a character build by displaying a {@link SkillGraph} that
  * enabled conditional node picking by adjacency rules.
  * @class
  */
-export default class CharacterBuilderPage extends React.Component {
+export default class CharacterBuilder extends React.Component {
 
 	/**
 	 * @constructor
@@ -29,14 +29,15 @@ export default class CharacterBuilderPage extends React.Component {
 				type: '',
 				upgrades: []
 			},
-			pickedNodes: this.props.initialPickedNodes,
-			nodeData: props.initialNodeData,
-			linkData: props.initialLinkData
+			pickedNodes: this.preparePickedNodesArray(props.character['current_build']),
+			nodeData: [],
+			linkData: []
 		};
 
 		this.inspectSkill = this.inspectSkill.bind(this);
 		this.uninspect = this.uninspect.bind(this);
 		this.selectNode = this.selectNode.bind(this);
+		this.preparePickedNodesArray = this.preparePickedNodesArray.bind(this);
 	}
 
 	/**
@@ -44,7 +45,8 @@ export default class CharacterBuilderPage extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var inspector = null;
+		var inspector = <noscript />;
+
 		if (this.state.activeNode.id !== '') {
 			switch(this.state.activeNode.type) {
 			case 'skill':
@@ -66,7 +68,7 @@ export default class CharacterBuilderPage extends React.Component {
 		}
 
 		return (
-			<div className='row'>
+			<div className="ta-character-zodiac">
 				<SkillGraph
 					initialNodeData = {this.state.nodeData}
 					initialLinkData = {this.state.linkData}
@@ -77,6 +79,7 @@ export default class CharacterBuilderPage extends React.Component {
 					onNodeSelect = {this.selectNode}
 				/>
 				<CharacterSkillsPanel
+					characterName = {this.props.character.title.rendered}
 					nodes = {this.state.pickedNodes}
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
@@ -171,33 +174,44 @@ export default class CharacterBuilderPage extends React.Component {
 
 		return nodeData;
 	}
+
+	/**
+	 * Convert the picked nodes array from the API to a pure JS array
+	 * @param {Array} initial The initial Array
+	 * @return {Array} The converted array
+	 */
+	preparePickedNodesArray(initial) {
+		var final = [];
+
+		// Exit early on an undefined array
+		if (!Array.isArray(initial)) {
+			return [];
+		}
+
+		for (var i = 0; i < initial.length; i++) {
+			final.push(initial[i].id);
+		}
+
+		return final;
+	}
 }
 
 /**
  * @type {Object}
  */
-CharacterBuilderPage.defaultProps = {
-	initialPickedNodes: []
+CharacterBuilder.defaultProps = {
+	character: {
+		current_build: []
+	}
 };
 
 /**
  * @type {Object}
  */
-CharacterBuilderPage.propTypes = {
-	initialNodeData: React.PropTypes.arrayOf(
-		React.PropTypes.shape({
-			id: React.PropTypes.string.isRequired,
-			type: React.PropTypes.string.isRequired,
-			x: React.PropTypes.number.isRequired,
-			y: React.PropTypes.number.isRequired
-		})
-	).isRequired,
-	initialLinkData: React.PropTypes.arrayOf(
-		React.PropTypes.arrayOf(
-			React.PropTypes.string.isRequired
-		)
-	).isRequired,
-	initialPickedNodes: React.PropTypes.arrayOf(
-		React.PropTypes.string.isRequired
-	)
+CharacterBuilder.propTypes = {
+	character: React.PropTypes.shape({
+		current_build: React.PropTypes.arrayOf(
+			React.PropTypes.object.isRequired
+		).isRequired
+	})
 };
