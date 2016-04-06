@@ -7,6 +7,7 @@ import Lodash from 'lodash';
 import Sidenav from './scripts/sidenav/sidenav.jsx';
 import Index from './scripts/index.jsx';
 import CharacterBuilder from './scripts/zodiac/character-builder.jsx';
+import CharacterProfile from './scripts/character/character-profile.jsx';
 import Codex from './scripts/codex/codex.jsx';
 
 require('./styles/app.scss');
@@ -105,8 +106,9 @@ class App extends React.Component {
 let routes = (
 	<Route name="app" path="/" handler={App}>
 		<DefaultRoute handler={Index} />
-		<Route path="/codex" handler={Codex} />
-		<Route path="/zodiaque" handler={CharacterBuilder} />
+		<Route path="/codex/" handler={Codex} />
+		<Route path="/zodiaque/" handler={CharacterBuilder} />
+		<Route path="/personnage/:characterSlug/" handler={CharacterProfile} />
 	</Route>
 );
 

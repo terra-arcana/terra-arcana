@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 import SidenavCharacterSwitcher from './sidenav-character-switcher.jsx';
 
@@ -31,10 +32,11 @@ export default class SidenavUserPanel extends React.Component {
 
 	/**
 	 * @override
+	 * @param {Object} nextProps The next props
 	 */
-	componentDidUpdate() {
-		if (this.props.currentUser) {
-			jQuery.get(WP_API_Settings.root + 'wp/v2/users/' + this.props.currentUser.id + '/characters', function(result) {
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.currentUser) {
+			jQuery.get(WP_API_Settings.root + 'wp/v2/character?author=' + nextProps.currentUser.id, function(result) {
 				this.setState({
 					loadingCharacters: false,
 					userCharacters: result
@@ -70,7 +72,7 @@ export default class SidenavUserPanel extends React.Component {
 			incarnatesLabel = <small>incarne</small>;
 
 			activeCharacterButton = (
-				<a className="list-group-item" href="#">
+				<Link to={'/personnage/' + activeCharacterData.slug + '/'} className="list-group-item">
 					<button
 						ref = {(ref) => this.characterSwitcherToggle = ref}
 						type="button"
@@ -82,7 +84,7 @@ export default class SidenavUserPanel extends React.Component {
 					</button>
 					<h3 className="list-group-item-heading">{activeCharacterData.title.rendered}</h3>
 					<p className="list-group-item-text">Gars badass galicien</p>
-				</a>
+				</Link>
 			);
 		}
 
