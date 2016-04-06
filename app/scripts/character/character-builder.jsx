@@ -1,16 +1,16 @@
 import React from 'react';
 
-import SkillGraph from './skill-graph.jsx';
-import SkillNodeInspector from './skill-node-inspector.jsx';
-import PointNodeInspector from './point-node-inspector.jsx';
-import CharacterSkillsPanel from './character-skills-panel.jsx';
+import SkillGraph from '../zodiac/skill-graph.jsx';
+import SkillNodeInspector from '../zodiac/skill-node-inspector.jsx';
+import PointNodeInspector from '../zodiac/point-node-inspector.jsx';
+import CharacterSkillsPanel from '../zodiac/character-skills-panel.jsx';
 
 /**
  * A CharacterBuilderPage allows editing of a character build by displaying a {@link SkillGraph} that
  * enabled conditional node picking by adjacency rules.
  * @class
  */
-export default class CharacterBuilderPage extends React.Component {
+export default class CharacterBuilder extends React.Component {
 
 	/**
 	 * @constructor
@@ -66,7 +66,7 @@ export default class CharacterBuilderPage extends React.Component {
 		}
 
 		return (
-			<div className='row'>
+			<div className="ta-character-zodiac">
 				<SkillGraph
 					initialNodeData = {this.state.nodeData}
 					initialLinkData = {this.state.linkData}
@@ -176,14 +176,14 @@ export default class CharacterBuilderPage extends React.Component {
 /**
  * @type {Object}
  */
-CharacterBuilderPage.defaultProps = {
+CharacterBuilder.defaultProps = {
 	initialPickedNodes: []
 };
 
 /**
  * @type {Object}
  */
-CharacterBuilderPage.propTypes = {
+CharacterBuilder.propTypes = {
 	initialNodeData: React.PropTypes.arrayOf(
 		React.PropTypes.shape({
 			id: React.PropTypes.string.isRequired,
