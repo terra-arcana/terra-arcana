@@ -69,10 +69,10 @@ export default class CharacterPage extends React.Component {
 					<nav className="col-xs-12">
 						<ul className="nav nav-tabs">
 							<li ref={(ref) => this.tabLinks['profile'] = ref} className="active">
-								<a href="#" onClick={this.onTabButtonClick.bind(this, 'profile')}>Profil</a>
+								<a href="#" onClick={this.onTabButtonClick} data-tab="profile">Profil</a>
 							</li>
 							<li ref={(ref) => this.tabLinks['builder'] = ref}>
-								<a href="#" onClick={this.onTabButtonClick.bind(this, 'builder')}>Zodiaque</a>
+								<a href="#" onClick={this.onTabButtonClick} data-tab="builder">Zodiaque</a>
 							</li>
 						</ul>
 					</nav>
@@ -84,7 +84,11 @@ export default class CharacterPage extends React.Component {
 				tabContents = <CharacterProfile />;
 				break;
 			case 'builder':
-				tabContents = <CharacterBuilder />;
+				tabContents = (
+					<CharacterBuilder
+						character = {this.state.character}
+					/>
+				);
 				break;
 			}
 
@@ -123,9 +127,13 @@ export default class CharacterPage extends React.Component {
 
 	/**
 	 * Handle tab navigation button clicks
-	 * @param {string} tabName The name of the tab being clicked
+	 * @param {MouseSyntheticEvent} e The event thrown
 	 */
-	onTabButtonClick(tabName) {
+	onTabButtonClick(e) {
+		var tabName = e.target.dataset.tab;
+
+		e.preventDefault();
+
 		jQuery(this.tabLinks[this.state.activeTab]).toggleClass('active');
 		jQuery(this.tabLinks[tabName]).toggleClass('active');
 
