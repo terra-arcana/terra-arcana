@@ -106,9 +106,9 @@ class App extends React.Component {
 let routes = (
 	<Route name="app" path="/" handler={App}>
 		<DefaultRoute handler={IndexPage} />
-		<Route path='/codex/' handler={CodexPage} />
-		<Route path='/zodiaque/' handler={CharacterBuilder} />
-		<Route path='/personnage/:characterSlug/' handler={CharacterPage} />
+		<Route path="/codex/" handler={CodexPage} />
+		<Route path="/zodiaque/" handler={CharacterBuilder} />
+		<Route path="/personnage/:characterSlug/" handler={CharacterPage} />
 	</Route>
 );
 
