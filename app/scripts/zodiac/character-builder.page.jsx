@@ -6,11 +6,11 @@ import PointNodeInspector from './point-node-inspector.jsx';
 import CharacterSkillsPanel from './character-skills-panel.jsx';
 
 /**
- * A CharacterBuilder allows editing of a character build by displaying a {@link SkillGraph} that
+ * A CharacterBuilderPage allows editing of a character build by displaying a {@link SkillGraph} that
  * enabled conditional node picking by adjacency rules.
  * @class
  */
-export default class CharacterBuilder extends React.Component {
+export default class CharacterBuilderPage extends React.Component {
 
 	/**
 	 * @constructor
@@ -176,14 +176,14 @@ export default class CharacterBuilder extends React.Component {
 /**
  * @type {Object}
  */
-CharacterBuilder.defaultProps = {
+CharacterBuilderPage.defaultProps = {
 	initialPickedNodes: []
 };
 
 /**
  * @type {Object}
  */
-CharacterBuilder.propTypes = {
+CharacterBuilderPage.propTypes = {
 	initialNodeData: React.PropTypes.arrayOf(
 		React.PropTypes.shape({
 			id: React.PropTypes.string.isRequired,

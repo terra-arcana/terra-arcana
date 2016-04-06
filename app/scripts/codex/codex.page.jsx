@@ -3,10 +3,10 @@ import React from 'react';
 require('../../styles/codex/codex.scss');
 
 /**
- * Codex archive component
+ * A CodexPage is the main view for listing all Codex entries
  * @class
  */
-export default class Codex extends React.Component {
+export default class CodexPage extends React.Component {
 
 	/**
 	 * @constructor
@@ -56,7 +56,7 @@ export default class Codex extends React.Component {
 
 		return (
 			<div className='codex-archive'>
-				<h1>Codex</h1>
+				<h1>Codex Arcanum</h1>
 				<ul>
 					{codexArticles}
 				</ul>

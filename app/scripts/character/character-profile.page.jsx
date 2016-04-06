@@ -1,10 +1,10 @@
 import React from 'react';
 
 /**
- * A CharacterProfile is the main view for displaying a character's details.
+ * A CharacterProfilePage is the main view for displaying a character's details.
  * @class
  */
-export default class CharacterProfile extends React.Component {
+export default class CharacterProfilePage extends React.Component {
 
 	/**
 	 * @constructor
@@ -80,7 +80,7 @@ export default class CharacterProfile extends React.Component {
 /**
  * @type {Object}
  */
-CharacterProfile.propTypes = {
+CharacterProfilePage.propTypes = {
 	params: React.PropTypes.shape({
 		characterSlug: React.PropTypes.string.isRequired
 	}).isRequired

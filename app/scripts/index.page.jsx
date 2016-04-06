@@ -3,11 +3,11 @@ import React from 'react';
 import Greeting from './greeting.jsx';
 
 /**
- * Index page component
+ * An IndexPage is the main view for displaying the homepage.
  * @class
  */
-export default class Index extends React.Component {
-	
+export default class IndexPage extends React.Component {
+
 	/**
 	 * @override
 	 * @return {jsx} The component template

@@ -5,10 +5,10 @@ import {Route, DefaultRoute, RouteHandler} from 'react-router';
 import Lodash from 'lodash';
 
 import Sidenav from './scripts/sidenav/sidenav.jsx';
-import Index from './scripts/index.jsx';
-import CharacterBuilder from './scripts/zodiac/character-builder.jsx';
-import CharacterProfile from './scripts/character/character-profile.jsx';
-import Codex from './scripts/codex/codex.jsx';
+import IndexPage from './scripts/index.page.jsx';
+import CharacterBuilderPage from './scripts/zodiac/character-builder.page.jsx';
+import CharacterProfilePage from './scripts/character/character-profile.page.jsx';
+import CodexPage from './scripts/codex/codex.page.jsx';
 
 require('./styles/app.scss');
 
@@ -105,10 +105,10 @@ class App extends React.Component {
 
 let routes = (
 	<Route name="app" path="/" handler={App}>
-		<DefaultRoute handler={Index} />
-		<Route path="/codex/" handler={Codex} />
-		<Route path="/zodiaque/" handler={CharacterBuilder} />
-		<Route path="/personnage/:characterSlug/" handler={CharacterProfile} />
+		<DefaultRoute handler={IndexPage} />
+		<Route path="/codex/" handler={CodexPage} />
+		<Route path="/zodiaque/" handler={CharacterBuilderPage} />
+		<Route path="/personnage/:characterSlug/" handler={CharacterProfilePage} />
 	</Route>
 );
 
