@@ -2,7 +2,7 @@ import React from 'react';
 
 import CharacterSkillsPanelSkillElement from './character-skills-panel-skill-element.jsx';
 
-require('../../styles/zodiac/character-skills-panel.scss');
+require('../../styles/character/character-skills-panel.scss');
 
 /**
  * A CharacterSkillsPanel displays details about a character and all her

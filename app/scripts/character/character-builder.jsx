@@ -3,7 +3,7 @@ import React from 'react';
 import SkillGraph from '../zodiac/skill-graph.jsx';
 import SkillNodeInspector from '../zodiac/skill-node-inspector.jsx';
 import PointNodeInspector from '../zodiac/point-node-inspector.jsx';
-import CharacterSkillsPanel from '../zodiac/character-skills-panel.jsx';
+import CharacterSkillsPanel from './character-skills-panel.jsx';
 
 /**
  * A CharacterBuilderPage allows editing of a character build by displaying a {@link SkillGraph} that
