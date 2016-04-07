@@ -160,12 +160,12 @@ namespace terraarcana {
 		/**
 		 * Update a custom field value. Callback from `register_rest_field`
 		 * @param mixed $value The value of the field
-		 * @param object $object The object from the response
+		 * @param WP_Post $object The object from the response
 		 * @param string $field_name Name of field
 		 */
 		public function update_field($value, $object, $field_name) {
 			if (function_exists('update_field')) {
-				update_field($this->_fields[$field_name]['key'], $value, $object['id']);
+				update_field($this->_fields[$field_name]['key'], $value, $object->ID);
 			}
 		}
 	}

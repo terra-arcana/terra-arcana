@@ -2,7 +2,7 @@ import React from 'react';
 
 import CharacterSkillsPanelSkillElement from './character-skills-panel-skill-element.jsx';
 
-require('../../styles/zodiac/character-skills-panel.scss');
+require('../../styles/character/character-skills-panel.scss');
 
 /**
  * A CharacterSkillsPanel displays details about a character and all her
@@ -92,23 +92,38 @@ export default class CharacterSkillsPanel extends React.Component {
 		}
 
 		return (
-			<div className='skill-graph-editor-character-skills-panel'>
-				<div className='panel panel-default'>
-					<div className='panel-heading'>
-						<h2 className='panel-title'>
+			<div className="skill-graph-editor-character-skills-panel">
+				<div className="panel panel-default">
+					<div className="panel-heading">
+						<h2 className="panel-title">
 							{this.props.characterName}
 							<small> Gars badass</small>
 						</h2>
 					</div>
 
-					<div className='panel-body'>
-						<ul>
-							<li>Points d'énergie: {this.props.energy}</li>
-							<li>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</li>
-							<li>Points d'essence: {this.props.pp.current}/{this.props.pp.total}</li>
-						</ul>
+					<div className="panel-body">
+						<div className="row">
+							<div className="col-xs-12">
+								<button
+									type = "button"
+									className = "btn btn-success pull-right"
+									onClick = {this.props.onSaveClick}
+								>
+									<span className="glyphicon glyphicon-floppy-save"></span>
+									&nbsp;Sauvegarder
+								</button>
+							</div>
 
-						<h3>Compétences <button type='button' className='btn btn-link btn-sm' onClick={this.toggleSkills}>{toggleSkillsButtonText}</button></h3>
+							<div className="col-xs-12">
+								<ul>
+									<li>Points d'énergie: {this.props.energy}</li>
+									<li>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</li>
+									<li>Points d'essence: {this.props.pp.current}/{this.props.pp.total}</li>
+								</ul>
+							</div>
+
+							<h3 className="col-xs-12">Compétences <button type="button" className="btn btn-link btn-sm" onClick={this.toggleSkills}>{toggleSkillsButtonText}</button></h3>
+						</div>
 					</div>
 
 					{skillsList}
@@ -179,5 +194,6 @@ CharacterSkillsPanel.propTypes = {
 	}),
 
 	onSelectSkill: React.PropTypes.func,
-	onUnselectSkill: React.PropTypes.func
+	onUnselectSkill: React.PropTypes.func,
+	onSaveClick: React.PropTypes.func
 };
