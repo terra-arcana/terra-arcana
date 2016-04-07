@@ -31,6 +31,7 @@ export default class CharacterPage extends React.Component {
 
 		this.fetchCharacterData = this.fetchCharacterData.bind(this);
 		this.onTabButtonClick = this.onTabButtonClick.bind(this);
+		this.onBuildChange = this.onBuildChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -93,6 +94,7 @@ export default class CharacterPage extends React.Component {
 				tabContents = (
 					<CharacterBuilder
 						character = {this.state.character}
+						onSuccessfulSave = {this.onBuildChange}
 					/>
 				);
 				break;
@@ -146,6 +148,20 @@ export default class CharacterPage extends React.Component {
 
 		this.setState({
 			activeTab: newActiveTab
+		});
+	}
+
+	/**
+	 * React to character build changes
+	 * @param {Array} build The character's new build
+	 */
+	onBuildChange(build) {
+		var characterData = this.state.character;
+
+		characterData['current_build'] = build;
+
+		this.setState({
+			character: characterData
 		});
 	}
 }

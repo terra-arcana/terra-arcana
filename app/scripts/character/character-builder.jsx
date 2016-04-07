@@ -242,6 +242,8 @@ export default class CharacterBuilder extends React.Component {
 	 * Handle save button clicks
 	 */
 	saveBuild() {
+		var preparedBuild = this.prepareBuildForSave();
+
 		this.setState({
 			alert: {
 				type: 'loading',
@@ -256,7 +258,7 @@ export default class CharacterBuilder extends React.Component {
 				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
 			},
 			data: {
-				'current_build': this.prepareBuildForSave()
+				'current_build': preparedBuild
 			},
 			success: function() {
 				this.setState({
@@ -265,6 +267,10 @@ export default class CharacterBuilder extends React.Component {
 						message: 'Compétences sauvegardées avec succès!'
 					}
 				});
+
+				if (this.props.onSuccessfulSave) {
+					this.props.onSuccessfulSave(preparedBuild);
+				}
 			}.bind(this)
 		});
 	}
@@ -287,5 +293,7 @@ CharacterBuilder.propTypes = {
 		current_build: React.PropTypes.arrayOf(
 			React.PropTypes.object.isRequired
 		).isRequired
-	})
+	}),
+
+	onSuccessfulSave: React.PropTypes.func
 };
