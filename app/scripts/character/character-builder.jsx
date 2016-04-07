@@ -49,7 +49,15 @@ export default class CharacterBuilder extends React.Component {
 	 */
 	render() {
 		var inspector = <noscript />,
-			alert = <noscript />;
+			alert = <noscript />,
+			xpValues = {
+				current: this.props.character.xp.total - this.state.pickedNodes.length,
+				total: this.props.character.xp.total
+			},
+			ppValues = {
+				current: 0,
+				total: this.props.character['perk_points'].total
+			};
 
 		if (this.state.activeNode.id !== '') {
 			switch(this.state.activeNode.type) {
@@ -109,6 +117,8 @@ export default class CharacterBuilder extends React.Component {
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
 					nodes = {this.state.pickedNodes}
+					xp = {xpValues}
+					pp = {ppValues}
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}

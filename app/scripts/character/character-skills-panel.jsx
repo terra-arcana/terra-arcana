@@ -190,6 +190,7 @@ CharacterSkillsPanel.propTypes = {
 		current: React.PropTypes.number.isRequired,
 		total: React.PropTypes.number.isRequired
 	}),
+	activeSkill: React.PropTypes.object,
 
 	onSelectSkill: React.PropTypes.func,
 	onUnselectSkill: React.PropTypes.func,
