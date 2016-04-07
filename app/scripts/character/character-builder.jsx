@@ -31,7 +31,8 @@ export default class CharacterBuilder extends React.Component {
 			},
 			pickedNodes: this.preparePickedNodesArray(props.character['current_build']),
 			nodeData: [],
-			linkData: []
+			linkData: [],
+			alert: undefined
 		};
 
 		this.inspectSkill = this.inspectSkill.bind(this);
@@ -47,7 +48,8 @@ export default class CharacterBuilder extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var inspector = <noscript />;
+		var inspector = <noscript />,
+			alert = <noscript />;
 
 		if (this.state.activeNode.id !== '') {
 			switch(this.state.activeNode.type) {
@@ -69,6 +71,27 @@ export default class CharacterBuilder extends React.Component {
 			}
 		}
 
+		if (this.state.alert !== undefined) {
+			var alertClass, iconClass;
+
+			if (this.state.alert.type === 'loading') {
+				alertClass = 'alert-warning';
+				iconClass = 'glyphicon-asterisk glyphicon-spin';
+			} else if (this.state.alert.type === 'success') {
+				alertClass = 'alert-success';
+				iconClass = 'glyphicon-ok';
+			}
+
+			alert = (
+				<div className="col-xs-12 col-lg-4">
+					<div className={'alert ' + alertClass}>
+						<span className={'glyphicon ' + iconClass} />
+						&nbsp;{this.state.alert.message}
+					</div>
+				</div>
+			);
+		}
+
 		return (
 			<div className="ta-character-zodiac">
 				<SkillGraph
@@ -80,6 +103,9 @@ export default class CharacterBuilder extends React.Component {
 					onNodeMouseOut = {this.uninspect}
 					onNodeSelect = {this.selectNode}
 				/>
+
+				{alert}
+
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
 					nodes = {this.state.pickedNodes}
@@ -216,6 +242,13 @@ export default class CharacterBuilder extends React.Component {
 	 * Handle save button clicks
 	 */
 	saveBuild() {
+		this.setState({
+			alert: {
+				type: 'loading',
+				message: 'Sauvegarde des compétences...'
+			}
+		});
+
 		jQuery.ajax({
 			url: WP_API_Settings.root + 'wp/v2/character/' + this.props.character.id,
 			method: 'POST',
@@ -225,14 +258,14 @@ export default class CharacterBuilder extends React.Component {
 			data: {
 				'current_build': this.prepareBuildForSave()
 			},
-			statusCode: {
-				401: function() {
-					console.log('OOPS');
-				}
-			},
 			success: function() {
-				console.log('Build saved!');
-			}
+				this.setState({
+					alert: {
+						type: 'success',
+						message: 'Compétences sauvegardées avec succès!'
+					}
+				});
+			}.bind(this)
 		});
 	}
 }
