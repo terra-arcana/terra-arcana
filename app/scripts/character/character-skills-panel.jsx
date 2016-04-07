@@ -104,7 +104,11 @@ export default class CharacterSkillsPanel extends React.Component {
 					<div className="panel-body">
 						<div className="row">
 							<div className="col-xs-12">
-								<button type="button" className="btn btn-success pull-right">
+								<button
+									type = "button"
+									className = "btn btn-success pull-right"
+									onClick = {this.props.onSaveClick}
+								>
 									<span className="glyphicon glyphicon-floppy-save"></span>
 									&nbsp;Sauvegarder
 								</button>
@@ -190,5 +194,6 @@ CharacterSkillsPanel.propTypes = {
 	}),
 
 	onSelectSkill: React.PropTypes.func,
-	onUnselectSkill: React.PropTypes.func
+	onUnselectSkill: React.PropTypes.func,
+	onSaveClick: React.PropTypes.func
 };

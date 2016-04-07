@@ -38,6 +38,8 @@ export default class CharacterBuilder extends React.Component {
 		this.uninspect = this.uninspect.bind(this);
 		this.selectNode = this.selectNode.bind(this);
 		this.preparePickedNodesArray = this.preparePickedNodesArray.bind(this);
+		this.prepareBuildForSave = this.prepareBuildForSave.bind(this);
+		this.saveBuild = this.saveBuild.bind(this);
 	}
 
 	/**
@@ -84,6 +86,7 @@ export default class CharacterBuilder extends React.Component {
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
+					onSaveClick = {this.saveBuild}
 				/>
 
 				{inspector}
@@ -184,15 +187,53 @@ export default class CharacterBuilder extends React.Component {
 		var final = [];
 
 		// Exit early on an undefined array
-		if (!Array.isArray(initial)) {
-			return [];
-		}
+		if (!Array.isArray(initial)) return [];
 
-		for (var i = 0; i < initial.length; i++) {
+		for (var i = 0, len = initial.length; i < len; i++) {
 			final.push(initial[i].id);
 		}
 
 		return final;
+	}
+
+	/**
+	 * Convert the picked nodes state array to a format suitable for WP-API
+	 * @return {Array} The prepared array
+	 */
+	prepareBuildForSave() {
+		var preparedBuild = [];
+
+		for (var i = 0, len = this.state.pickedNodes.length; i < len; i++) {
+			preparedBuild.push({
+				id: this.state.pickedNodes[i]
+			});
+		}
+
+		return preparedBuild;
+	}
+
+	/**
+	 * Handle save button clicks
+	 */
+	saveBuild() {
+		jQuery.ajax({
+			url: WP_API_Settings.root + 'wp/v2/character/' + this.props.character.id,
+			method: 'POST',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+			},
+			data: {
+				'current_build': this.prepareBuildForSave()
+			},
+			statusCode: {
+				401: function() {
+					console.log('OOPS');
+				}
+			},
+			success: function() {
+				console.log('Build saved!');
+			}
+		});
 	}
 }
 

@@ -38,8 +38,9 @@ namespace terraarcana {
 
 		/**
 		 * @override
+		 * @param WP_User $object The user being modified
 		 */
-		public function update_field($value, \WP_User $object, $field_name) {
+		public function update_field($value, $object, $field_name) {
 			if (function_exists('update_field')) {
 				update_field($this->_fields[$field_name]['key'], $value, 'user_' . $object->ID);
 			}
