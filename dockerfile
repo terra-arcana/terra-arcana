@@ -36,6 +36,7 @@ RUN chmod +x entrypoint.sh
 
 #Build Terra theme
 RUN npm install
+RUN npm rebuild node-sass
 RUN composer install
 RUN webpack
 
