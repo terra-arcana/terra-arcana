@@ -71,7 +71,7 @@ if ! $(wp core is-installed); then
 	sudo -u www-data wp core install --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL
 fi
 
-if [ ! -d /var/html/www/wp-content/themes/terra-arcana]; then
+if [ ! -d "/var/html/www/wp-content/themes/terra-arcana" ]; then
 	echo "Copying theme to /var/www/html/wp-content/themes/terra-arcana folder"
 	sudo -u www-data cp -r /usr/src/wordpress/wp-content/themes/terra-arcana /var/www/html/wp-content/themes/terra-arcana
 
