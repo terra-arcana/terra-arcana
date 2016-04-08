@@ -49,7 +49,15 @@ export default class CharacterBuilder extends React.Component {
 	 */
 	render() {
 		var inspector = <noscript />,
-			alert = <noscript />;
+			alert = <noscript />,
+			xpValues = {
+				current: this.props.character.xp.total - this.state.pickedNodes.length,
+				total: this.props.character.xp.total
+			},
+			ppValues = {
+				current: 0,
+				total: this.props.character['perk_points'].total
+			};
 
 		if (this.state.activeNode.id !== '') {
 			switch(this.state.activeNode.type) {
@@ -109,6 +117,8 @@ export default class CharacterBuilder extends React.Component {
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
 					nodes = {this.state.pickedNodes}
+					xp = {xpValues}
+					pp = {ppValues}
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
@@ -187,9 +197,16 @@ export default class CharacterBuilder extends React.Component {
 	selectNode(id) {
 		var nodeIndex = this.state.pickedNodes.indexOf(id);
 
+		// Add a node to the build
 		if (nodeIndex === -1) {
-			this.state.pickedNodes[this.state.pickedNodes.length] = id;
-		} else {
+			// Only add a node if there is XP left
+			if (this.state.pickedNodes.length < this.props.character.xp.total) {
+				this.state.pickedNodes[this.state.pickedNodes.length] = id;
+			}
+		}
+
+		// Remove a node from the build
+		else {
 			this.state.pickedNodes.splice(nodeIndex, 1);
 		}
 

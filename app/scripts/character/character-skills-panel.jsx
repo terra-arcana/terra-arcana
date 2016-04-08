@@ -69,7 +69,9 @@ export default class CharacterSkillsPanel extends React.Component {
 	 */
 	render() {
 		var toggleSkillsButtonText = this.state.displaySkills ? 'Masquer' : 'Afficher',
-			skillsList = null;
+			skillsList = null,
+			xpBarClass = 'success',
+			ppBarClass = 'success';
 
 		if (this.state.displaySkills) {
 			skillsList = (
@@ -87,6 +89,18 @@ export default class CharacterSkillsPanel extends React.Component {
 					}.bind(this))}
 				</ul>
 			);
+		}
+
+		if (this.props.xp.current/this.props.xp.total < 0.25) {
+			xpBarClass = 'danger';
+		} else if (this.props.xp.current/this.props.xp.total < 0.5) {
+			xpBarClass = 'warning';
+		}
+
+		if (this.props.pp.current/this.props.pp.total < 0.25) {
+			ppBarClass = 'danger';
+		} else if (this.props.pp.current/this.props.pp.total < 0.5) {
+			ppBarClass = 'warning';
 		}
 
 		return (
@@ -114,9 +128,33 @@ export default class CharacterSkillsPanel extends React.Component {
 
 							<div className="col-xs-12">
 								<ul>
+									<li>
+										<h4>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</h4>
+										<div className="progress">
+											<div
+												className = {'progress-bar progress-bar-' + xpBarClass}
+												role = "progressbar"
+												aria-valuenow = {this.props.xp.current}
+												aria-valuemin = "0"
+												aria-valuemax = {this.props.xp.total}
+												style = {{ width: (100 * this.props.xp.current/this.props.xp.total) + '%' }}
+											/>
+										</div>
+									</li>
+									<li>
+										<h4>Points d'essence: {this.props.pp.current}/{this.props.pp.total}</h4>
+										<div className="progress">
+											<div
+												className = {'progress-bar progress-bar-' + ppBarClass}
+												role = "progressbar"
+												aria-valuenow = {this.props.pp.current}
+												aria-valuemin = "0"
+												aria-valuemax = {this.props.pp.total}
+												style = {{width: (100 * this.props.pp.current/this.props.pp.total) + '%' }}
+											/>
+										</div>
+									</li>
 									<li>Points d'énergie: {this.props.energy}</li>
-									<li>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</li>
-									<li>Points d'essence: {this.props.pp.current}/{this.props.pp.total}</li>
 								</ul>
 							</div>
 
@@ -190,6 +228,7 @@ CharacterSkillsPanel.propTypes = {
 		current: React.PropTypes.number.isRequired,
 		total: React.PropTypes.number.isRequired
 	}),
+	activeSkill: React.PropTypes.object,
 
 	onSelectSkill: React.PropTypes.func,
 	onUnselectSkill: React.PropTypes.func,
