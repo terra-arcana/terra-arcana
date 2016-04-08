@@ -1,6 +1,8 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
 
+@import '../../../app/styles/_utils.scss';
+
 .skill-graph-editor-control-panel {
 	margin-bottom: 1em;
 
