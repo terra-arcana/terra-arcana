@@ -52,6 +52,11 @@ namespace terraarcana {
 				wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
 				wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
 				wp_enqueue_style('zodiac-admin', $base . 'dist/admin/zodiac/style.css');
+
+				wp_localize_script('zodiac-admin', 'WP_API_Settings', array(
+					'root' => esc_url_raw(rest_url()),
+					'nonce' => wp_create_nonce('wp_rest')
+				));
 			}
 		}
 
