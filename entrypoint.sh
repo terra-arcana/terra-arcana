@@ -79,7 +79,13 @@ if [ ! -d /var/html/www/wp-content/themes/terra-arcana]
 	sudo -u www-data wp theme activate terra-arcana
 fi
 
+# TODO find how to check if installed
 sudo -u www-data wp plugin install rest-api
 sudo -u www-data wp plugin install OAuth1-master
+sudo -u www-data wp plugin install $ACFP_URL
+
+sudo -u www-data wp plugin activate rest-api
+sudo -u www-data wp plugin activate OAuth1-master
+sudo -u www-data wp plugin activate 'Advanced Custom Fields Pro'
 
 exec "$@"
