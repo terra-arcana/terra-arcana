@@ -134,21 +134,32 @@ export default class CharacterBuilder extends React.Component {
 
 	/**
 	 * Inspect a node and reveal its details
-	 * @param {String} id The picked node id
+	 * @param {String|Object} node The picked node(s)
 	 */
-	inspectSkill(id) {
-		var nodeData = this.getNodeDataById(id),
-			splitID = id.split('-'),
+	inspectSkill(node) {
+		var nodeData, splitID, nodeObj;
+
+		if (typeof node === 'string') {
+			nodeData = this.getNodeDataById(node);
+			splitID = node.split('-'),
 			nodeObj = {
 				id: splitID[0],
 				type: nodeData.type,
 				upgrades: []
 			};
 
-		if (nodeData.type === 'skill' || nodeData.type === 'upgrade') {
-			if (splitID[1] !== undefined) {
-				nodeObj.upgrades.push(splitID[1]);
+			if (nodeData.type === 'skill' || nodeData.type === 'upgrade') {
+				if (splitID[1] !== undefined) {
+					nodeObj.upgrades.push(splitID[1]);
+				}
 			}
+		} else {
+			nodeData = this.getNodeDataById(node.id);
+			nodeObj = {
+				id: node.id,
+				type: nodeData.type,
+				upgrades: node.upgrades
+			};
 		}
 
 		this.setState({

@@ -53,9 +53,7 @@ export default class CharacterSkillsPanel extends React.Component {
 
 			// Add upgrade to parent skill if is an upgrade
 			if (splitID[1] !== undefined) {
-				skills[splitID[0]].upgrades.push({
-					id: splitID[1]
-				});
+				skills[splitID[0]].upgrades.push(splitID[1]);
 			}
 		}
 

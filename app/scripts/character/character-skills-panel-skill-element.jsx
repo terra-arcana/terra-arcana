@@ -1,12 +1,12 @@
 import React from 'react';
 
 /**
- * A CharacterSkillsPanelSkillElement is a skill and its selected upgrades 
+ * A CharacterSkillsPanelSkillElement is a skill and its selected upgrades
  * displayed in a {@link CharacterSkillsPanel}.
  * @class
  */
 export default class CharacterSkillsPanelSkillElement extends React.Component {
-	
+
 	/**
 	 * @constructor
 	 * @param {Object} props Component props
@@ -35,7 +35,7 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
 				<ul>
 					{this.props.upgrades.map(function(upgrade) {
 						return (
-							<li><small>Upgrade #{upgrade.id}</small></li>
+							<li><small>Upgrade #{upgrade}</small></li>
 						);
 					})}
 				</ul>
@@ -71,7 +71,7 @@ CharacterSkillsPanelSkillElement.defaultProps = {
 CharacterSkillsPanelSkillElement.propTypes = {
 	id: React.PropTypes.string.isRequired,
 	upgrades: React.PropTypes.arrayOf(
-		React.PropTypes.string
+		React.PropTypes.string.isRequired
 	),
 	active: React.PropTypes.bool
 };
