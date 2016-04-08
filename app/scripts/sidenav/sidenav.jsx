@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 import SidenavUserPanel from './sidenav-user-panel.jsx';
 
 require('../../styles/sidenav/sidenav.scss');
+require('../../images/terra-logo-blanc.png');
 
 /**
  * Sidenav component

@@ -25,15 +25,7 @@ namespace terraarcana {
 		 * Enqueues custom styles and scripts on the default WordPress login page
 		 */
 		public function login_enqueue_scripts() {
-			?>
-				<style type='text/css'>
-					.login h1 a {
-						background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/dist/images/terra-login-logo.png);
-						background-size: contain;
-						width: auto;
-					}
-				</style>
-			<?php
+			wp_enqueue_style('ta-login', get_stylesheet_directory_uri() . '/dist/login.css');
 		}
 	}
 }
