@@ -57,7 +57,7 @@ namespace terraarcana {
 
 			wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
 			wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
-			wp_enqueue_style('app', $base . 'dist/style.css');
+			wp_enqueue_style('terra-arcana', $base . 'dist/terra-arcana.css');
 		}
 	}
 }
