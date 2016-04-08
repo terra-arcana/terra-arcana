@@ -197,9 +197,16 @@ export default class CharacterBuilder extends React.Component {
 	selectNode(id) {
 		var nodeIndex = this.state.pickedNodes.indexOf(id);
 
+		// Add a node to the build
 		if (nodeIndex === -1) {
-			this.state.pickedNodes[this.state.pickedNodes.length] = id;
-		} else {
+			// Only add a node if there is XP left
+			if (this.state.pickedNodes.length < this.props.character.xp.total) {
+				this.state.pickedNodes[this.state.pickedNodes.length] = id;
+			}
+		}
+
+		// Remove a node from the build
+		else {
 			this.state.pickedNodes.splice(nodeIndex, 1);
 		}
 
