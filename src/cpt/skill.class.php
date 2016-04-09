@@ -158,9 +158,11 @@ namespace terraarcana {
 						));
 
 						// Add any links from the upgrades to the graph data
-						if (array_key_exists('links', $update['graph_data'][0])) {
-							foreach ($upgrade['graph_data'][0]['links'] as $link) {
-								array_push($result['links'], array($upgradeID, $link['id']));
+						if (array_key_exists(0, $update['graph_data'])) {
+							if (array_key_exists('links', $update['graph_data'][0])) {
+								foreach ($upgrade['graph_data'][0]['links'] as $link) {
+									array_push($result['links'], array($upgradeID, $link['id']));
+								}
 							}
 						}
 					}
