@@ -1,17 +1,21 @@
 <?php
 
 namespace terraarcana {
+	require_once(ROOT . '/src/controllers/controller.aclass.php');
 
 	/**
 	 * Handles the queuing of public scripts
 	 */
-	class ScriptController {
+	class ScriptController extends Controller {
 
-		public function __construct() {}
+		public function __construct() {
+			parent::__construct();
+		}
+
 		private function __clone() {}
 
 		/**
-		 * Initializes the controller. Runs on WP init hook.
+		 * @override
 		 */
 		public function init() {
 			add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
@@ -34,6 +38,15 @@ namespace terraarcana {
 				// FIXME: Enqueue minified scripts in production
 				wp_enqueue_script('app', $base . 'dist/app.js', array('bootstrap-min'), null, true);
 			}
+
+			wp_localize_script('app', 'WP_Theme_Settings', array(
+				'imageRoot' => get_template_directory_uri() . '/dist/images/',
+				'logoutURL' => wp_logout_url(home_url())
+			));
+			wp_localize_script('app', 'WP_API_Settings', array(
+				'root' => esc_url_raw(rest_url()),
+				'nonce' => wp_create_nonce('wp_rest')
+			));
 		}
 
 		/**
@@ -44,7 +57,7 @@ namespace terraarcana {
 
 			wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
 			wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
-			wp_enqueue_style('app', $base . 'dist/style.css');
+			wp_enqueue_style('terra-arcana', $base . 'dist/terra-arcana.css');
 		}
 	}
 }

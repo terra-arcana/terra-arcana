@@ -1,0 +1,25 @@
+$sidebar-width: 250px;
+$glyphicon-chevron-up: '\e113';
+$glyphicon-chevron-down: '\e114';
+
+.ta-sidenav-user-panel .panel {
+	width: $sidebar-width;
+	left: -$sidebar-width;
+	margin-bottom: 0;
+	transition: left 0.5s ease;
+
+	// Set character switch button icon to chevron up/down depending on collapse state
+	.ta-sidenav-character-switcher-toggle {
+		&.collapsed .glyphicon:before {
+			content: $glyphicon-chevron-down;
+		}
+
+		.glyphicon:before {
+			content: $glyphicon-chevron-up;
+		}
+	}
+}
+
+#sidenav-page-wrapper.toggled .ta-sidenav-user-panel .panel {
+	left: 0;
+}

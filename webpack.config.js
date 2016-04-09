@@ -10,8 +10,9 @@ module.exports = [
 		context: __dirname + '/app',
 
 		entry: {
-			javascript: './app.jsx',
-			html: './index.html'
+			'terra-arcana': './app.jsx',
+			html: './index.html',
+			login: './styles/login/login.scss'
 		},
 
 		output: {
@@ -33,18 +34,22 @@ module.exports = [
 				{
 					test: /\.scss$/,
 					loader: ExtractTextPlugin.extract('css!sass')
+				},
+				{
+					test: /\.(gif|jpe?g|png|svg)$/,
+					loader: 'file?name=images/[name].[ext]'
 				}
 			]
 		},
 
 		plugins: [
-			new ExtractTextPlugin('style.css', {
+			new ExtractTextPlugin('[name].css', {
 				allChunks: true
 			} ),
 
 			new OnBuildPlugin(function(stats) { // eslint-disable-line no-unused-vars
 				exec(
-					'esdoc -c esdoc.json', 
+					'esdoc -c esdoc.json',
 					function (error, stdout, stderr) {
 						console.log('\nBUILDING DOCUMENTATION\n======================\n' + stdout);
 
@@ -55,12 +60,12 @@ module.exports = [
 						if (error !== null) {
 							console.log('\nEXEC ERRORS\n===========\n' + error);
 						}
-					} 
+					}
 				);
-			} ) 
+			} )
 		]
 	},
-	
+
 	{
 		context: __dirname + '/src/views/zodiac',
 

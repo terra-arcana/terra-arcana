@@ -28,7 +28,7 @@ export default class PointNodeInspector extends React.Component {
 		}
 
 		return (
-			<div className='col-sm-12 col-lg-4'>
+			<div className='col-xs-12 col-lg-4'>
 				<div className='panel panel-default'>
 					<div className='panel-heading'>
 						<h2 className='panel-title'>{titleText}</h2>

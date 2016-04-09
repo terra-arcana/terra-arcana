@@ -1,16 +1,19 @@
 <?php
 
 namespace terraarcana {
+	require_once(ROOT . '/src/controllers/controller.aclass.php');
+
 	require_once(ROOT . '/src/controllers/data.controller.php');
 	require_once(ROOT . '/src/controllers/script.controller.php');
 	require_once(ROOT . '/src/controllers/admin.controller.php');
+	require_once(ROOT . '/src/controllers/login.controller.php');
 
 	require_once(ROOT . '/vendor/tgmpa/tgm-plugin-activation/class-tgm-plugin-activation.php');
 
 	/**
 	 * Main app controller
 	 */
-	class MainController {
+	class MainController extends Controller {
 
 		/**
 		 * Singleton instance reference
@@ -30,19 +33,27 @@ namespace terraarcana {
 		 * @var ScriptController
 		 */
 		private $_scriptController;
-		
+
 		/**
 		 * Admin controller reference
 		 * @var AdminController
 		 */
 		private $_adminController;
 
+		/**
+		 * Login controller reference
+		 * @var LoginController
+		 */
+		private $_loginController;
+
 		public function __construct() {
+			parent::__construct();
+
 			$this->_dataController = DataController::getInstance();
 			$this->_scriptController = new ScriptController();
 			$this->_adminController = new AdminController();
+			$this->_loginController = new LoginController();
 
-			add_action('init', array($this, 'init'));
 			add_action('tgmpa_register', array($this, 'register_plugin_dependencies'));
 		}
 
@@ -59,13 +70,9 @@ namespace terraarcana {
 		}
 
 		/**
-		 * Initializes the controller. Called on init WP hook.
+		 * @override
 		 */
-		public function init() {
-			$this->_dataController->init();
-			$this->_scriptController->init();
-			$this->_adminController->init();
-		}
+		public function init() {}
 
 		/**
 		 * Registers all dependent plugins for proper theme functionality
@@ -76,13 +83,6 @@ namespace terraarcana {
 					'name' 			=> 'WP REST API',
 					'slug' 			=> 'rest-api',
 					'required' 		=> true,
-				),
-				array(
-					'name' 			=> 'OAuth Server',
-					'slug' 			=> 'OAuth1-master',
-					'source' 		=> 'https://github.com/WP-API/OAuth1/archive/master.zip',
-					'required' 		=> true,
-					'external_url' 	=> 'https://github.com/WP-API/OAuth1',
 				),
 				array(
 					'name' 			=> 'Advanced Custom Fields Pro',

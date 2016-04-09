@@ -15,42 +15,42 @@ describe('SkillGraph', function() {
 		expect(graph.WP_BAR_HEIGHT).toEqual(32);
 	});
 
-	it('correctly return start nodes', function() {
+	it('returns start nodes', function() {
 		var graph = TestUtils.renderIntoDocument(
-			<SkillGraph
-				initialNodeData = {[
-					{
-						id: '1',
-						x: 10,
-						y: 10,
-						type: 'skill',
-						start: true
-					},
-					{
-						id: '2',
-						x: 10,
-						y: 20,
-						type: 'skill',
-						start: false
-					},
-					{
-						id: '3',
-						x: 30,
-						y: 50,
-						type: 'skill',
-						start: false
-					},
-					{
-						id: '4',
-						x: 80,
-						y: 20,
-						type: 'skill',
-						start: true
-					}
-				]}
-			/>
-		),
-		expectedStartNodes = ['1', '4'];
+				<SkillGraph
+					initialNodeData = {[
+						{
+							id: '1',
+							x: 10,
+							y: 10,
+							type: 'skill',
+							start: true
+						},
+						{
+							id: '2',
+							x: 10,
+							y: 20,
+							type: 'skill',
+							start: false
+						},
+						{
+							id: '3',
+							x: 30,
+							y: 50,
+							type: 'skill',
+							start: false
+						},
+						{
+							id: '4',
+							x: 80,
+							y: 20,
+							type: 'skill',
+							start: true
+						}
+					]}
+				/>
+			),
+			expectedStartNodes = ['1', '4'];
 
 		expect(Lodash.isEqual(graph.getStartNodes(), expectedStartNodes)).toEqual(true);
 	});

@@ -3,6 +3,10 @@
 namespace terraarcana {
 	if (class_exists('WP_REST_Controller') && class_exists('WP_REST_Server')) {
 
+		/**
+		 * The GraphDataRoute lists the entire contents of the Zodiac graph in a easily parsable
+		 * format. It is accessible at `terraarcana/v1/graph-data`.
+		 */
 		class GraphDataRoute extends \WP_REST_Controller {
 
 			public function register_routes() {
@@ -41,7 +45,7 @@ namespace terraarcana {
 				$result['nodes'] = array_merge($skillGraphData['nodes'], $pointGraphData['nodes']);
 
 				$links = array_merge($skillGraphData['links'], $pointGraphData['links']);
-				foreach($links as $link) {
+				foreach ($links as $link) {
 					$this->push_unique_link($result['links'], $link[0], $link[1]);
 				}
 
@@ -57,9 +61,10 @@ namespace terraarcana {
 				$params = $request->get_params();
 
 				// First pass to create all new nodes and replace their temp ID with their true ID
-				if (!empty($params['newNodeIndexes'])) {
-					foreach($params['newNodeIndexes'] as $nodeIndex) {
+				if (is_array($params['newNodeIndexes'])) {
+					foreach ($params['newNodeIndexes'] as $nodeIndex) {
 						$postID = '';
+						$oldPostID = $params['nodes'][$nodeIndex]['id'];
 
 						switch($params['nodes'][$nodeIndex]['type']) {
 						case 'life':
@@ -70,12 +75,18 @@ namespace terraarcana {
 
 						$params['nodes'][$nodeIndex]['id'] = $postID;
 
-						// TODO: Replace all instances of the temp ID with the newly inserted one in link data
+						// Replace all instances of the temp ID with the newly inserted one in link data
+						if (is_array($params['links'])) {
+							foreach ($params['links'] as &$link) {
+								if ($link[0] == $oldPostID) $link[0] = $postID;
+								if ($link[1] == $oldPostID) $link[1] = $postID;
+							}
+						}
 					}
 				}
 
 				// Update all data on all nodes
-				foreach($params['nodes'] as $node) {	
+				foreach($params['nodes'] as $node) {
 					$links = $this->get_linked_nodes_from_id($node['id'], $params['links']);
 
 					switch($node['type']) {
@@ -104,10 +115,12 @@ namespace terraarcana {
 				}
 
 				// Delete removed nodes
-				foreach($params['deletedNodes'] as $node) {
-					wp_delete_post($node, true);
+				if (is_array($params['deletedNodes'])) {
+					foreach ($params['deletedNodes'] as $node) {
+						wp_delete_post($node, true);
+					}
 				}
-				
+
 				return new \WP_REST_Response('Zodiaque sauvegardé avec succès!', 200);
 			}
 
@@ -121,7 +134,7 @@ namespace terraarcana {
 			private function push_unique_link(array &$linkArray, $from, $to) {
 				foreach ($linkArray as $link) {
 					// If we find a duplicate, exit early before pushing the new link
-					if (($link[0] == $from && $link[1] == $to) || 
+					if (($link[0] == $from && $link[1] == $to) ||
 						($link[0] == $to && $link[1] == $from)) {
 						return $linkArray;
 					}
@@ -141,7 +154,7 @@ namespace terraarcana {
 			private function get_linked_nodes_from_id($from, array $linkData) {
 				$resultLinks = array();
 
-				foreach($linkData as $link) {
+				foreach ($linkData as $link) {
 					if ($link[0] == $from) {
 						$resultLinks[] = $link[1];
 					} else if ($link[1] == $from) {

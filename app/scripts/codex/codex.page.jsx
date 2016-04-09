@@ -3,11 +3,11 @@ import React from 'react';
 require('../../styles/codex/codex.scss');
 
 /**
- * Codex archive component
+ * A CodexPage is the main view for listing all Codex entries
  * @class
  */
-export default class Codex extends React.Component {
-	
+export default class CodexPage extends React.Component {
+
 	/**
 	 * @constructor
 	 * @param {Object} props Custom props
@@ -19,7 +19,7 @@ export default class Codex extends React.Component {
 		 * @type {Object}
 		 * @private
 		 */
-		this.state = { 
+		this.state = {
 			codexArticles: []
 		};
 	}
@@ -28,7 +28,7 @@ export default class Codex extends React.Component {
 	 * @override
  	 */
 	componentDidMount() {
-		jQuery.get('http://' + location.hostname + '/wp-json/wp/v2/codex', function(result) {
+		jQuery.get(WP_API_Settings.root + 'wp/v2/codex', function(result) {
 			this.setState({
 				codexArticles: result
 			});
@@ -42,11 +42,11 @@ export default class Codex extends React.Component {
 	render() {
 		let codexArticles = this.state.codexArticles.map(function(article) {
 			return(
-				<li key={article.ID} className='panel panel-default'>
+				<li key={article.id} className='panel panel-default'>
 					<div className = 'panel-heading'>
 						<h2 className = 'panel-title'>{article.title.rendered}</h2>
 					</div>
-					<div 
+					<div
 						className = 'panel-body'
 						dangerouslySetInnerHTML = {{__html: article.content.rendered}}
 					></div>
@@ -56,7 +56,7 @@ export default class Codex extends React.Component {
 
 		return (
 			<div className='codex-archive'>
-				<h1>Codex</h1>
+				<h1>Codex Arcanum</h1>
 				<ul>
 					{codexArticles}
 				</ul>

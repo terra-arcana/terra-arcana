@@ -1,5 +1,7 @@
+Staging - [![Build Status](http://yu-shan.net:5555/job/Terra%20Arcana%202.0%20Staging/badge/icon)](http://yu-shan.net:5555/job/Terra%20Arcana%202.0%20Staging/)
+
 # Terra Arcana
-http://www.gnterraarcana.com
+http://www.terraarcana.com
 
 Bienvenue au futur du site web du GN Terra Arcana! Le site refera prochainement peau neuve, avec un nouveau thème WordPress supportant des technologies modernes telles que **WP REST API**, **ReactJS** et **Konva**.
 

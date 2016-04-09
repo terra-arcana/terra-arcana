@@ -13,7 +13,7 @@ require('./zodiac-editor.scss');
  * @class
  */
 export default class ZodiacEditor extends React.Component {
-	
+
 	/**
 	 * @constructor
 	 * @param {Object} props Custom props
@@ -30,7 +30,7 @@ export default class ZodiacEditor extends React.Component {
 				id: '',
 				type: '',
 				upgrades: []
-			}, 
+			},
 			nodeData: [],
 			linkData: [],
 			deletedNodes: [],
@@ -57,6 +57,7 @@ export default class ZodiacEditor extends React.Component {
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onPromptClose = this.onPromptClose.bind(this);
 		this.onPointNodeValueChange = this.onPointNodeValueChange.bind(this);
+		this.onStartNodeButtonClick = this.onStartNodeButtonClick.bind(this);
 		this.saveZodiac = this.saveZodiac.bind(this);
 		this.getNewNodeIndexes = this.getNewNodeIndexes.bind(this);
 	}
@@ -82,6 +83,7 @@ export default class ZodiacEditor extends React.Component {
 			activeNodeData = null,
 			nodeDetails = null,
 			savePrompt = null,
+			startNodeCheckbox = null,
 			nodeDetailsTitle = null,
 			deletePointNodeButton = null,
 			pointNodeValueInput = null,
@@ -90,7 +92,7 @@ export default class ZodiacEditor extends React.Component {
 
 		if (!Lodash.isEmpty(this.state.activeNode) && !!this.state.activeNode.id) {
 			activeNodeData = this.getNodeDataById(rawNodeID);
-			
+
 			// Render inspector
 			switch(this.state.activeNode.type) {
 			case 'skill':
@@ -98,13 +100,13 @@ export default class ZodiacEditor extends React.Component {
 				nodeDetailsTitle = (activeNodeData.type === 'skill') ? 'Noeud de compétence' : 'Noeud d\'amélioration';
 				inspector = <SkillNodeInspector skill={this.state.activeNode} />;
 				break;
-			
+
 			case 'life':
 			case 'perk':
 				nodeDetailsTitle = (activeNodeData.type === 'life') ? 'Noeud d\'énergie' : 'Noeud d\'essence';
 				inspector = <PointNodeInspector pointNode={activeNodeData} />;
 				deletePointNodeButton = (
-					<button 
+					<button
 						type = 'button'
 						className = 'btn btn-danger btn-sm pull-right'
 						data-toggle = 'modal'
@@ -129,13 +131,40 @@ export default class ZodiacEditor extends React.Component {
 				break;
 			}
 
+			// Render start node checkbox
+			if (this.state.activeNode.type == 'skill' ||
+				this.state.activeNode.type == 'life' ||
+				this.state.activeNode.type == 'perk') {
+				startNodeCheckbox = (
+					<div className='col-xs-4'>
+						<div className='checkbox-inline'>
+							<label>
+								<input
+									ref = {(ref) => this.startNodeButton = ref}
+									type = 'checkbox'
+									checked = {this.getNodeDataById(rawNodeID).start}
+									onChange = {this.onStartNodeButtonClick}
+								/>
+								Départ
+							</label>
+						</div>
+					</div>
+				);
+			}
+
 			// Render node details panel
 			nodeDetails = (
 				<div className='skill-graph-editor-control-panel-node-details'>
 					{deletePointNodeButton}
 					<h3>{nodeDetailsTitle}</h3>
 
-					{pointNodeValueInput}
+					<div className='row'>
+						{startNodeCheckbox}
+
+						<div className='col-xs-8'>
+							{pointNodeValueInput}
+						</div>
+					</div>
 
 					<div className='skill-graph-editor-control-panel-links panel panel-info'>
 						<div className='panel-heading clearfix'>
@@ -150,7 +179,7 @@ export default class ZodiacEditor extends React.Component {
 								{this.graph.getLinkedNodesById(rawNodeID).map(function(link) {
 
 									return (
-										<NodeDetailsLinkElement 
+										<NodeDetailsLinkElement
 											key = {link}
 											node = {this.getNodeDataById(link)}
 											highlight = {this.state.highlightedOutboundLink === link}
@@ -163,7 +192,7 @@ export default class ZodiacEditor extends React.Component {
 							</tbody>
 						</table>
 						<div className='panel-body'>
-							<button 
+							<button
 								ref = {(ref) => this.addLinkButton = ref}
 								type = 'button'
 								className = 'btn btn-success btn-sm'
@@ -200,7 +229,7 @@ export default class ZodiacEditor extends React.Component {
 		return (
 			<div>
 				<div className='row'>
-					<SkillGraph 
+					<SkillGraph
 						ref = {(ref) => this.graph = ref}
 						initialNodeData = {this.state.nodeData}
 						initialLinkData = {this.state.linkData}
@@ -217,9 +246,9 @@ export default class ZodiacEditor extends React.Component {
 						<div className='panel panel-primary'>
 							<div className='panel-heading clearfix'>
 								<h2 className='skill-graph-editor-control-panel-title panel-title pull-left'>Panneau de contrôle</h2>
-								<button 
-									type = 'button' 
-									className = 'btn btn-default btn-sm pull-right' 
+								<button
+									type = 'button'
+									className = 'btn btn-default btn-sm pull-right'
 									onClick = {this.saveZodiac}>
 									<span className='glyphicon glyphicon-floppy-disk' />&nbsp;
 									Sauvegarder
@@ -227,7 +256,7 @@ export default class ZodiacEditor extends React.Component {
 							</div>
 							<div className='panel-body'>
 								<div className='btn-group' role='group'>
-									<button 
+									<button
 										ref = {(ref) => this.addLifeNodeButton = ref}
 										type = 'button'
 										className = 'btn btn-sm btn-success'
@@ -235,7 +264,7 @@ export default class ZodiacEditor extends React.Component {
 										<span className='glyphicon glyphicon-plus' />&nbsp;
 										Noeud d'énergie
 									</button>
-									<button 
+									<button
 										ref = {(ref) => this.addPerkNodeButton = ref}
 										type = 'button'
 										className = 'btn btn-sm btn-success'
@@ -244,7 +273,7 @@ export default class ZodiacEditor extends React.Component {
 										Noeud d'essence
 									</button>
 								</div>
-								
+
 								{nodeDetails}
 							</div>
 						</div>
@@ -399,6 +428,7 @@ export default class ZodiacEditor extends React.Component {
 	 */
 	onAddLinkButtonClick(from) {
 		this.setState({
+			nodeData: this.graph.getNodeData(),
 			addingLinkFrom: from,
 			prompt: {
 				type: 'alert-info',
@@ -414,6 +444,7 @@ export default class ZodiacEditor extends React.Component {
 	 */
 	highlightLink(target) {
 		this.setState({
+			nodeData: this.graph.getNodeData(),
 			highlightedOutboundLink: target
 		});
 	}
@@ -436,7 +467,7 @@ export default class ZodiacEditor extends React.Component {
 		var nodeData = this.getNodeDataById(id),
 			splitID = id.split('-'),
 			nodeObj = {
-				id: splitID[0], 
+				id: splitID[0],
 				type: nodeData.type,
 				upgrades: []
 			};
@@ -499,6 +530,26 @@ export default class ZodiacEditor extends React.Component {
 	}
 
 	/**
+	 * Handle start node property toggling
+	 * @param {SyntheticEvent} e The click event
+	 */
+	onStartNodeButtonClick(e) {
+		var rawActiveNodeID = [this.state.activeNode.id].concat(this.state.activeNode.upgrades).join('-'), // TODO: Test for emptiness
+			newNodeData = this.state.nodeData.slice();
+
+		for (var i = 0; i < newNodeData.length; i++) {
+			if (newNodeData[i].id === rawActiveNodeID) {
+				newNodeData[i].start = e.target.checked;
+				break;
+			}
+		}
+
+		this.setState({
+			nodeData: newNodeData
+		});
+	}
+
+	/**
 	 * Save to the API the new state of the zodiac
 	 * @private
 	 */
@@ -515,30 +566,37 @@ export default class ZodiacEditor extends React.Component {
 			linkData: data.links,
 			prompt: {
 				type: 'alert-info',
-				icon: 'glyphicon-floppy-open',
+				icon: 'glyphicon-asterisk glyphicon-spin',
 				message: 'Sauvegarde en cours...'
 			}
 		});
 
-		jQuery.post('http://' + location.hostname + '/wp-json/terraarcana/v1/graph-data', data, function(result, status) {
-			if (status === 'success') {
+		jQuery.ajax({
+			url: WP_API_Settings.root + 'terraarcana/v1/graph-data',
+			method: 'POST',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+			},
+			data: data,
+			success: function() {
 				this.setState({
 					prompt: {
 						type: 'alert-success',
 						icon: 'glyphicon-floppy-saved',
-						message: result
+						message: 'Zodiaque sauvegardé avec succès!'
 					}
 				});
-			} else {
+			}.bind(this),
+			error: function() {
 				this.setState({
 					prompt: {
 						type: 'alert-danger',
 						icon: 'glyphicon-floppy-remove',
-						message: result
+						message: 'Erreur lors de la sauvegarde du zodiaque.'
 					}
 				});
-			}
-		}.bind(this));
+			}.bind(this)
+		});
 	}
 
 	/**

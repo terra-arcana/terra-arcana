@@ -1,13 +1,12 @@
 <?php
 
 namespace terraarcana {
-
-	require_once(ROOT . '/src/cpt/cpt.aclass.php' );
+	require_once(ROOT . '/src/cpt/cpt.aclass.php');
 
 	/**
 	 * Represents the Skill CPT, where character skills can be added to the
 	 * game database.
-	 * NOTE: Skill upgrade IDs are one-indexed! This means the second upgrade 
+	 * NOTE: Skill upgrade IDs are one-indexed! This means the second upgrade
 	 * to a skill has id XX-2, and not XX-1.
 	 */
 	class Skill extends CPT {
@@ -74,8 +73,6 @@ namespace terraarcana {
 			);
 		}
 
-		private function __clone() {}
-
 		/**
 		 * @inheritdoc
 		 */
@@ -120,13 +117,13 @@ namespace terraarcana {
 				'nodes' => array(),
 				'links' => array()
 			);
-			
+
 			$skills = get_posts(array(
 				'post_type' => 'skill',
 				'posts_per_page' => -1
 			));
 
-			foreach($skills as $skill) {
+			foreach ($skills as $skill) {
 				$skillGraphData = get_field($this->_fields['graph_data']['key'], $skill->ID);
 
 				// Add the skill to the graph data
@@ -139,7 +136,7 @@ namespace terraarcana {
 				));
 
 				// Add links to the skill to the graph data
-				if (!empty($skillGraphData[0]['links'])) {
+				if (is_array($skillGraphData[0]['links'])) {
 					foreach ($skillGraphData[0]['links'] as $link) {
 						array_push($result['links'], array((string)$skill->ID, $link['id']));
 					}
@@ -161,8 +158,12 @@ namespace terraarcana {
 						));
 
 						// Add any links from the upgrades to the graph data
-						foreach ($upgrade['graph_data'][0]['links'] as $link) {
-							array_push($result['links'], array($upgradeID, $link['id']));
+						if (array_key_exists(0, $upgrade['graph_data'])) {
+							if (is_array($upgrade['graph_data'][0]['links'])) {
+								foreach ($upgrade['graph_data'][0]['links'] as $link) {
+									array_push($result['links'], array($upgradeID, $link['id']));
+								}
+							}
 						}
 					}
 				}
@@ -173,7 +174,7 @@ namespace terraarcana {
 
 		/**
 		 * Update a graph data skill node (X/Y coordinates and link IDs)
-		 * @param Object $node An object containing the new `x`, `y` and `links` properties of a node `id`
+		 * @param Object $node An object containing the new `x`, `y`, `start` and `links` properties of a node `id`
 		 * @param array $links The IDs of the nodes linked to this skill
 		 */
 		public function update_skill_graph_data($node, $links) {
@@ -190,6 +191,9 @@ namespace terraarcana {
 
 			// Update links
 			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'links'), $acfLinks, $node['id']);
+
+			// Update start node status
+			update_sub_field(array($this->_fields['graph_data']['key'], 1, 'start'), ($node['start'] === 'true'), $node['id']);
 		}
 
 		/**
@@ -206,7 +210,7 @@ namespace terraarcana {
 			}
 
 			$idFragments = explode('-', $node['id']);
-			
+
 			// Update coordinates
 			update_sub_field(array($this->_fields['upgrades']['key'], $idFragments[1], 'graph_data', 1, 'x'), $node['x'], $idFragments[0]);
 			update_sub_field(array($this->_fields['upgrades']['key'], $idFragments[1], 'graph_data', 1, 'y'), $node['y'], $idFragments[0]);

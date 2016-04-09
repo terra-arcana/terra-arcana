@@ -2,10 +2,10 @@ import React from 'react';
 
 import CharacterSkillsPanelSkillElement from './character-skills-panel-skill-element.jsx';
 
-require('../../styles/zodiac/character-skills-panel.scss');
+require('../../styles/character/character-skills-panel.scss');
 
 /**
- * A CharacterSkillsPanel displays details about a character and all her 
+ * A CharacterSkillsPanel displays details about a character and all her
  * skills currently selected.
  * @class
  */
@@ -53,9 +53,7 @@ export default class CharacterSkillsPanel extends React.Component {
 
 			// Add upgrade to parent skill if is an upgrade
 			if (splitID[1] !== undefined) {
-				skills[splitID[0]].upgrades.push({
-					id: splitID[1]
-				});
+				skills[splitID[0]].upgrades.push(splitID[1]);
 			}
 		}
 
@@ -71,7 +69,9 @@ export default class CharacterSkillsPanel extends React.Component {
 	 */
 	render() {
 		var toggleSkillsButtonText = this.state.displaySkills ? 'Masquer' : 'Afficher',
-			skillsList = null;
+			skillsList = null,
+			xpBarClass = 'success',
+			ppBarClass = 'success';
 
 		if (this.state.displaySkills) {
 			skillsList = (
@@ -79,6 +79,7 @@ export default class CharacterSkillsPanel extends React.Component {
 					{this.state.skills.map(function(skill) {
 						return (
 							<CharacterSkillsPanelSkillElement
+								key = {skill.id}
 								id = {skill.id}
 								upgrades = {skill.upgrades}
 								active = {skill.id === this.props.activeSkill.id}
@@ -90,24 +91,75 @@ export default class CharacterSkillsPanel extends React.Component {
 			);
 		}
 
+		if (this.props.xp.current/this.props.xp.total < 0.25) {
+			xpBarClass = 'danger';
+		} else if (this.props.xp.current/this.props.xp.total < 0.5) {
+			xpBarClass = 'warning';
+		}
+
+		if (this.props.pp.current/this.props.pp.total < 0.25) {
+			ppBarClass = 'danger';
+		} else if (this.props.pp.current/this.props.pp.total < 0.5) {
+			ppBarClass = 'warning';
+		}
+
 		return (
-			<div className='skill-graph-editor-character-skills-panel'>
-				<div className='panel panel-default'>
-					<div className='panel-heading'>
-						<h2 className='panel-title'>
+			<div className="skill-graph-editor-character-skills-panel">
+				<div className="panel panel-default">
+					<div className="panel-heading">
+						<h2 className="panel-title">
 							{this.props.characterName}
 							<small> Gars badass</small>
 						</h2>
 					</div>
 
-					<div className='panel-body'>
-						<ul>
-							<li>Points d'énergie: {this.props.energy}</li>
-							<li>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</li>
-							<li>Points d'essence: {this.props.pp.current}/{this.props.pp.total}</li>
-						</ul>
+					<div className="panel-body">
+						<div className="row">
+							<div className="col-xs-12">
+								<button
+									type = "button"
+									className = "btn btn-success pull-right"
+									onClick = {this.props.onSaveClick}
+								>
+									<span className="glyphicon glyphicon-floppy-save"></span>
+									&nbsp;Sauvegarder
+								</button>
+							</div>
 
-						<h3>Compétences <button type='button' className='btn btn-link btn-sm' onClick={this.toggleSkills}>{toggleSkillsButtonText}</button></h3>
+							<div className="col-xs-12">
+								<ul>
+									<li>
+										<h4>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</h4>
+										<div className="progress">
+											<div
+												className = {'progress-bar progress-bar-' + xpBarClass}
+												role = "progressbar"
+												aria-valuenow = {this.props.xp.current}
+												aria-valuemin = "0"
+												aria-valuemax = {this.props.xp.total}
+												style = {{ width: (100 * this.props.xp.current/this.props.xp.total) + '%' }}
+											/>
+										</div>
+									</li>
+									<li>
+										<h4>Points d'essence: {this.props.pp.current}/{this.props.pp.total}</h4>
+										<div className="progress">
+											<div
+												className = {'progress-bar progress-bar-' + ppBarClass}
+												role = "progressbar"
+												aria-valuenow = {this.props.pp.current}
+												aria-valuemin = "0"
+												aria-valuemax = {this.props.pp.total}
+												style = {{width: (100 * this.props.pp.current/this.props.pp.total) + '%' }}
+											/>
+										</div>
+									</li>
+									<li>Points d'énergie: {this.props.energy}</li>
+								</ul>
+							</div>
+
+							<h3 className="col-xs-12">Compétences <button type="button" className="btn btn-link btn-sm" onClick={this.toggleSkills}>{toggleSkillsButtonText}</button></h3>
+						</div>
 					</div>
 
 					{skillsList}
@@ -176,7 +228,9 @@ CharacterSkillsPanel.propTypes = {
 		current: React.PropTypes.number.isRequired,
 		total: React.PropTypes.number.isRequired
 	}),
+	activeSkill: React.PropTypes.object,
 
 	onSelectSkill: React.PropTypes.func,
-	onUnselectSkill: React.PropTypes.func
+	onUnselectSkill: React.PropTypes.func,
+	onSaveClick: React.PropTypes.func
 };

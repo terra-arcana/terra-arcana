@@ -6,7 +6,7 @@ var TestUtils = require('react-addons-test-utils'),
 	ZodiacEditor = require('../zodiac/zodiac-editor.jsx');
 
 describe('ZodiacEditor', function() {
-	it('correctly initializes the active node', function() {
+	it('initializes the active node', function() {
 		var editor = TestUtils.renderIntoDocument(
 				<ZodiacEditor/>
 			),
@@ -19,7 +19,7 @@ describe('ZodiacEditor', function() {
 		expect(Lodash.isEqual(editor.state.activeNode, defaultActiveNode)).toEqual(true);
 	});
 
-	it('correctly adds a life node upon clicking new life node button', function() {
+	it('adds a life node upon clicking new life node button', function() {
 		var editor = TestUtils.renderIntoDocument(
 				<ZodiacEditor/>
 			),
@@ -36,7 +36,7 @@ describe('ZodiacEditor', function() {
 		expect(Lodash.isEqual(editor.getNodeDataById('n0'), defaultLifeNode)).toEqual(true);
 	});
 
-	it('correctly edits life node values', function() {
+	it('edits life node values', function() {
 		var editor = TestUtils.renderIntoDocument(
 			<ZodiacEditor />
 		);
@@ -62,7 +62,7 @@ describe('ZodiacEditor', function() {
 		expect(editor.getNodeDataById('0').value).toEqual('5');
 	});
 
-	it('correctly deletes life nodes', function() {
+	it('deletes life nodes', function() {
 		var editor = TestUtils.renderIntoDocument(
 			<ZodiacEditor />
 		);
@@ -123,5 +123,36 @@ describe('ZodiacEditor', function() {
 		})).toEqual(true);
 
 		expect(Lodash.isEqual(editor.state.deletedNodes, ['18'])).toEqual(true);
+	});
+
+	it('edits start node properties', function() {
+		var editor = TestUtils.renderIntoDocument(
+			<ZodiacEditor />
+		);
+
+		editor.setState({
+			nodeData: [
+				{
+					id: '4',
+					x: 100,
+					y: 100,
+					type: 'skill',
+					start: false
+				}
+			],
+			activeNode: {
+				id: '4',
+				type: 'skill',
+				upgrades: []
+			}
+		});
+
+		TestUtils.Simulate.change(editor.startNodeButton, {
+			target: {
+				checked: true
+			}
+		});
+
+		expect(editor.getNodeDataById('4').start).toEqual(true);
 	});
 });
