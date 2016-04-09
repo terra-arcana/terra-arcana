@@ -45,7 +45,7 @@ namespace terraarcana {
 				$result['nodes'] = array_merge($skillGraphData['nodes'], $pointGraphData['nodes']);
 
 				$links = array_merge($skillGraphData['links'], $pointGraphData['links']);
-				foreach($links as $link) {
+				foreach ($links as $link) {
 					$this->push_unique_link($result['links'], $link[0], $link[1]);
 				}
 
@@ -61,8 +61,8 @@ namespace terraarcana {
 				$params = $request->get_params();
 
 				// First pass to create all new nodes and replace their temp ID with their true ID
-				if (array_key_exists('newNodeIndexes', $params)) {
-					foreach($params['newNodeIndexes'] as $nodeIndex) {
+				if (is_array($params['newNodeIndexes'])) {
+					foreach ($params['newNodeIndexes'] as $nodeIndex) {
 						$postID = '';
 						$oldPostID = $params['nodes'][$nodeIndex]['id'];
 
@@ -76,9 +76,11 @@ namespace terraarcana {
 						$params['nodes'][$nodeIndex]['id'] = $postID;
 
 						// Replace all instances of the temp ID with the newly inserted one in link data
-						foreach ($params['links'] as &$link) {
-							if ($link[0] == $oldPostID) $link[0] = $postID;
-							if ($link[1] == $oldPostID) $link[1] = $postID;
+						if (is_array($params['links'])) {
+							foreach ($params['links'] as &$link) {
+								if ($link[0] == $oldPostID) $link[0] = $postID;
+								if ($link[1] == $oldPostID) $link[1] = $postID;
+							}
 						}
 					}
 				}
@@ -113,8 +115,8 @@ namespace terraarcana {
 				}
 
 				// Delete removed nodes
-				if (array_key_exists('deletedNodes', $params)) {
-					foreach($params['deletedNodes'] as $node) {
+				if (is_array($params['deletedNodes'])) {
+					foreach ($params['deletedNodes'] as $node) {
 						wp_delete_post($node, true);
 					}
 				}
@@ -152,7 +154,7 @@ namespace terraarcana {
 			private function get_linked_nodes_from_id($from, array $linkData) {
 				$resultLinks = array();
 
-				foreach($linkData as $link) {
+				foreach ($linkData as $link) {
 					if ($link[0] == $from) {
 						$resultLinks[] = $link[1];
 					} else if ($link[1] == $from) {
