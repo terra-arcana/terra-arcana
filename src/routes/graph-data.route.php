@@ -61,9 +61,10 @@ namespace terraarcana {
 				$params = $request->get_params();
 
 				// First pass to create all new nodes and replace their temp ID with their true ID
-				if (!empty($params['newNodeIndexes'])) {
+				if (array_key_exists('newNodeIndexes', $params)) {
 					foreach($params['newNodeIndexes'] as $nodeIndex) {
 						$postID = '';
+						$oldPostID = $params['nodes'][$nodeIndex]['id'];
 
 						switch($params['nodes'][$nodeIndex]['type']) {
 						case 'life':
@@ -74,7 +75,11 @@ namespace terraarcana {
 
 						$params['nodes'][$nodeIndex]['id'] = $postID;
 
-						// TODO: Replace all instances of the temp ID with the newly inserted one in link data
+						// Replace all instances of the temp ID with the newly inserted one in link data
+						foreach ($params['links'] as &$link) {
+							if ($link[0] == $oldPostID) $link[0] = $postID;
+							if ($link[1] == $oldPostID) $link[1] = $postID;
+						}
 					}
 				}
 
@@ -108,8 +113,10 @@ namespace terraarcana {
 				}
 
 				// Delete removed nodes
-				foreach($params['deletedNodes'] as $node) {
-					wp_delete_post($node, true);
+				if (array_key_exists('deletedNodes', $params)) {
+					foreach($params['deletedNodes'] as $node) {
+						wp_delete_post($node, true);
+					}
 				}
 
 				return new \WP_REST_Response('Zodiaque sauvegardé avec succès!', 200);

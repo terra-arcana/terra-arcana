@@ -566,30 +566,37 @@ export default class ZodiacEditor extends React.Component {
 			linkData: data.links,
 			prompt: {
 				type: 'alert-info',
-				icon: 'glyphicon-floppy-open',
+				icon: 'glyphicon-asterisk glyphicon-spin',
 				message: 'Sauvegarde en cours...'
 			}
 		});
 
-		jQuery.post('http://' + location.hostname + '/wp-json/terraarcana/v1/graph-data', data, function(result, status) {
-			if (status === 'success') {
+		jQuery.ajax({
+			url: WP_API_Settings.root + 'terraarcana/v1/graph-data',
+			method: 'POST',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+			},
+			data: data,
+			success: function() {
 				this.setState({
 					prompt: {
 						type: 'alert-success',
 						icon: 'glyphicon-floppy-saved',
-						message: result
+						message: 'Zodiaque sauvegardé avec succès!'
 					}
 				});
-			} else {
+			}.bind(this),
+			error: function() {
 				this.setState({
 					prompt: {
 						type: 'alert-danger',
 						icon: 'glyphicon-floppy-remove',
-						message: result
+						message: 'Erreur lors de la sauvegarde du zodiaque.'
 					}
 				});
-			}
-		}.bind(this));
+			}.bind(this)
+		});
 	}
 
 	/**
