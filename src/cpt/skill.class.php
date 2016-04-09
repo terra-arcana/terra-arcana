@@ -123,7 +123,7 @@ namespace terraarcana {
 				'posts_per_page' => -1
 			));
 
-			foreach($skills as $skill) {
+			foreach ($skills as $skill) {
 				$skillGraphData = get_field($this->_fields['graph_data']['key'], $skill->ID);
 
 				// Add the skill to the graph data
@@ -136,7 +136,7 @@ namespace terraarcana {
 				));
 
 				// Add links to the skill to the graph data
-				if (array_key_exists('links', $skillGraphData[0])) {
+				if (is_array($skillGraphData[0]['links'])) {
 					foreach ($skillGraphData[0]['links'] as $link) {
 						array_push($result['links'], array((string)$skill->ID, $link['id']));
 					}
@@ -158,8 +158,8 @@ namespace terraarcana {
 						));
 
 						// Add any links from the upgrades to the graph data
-						if (array_key_exists(0, $update['graph_data'])) {
-							if (array_key_exists('links', $update['graph_data'][0])) {
+						if (array_key_exists(0, $upgrade['graph_data'])) {
+							if (is_array($upgrade['graph_data'][0]['links'])) {
 								foreach ($upgrade['graph_data'][0]['links'] as $link) {
 									array_push($result['links'], array($upgradeID, $link['id']));
 								}
