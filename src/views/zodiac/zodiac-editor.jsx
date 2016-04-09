@@ -13,7 +13,7 @@ require('./zodiac-editor.scss');
  * @class
  */
 export default class ZodiacEditor extends React.Component {
-	
+
 	/**
 	 * @constructor
 	 * @param {Object} props Custom props
@@ -30,7 +30,7 @@ export default class ZodiacEditor extends React.Component {
 				id: '',
 				type: '',
 				upgrades: []
-			}, 
+			},
 			nodeData: [],
 			linkData: [],
 			deletedNodes: [],
@@ -92,7 +92,7 @@ export default class ZodiacEditor extends React.Component {
 
 		if (!Lodash.isEmpty(this.state.activeNode) && !!this.state.activeNode.id) {
 			activeNodeData = this.getNodeDataById(rawNodeID);
-			
+
 			// Render inspector
 			switch(this.state.activeNode.type) {
 			case 'skill':
@@ -100,13 +100,13 @@ export default class ZodiacEditor extends React.Component {
 				nodeDetailsTitle = (activeNodeData.type === 'skill') ? 'Noeud de compétence' : 'Noeud d\'amélioration';
 				inspector = <SkillNodeInspector skill={this.state.activeNode} />;
 				break;
-			
+
 			case 'life':
 			case 'perk':
 				nodeDetailsTitle = (activeNodeData.type === 'life') ? 'Noeud d\'énergie' : 'Noeud d\'essence';
 				inspector = <PointNodeInspector pointNode={activeNodeData} />;
 				deletePointNodeButton = (
-					<button 
+					<button
 						type = 'button'
 						className = 'btn btn-danger btn-sm pull-right'
 						data-toggle = 'modal'
@@ -132,8 +132,8 @@ export default class ZodiacEditor extends React.Component {
 			}
 
 			// Render start node checkbox
-			if (this.state.activeNode.type == 'skill' || 
-				this.state.activeNode.type == 'life' || 
+			if (this.state.activeNode.type == 'skill' ||
+				this.state.activeNode.type == 'life' ||
 				this.state.activeNode.type == 'perk') {
 				startNodeCheckbox = (
 					<div className='col-xs-4'>
@@ -179,7 +179,7 @@ export default class ZodiacEditor extends React.Component {
 								{this.graph.getLinkedNodesById(rawNodeID).map(function(link) {
 
 									return (
-										<NodeDetailsLinkElement 
+										<NodeDetailsLinkElement
 											key = {link}
 											node = {this.getNodeDataById(link)}
 											highlight = {this.state.highlightedOutboundLink === link}
@@ -192,7 +192,7 @@ export default class ZodiacEditor extends React.Component {
 							</tbody>
 						</table>
 						<div className='panel-body'>
-							<button 
+							<button
 								ref = {(ref) => this.addLinkButton = ref}
 								type = 'button'
 								className = 'btn btn-success btn-sm'
@@ -229,7 +229,7 @@ export default class ZodiacEditor extends React.Component {
 		return (
 			<div>
 				<div className='row'>
-					<SkillGraph 
+					<SkillGraph
 						ref = {(ref) => this.graph = ref}
 						initialNodeData = {this.state.nodeData}
 						initialLinkData = {this.state.linkData}
@@ -246,9 +246,9 @@ export default class ZodiacEditor extends React.Component {
 						<div className='panel panel-primary'>
 							<div className='panel-heading clearfix'>
 								<h2 className='skill-graph-editor-control-panel-title panel-title pull-left'>Panneau de contrôle</h2>
-								<button 
-									type = 'button' 
-									className = 'btn btn-default btn-sm pull-right' 
+								<button
+									type = 'button'
+									className = 'btn btn-default btn-sm pull-right'
 									onClick = {this.saveZodiac}>
 									<span className='glyphicon glyphicon-floppy-disk' />&nbsp;
 									Sauvegarder
@@ -256,7 +256,7 @@ export default class ZodiacEditor extends React.Component {
 							</div>
 							<div className='panel-body'>
 								<div className='btn-group' role='group'>
-									<button 
+									<button
 										ref = {(ref) => this.addLifeNodeButton = ref}
 										type = 'button'
 										className = 'btn btn-sm btn-success'
@@ -264,7 +264,7 @@ export default class ZodiacEditor extends React.Component {
 										<span className='glyphicon glyphicon-plus' />&nbsp;
 										Noeud d'énergie
 									</button>
-									<button 
+									<button
 										ref = {(ref) => this.addPerkNodeButton = ref}
 										type = 'button'
 										className = 'btn btn-sm btn-success'
@@ -273,7 +273,7 @@ export default class ZodiacEditor extends React.Component {
 										Noeud d'essence
 									</button>
 								</div>
-								
+
 								{nodeDetails}
 							</div>
 						</div>
@@ -428,6 +428,7 @@ export default class ZodiacEditor extends React.Component {
 	 */
 	onAddLinkButtonClick(from) {
 		this.setState({
+			nodeData: this.graph.getNodeData(),
 			addingLinkFrom: from,
 			prompt: {
 				type: 'alert-info',
@@ -443,6 +444,7 @@ export default class ZodiacEditor extends React.Component {
 	 */
 	highlightLink(target) {
 		this.setState({
+			nodeData: this.graph.getNodeData(),
 			highlightedOutboundLink: target
 		});
 	}
@@ -465,7 +467,7 @@ export default class ZodiacEditor extends React.Component {
 		var nodeData = this.getNodeDataById(id),
 			splitID = id.split('-'),
 			nodeObj = {
-				id: splitID[0], 
+				id: splitID[0],
 				type: nodeData.type,
 				upgrades: []
 			};
