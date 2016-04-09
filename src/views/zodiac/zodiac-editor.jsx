@@ -587,12 +587,12 @@ export default class ZodiacEditor extends React.Component {
 					}
 				});
 			}.bind(this),
-			error: function(data, response) {
+			error: function() {
 				this.setState({
 					prompt: {
 						type: 'alert-danger',
 						icon: 'glyphicon-floppy-remove',
-						message: response
+						message: 'Erreur lors de la sauvegarde du zodiaque.'
 					}
 				});
 			}.bind(this)
