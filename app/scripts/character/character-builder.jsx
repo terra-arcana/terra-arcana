@@ -116,6 +116,7 @@ export default class CharacterBuilder extends React.Component {
 
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
+					characterPeople = {this.props.character.people}
 					nodes = {this.state.pickedNodes}
 					xp = {xpValues}
 					pp = {ppValues}
