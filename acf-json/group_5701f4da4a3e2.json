@@ -1,7 +1,100 @@
 {
     "key": "group_5701f4da4a3e2",
     "title": "Personnage - C\u00f4t\u00e9",
-    "fields": [],
+    "fields": [
+        {
+            "key": "field_57104df0823d3",
+            "label": "Peuple",
+            "name": "people",
+            "type": "post_object",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "people"
+            ],
+            "taxonomy": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "id",
+            "ui": 1
+        },
+        {
+            "key": "field_5701f25fbe272",
+            "label": "Photo",
+            "name": "photo",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "thumbnail",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_5701f339be277",
+            "label": "XP bonus",
+            "name": "bonus_xp",
+            "type": "number",
+            "instructions": "Points d'exp\u00e9rience bonus octroy\u00e9s par l'organisation pour diff\u00e9rentes raisons (b\u00e9n\u00e9volat, PNJs devenus joueurs, raisons roleplay, etc)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_5701f381be278",
+            "label": "Essence bonus",
+            "name": "bonus_perk",
+            "type": "number",
+            "instructions": "Points d'essence bonus octroy\u00e9s par l'organisation pour diff\u00e9rentes raisons (b\u00e9n\u00e9volat, PNJs devenus joueurs, raisons roleplay, etc)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": "",
+            "readonly": 0,
+            "disabled": 0
+        }
+    ],
     "location": [
         [
             {
@@ -19,5 +112,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1459746026
+    "modified": 1460686545
 }
