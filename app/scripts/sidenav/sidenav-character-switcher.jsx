@@ -36,7 +36,7 @@ export default class SidenavCharacterSwitcher extends React.Component {
 							data-character-id={character.id}
 						>
 							<h4 className="list-group-item-heading no-events">{character.title.rendered}</h4>
-							<p className="list-group-item-text no-events">Gars badass galicien</p>
+							<p className="list-group-item-text no-events">Priorème {character.people.singular}</p>
 						</Link>
 					);
 				}.bind(this))}

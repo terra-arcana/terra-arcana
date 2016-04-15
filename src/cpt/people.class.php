@@ -11,6 +11,14 @@ namespace terraarcana {
 
 		public function __construct() {
 			$this->_postTypeName = 'people';
+			$this->_fields = array(
+				'singular' => array(
+					'key' => 'field_571051496395a'
+				),
+				'playable' => array(
+					'key' => 'field_57104cdac3f2d'
+				)
+			);
 		}
 
 		/**
