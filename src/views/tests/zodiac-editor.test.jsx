@@ -90,6 +90,11 @@ describe('ZodiacEditor', function() {
 					value: '3'
 				}
 			],
+			linkData: [
+				['12', '18'],
+				['18', '20'],
+				['12', '20']
+			],
 			activeNode: {
 				id: '18',
 				type: 'life',
@@ -114,6 +119,10 @@ describe('ZodiacEditor', function() {
 				type: 'perk',
 				value: '3'
 			}
+		])).toEqual(true);
+
+		expect(Lodash.isEqual(editor.state.linkData, [
+			['12', '20']
 		])).toEqual(true);
 
 		expect(Lodash.isEqual(editor.state.activeNode, {

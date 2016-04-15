@@ -348,23 +348,42 @@ export default class ZodiacEditor extends React.Component {
 	}
 
 	/**
-	 * Deletes a point node from the graph
+	 * Deletes the active point node from the graph
 	 * @private
 	 */
 	deletePointNode() {
-		var newNodeData = Lodash.cloneDeep(this.graph.getNodeData()),
+		var i, len,
+			newNodeData = Lodash.cloneDeep(this.graph.getNodeData()),
+			newLinkData = Lodash.cloneDeep(this.graph.getLinkData()),
 			newDeletedNodes = Lodash.cloneDeep(this.state.deletedNodes);
 
-		for (var i = 0; i < this.state.nodeData.length; i++) {
+		// Remove the active node from the node data
+		for (i = 0, len = this.state.nodeData.length; i < len; i++) {
 			if (this.state.nodeData[i].id === this.state.activeNode.id) {
 				newNodeData.splice(i, 1);
 			}
+		}
+
+		// Remove all outgoing links from the active node from the link data
+		var linksToDelete = [];
+		for (i = 0, len = this.state.linkData.length; i < len; i++) {
+			if (this.state.linkData[i][0] === this.state.activeNode.id ||
+				this.state.linkData[i][1] === this.state.activeNode.id
+			) {
+				linksToDelete.push(i);
+			}
+		}
+
+		// Remove links starting with the farthest one to ensure splice indexes stay valid
+		for (i = linksToDelete.length-1; i >= 0; i--) {
+			newLinkData.splice(linksToDelete[i], 1);
 		}
 
 		newDeletedNodes.push(this.state.activeNode.id);
 
 		this.setState({
 			nodeData: newNodeData,
+			linkData: newLinkData,
 			deletedNodes: newDeletedNodes,
 			activeNode: {
 				id: '',
