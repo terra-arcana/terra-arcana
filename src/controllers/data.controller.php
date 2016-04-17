@@ -8,6 +8,7 @@ namespace terraarcana {
 	require_once(ROOT . '/src/cpt/character.class.php');
 	require_once(ROOT . '/src/cpt/character-class.class.php');
 	require_once(ROOT . '/src/cpt/codex.class.php');
+	require_once(ROOT . '/src/cpt/people.class.php');
 	require_once(ROOT . '/src/cpt/point-node.class.php');
 	require_once(ROOT . '/src/cpt/rules.class.php');
 	require_once(ROOT . '/src/cpt/skill.class.php');
@@ -33,6 +34,7 @@ namespace terraarcana {
 					'character' => new Character(),
 					'character-class' => new CharacterClass(),
 					'codex' => new Codex(),
+					'people' => new People(),
 					'point-node' => new PointNode(),
 					'rules' => new Rules(),
 					'skill' => new Skill(),

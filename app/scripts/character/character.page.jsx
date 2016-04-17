@@ -126,10 +126,21 @@ export default class CharacterPage extends React.Component {
 	 * @param {string} slug The active character slug
 	 */
 	fetchCharacterData(slug) {
-		jQuery.get(WP_API_Settings.root + 'wp/v2/character?slug=' + slug, function(response) {
-			this.setState({
-				character: response[0]
-			});
+		jQuery.get(WP_API_Settings.root + 'wp/v2/character?slug=' + slug, function(characterResponse) {
+			// Fetch the character's people data
+			jQuery.get(WP_API_Settings.root + 'wp/v2/people/' + characterResponse[0].people, function(peopleResponse) {
+
+				// Enrich the people field in the character data
+				characterResponse[0].people = {
+					id: characterResponse[0].people,
+					name: peopleResponse.title.rendered,
+					singular: peopleResponse.singular
+				};
+
+				this.setState({
+					character: characterResponse[0]
+				});
+			}.bind(this));
 		}.bind(this));
 	}
 

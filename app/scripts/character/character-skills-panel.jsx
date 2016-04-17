@@ -109,7 +109,7 @@ export default class CharacterSkillsPanel extends React.Component {
 					<div className="panel-heading">
 						<h2 className="panel-title">
 							{this.props.characterName}
-							<small> Gars badass</small>
+							<small> Priorème {this.props.characterPeople.singular}</small>
 						</h2>
 					</div>
 
@@ -215,7 +215,12 @@ CharacterSkillsPanel.defaultProps = {
  * @type {Object}
  */
 CharacterSkillsPanel.propTypes = {
-	characterName: React.PropTypes.string,
+	characterName: React.PropTypes.string.isRequired,
+	characterPeople: React.PropTypes.shape({
+		id: React.PropTypes.number.isRequired,
+		name: React.PropTypes.string.isRequired,
+		singular: React.PropTypes.string.isRequired
+	}).isRequired,
 	nodes: React.PropTypes.arrayOf(
 		React.PropTypes.string
 	),
