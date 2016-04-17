@@ -280,7 +280,8 @@ export default class CharacterBuilder extends React.Component {
 
 		for (var i = 0, len = this.state.pickedNodes.length; i < len; i++) {
 			preparedBuild.push({
-				id: this.state.pickedNodes[i]
+				id: this.state.pickedNodes[i],
+				type: this.getNodeDataById(this.state.pickedNodes[i]).type
 			});
 		}
 
