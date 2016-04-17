@@ -1,4 +1,5 @@
 import React from 'react';
+import Lodash from 'lodash';
 
 import SkillGraph from '../zodiac/skill-graph.jsx';
 import SkillNodeInspector from '../zodiac/skill-node-inspector.jsx';
@@ -34,6 +35,10 @@ export default class CharacterBuilder extends React.Component {
 			pickedNodes: this.preparePickedNodesArray(props.character['current_build']),
 			nodeData: [],
 			linkData: [],
+			perkPoints: {
+				current: props.character['perk_points'].total,
+				total: props.character['perk_points'].total
+			},
 			alert: undefined
 		};
 
@@ -55,10 +60,6 @@ export default class CharacterBuilder extends React.Component {
 			xpValues = {
 				current: this.props.character.xp.total - this.state.pickedNodes.length,
 				total: this.props.character.xp.total
-			},
-			ppValues = {
-				current: 0,
-				total: this.props.character['perk_points'].total
 			};
 
 		if (this.state.activeNode.id !== '') {
@@ -90,6 +91,9 @@ export default class CharacterBuilder extends React.Component {
 			} else if (this.state.alert.type === 'success') {
 				alertClass = 'alert-success';
 				iconClass = 'glyphicon-ok';
+			} else if (this.state.alert.type === 'error') {
+				alertClass = 'alert-danger';
+				iconClass = 'glyphicon-exclamation-sign';
 			}
 
 			alert = (
@@ -141,7 +145,7 @@ export default class CharacterBuilder extends React.Component {
 					characterPeople = {this.props.character.people}
 					nodes = {this.state.pickedNodes}
 					xp = {xpValues}
-					pp = {ppValues}
+					pp = {this.state.perkPoints}
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
@@ -216,7 +220,9 @@ export default class CharacterBuilder extends React.Component {
 	 * @param {String} id The picked node ID
 	 */
 	selectNode(id) {
-		var nodeIndex = this.state.pickedNodes.indexOf(id);
+		var nodeIndex = this.state.pickedNodes.indexOf(id),
+			nodeData = this.getNodeDataById(id),
+			newPerkPoints = Lodash.cloneDeep(this.state.perkPoints);
 
 		// Add a node to the build
 		if (nodeIndex === -1) {
@@ -224,15 +230,28 @@ export default class CharacterBuilder extends React.Component {
 			if (this.state.pickedNodes.length < this.props.character.xp.total) {
 				this.state.pickedNodes[this.state.pickedNodes.length] = id;
 			}
+
+			// Add corresponding perk points
+			if (nodeData.type === 'perk') {
+				newPerkPoints.current += parseInt(nodeData.value);
+				newPerkPoints.total += parseInt(nodeData.value);
+			}
 		}
 
 		// Remove a node from the build
 		else {
 			this.state.pickedNodes.splice(nodeIndex, 1);
+
+			// Remove corresponding perk points
+			if (nodeData.type === 'perk') {
+				newPerkPoints.current -= parseInt(nodeData.value);
+				newPerkPoints.total -= parseInt(nodeData.value);
+			}
 		}
 
 		this.setState({
-			pickedNodes: this.state.pickedNodes
+			pickedNodes: this.state.pickedNodes,
+			perkPoints: newPerkPoints
 		});
 	}
 
@@ -293,6 +312,17 @@ export default class CharacterBuilder extends React.Component {
 	 */
 	saveBuild() {
 		var preparedBuild = this.prepareBuildForSave();
+
+		// Exit early if perk allocation is wrong
+		if (this.state.perkPoints.current < 0) {
+			this.setState({
+				alert: {
+					type: 'error',
+					message: 'Trop de points d\'essence dépensés!'
+				}
+			});
+			return;
+		}
 
 		this.setState({
 			alert: {
