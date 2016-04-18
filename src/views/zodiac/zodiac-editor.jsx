@@ -229,16 +229,18 @@ export default class ZodiacEditor extends React.Component {
 		return (
 			<div>
 				<div className='row'>
-					<SkillGraph
-						ref = {(ref) => this.graph = ref}
-						initialNodeData = {this.state.nodeData}
-						initialLinkData = {this.state.linkData}
-						pickedNodes = {[rawNodeID]}
-						canDragNodes = {true}
-						contiguousSelection = {false}
-						highlightedLinks = {highlightedLinks}
-						onNodeSelect = {this.onNodeClick}
-					/>
+					<div className="col-xs-12 col-lg-8">
+						<SkillGraph
+							ref = {(ref) => this.graph = ref}
+							initialNodeData = {this.state.nodeData}
+							initialLinkData = {this.state.linkData}
+							pickedNodes = {[rawNodeID]}
+							canDragNodes = {true}
+							contiguousSelection = {false}
+							highlightedLinks = {highlightedLinks}
+							onNodeSelect = {this.onNodeClick}
+						/>
+					</div>
 
 					{savePrompt}
 
