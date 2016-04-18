@@ -45,6 +45,7 @@ export default class CharacterBuilder extends React.Component {
 		this.inspectSkill = this.inspectSkill.bind(this);
 		this.uninspect = this.uninspect.bind(this);
 		this.selectNode = this.selectNode.bind(this);
+		this.getNodeDataById = this.getNodeDataById.bind(this);
 		this.preparePickedNodesArray = this.preparePickedNodesArray.bind(this);
 		this.prepareBuildForSave = this.prepareBuildForSave.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);

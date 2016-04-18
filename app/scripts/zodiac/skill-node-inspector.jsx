@@ -85,7 +85,18 @@ export default class SkillNodeInspector extends React.Component {
 	render() {
 		if (!jQuery.isEmptyObject(this.state.skill)) {
 			var skill = this.state.skill,
-				upgradeButton = (<a className='btn btn-default btn-xs' href='#' role='button'>Améliorer</a>);
+				perkButtons = (
+					<div className="btn-group" role="group">
+						<button type="button" className="btn btn-success btn-xs">
+							<span className="glyphicon glyphicon-chevron-up"></span>&nbsp;
+							1<span className="glyphicon glyphicon-fire"></span>
+						</button>
+						<button type="button" className="btn btn-danger btn-xs">
+							<span className="glyphicon glyphicon-chevron-down"></span>
+							&nbsp;
+						</button>
+					</div>
+				);
 
 			// Build skill info table
 			var costRow = function(cost) {
@@ -104,80 +115,80 @@ export default class SkillNodeInspector extends React.Component {
 					}
 
 					return (costElements.length > 0) ? (
-						<tr>
-							<td>Coût {(skill.perks[0].cost) ? upgradeButton : null}</td>
-							<td>{costElements.join(', ')}</td>
-						</tr>
+						<li className="list-group-item">
+							<strong>Coût</strong>:&nbsp;
+							{costElements.join(', ')}
+							{(skill.perks[0].cost) ? perkButtons : null}
+						</li>
 					) : null;
 				}(skill.cost[0]),
 
 				castRow = (skill.cast.rendered) ? (
-					<tr>
-						<td>Incantation {(skill.perks[0].cast) ? upgradeButton : null}</td>
-						<td>{skill.cast.rendered}</td>
-					</tr>
+					<li className="list-group-item">
+						<strong>Incantation</strong>:&nbsp;
+						{skill.cast.rendered}&nbsp;
+						{(skill.perks[0].cast) ? perkButtons : null}
+					</li>
 				) : null,
 
 				durationRow = (skill.duration.rendered) ? (
-					<tr>
-						<td>Durée {(skill.perks[0].duration) ? upgradeButton : null}</td>
-						<td>{skill.duration.rendered}</td>
-					</tr>
+					<li className="list-group-item">
+						<strong>Durée</strong>:&nbsp;
+						{skill.duration.rendered}&nbsp;
+						{(skill.perks[0].duration) ? perkButtons : null}
+					</li>
 				) : null,
 
 				usesRow = (skill.uses[0].amount) ? (
-					<tr>
-						<td>Utilisations {(skill.perks[0].uses) ? upgradeButton : null}</td>
-						<td>{skill.uses[0].amount}/{skill.uses[0].type.rendered}</td>
-					</tr>
+					<li className="list-group-item">
+						<strong>Utilisations</strong>:&nbsp;
+						{skill.uses[0].amount}/{skill.uses[0].type.rendered}&nbsp;
+						{(skill.perks[0].uses) ? perkButtons : null}
+					</li>
 				) : null,
 
 				rangeRow = (skill.range.rendered) ? (
-					<tr>
-						<td>Portée {(skill.perks[0].range) ? upgradeButton : null}</td>
-						<td>{skill.range.rendered}</td>
-					</tr>
-				) : null,
-
-				skillInfoTable = (costRow || castRow || durationRow || usesRow || rangeRow) ?
-				(
-					<table className='skill-details-table table table-bordered table-condensed'>
-						<tbody>
-							{costRow}
-							{usesRow}
-							{castRow}
-							{durationRow}
-							{rangeRow}
-						</tbody>
-					</table>
-				) :
-				null;
+					<li className="list-group-item">
+						<strong>Portée</strong>:&nbsp;
+						{skill.range.rendered}&nbsp;
+						{(skill.perks[0].range) ? perkButtons : null}
+					</li>
+				) : null;
 
 			return (
-				<div className='col-sm-12 col-lg-4 skill-graph-editor-skill-node-inspector'>
+				<div className="col-sm-12 col-lg-4 skill-graph-editor-skill-node-inspector">
 					{this.props.skill.upgrades.map(function(upgrade) {
 						return (
-							<div key={upgrade} className='panel panel-info upgrade-panel'>
-								<div className='panel-heading'>
-									<h3 className='panel-title' dangerouslySetInnerHTML={{__html: skill.upgrades[upgrade-1].title}}></h3>
+							<div key={upgrade} className="panel panel-info upgrade-panel">
+								<div className="panel-heading">
+									<h3 className="panel-title" dangerouslySetInnerHTML={{__html: skill.upgrades[upgrade-1].title}}></h3>
 								</div>
-								<div className='panel-body' dangerouslySetInnerHTML={{__html: skill.upgrades[upgrade-1].effect}}></div>
+								<div className="panel-body" dangerouslySetInnerHTML={{__html: skill.upgrades[upgrade-1].effect}}></div>
 							</div>
 						);
 					}.bind(this))}
 
-					<div className='panel panel-default'>
-						<div className='panel-heading'>
-							<h2 className='panel-title'><span dangerouslySetInnerHTML={{__html: skill.title.rendered}}></span>&emsp;
+					<div className="panel panel-default">
+						<div className="panel-heading">
+							<h2 className="panel-title"><span dangerouslySetInnerHTML={{__html: skill.title.rendered}}></span>&emsp;
 								<small>
 									<span dangerouslySetInnerHTML={{__html: skill.skill_type.rendered}}></span>&nbsp;|&nbsp;
 									<span dangerouslySetInnerHTML={{__html: skill.character_class.title.rendered}}></span>
 								</small>
 							</h2>
 						</div>
-						<div className='panel-body'>
-							<div dangerouslySetInnerHTML={{__html: skill.effect}}></div>
-							{skillInfoTable}
+						<div
+							className = "panel-body"
+							dangerouslySetInnerHTML = {{__html: skill.effect}}>
+						</div>
+						<ul className="list-group">
+							{costRow}
+							{castRow}
+							{usesRow}
+							{durationRow}
+							{rangeRow}
+						</ul>
+						<div className="panel-body">
 							<em dangerouslySetInnerHTML={{__html: skill['flavor_text']}}></em>
 						</div>
 					</div>
@@ -185,12 +196,12 @@ export default class SkillNodeInspector extends React.Component {
 			);
 		} else {
 			return (
-				<div className='col-sm-12 col-lg-4 skill-graph-editor-skill-node-inspector'>
-					<div className='panel panel-default'>
-						<div className='panel-heading'>
-							<h2 className='panel-title'>Chargement...</h2>
+				<div className="col-sm-12 col-lg-4 skill-graph-editor-skill-node-inspector">
+					<div className="panel panel-default">
+						<div className="panel-heading">
+							<h2 className="panel-title">Chargement...</h2>
 						</div>
-						<div className='panel-body'>
+						<div className="panel-body">
 							<p>Consultation des archives d'Asaké...</p>
 						</div>
 					</div>
@@ -219,5 +230,27 @@ SkillNodeInspector.propTypes = {
 		upgrades: React.PropTypes.arrayOf(
 			React.PropTypes.string
 		).isRequired
+	}),
+	perks: React.PropTypes.shape({
+		power: React.PropTypes.shape({
+			current: React.PropTypes.number.isRequired,
+			max: React.PropTypes.number.isRequired
+		}),
+		cast: React.PropTypes.shape({
+			current: React.PropTypes.number.isRequired,
+			max: React.PropTypes.number.isRequired
+		}),
+		duration: React.PropTypes.shape({
+			current: React.PropTypes.number.isRequired,
+			max: React.PropTypes.number.isRequired
+		}),
+		range: React.PropTypes.shape({
+			current: React.PropTypes.number.isRequired,
+			max: React.PropTypes.number.isRequired
+		}),
+		uses: React.PropTypes.shape({
+			current: React.PropTypes.number.isRequired,
+			max: React.PropTypes.number.isRequired
+		})
 	})
 };
