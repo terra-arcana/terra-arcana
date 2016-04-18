@@ -125,7 +125,7 @@ export default class CharacterSkillsPanel extends React.Component {
 								</div>
 							</li>
 							<li>
-								<h4>
+								<h4 className={(this.props.pp.current < 0) ? 'text-danger' : ''}>
 									<span className="glyphicon glyphicon-fire"></span>&nbsp;
 									Points d'essence: {this.props.pp.current}/{this.props.pp.total}
 								</h4>

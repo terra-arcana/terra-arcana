@@ -232,12 +232,12 @@ export default class CharacterBuilder extends React.Component {
 			// Only add a node if there is XP left
 			if (this.state.pickedNodes.length < this.props.character.xp.total) {
 				this.state.pickedNodes[this.state.pickedNodes.length] = id;
-			}
 
-			// Add corresponding perk points
-			if (nodeData.type === 'perk') {
-				newPerkPoints.current += parseInt(nodeData.value);
-				newPerkPoints.total += parseInt(nodeData.value);
+				// Add corresponding perk points
+				if (nodeData.type === 'perk') {
+					newPerkPoints.current += parseInt(nodeData.value);
+					newPerkPoints.total += parseInt(nodeData.value);
+				}
 			}
 		}
 
