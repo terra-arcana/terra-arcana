@@ -27,6 +27,11 @@ export default class CharacterPage extends React.Component {
 			activeTab: 'profile'
 		};
 
+		/**
+		 * An dictionary of references to the tab switcher links
+		 * @type {Object}
+		 * @private
+		 */
 		this.tabLinks = {};
 
 		this.fetchCharacterData = this.fetchCharacterData.bind(this);
@@ -34,6 +39,9 @@ export default class CharacterPage extends React.Component {
 		this.onBuildChange = this.onBuildChange.bind(this);
 	}
 
+	/**
+	 * @override
+	 */
 	componentDidMount() {
 		this.fetchCharacterData(this.props.params.characterSlug);
 	}

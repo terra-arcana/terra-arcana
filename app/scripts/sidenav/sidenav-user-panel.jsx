@@ -20,6 +20,10 @@ export default class SidenavUserPanel extends React.Component {
 	constructor(props) {
 		super(props);
 
+		/**
+		 * @type {Object}
+		 * @private
+		 */
 		this.state = {
 			loadingCharacters: true,
 			userCharacters: []
