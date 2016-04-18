@@ -1,6 +1,8 @@
 import React from 'react';
 import Lodash from 'lodash';
 
+import PerkButtonGroup from './perk-button-group.jsx';
+
 require('../../styles/zodiac/skill-node-inspector.scss');
 
 /**
@@ -25,7 +27,18 @@ export default class SkillNodeInspector extends React.Component {
 			skill: {}
 		};
 
+		/**
+		 * The current total of perks bought by the character on this skillLevel
+		 * @type {Object}
+		 */
+		this.skillLevel = 0;
+
 		this.fetchSkillInfo = this.fetchSkillInfo.bind(this);
+		this.updateSkillLevel = this.updateSkillLevel.bind(this);
+		this.getPerkCost = this.getPerkCost.bind(this);
+		this.onPerkButtonClick = this.onPerkButtonClick.bind(this);
+
+		this.updateSkillLevel();
 	}
 
 	/**
@@ -44,6 +57,8 @@ export default class SkillNodeInspector extends React.Component {
 			skill: {}
 		});
 		this.fetchSkillInfo(nextProps.skill.id);
+
+		this.updateSkillLevel();
 	}
 
 	/**
@@ -84,19 +99,7 @@ export default class SkillNodeInspector extends React.Component {
 	 */
 	render() {
 		if (!jQuery.isEmptyObject(this.state.skill)) {
-			var skill = this.state.skill,
-				perkButtons = (
-					<div className="btn-group" role="group">
-						<button type="button" className="btn btn-success btn-xs">
-							<span className="glyphicon glyphicon-chevron-up"></span>&nbsp;
-							1<span className="glyphicon glyphicon-fire"></span>
-						</button>
-						<button type="button" className="btn btn-danger btn-xs">
-							<span className="glyphicon glyphicon-chevron-down"></span>
-							&nbsp;
-						</button>
-					</div>
-				);
+			var skill = this.state.skill;
 
 			// Build skill info table
 			var costRow = function(cost) {
@@ -118,7 +121,6 @@ export default class SkillNodeInspector extends React.Component {
 						<li className="list-group-item">
 							<strong>Coût</strong>:&nbsp;
 							{costElements.join(', ')}
-							{(skill.perks[0].cost) ? perkButtons : null}
 						</li>
 					) : null;
 				}(skill.cost[0]),
@@ -127,7 +129,16 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Incantation</strong>:&nbsp;
 						{skill.cast.rendered}&nbsp;
-						{(skill.perks[0].cast) ? perkButtons : null}
+						{(skill.perks[0].cast) ? (
+							<PerkButtonGroup
+								currentLevel = {this.props.perks.cast.current}
+								maxLevel = {this.props.perks.cast.max}
+								cost = {this.getPerkCost(this.skillLevel)}
+								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'cast', 'up')}
+								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'cast', 'down')}
+							/>
+						)
+						: null}
 					</li>
 				) : null,
 
@@ -135,7 +146,15 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Durée</strong>:&nbsp;
 						{skill.duration.rendered}&nbsp;
-						{(skill.perks[0].duration) ? perkButtons : null}
+						{(skill.perks[0].duration) ? (
+							<PerkButtonGroup
+								currentLevel = {this.props.perks.duration.current}
+								maxLevel = {this.props.perks.duration.max}
+								cost = {this.getPerkCost(this.skillLevel)}
+								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'duration', 'up')}
+								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'duration', 'down')}
+							/>
+						) : null}
 					</li>
 				) : null,
 
@@ -143,7 +162,15 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Utilisations</strong>:&nbsp;
 						{skill.uses[0].amount}/{skill.uses[0].type.rendered}&nbsp;
-						{(skill.perks[0].uses) ? perkButtons : null}
+						{(skill.perks[0].uses) ? (
+							<PerkButtonGroup
+								currentLevel = {this.props.perks.uses.current}
+								maxLevel = {this.props.perks.uses.max}
+								cost = {this.getPerkCost(this.skillLevel)}
+								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'uses', 'up')}
+								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'uses', 'down')}
+							/>
+						) : null}
 					</li>
 				) : null,
 
@@ -151,7 +178,15 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Portée</strong>:&nbsp;
 						{skill.range.rendered}&nbsp;
-						{(skill.perks[0].range) ? perkButtons : null}
+						{(skill.perks[0].range) ? (
+							<PerkButtonGroup
+								currentLevel = {this.props.perks.range.current}
+								maxLevel = {this.props.perks.range.max}
+								cost = {this.getPerkCost(this.skillLevel)}
+								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'range', 'up')}
+								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'range', 'down')}
+							/>
+						) : null}
 					</li>
 				) : null;
 
@@ -208,6 +243,42 @@ export default class SkillNodeInspector extends React.Component {
 				</div>
 			);
 		}
+	}
+
+	/**
+	 * Refresh the current skill level.
+	 * @private
+	 */
+	updateSkillLevel() {
+		this.skillLevel =
+			this.props.perks.power.current +
+			this.props.perks.cast.current +
+			this.props.perks.duration.current +
+			this.props.perks.range.current +
+			this.props.perks.uses.current;
+	}
+
+	/**
+	 * Returns the cost in perk points of the current buyable upgrades
+	 * @param {number} skillLevel The current skill level
+	 * @return {number}
+	 */
+	getPerkCost(skillLevel) {
+		if (!skillLevel) {
+			return 0;
+		} else {
+			return this.getPerkCost(skillLevel-1) + skillLevel + 1;
+		}
+	}
+
+	/**
+	 * Handle perk button clicks
+	 * @param {string} Property being modified. Either `power`, `cast`, `duration`, `range` or `uses`.
+	 * @param {string} Direction of the modification. Either `up` or `down`.
+	 */
+	onPerkButtonClick(property, direction) {
+		// TODO
+		console.log(property + ' ' + direction);
 	}
 }
 
