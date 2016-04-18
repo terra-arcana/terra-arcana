@@ -46,6 +46,7 @@ export default class CharacterBuilder extends React.Component {
 		this.uninspect = this.uninspect.bind(this);
 		this.selectNode = this.selectNode.bind(this);
 		this.getNodeDataById = this.getNodeDataById.bind(this);
+		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
 		this.preparePickedNodesArray = this.preparePickedNodesArray.bind(this);
 		this.prepareBuildForSave = this.prepareBuildForSave.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
@@ -70,6 +71,7 @@ export default class CharacterBuilder extends React.Component {
 				inspector = (
 					<SkillNodeInspector
 						skill = {this.state.activeNode}
+						perks = {this.getNodePerkLevels(this.state.activeNode.id)}
 					/>
 				);
 				break;
@@ -271,6 +273,46 @@ export default class CharacterBuilder extends React.Component {
 		}.bind(this));
 
 		return nodeData;
+	}
+
+	/**
+	 * Get all the current and max perk levels for a given skill node
+	 * @param {string} id The skill node ID
+	 * @return {Object} The perk data
+	 */
+	getNodePerkLevels(id) {
+		var i, len,
+			currentBuild = this.props.character['current_build'],
+			nodeData = this.getNodeDataById(id),
+			buildNode = null,
+			perkProp = null,
+			perkValue = 0,
+			perkLevels = {};
+
+		// Get the corresponding node in the character build
+		for (i = 0, len = currentBuild.length; i < len; i++) {
+			if (currentBuild[i].id === id) {
+				buildNode = currentBuild[i];
+				break;
+			}
+		}
+
+		// Exit early if the node couldn't be found or
+		// if the node does not have any perk data
+		if (!buildNode || !Array.isArray(buildNode.perks)) return {};
+
+		// Append all perk levels
+		for (perkProp in buildNode.perks[0]) {
+			if (buildNode.perks[0].hasOwnProperty(perkProp)) {
+				perkValue = parseInt(buildNode.perks[0][perkProp]);
+				perkLevels[perkProp] = {
+					current: (isNaN(perkValue)) ? 0 : perkValue,
+					max: nodeData.perks[perkProp]
+				};
+			}
+		}
+
+		return perkLevels;
 	}
 
 	/**
