@@ -29,11 +29,11 @@ namespace terraarcana {
 			$base = get_stylesheet_directory_uri() . '/';
 
 			if (isset($_GET['debug'])) {
-				wp_register_script('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.js', array('jquery'));
+				wp_register_script('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.js', array('jquery'));
 
 				wp_enqueue_script('app', $base . 'dist/app.js', array('bootstrap'), null, true);
 			} else {
-				wp_register_script('bootstrap-min', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js', array('jquery'));
+				wp_register_script('bootstrap-min', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js', array('jquery'));
 
 				// FIXME: Enqueue minified scripts in production
 				wp_enqueue_script('app', $base . 'dist/app.js', array('bootstrap-min'), null, true);
