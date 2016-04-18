@@ -106,19 +106,6 @@ export default class CharacterSkillsPanel extends React.Component {
 		return (
 			<div className="skill-graph-editor-character-skills-panel">
 				<div className="panel panel-default">
-					<div className="panel-heading">
-						<button
-							type = "button"
-							className = "btn btn-success pull-right"
-							onClick = {this.props.onSaveClick}
-						>
-							<span className="glyphicon glyphicon-floppy-save"></span>
-							&nbsp;Sauvegarder
-						</button>
-						<h2 className="panel-title">{this.props.characterName}</h2>
-						<small> Priorème {this.props.characterPeople.singular}</small>
-					</div>
-
 					<div className="panel-body">
 						<ul>
 							<li>
