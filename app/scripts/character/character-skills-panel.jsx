@@ -106,60 +106,52 @@ export default class CharacterSkillsPanel extends React.Component {
 		return (
 			<div className="skill-graph-editor-character-skills-panel">
 				<div className="panel panel-default">
-					<div className="panel-heading">
-						<h2 className="panel-title">
-							{this.props.characterName}
-							<small> Gars badass</small>
-						</h2>
-					</div>
-
 					<div className="panel-body">
-						<div className="row">
-							<div className="col-xs-12">
-								<button
-									type = "button"
-									className = "btn btn-success pull-right"
-									onClick = {this.props.onSaveClick}
-								>
-									<span className="glyphicon glyphicon-floppy-save"></span>
-									&nbsp;Sauvegarder
-								</button>
-							</div>
+						<ul>
+							<li>
+								<h4>
+									<span className="glyphicon glyphicon-certificate"></span>&nbsp;
+									Points d'expérience: {this.props.xp.current}/{this.props.xp.total}
+								</h4>
+								<div className="progress">
+									<div
+										className = {'progress-bar progress-bar-' + xpBarClass}
+										role = "progressbar"
+										aria-valuenow = {this.props.xp.current}
+										aria-valuemin = "0"
+										aria-valuemax = {this.props.xp.total}
+										style = {{ width: (100 * this.props.xp.current/this.props.xp.total) + '%' }}
+									/>
+								</div>
+							</li>
+							<li>
+								<h4>
+									<span className="glyphicon glyphicon-fire"></span>&nbsp;
+									Points d'essence: {this.props.pp.current}/{this.props.pp.total}
+								</h4>
+								<div className="progress">
+									<div
+										className = {'progress-bar progress-bar-' + ppBarClass}
+										role = "progressbar"
+										aria-valuenow = {this.props.pp.current}
+										aria-valuemin = "0"
+										aria-valuemax = {this.props.pp.total}
+										style = {{width: (100 * this.props.pp.current/this.props.pp.total) + '%' }}
+									/>
+								</div>
+							</li>
+							<li>
+								<h4>
+									<span className="glyphicon glyphicon-heart"></span>&nbsp;
+									Points d'énergie: {this.props.energy}
+								</h4>
+							</li>
+						</ul>
 
-							<div className="col-xs-12">
-								<ul>
-									<li>
-										<h4>Points d'expérience: {this.props.xp.current}/{this.props.xp.total}</h4>
-										<div className="progress">
-											<div
-												className = {'progress-bar progress-bar-' + xpBarClass}
-												role = "progressbar"
-												aria-valuenow = {this.props.xp.current}
-												aria-valuemin = "0"
-												aria-valuemax = {this.props.xp.total}
-												style = {{ width: (100 * this.props.xp.current/this.props.xp.total) + '%' }}
-											/>
-										</div>
-									</li>
-									<li>
-										<h4>Points d'essence: {this.props.pp.current}/{this.props.pp.total}</h4>
-										<div className="progress">
-											<div
-												className = {'progress-bar progress-bar-' + ppBarClass}
-												role = "progressbar"
-												aria-valuenow = {this.props.pp.current}
-												aria-valuemin = "0"
-												aria-valuemax = {this.props.pp.total}
-												style = {{width: (100 * this.props.pp.current/this.props.pp.total) + '%' }}
-											/>
-										</div>
-									</li>
-									<li>Points d'énergie: {this.props.energy}</li>
-								</ul>
-							</div>
-
-							<h3 className="col-xs-12">Compétences <button type="button" className="btn btn-link btn-sm" onClick={this.toggleSkills}>{toggleSkillsButtonText}</button></h3>
-						</div>
+						<h3>
+							Compétences&nbsp;
+							<button type="button" className="btn btn-link btn-sm" onClick={this.toggleSkills}>{toggleSkillsButtonText}</button>
+						</h3>
 					</div>
 
 					{skillsList}
@@ -215,7 +207,12 @@ CharacterSkillsPanel.defaultProps = {
  * @type {Object}
  */
 CharacterSkillsPanel.propTypes = {
-	characterName: React.PropTypes.string,
+	characterName: React.PropTypes.string.isRequired,
+	characterPeople: React.PropTypes.shape({
+		id: React.PropTypes.number.isRequired,
+		name: React.PropTypes.string.isRequired,
+		singular: React.PropTypes.string.isRequired
+	}).isRequired,
 	nodes: React.PropTypes.arrayOf(
 		React.PropTypes.string
 	),

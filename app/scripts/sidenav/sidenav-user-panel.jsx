@@ -20,6 +20,10 @@ export default class SidenavUserPanel extends React.Component {
 	constructor(props) {
 		super(props);
 
+		/**
+		 * @type {Object}
+		 * @private
+		 */
 		this.state = {
 			loadingCharacters: true,
 			userCharacters: []
@@ -36,11 +40,36 @@ export default class SidenavUserPanel extends React.Component {
 	 */
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.currentUser) {
-			jQuery.get(WP_API_Settings.root + 'wp/v2/character?author=' + nextProps.currentUser.id, function(result) {
-				this.setState({
-					loadingCharacters: false,
-					userCharacters: result
-				});
+			jQuery.get(WP_API_Settings.root + 'wp/v2/character?author=' + nextProps.currentUser.id, function(charactersResult) {
+				var peopleRequests = [];
+
+				/**
+				 * Update the `people` field on a character entry returned from the character request.
+				 * @param {number} i The index of the character in `charactersResult` we just fetched the people from
+				 * @param {Function} A callback for the people request
+				 */
+				function onPeopleRequestDone(i) {
+					return function(peopleResult) {
+						charactersResult[i].people = {
+							id: charactersResult[i].people,
+							name: peopleResult.title.rendered,
+							singular: peopleResult.singular
+						};
+					};
+				}
+
+				// Fetch people's singular for each character
+				for (var i = 0, len = charactersResult.length; i < len; i++) {
+					peopleRequests.push(jQuery.get(WP_API_Settings.root + 'wp/v2/people/' + charactersResult[i].people, onPeopleRequestDone(i)));
+				}
+
+				// Wait for all people requests to finish before updating state
+				jQuery.when.apply(jQuery, peopleRequests).done(function() {
+					this.setState({
+						loadingCharacters: false,
+						userCharacters: charactersResult
+					});
+				}.bind(this));
 			}.bind(this));
 		}
 	}
@@ -83,7 +112,7 @@ export default class SidenavUserPanel extends React.Component {
 						<span className="glyphicon"></span>
 					</button>
 					<h3 className="list-group-item-heading">{activeCharacterData.title.rendered}</h3>
-					<p className="list-group-item-text">Gars badass galicien</p>
+					<p className="list-group-item-text">Priorème {activeCharacterData.people.singular}</p>
 				</Link>
 			);
 		}

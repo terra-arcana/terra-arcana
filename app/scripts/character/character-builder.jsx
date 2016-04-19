@@ -5,6 +5,8 @@ import SkillNodeInspector from '../zodiac/skill-node-inspector.jsx';
 import PointNodeInspector from '../zodiac/point-node-inspector.jsx';
 import CharacterSkillsPanel from './character-skills-panel.jsx';
 
+require('../../styles/character/character-builder.scss');
+
 /**
  * A CharacterBuilderPage allows editing of a character build by displaying a {@link SkillGraph} that
  * enabled conditional node picking by adjacency rules.
@@ -102,20 +104,41 @@ export default class CharacterBuilder extends React.Component {
 
 		return (
 			<div className="ta-character-zodiac">
-				<SkillGraph
-					initialNodeData = {this.state.nodeData}
-					initialLinkData = {this.state.linkData}
-					pickedNodes = {this.state.pickedNodes}
-					contiguousSelection = {true}
-					onNodeMouseOver = {this.inspectSkill}
-					onNodeMouseOut = {this.uninspect}
-					onNodeSelect = {this.selectNode}
-				/>
+				<div className="character-builder-skill-graph-panel col-lg-8">
+					<div className="panel panel-default">
+						<div className="panel-heading">
+							<button
+								type = "button"
+								className = "btn btn-success pull-right"
+								onClick = {this.saveBuild}
+								>
+								<span className="glyphicon glyphicon-floppy-save"></span>
+								&nbsp;Sauvegarder
+							</button>
+							<h2 className="panel-title">{this.props.character.title.rendered}</h2>
+							<small> Priorème {this.props.character.people.singular}</small>
+						</div>
+
+						<div className="panel-body">
+							<SkillGraph
+								initialNodeData = {this.state.nodeData}
+								initialLinkData = {this.state.linkData}
+								pickedNodes = {this.state.pickedNodes}
+								contiguousSelection = {true}
+								onNodeMouseOver = {this.inspectSkill}
+								onNodeMouseOut = {this.uninspect}
+								onNodeSelect = {this.selectNode}
+							/>
+						</div>
+					</div>
+				</div>
 
 				{alert}
+				{inspector}
 
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
+					characterPeople = {this.props.character.people}
 					nodes = {this.state.pickedNodes}
 					xp = {xpValues}
 					pp = {ppValues}
@@ -124,8 +147,6 @@ export default class CharacterBuilder extends React.Component {
 					onUnselectSkill = {this.uninspect}
 					onSaveClick = {this.saveBuild}
 				/>
-
-				{inspector}
 			</div>
 		);
 	}

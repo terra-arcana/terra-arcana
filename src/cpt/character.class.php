@@ -20,6 +20,9 @@ namespace terraarcana {
 		public function __construct() {
 			$this->_postTypeName = 'character';
 			$this->_fields = array(
+				'people' => array(
+					'key' => 'field_57104df0823d3'
+				),
 				'public_description' => array(
 					'key' => 'field_5701f211be271'
 				),
