@@ -273,8 +273,8 @@ export default class SkillNodeInspector extends React.Component {
 
 	/**
 	 * Handle perk button clicks
-	 * @param {string} Property being modified. Either `power`, `cast`, `duration`, `range` or `uses`.
-	 * @param {string} Direction of the modification. Either `up` or `down`.
+	 * @param {string} property Property being modified. Either `power`, `cast`, `duration`, `range` or `uses`.
+	 * @param {string} direction Direction of the modification. Either `up` or `down`.
 	 */
 	onPerkButtonClick(property, direction) {
 		// TODO

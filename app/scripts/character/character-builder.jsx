@@ -32,7 +32,7 @@ export default class CharacterBuilder extends React.Component {
 				type: '',
 				upgrades: []
 			},
-			pickedNodes: this.preparePickedNodesArray(props.character['current_build']),
+			currentBuild: props.character['current_build'],
 			nodeData: [],
 			linkData: [],
 			perkPoints: {
@@ -47,8 +47,7 @@ export default class CharacterBuilder extends React.Component {
 		this.selectNode = this.selectNode.bind(this);
 		this.getNodeDataById = this.getNodeDataById.bind(this);
 		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
-		this.preparePickedNodesArray = this.preparePickedNodesArray.bind(this);
-		this.prepareBuildForSave = this.prepareBuildForSave.bind(this);
+		this.getPickedNodesArray = this.getPickedNodesArray.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
 	}
 
@@ -60,7 +59,7 @@ export default class CharacterBuilder extends React.Component {
 		var inspector = <noscript />,
 			alert = <noscript />,
 			xpValues = {
-				current: this.props.character.xp.total - this.state.pickedNodes.length,
+				current: this.props.character.xp.total - this.state.currentBuild.length,
 				total: this.props.character.xp.total
 			};
 
@@ -130,7 +129,7 @@ export default class CharacterBuilder extends React.Component {
 							<SkillGraph
 								initialNodeData = {this.state.nodeData}
 								initialLinkData = {this.state.linkData}
-								pickedNodes = {this.state.pickedNodes}
+								pickedNodes = {this.getPickedNodesArray()}
 								contiguousSelection = {true}
 								onNodeMouseOver = {this.inspectSkill}
 								onNodeMouseOut = {this.uninspect}
@@ -146,7 +145,7 @@ export default class CharacterBuilder extends React.Component {
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
 					characterPeople = {this.props.character.people}
-					nodes = {this.state.pickedNodes}
+					nodes = {this.getPickedNodesArray()}
 					xp = {xpValues}
 					pp = {this.state.perkPoints}
 					activeSkill = {this.state.activeNode}
@@ -223,15 +222,35 @@ export default class CharacterBuilder extends React.Component {
 	 * @param {String} id The picked node ID
 	 */
 	selectNode(id) {
-		var nodeIndex = this.state.pickedNodes.indexOf(id),
+		var i, len,
+			nodeIndex = -1,
 			nodeData = this.getNodeDataById(id),
+			newBuild = Lodash.cloneDeep(this.state.currentBuild),
 			newPerkPoints = Lodash.cloneDeep(this.state.perkPoints);
+
+		// Find node index in current build
+		for (i = 0, len = newBuild.length; i < len; i++) {
+			if (newBuild[i].id === id) {
+				nodeIndex = i;
+				break;
+			}
+		}
 
 		// Add a node to the build
 		if (nodeIndex === -1) {
 			// Only add a node if there is XP left
-			if (this.state.pickedNodes.length < this.props.character.xp.total) {
-				this.state.pickedNodes[this.state.pickedNodes.length] = id;
+			if (newBuild.length < this.props.character.xp.total) {
+				newBuild[newBuild.length] = {
+					id: id,
+					type: nodeData.type,
+					perks: [{
+						power: 0,
+						cast: 0,
+						duration: 0,
+						range: 0,
+						uses: 0
+					}]
+				};
 
 				// Add corresponding perk points
 				if (nodeData.type === 'perk') {
@@ -243,7 +262,7 @@ export default class CharacterBuilder extends React.Component {
 
 		// Remove a node from the build
 		else {
-			this.state.pickedNodes.splice(nodeIndex, 1);
+			newBuild.splice(nodeIndex, 1);
 
 			// Remove corresponding perk points
 			if (nodeData.type === 'perk') {
@@ -253,7 +272,7 @@ export default class CharacterBuilder extends React.Component {
 		}
 
 		this.setState({
-			pickedNodes: this.state.pickedNodes,
+			currentBuild: newBuild,
 			perkPoints: newPerkPoints
 		});
 	}
@@ -316,46 +335,26 @@ export default class CharacterBuilder extends React.Component {
 	}
 
 	/**
-	 * Convert the picked nodes array from the API to a pure JS array
-	 * @param {Array} initial The initial Array
+	 * Get a flat array of all currently picked nodes
 	 * @return {Array} The converted array
 	 */
-	preparePickedNodesArray(initial) {
+	getPickedNodesArray() {
 		var final = [];
 
 		// Exit early on an undefined array
-		if (!Array.isArray(initial)) return [];
+		if (!Array.isArray(this.state.currentBuild)) return [];
 
-		for (var i = 0, len = initial.length; i < len; i++) {
-			final.push(initial[i].id);
+		for (var i = 0, len = this.state.currentBuild.length; i < len; i++) {
+			final.push(this.state.currentBuild[i].id);
 		}
 
 		return final;
 	}
 
 	/**
-	 * Convert the picked nodes state array to a format suitable for WP-API
-	 * @return {Array} The prepared array
-	 */
-	prepareBuildForSave() {
-		var preparedBuild = [];
-
-		for (var i = 0, len = this.state.pickedNodes.length; i < len; i++) {
-			preparedBuild.push({
-				id: this.state.pickedNodes[i],
-				type: this.getNodeDataById(this.state.pickedNodes[i]).type
-			});
-		}
-
-		return preparedBuild;
-	}
-
-	/**
 	 * Handle save button clicks
 	 */
 	saveBuild() {
-		var preparedBuild = this.prepareBuildForSave();
-
 		// Exit early if perk allocation is wrong
 		if (this.state.perkPoints.current < 0) {
 			this.setState({
@@ -381,7 +380,7 @@ export default class CharacterBuilder extends React.Component {
 				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
 			},
 			data: {
-				'current_build': preparedBuild
+				'current_build': this.state.currentBuild
 			},
 			success: function() {
 				this.setState({
@@ -392,7 +391,7 @@ export default class CharacterBuilder extends React.Component {
 				});
 
 				if (this.props.onSuccessfulSave) {
-					this.props.onSuccessfulSave(preparedBuild);
+					this.props.onSuccessfulSave(this.state.currentBuild);
 				}
 			}.bind(this)
 		});
