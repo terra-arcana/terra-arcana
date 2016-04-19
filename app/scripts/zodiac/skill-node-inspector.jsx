@@ -35,10 +35,9 @@ export default class SkillNodeInspector extends React.Component {
 
 		this.fetchSkillInfo = this.fetchSkillInfo.bind(this);
 		this.updateSkillLevel = this.updateSkillLevel.bind(this);
-		this.getPerkCost = this.getPerkCost.bind(this);
 		this.onPerkButtonClick = this.onPerkButtonClick.bind(this);
 
-		this.updateSkillLevel();
+		this.updateSkillLevel(props);
 	}
 
 	/**
@@ -52,13 +51,15 @@ export default class SkillNodeInspector extends React.Component {
 	 * @override
 	 */
 	componentWillReceiveProps(nextProps) {
-		// Empty state upon receiving new props to prevent desync
-		this.setState({
-			skill: {}
-		});
-		this.fetchSkillInfo(nextProps.skill.id);
+		// Only refresh skill info if we changed skills
+		if (this.props.skill.id !== nextProps.skill.id) {
+			this.setState({
+				skill: {}
+			});
+			this.fetchSkillInfo(nextProps.skill.id);
+		}
 
-		this.updateSkillLevel();
+		this.updateSkillLevel(nextProps);
 	}
 
 	/**
@@ -133,7 +134,7 @@ export default class SkillNodeInspector extends React.Component {
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.cast.current}
 								maxLevel = {this.props.perks.cast.max}
-								cost = {this.getPerkCost(this.skillLevel)}
+								cost = {this.skillLevel+1}
 								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'cast', 'up')}
 								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'cast', 'down')}
 							/>
@@ -150,7 +151,7 @@ export default class SkillNodeInspector extends React.Component {
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.duration.current}
 								maxLevel = {this.props.perks.duration.max}
-								cost = {this.getPerkCost(this.skillLevel)}
+								cost = {this.skillLevel+1}
 								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'duration', 'up')}
 								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'duration', 'down')}
 							/>
@@ -166,7 +167,7 @@ export default class SkillNodeInspector extends React.Component {
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.uses.current}
 								maxLevel = {this.props.perks.uses.max}
-								cost = {this.getPerkCost(this.skillLevel)}
+								cost = {this.skillLevel+1}
 								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'uses', 'up')}
 								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'uses', 'down')}
 							/>
@@ -182,7 +183,7 @@ export default class SkillNodeInspector extends React.Component {
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.range.current}
 								maxLevel = {this.props.perks.range.max}
-								cost = {this.getPerkCost(this.skillLevel)}
+								cost = {this.skillLevel+1}
 								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'range', 'up')}
 								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'range', 'down')}
 							/>
@@ -247,27 +248,17 @@ export default class SkillNodeInspector extends React.Component {
 
 	/**
 	 * Refresh the current skill level.
+	 * @param {Object} nextProps The next props about to be applied to the component
 	 * @private
 	 */
-	updateSkillLevel() {
-		this.skillLevel =
-			this.props.perks.power.current +
-			this.props.perks.cast.current +
-			this.props.perks.duration.current +
-			this.props.perks.range.current +
-			this.props.perks.uses.current;
-	}
+	updateSkillLevel(nextProps) {
+		var prop;
 
-	/**
-	 * Returns the cost in perk points of the current buyable upgrades
-	 * @param {number} skillLevel The current skill level
-	 * @return {number}
-	 */
-	getPerkCost(skillLevel) {
-		if (!skillLevel) {
-			return 0;
-		} else {
-			return this.getPerkCost(skillLevel-1) + skillLevel + 1;
+		this.skillLevel = 0;
+		for (prop in nextProps.perks) {
+			if (nextProps.perks.hasOwnProperty(prop)) {
+				this.skillLevel += nextProps.perks[prop].current;
+			}
 		}
 	}
 
@@ -277,8 +268,9 @@ export default class SkillNodeInspector extends React.Component {
 	 * @param {string} direction Direction of the modification. Either `up` or `down`.
 	 */
 	onPerkButtonClick(property, direction) {
-		// TODO
-		console.log(property + ' ' + direction);
+		if (this.props.onSelectPerk) {
+			this.props.onSelectPerk(this.props.skill.id, property, direction);
+		}
 	}
 }
 
@@ -323,5 +315,7 @@ SkillNodeInspector.propTypes = {
 			current: React.PropTypes.number.isRequired,
 			max: React.PropTypes.number.isRequired
 		})
-	})
+	}),
+
+	onSelectPerk: React.PropTypes.func
 };

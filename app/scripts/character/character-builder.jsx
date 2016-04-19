@@ -45,6 +45,7 @@ export default class CharacterBuilder extends React.Component {
 		this.inspectSkill = this.inspectSkill.bind(this);
 		this.uninspect = this.uninspect.bind(this);
 		this.selectNode = this.selectNode.bind(this);
+		this.selectPerk = this.selectPerk.bind(this);
 		this.getNodeDataById = this.getNodeDataById.bind(this);
 		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
 		this.getPickedNodesArray = this.getPickedNodesArray.bind(this);
@@ -71,6 +72,7 @@ export default class CharacterBuilder extends React.Component {
 					<SkillNodeInspector
 						skill = {this.state.activeNode}
 						perks = {this.getNodePerkLevels(this.state.activeNode.id)}
+						onSelectPerk = {this.selectPerk}
 					/>
 				);
 				break;
@@ -278,6 +280,52 @@ export default class CharacterBuilder extends React.Component {
 	}
 
 	/**
+	 * Select or unselect a perk from a skill
+	 * @param {string} id The skill ID
+	 * @param {string} property Property being modified. Either `power`, `cast`, `duration`, `range` or `uses`.
+	 * @param {string} direction Direction of the modification. Either `up` or `down`.
+	 */
+	selectPerk(id, property, direction) {
+		var i, len, prop, propValue,
+			skillLevel = 0,
+			newBuild = Lodash.cloneDeep(this.state.currentBuild),
+			newPerkPoints = Lodash.cloneDeep(this.state.perkPoints);
+
+		// Find node
+		for (i = 0, len = newBuild.length; i < len; i++) {
+			if (newBuild[i].id === id) {
+
+				// Calculate current skill level
+				for (prop in newBuild[i].perks[0]) {
+					if (newBuild[i].perks[0].hasOwnProperty(prop)) {
+						propValue = parseInt(newBuild[i].perks[0][prop])
+						skillLevel += isNaN(propValue) ? 0 : propValue;
+					}
+				}
+
+				// Add a perk: update perk level and spend perk points
+				if (direction === 'up') {
+					newBuild[i].perks[0][property]++;
+					newPerkPoints.current -= skillLevel+1;
+				}
+
+				// Remove a perk: update perk level and refund perk points
+				else {
+					newBuild[i].perks[0][property]--;
+					newPerkPoints.current += skillLevel;
+				}
+
+				break;
+			}
+		}
+
+		this.setState({
+			currentBuild: newBuild,
+			perkPoints: newPerkPoints
+		});
+	}
+
+	/**
 	 * Return the data of a particular node by ID
 	 * @param {String} id The node ID
 	 * @return {Object|null} The node data
@@ -301,7 +349,6 @@ export default class CharacterBuilder extends React.Component {
 	 */
 	getNodePerkLevels(id) {
 		var i, len,
-			currentBuild = this.props.character['current_build'],
 			nodeData = this.getNodeDataById(id),
 			buildNode = null,
 			perkProp = null,
@@ -309,9 +356,9 @@ export default class CharacterBuilder extends React.Component {
 			perkLevels = {};
 
 		// Get the corresponding node in the character build
-		for (i = 0, len = currentBuild.length; i < len; i++) {
-			if (currentBuild[i].id === id) {
-				buildNode = currentBuild[i];
+		for (i = 0, len = this.state.currentBuild.length; i < len; i++) {
+			if (this.state.currentBuild[i].id === id) {
+				buildNode = this.state.currentBuild[i];
 				break;
 			}
 		}

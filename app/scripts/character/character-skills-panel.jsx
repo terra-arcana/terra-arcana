@@ -136,7 +136,7 @@ export default class CharacterSkillsPanel extends React.Component {
 										aria-valuenow = {this.props.pp.current}
 										aria-valuemin = "0"
 										aria-valuemax = {this.props.pp.total}
-										style = {{width: (100 * this.props.pp.current/this.props.pp.total) + '%' }}
+										style = {{width: Math.max((100 * this.props.pp.current/this.props.pp.total), 0) + '%' }}
 									/>
 								</div>
 							</li>
