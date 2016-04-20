@@ -22,6 +22,17 @@ export default class CharacterBuilder extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.inspectSkill = this.inspectSkill.bind(this);
+		this.uninspect = this.uninspect.bind(this);
+		this.selectNode = this.selectNode.bind(this);
+		this.selectPerk = this.selectPerk.bind(this);
+		this.getNodeDataById = this.getNodeDataById.bind(this);
+		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
+		this.getPickedNodesArray = this.getPickedNodesArray.bind(this);
+		this.getTriangular = this.getTriangular.bind(this);
+		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
+		this.saveBuild = this.saveBuild.bind(this);
+
 		/**
 		 * @type {Object}
 		 * @private
@@ -35,23 +46,9 @@ export default class CharacterBuilder extends React.Component {
 			currentBuild: props.character['current_build'],
 			nodeData: [],
 			linkData: [],
-			perkPoints: {
-				current: props.character['perk_points'].total,
-				total: props.character['perk_points'].total
-			},
+			perkPoints: this.calculateCurrentPerkBalance(props.character['current_build']),
 			alert: undefined
 		};
-
-		this.inspectSkill = this.inspectSkill.bind(this);
-		this.uninspect = this.uninspect.bind(this);
-		this.selectNode = this.selectNode.bind(this);
-		this.selectPerk = this.selectPerk.bind(this);
-		this.getNodeDataById = this.getNodeDataById.bind(this);
-		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
-		this.getPickedNodesArray = this.getPickedNodesArray.bind(this);
-		this.getTriangular = this.getTriangular.bind(this);
-		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
-		this.saveBuild = this.saveBuild.bind(this);
 	}
 
 	/**
@@ -486,16 +483,7 @@ CharacterBuilder.defaultProps = {
  * @type {Object}
  */
 CharacterBuilder.propTypes = {
-	character: React.PropTypes.shape({
-		current_build: React.PropTypes.arrayOf(
-			React.PropTypes.object.isRequired
-		).isRequired,
-		perk_points: React.PropTypes.shape({
-			total: React.PropTypes.number.isRequired,
-			nodes: React.PropTypes.number.isRequired,
-			bonus: React.PropTypes.number.isRequired
-		}).isRequired
-	}),
+	character: React.PropTypes.object,
 
 	onSuccessfulSave: React.PropTypes.func
 };
