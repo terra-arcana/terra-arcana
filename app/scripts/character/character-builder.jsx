@@ -46,7 +46,10 @@ export default class CharacterBuilder extends React.Component {
 			currentBuild: props.character['current_build'],
 			nodeData: [],
 			linkData: [],
-			perkPoints: this.calculateCurrentPerkBalance(props.character['current_build']),
+			perkPoints: {
+				current: 0,
+				total: 0
+			},
 			alert: undefined
 		};
 	}
@@ -167,6 +170,11 @@ export default class CharacterBuilder extends React.Component {
 				nodeData: result.nodes,
 				linkData: result.links
 			});
+
+			// Now that `this.state.nodeData` exists, we can calculate the perk points
+			this.setState({
+				perkPoints: this.calculateCurrentPerkBalance(this.state.currentBuild)
+			});
 		}.bind(this));
 	}
 
@@ -223,7 +231,7 @@ export default class CharacterBuilder extends React.Component {
 	 * @param {String} id The picked node ID
 	 */
 	selectNode(id) {
-		var i, len, newPerkPoints,
+		var i, len,
 			nodeIndex = -1,
 			nodeData = this.getNodeDataById(id),
 			newBuild = Lodash.cloneDeep(this.state.currentBuild);
@@ -259,11 +267,9 @@ export default class CharacterBuilder extends React.Component {
 			newBuild.splice(nodeIndex, 1);
 		}
 
-		newPerkPoints = this.calculateCurrentPerkBalance(newBuild);
-
 		this.setState({
 			currentBuild: newBuild,
-			perkPoints: newPerkPoints
+			perkPoints: this.calculateCurrentPerkBalance(newBuild)
 		});
 	}
 
@@ -274,7 +280,7 @@ export default class CharacterBuilder extends React.Component {
 	 * @param {string} direction Direction of the modification. Either `up` or `down`.
 	 */
 	selectPerk(id, property, direction) {
-		var i, len, newPerkPoints,
+		var i, len,
 			newBuild = Lodash.cloneDeep(this.state.currentBuild);
 
 		// Find node
@@ -291,11 +297,9 @@ export default class CharacterBuilder extends React.Component {
 			}
 		}
 
-		newPerkPoints = this.calculateCurrentPerkBalance(newBuild);
-
 		this.setState({
 			currentBuild: newBuild,
-			perkPoints: newPerkPoints
+			perkPoints: this.calculateCurrentPerkBalance(newBuild)
 		});
 	}
 
