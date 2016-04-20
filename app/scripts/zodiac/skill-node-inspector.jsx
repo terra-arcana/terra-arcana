@@ -130,7 +130,7 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Incantation</strong>:&nbsp;
 						{skill.cast.rendered}&nbsp;
-						{(skill.perks[0].cast) ? (
+						{(skill.perks[0].cast && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.cast.current}
 								maxLevel = {this.props.perks.cast.max}
@@ -147,7 +147,7 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Durée</strong>:&nbsp;
 						{skill.duration.rendered}&nbsp;
-						{(skill.perks[0].duration) ? (
+						{(skill.perks[0].duration && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.duration.current}
 								maxLevel = {this.props.perks.duration.max}
@@ -163,7 +163,7 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Utilisations</strong>:&nbsp;
 						{skill.uses[0].amount}/{skill.uses[0].type.rendered}&nbsp;
-						{(skill.perks[0].uses) ? (
+						{(skill.perks[0].uses && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.uses.current}
 								maxLevel = {this.props.perks.uses.max}
@@ -179,7 +179,7 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Portée</strong>:&nbsp;
 						{skill.range.rendered}&nbsp;
-						{(skill.perks[0].range) ? (
+						{(skill.perks[0].range && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.range.current}
 								maxLevel = {this.props.perks.range.max}
@@ -206,17 +206,18 @@ export default class SkillNodeInspector extends React.Component {
 
 					<div className="panel panel-default">
 						<div className="panel-heading">
-							<h2 className="panel-title"><span dangerouslySetInnerHTML={{__html: skill.title.rendered}}></span>&emsp;
-								<small>
-									<span dangerouslySetInnerHTML={{__html: skill.skill_type.rendered}}></span>&nbsp;|&nbsp;
-									<span dangerouslySetInnerHTML={{__html: skill.character_class.title.rendered}}></span>
-								</small>
-							</h2>
+							{
+								// Only display skill level on client side (when character perks are supplied through props)
+								(this.props.perks) ? <span className="pull-right">nv. {this.skillLevel+1}</span> : null
+							}
+
+							<h2 className="panel-title" dangerouslySetInnerHTML={{__html: skill.title.rendered}} />
+							<small>
+								<span dangerouslySetInnerHTML={{__html: skill.skill_type.rendered}}></span>&nbsp;|&nbsp;
+								<span dangerouslySetInnerHTML={{__html: skill.character_class.title.rendered}}></span>
+							</small>
 						</div>
-						<div
-							className = "panel-body"
-							dangerouslySetInnerHTML = {{__html: skill.effect}}>
-						</div>
+						<div className="panel-body" dangerouslySetInnerHTML = {{__html: skill.effect}} />
 						<ul className="list-group">
 							{costRow}
 							{castRow}

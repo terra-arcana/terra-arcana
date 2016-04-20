@@ -121,12 +121,12 @@ export default class CharacterBuilder extends React.Component {
 								type = "button"
 								className = "btn btn-success pull-right"
 								onClick = {this.saveBuild}
-								>
+							>
 								<span className="glyphicon glyphicon-floppy-save"></span>
 								&nbsp;Sauvegarder
 							</button>
 							<h2 className="panel-title">{this.props.character.title.rendered}</h2>
-							<small> Priorème {this.props.character.people.singular}</small>
+							<small>Priorème {this.props.character.people.singular}</small>
 						</div>
 
 						<div className="panel-body">
