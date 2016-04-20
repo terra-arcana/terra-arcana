@@ -49,6 +49,8 @@ export default class CharacterBuilder extends React.Component {
 		this.getNodeDataById = this.getNodeDataById.bind(this);
 		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
 		this.getPickedNodesArray = this.getPickedNodesArray.bind(this);
+		this.getTriangular = this.getTriangular.bind(this);
+		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
 	}
 
@@ -224,11 +226,10 @@ export default class CharacterBuilder extends React.Component {
 	 * @param {String} id The picked node ID
 	 */
 	selectNode(id) {
-		var i, len,
+		var i, len, newPerkPoints,
 			nodeIndex = -1,
 			nodeData = this.getNodeDataById(id),
-			newBuild = Lodash.cloneDeep(this.state.currentBuild),
-			newPerkPoints = Lodash.cloneDeep(this.state.perkPoints);
+			newBuild = Lodash.cloneDeep(this.state.currentBuild);
 
 		// Find node index in current build
 		for (i = 0, len = newBuild.length; i < len; i++) {
@@ -253,25 +254,15 @@ export default class CharacterBuilder extends React.Component {
 						uses: 0
 					}]
 				};
-
-				// Add corresponding perk points
-				if (nodeData.type === 'perk') {
-					newPerkPoints.current += parseInt(nodeData.value);
-					newPerkPoints.total += parseInt(nodeData.value);
-				}
 			}
 		}
 
 		// Remove a node from the build
 		else {
 			newBuild.splice(nodeIndex, 1);
-
-			// Remove corresponding perk points
-			if (nodeData.type === 'perk') {
-				newPerkPoints.current -= parseInt(nodeData.value);
-				newPerkPoints.total -= parseInt(nodeData.value);
-			}
 		}
+
+		newPerkPoints = this.calculateCurrentPerkBalance(newBuild);
 
 		this.setState({
 			currentBuild: newBuild,
@@ -286,38 +277,24 @@ export default class CharacterBuilder extends React.Component {
 	 * @param {string} direction Direction of the modification. Either `up` or `down`.
 	 */
 	selectPerk(id, property, direction) {
-		var i, len, prop, propValue,
-			skillLevel = 0,
-			newBuild = Lodash.cloneDeep(this.state.currentBuild),
-			newPerkPoints = Lodash.cloneDeep(this.state.perkPoints);
+		var i, len, newPerkPoints,
+			newBuild = Lodash.cloneDeep(this.state.currentBuild);
 
 		// Find node
 		for (i = 0, len = newBuild.length; i < len; i++) {
 			if (newBuild[i].id === id) {
-
-				// Calculate current skill level
-				for (prop in newBuild[i].perks[0]) {
-					if (newBuild[i].perks[0].hasOwnProperty(prop)) {
-						propValue = parseInt(newBuild[i].perks[0][prop])
-						skillLevel += isNaN(propValue) ? 0 : propValue;
-					}
-				}
-
-				// Add a perk: update perk level and spend perk points
+				// Update perk level
 				if (direction === 'up') {
 					newBuild[i].perks[0][property]++;
-					newPerkPoints.current -= skillLevel+1;
-				}
-
-				// Remove a perk: update perk level and refund perk points
-				else {
+				} else {
 					newBuild[i].perks[0][property]--;
-					newPerkPoints.current += skillLevel;
 				}
 
 				break;
 			}
 		}
+
+		newPerkPoints = this.calculateCurrentPerkBalance(newBuild);
 
 		this.setState({
 			currentBuild: newBuild,
@@ -399,6 +376,57 @@ export default class CharacterBuilder extends React.Component {
 	}
 
 	/**
+	 * Return the triangular value of a number. This is used to calculate the total cost
+	 * of perks bought on a single skill.
+	 * @param {number} value The number to triangulate
+	 * @return {number} The triangular value
+	 */
+	getTriangular(value) {
+		var abs = Math.abs(value);
+		return ((abs / 2) * (abs + 1)) * (abs / value) || 0;
+	}
+
+	/**
+	 * Return the current perk point balance considering all the current purchases in state
+	 * @param {Object} build The current character build to analyze
+	 * @return {Object} The `current` and `total` amount of perk points available
+	 */
+	calculateCurrentPerkBalance(build) {
+		var i, len, node, skillLevel, perkProp, value,
+			pointsSpent = 0,
+			totalPoints = parseInt(this.props.character['perk_points'].bonus);
+
+		for (i = 0, len = build.length; i < len; i++) {
+			node = build[i];
+
+			// Add perk nodes to the total point count
+			if (node.type === 'perk') {
+				value = parseInt(this.getNodeDataById(node.id).value);
+				totalPoints += (isNaN(value)) ? 0 : value;
+			}
+
+			// Add bought skill perks to the points spent count
+			else if (node.type === 'skill') {
+				skillLevel = 0;
+
+				for (perkProp in node.perks[0]) {
+					if (node.perks[0].hasOwnProperty(perkProp)) {
+						value = parseInt(node.perks[0][perkProp]);
+						skillLevel += (isNaN(value)) ? 0 : value;
+					}
+				}
+
+				pointsSpent += this.getTriangular(skillLevel);
+			}
+		}
+
+		return {
+			current: totalPoints - pointsSpent,
+			total: totalPoints
+		};
+	}
+
+	/**
 	 * Handle save button clicks
 	 */
 	saveBuild() {
@@ -461,7 +489,12 @@ CharacterBuilder.propTypes = {
 	character: React.PropTypes.shape({
 		current_build: React.PropTypes.arrayOf(
 			React.PropTypes.object.isRequired
-		).isRequired
+		).isRequired,
+		perk_points: React.PropTypes.shape({
+			total: React.PropTypes.number.isRequired,
+			nodes: React.PropTypes.number.isRequired,
+			bonus: React.PropTypes.number.isRequired
+		}).isRequired
 	}),
 
 	onSuccessfulSave: React.PropTypes.func
