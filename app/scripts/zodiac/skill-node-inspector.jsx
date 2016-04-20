@@ -162,7 +162,16 @@ export default class SkillNodeInspector extends React.Component {
 				usesRow = (skill.uses[0].amount) ? (
 					<li className="list-group-item">
 						<strong>Utilisations</strong>:&nbsp;
-						{skill.uses[0].amount}/{skill.uses[0].type.rendered}&nbsp;
+						{
+							(this.props.perks && this.props.perks.uses.current) ?
+							<span className="text-success">
+								<strong>
+									{parseInt(skill.uses[0].amount) + parseInt(this.props.perks.uses.current)}
+								</strong>
+							</span> :
+							skill.uses[0].amount
+						}
+						/{skill.uses[0].type.rendered}&nbsp;
 						{(skill.perks[0].uses && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.uses.current}
