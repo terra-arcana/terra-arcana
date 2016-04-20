@@ -46,6 +46,7 @@ export default class CharacterBuilder extends React.Component {
 			currentBuild: props.character['current_build'],
 			nodeData: [],
 			linkData: [],
+			graphMetadata: {},
 			perkPoints: {
 				current: 0,
 				total: 0
@@ -74,6 +75,7 @@ export default class CharacterBuilder extends React.Component {
 					<SkillNodeInspector
 						skill = {this.state.activeNode}
 						perks = {this.getNodePerkLevels(this.state.activeNode.id)}
+						metadata = {this.state.graphMetadata}
 						onSelectPerk = {this.selectPerk}
 					/>
 				);
@@ -168,7 +170,8 @@ export default class CharacterBuilder extends React.Component {
 		jQuery.get(WP_API_Settings.root + 'terraarcana/v1/graph-data', function(result) {
 			this.setState({
 				nodeData: result.nodes,
-				linkData: result.links
+				linkData: result.links,
+				graphMetadata: result.meta
 			});
 
 			// Now that `this.state.nodeData` exists, we can calculate the perk points

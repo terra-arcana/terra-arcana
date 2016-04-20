@@ -129,7 +129,26 @@ export default class SkillNodeInspector extends React.Component {
 				castRow = (skill.cast.rendered) ? (
 					<li className="list-group-item">
 						<strong>Incantation</strong>:&nbsp;
-						{skill.cast.rendered}&nbsp;
+
+						{function() {
+							// Display boosted value if perks were bought
+							if (this.props.perks && this.props.perks.cast.current) {
+								var keys = Object.keys(this.props.metadata.cast),
+									index = keys.indexOf(skill.cast.value),
+									newIndex = Math.max(index - this.props.perks.cast.current, 0);
+
+								return (
+									<span className="text-success">
+										<strong>
+											{this.props.metadata.cast[keys[newIndex]]}
+										</strong>
+									</span>
+								);
+							} else {
+								return skill.cast.rendered;
+							}
+						}.bind(this)()}
+
 						{(skill.perks[0].cast && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.cast.current}
@@ -138,15 +157,33 @@ export default class SkillNodeInspector extends React.Component {
 								onPerkUpClick = {this.onPerkButtonClick.bind(this, 'cast', 'up')}
 								onPerkDownClick = {this.onPerkButtonClick.bind(this, 'cast', 'down')}
 							/>
-						)
-						: null}
+						) : null}
 					</li>
 				) : null,
 
 				durationRow = (skill.duration.rendered) ? (
 					<li className="list-group-item">
 						<strong>Durée</strong>:&nbsp;
-						{skill.duration.rendered}&nbsp;
+
+						{function() {
+							// Display boosted value if perks were bought
+							if (this.props.perks && this.props.perks.duration.current) {
+								var keys = Object.keys(this.props.metadata.duration),
+									index = keys.indexOf(skill.duration.value),
+									newIndex = Math.min(index + this.props.perks.duration.current, keys.length - 1);
+
+								return (
+									<span className="text-success">
+										<strong>
+											{this.props.metadata.duration[keys[newIndex]]}
+										</strong>
+									</span>
+								);
+							} else {
+								return skill.duration.rendered;
+							}
+						}.bind(this)()}
+
 						{(skill.perks[0].duration && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.duration.current}
@@ -163,15 +200,17 @@ export default class SkillNodeInspector extends React.Component {
 					<li className="list-group-item">
 						<strong>Utilisations</strong>:&nbsp;
 						{
-							(this.props.perks && this.props.perks.uses.current) ?
+							// Display boosted value if perks were bought
+							(this.props.perks && this.props.perks.uses.current) ? (
 							<span className="text-success">
 								<strong>
 									{parseInt(skill.uses[0].amount) + parseInt(this.props.perks.uses.current)}
 								</strong>
-							</span> :
-							skill.uses[0].amount
-						}
-						/{skill.uses[0].type.rendered}&nbsp;
+							</span>
+						) : skill.uses[0].amount}
+
+						/{skill.uses[0].type.rendered}
+
 						{(skill.perks[0].uses && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.uses.current}
@@ -187,7 +226,26 @@ export default class SkillNodeInspector extends React.Component {
 				rangeRow = (skill.range.rendered) ? (
 					<li className="list-group-item">
 						<strong>Portée</strong>:&nbsp;
-						{skill.range.rendered}&nbsp;
+
+						{function() {
+							// Display boosted value if perks were bought
+							if (this.props.perks && this.props.perks.range.current) {
+								var keys = Object.keys(this.props.metadata.range),
+									index = keys.indexOf(skill.range.value),
+									newIndex = Math.min(index + this.props.perks.range.current, keys.length - 1);
+
+								return (
+									<span className="text-success">
+										<strong>
+											{this.props.metadata.range[keys[newIndex]]}
+										</strong>
+									</span>
+								);
+							} else {
+								return skill.range.rendered;
+							}
+						}.bind(this)()}
+
 						{(skill.perks[0].range && this.props.perks) ? (
 							<PerkButtonGroup
 								currentLevel = {this.props.perks.range.current}
@@ -325,6 +383,11 @@ SkillNodeInspector.propTypes = {
 			current: React.PropTypes.number.isRequired,
 			max: React.PropTypes.number.isRequired
 		})
+	}),
+	metadata: React.PropTypes.shape({
+		cast: React.PropTypes.object.isRequired,
+		duration: React.PropTypes.object.isRequired,
+		range: React.PropTypes.object.isRequired
 	}),
 
 	onSelectPerk: React.PropTypes.func
