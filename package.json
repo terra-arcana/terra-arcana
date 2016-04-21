@@ -39,18 +39,18 @@
     "mocha": "^2.4.5",
     "node-sass": "^3.3.3",
     "on-build-webpack": "^0.1.0",
-    "react-addons-test-utils": "^15.0.1",
+    "react-addons-test-utils": "^0.14.7",
     "sass-loader": "^2.0.1",
     "style-loader": "^0.12.4",
     "webpack": "^1.12.2"
   },
   "dependencies": {
-    "konva": "^0.12.4",
+    "konva": "^0.11.1",
     "lodash": "^4.0.0",
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1",
-    "react-konva": "^0.6.6",
-    "react-router": "^2.3.0"
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-konva": "^0.6.1",
+    "react-router": "^0.13.3"
   },
   "keywords": []
 }

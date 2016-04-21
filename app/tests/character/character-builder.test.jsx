@@ -1,7 +1,6 @@
 /* global describe, it */
 
-var React = require('react'), // eslint-disable-line no-unused-vars
-	TestUtils = require('react-addons-test-utils'),
+var TestUtils = require('react-addons-test-utils'),
 	expect = require('expect'),
 	CharacterBuilder = require('../../scripts/character/character-builder.jsx');
 

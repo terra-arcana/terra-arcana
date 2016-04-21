@@ -1,7 +1,6 @@
 /* global describe, it */
 
-var React = require('react'), // eslint-disable-line no-unused-vars
-	TestUtils = require('react-addons-test-utils'),
+var TestUtils = require('react-addons-test-utils'),
 	Lodash = require('lodash'),
 	expect = require('expect'),
 	ZodiacEditor = require('../zodiac/zodiac-editor.jsx');
