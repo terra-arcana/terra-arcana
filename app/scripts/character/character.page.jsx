@@ -81,13 +81,19 @@ export default class CharacterPage extends React.Component {
 								ref = {(ref) => this.tabLinks['profile'] = ref}
 								className = {(this.state.activeTab === 'profile') ? 'active' : ''}
 							>
-								<a href="#" onClick={this.onTabButtonClick} data-tab="profile">Profil</a>
+								<a href="#" onClick={this.onTabButtonClick} data-tab="profile">
+									<span className="glyphicon glyphicon-user no-events" />
+									<span className="no-events">&nbsp;Profil</span>
+								</a>
 							</li>
 							<li
 								ref = {(ref) => this.tabLinks['builder'] = ref}
 								className = {(this.state.activeTab === 'builder') ? 'active' : ''}
 							>
-								<a href="#" onClick={this.onTabButtonClick} data-tab="builder">Zodiaque</a>
+								<a href="#" onClick={this.onTabButtonClick} data-tab="builder">
+									<span className="glyphicon glyphicon-th no-events" />
+									<span className="no-events">&nbsp;Zodiaque</span>
+								</a>
 							</li>
 						</ul>
 					</nav>
