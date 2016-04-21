@@ -41,19 +41,23 @@ export default class CharacterSkillsPanel extends React.Component {
 
 		// Build new skill list based on nodes received from props
 		for (var i = 0; i < props.skills.length; i++) {
-			splitID = props.skills[i].split('-');
+			splitID = props.skills[i].id.split('-');
 
 			// Create skill stub if it doesn't exist
 			if (skills[splitID[0]] === undefined) {
 				skills[splitID[0]] = {
 					id: splitID[0],
+					name: props.skills[i].name,
 					upgrades: []
 				};
 			}
 
 			// Add upgrade to parent skill if is an upgrade
 			if (splitID[1] !== undefined) {
-				skills[splitID[0]].upgrades.push(splitID[1]);
+				skills[splitID[0]].upgrades.push({
+					id: splitID[1],
+					name: props.skills[i].name
+				});
 			}
 		}
 
@@ -81,6 +85,7 @@ export default class CharacterSkillsPanel extends React.Component {
 							<CharacterSkillsPanelSkillElement
 								key = {skill.id}
 								id = {skill.id}
+								name = {skill.name}
 								upgrades = {skill.upgrades}
 								active = {skill.id === this.props.activeSkill.id}
 								onSelect = {this.onSelectSkill}
@@ -174,8 +179,15 @@ export default class CharacterSkillsPanel extends React.Component {
 	 * @param {Object} info The skill info, with its id and selected upgrades
 	 */
 	onSelectSkill(info) {
+		var i, len;
+
 		if (this.props.activeSkill.id !== info.id) {
 			if (this.props.onSelectSkill) {
+				// Convert back upgrades array to a flat array
+				for (i = 0, len = info.upgrades.length; i < len; i++) {
+					info.upgrades[i] = info.upgrades[i].id;
+				}
+
 				this.props.onSelectSkill(info);
 			}
 		} else {
@@ -214,7 +226,10 @@ CharacterSkillsPanel.propTypes = {
 		singular: React.PropTypes.string.isRequired
 	}).isRequired,
 	skills: React.PropTypes.arrayOf(
-		React.PropTypes.string
+		React.PropTypes.shape({
+			id: React.PropTypes.string.isRequired,
+			name: React.PropTypes.string.isRequired
+		})
 	),
 	energy: React.PropTypes.number,
 	xp: React.PropTypes.shape({
