@@ -1,6 +1,7 @@
 /* global describe, it */
 
-var Lodash = require('lodash'),
+var React = require('react'), // eslint-disable-line no-unused-vars
+	Lodash = require('lodash'),
 	TestUtils = require('react-addons-test-utils'),
 	expect = require('expect'),
 	SkillGraph = require('../../scripts/zodiac/skill-graph.jsx');
