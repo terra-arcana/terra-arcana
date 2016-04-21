@@ -43,7 +43,7 @@ export default class CharacterBuilder extends React.Component {
 				type: '',
 				upgrades: []
 			},
-			currentBuild: props.character['current_build'],
+			currentBuild: props.character['current_build'] || [],
 			nodeData: [],
 			linkData: [],
 			graphMetadata: {},
