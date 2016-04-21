@@ -28,6 +28,14 @@ export default class SkillNodeInspector extends React.Component {
 		};
 
 		/**
+		 * The string to search for in effect when parsing power levels
+		 * @static
+		 * @const
+		 * @type {string}
+		 */
+		this.PL_STRING = 'NP';
+
+		/**
 		 * The current total of perks bought by the character on this skillLevel
 		 * @type {Object}
 		 */
@@ -35,6 +43,7 @@ export default class SkillNodeInspector extends React.Component {
 
 		this.fetchSkillInfo = this.fetchSkillInfo.bind(this);
 		this.updateSkillLevel = this.updateSkillLevel.bind(this);
+		this.parseSkillEffect = this.parseSkillEffect.bind(this);
 		this.onPerkButtonClick = this.onPerkButtonClick.bind(this);
 
 		this.updateSkillLevel(props);
@@ -284,7 +293,18 @@ export default class SkillNodeInspector extends React.Component {
 								<span dangerouslySetInnerHTML={{__html: skill.character_class.title.rendered}}></span>
 							</small>
 						</div>
-						<div className="panel-body" dangerouslySetInnerHTML = {{__html: skill.effect}} />
+						<div className="panel-body">
+							{(skill.perks[0].power && this.props.perks) ? (
+								<PerkButtonGroup
+									currentLevel = {this.props.perks.power.current}
+									maxLevel = {this.props.perks.power.max}
+									cost = {this.skillLevel+1}
+									onPerkUpClick = {this.onPerkButtonClick.bind(this, 'power', 'up')}
+									onPerkDownClick = {this.onPerkButtonClick.bind(this, 'power', 'down')}
+								/>
+							) : null}
+							<div dangerouslySetInnerHTML={{__html: this.parseSkillEffect(skill.effect)}} />
+						</div>
 						<ul className="list-group">
 							{costRow}
 							{castRow}
@@ -328,6 +348,33 @@ export default class SkillNodeInspector extends React.Component {
 				this.skillLevel += nextProps.perks[prop].current;
 			}
 		}
+	}
+
+	/**
+	 * Parses the skill effect for power level instances and injects {@link PerkButtonGroup}
+	 * components if needed.
+	 * @param {string} effect The skill effect HTML string
+	 * @return {jsx} The parsed HTML
+	 */
+	parseSkillEffect(effect) {
+		return effect.replace(/{(\d*)[+-](\d*)NP}/, function(match, basePower, scale) {
+			// Set default scale to 1 if it isn't specified
+			var intScale = parseInt(scale) || 1;
+
+			// Display a boosted value if the player has at least 1 power level bought
+			if (this.props.perks && this.props.perks.power.current) {
+				// #SHAME. We have to have HTML as a literal string here for React to render properly
+				return basePower +
+					'<span class="text-success"><strong>(+' +
+					String(intScale * this.props.perks.power.current) +
+					')</strong></span>';
+			}
+
+			// Display the base value otherwise
+			else {
+				return basePower;
+			}
+		}.bind(this));
 	}
 
 	/**

@@ -326,7 +326,7 @@ export default class CharacterBuilder extends React.Component {
 	/**
 	 * Get all the current and max perk levels for a given skill node
 	 * @param {string} id The skill node ID
-	 * @return {Object} The perk data
+	 * @return {Object|null} The perk data
 	 */
 	getNodePerkLevels(id) {
 		var i, len,
@@ -346,7 +346,7 @@ export default class CharacterBuilder extends React.Component {
 
 		// Exit early if the node couldn't be found or
 		// if the node does not have any perk data
-		if (!buildNode || !Array.isArray(buildNode.perks)) return {};
+		if (!buildNode || !Array.isArray(buildNode.perks)) return null;
 
 		// Append all perk levels
 		for (perkProp in buildNode.perks[0]) {
