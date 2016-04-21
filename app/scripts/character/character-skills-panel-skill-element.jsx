@@ -28,14 +28,13 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
 			classes.push('active');
 		}
 
-
 		return (
 			<a href='#' className={classes.join(' ')} onClick={this.onClick}>
-				Skill #{this.props.id}
+				{this.props.name}
 				<ul>
 					{this.props.upgrades.map(function(upgrade) {
 						return (
-							<li><small>Upgrade #{upgrade}</small></li>
+							<li><small>{upgrade.name}</small></li>
 						);
 					})}
 				</ul>
@@ -70,8 +69,12 @@ CharacterSkillsPanelSkillElement.defaultProps = {
  */
 CharacterSkillsPanelSkillElement.propTypes = {
 	id: React.PropTypes.string.isRequired,
+	name: React.PropTypes.string.isRequired,
 	upgrades: React.PropTypes.arrayOf(
-		React.PropTypes.string.isRequired
+		React.PropTypes.shape({
+			id: React.PropTypes.string.isRequired,
+			name: React.PropTypes.string.isRequired
+		})
 	),
 	active: React.PropTypes.bool
 };

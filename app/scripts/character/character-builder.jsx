@@ -28,7 +28,8 @@ export default class CharacterBuilder extends React.Component {
 		this.selectPerk = this.selectPerk.bind(this);
 		this.getNodeDataById = this.getNodeDataById.bind(this);
 		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
-		this.getPickedNodesArray = this.getPickedNodesArray.bind(this);
+		this.getPickedNodesFlatArray = this.getPickedNodesFlatArray.bind(this);
+		this.getPickedSkillsUpgradesArray = this.getPickedSkillsUpgradesArray.bind(this);
 		this.getTriangular = this.getTriangular.bind(this);
 		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
@@ -135,7 +136,7 @@ export default class CharacterBuilder extends React.Component {
 							<SkillGraph
 								initialNodeData = {this.state.nodeData}
 								initialLinkData = {this.state.linkData}
-								pickedNodes = {this.getPickedNodesArray()}
+								pickedNodes = {this.getPickedNodesFlatArray()}
 								contiguousSelection = {true}
 								onNodeMouseOver = {this.inspectSkill}
 								onNodeMouseOut = {this.uninspect}
@@ -151,7 +152,7 @@ export default class CharacterBuilder extends React.Component {
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
 					characterPeople = {this.props.character.people}
-					nodes = {this.getPickedNodesArray()}
+					skills = {this.getPickedSkillsUpgradesArray()}
 					xp = {xpValues}
 					pp = {this.state.perkPoints}
 					activeSkill = {this.state.activeNode}
@@ -366,14 +367,42 @@ export default class CharacterBuilder extends React.Component {
 	 * Get a flat array of all currently picked nodes
 	 * @return {Array} The converted array
 	 */
-	getPickedNodesArray() {
-		var final = [];
+	getPickedNodesFlatArray() {
+		var i, len,
+			final = [];
 
 		// Exit early on an undefined array
 		if (!Array.isArray(this.state.currentBuild)) return [];
 
-		for (var i = 0, len = this.state.currentBuild.length; i < len; i++) {
+		for (i = 0, len = this.state.currentBuild.length; i < len; i++) {
 			final.push(this.state.currentBuild[i].id);
+		}
+
+		return final;
+	}
+
+	/**
+	 * Get an array of every skill and upgrade picked by the player
+	 * @return {Array} An array of objects containing the `id` and `name` of each skill/upgrade node
+	 */
+	getPickedSkillsUpgradesArray() {
+		var i, len, buildNode,
+			final = [];
+
+		// Exit early on an undefined build
+		if (!Array.isArray(this.state.currentBuild)) return [];
+
+		// Exit early if node data isn't built yet
+		if (this.state.nodeData.length === 0) return [];
+
+		for (i = 0, len = this.state.currentBuild.length; i < len; i++) {
+			buildNode = this.state.currentBuild[i];
+			if (buildNode.type === 'skill' || buildNode.type === 'upgrade') {
+				final.push({
+					id: buildNode.id,
+					name: this.getNodeDataById(buildNode.id).name
+				});
+			}
 		}
 
 		return final;
