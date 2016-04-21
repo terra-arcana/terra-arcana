@@ -128,12 +128,22 @@ namespace terraarcana {
 		 */
 		public function get_perk_points(array $object, $field_name, \WP_REST_Request $request, $post_type) {
 			if (function_exists('get_field')) {
-				$base_perk_points = 0;
+				$node_perk_points = 0;
 				$bonus_perk_points = intval(get_field($this->bonus_perk_key, $object['id']));
 
+				// Sum all perk points from the character build
+				$character_build = get_field($this->_fields['current_build']['key'], $object['id']);
+				if (is_array($character_build)) {
+					foreach ($character_build as $character_skill) {
+						if ($character_skill['type'] == 'perk') {
+							$node_perk_points += intval(get_field('value', $character_skill['id']));
+						}
+					}
+				}
+
 				return array(
-					'total' => $base_perk_points + $bonus_perk_points,
-					'base' => $base_perk_points,
+					'total' => $node_perk_points + $bonus_perk_points,
+					'nodes' => $node_perk_points,
 					'bonus' => $bonus_perk_points
 				);
 			}
