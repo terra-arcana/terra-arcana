@@ -28,6 +28,7 @@ namespace terraarcana {
 					array(
 						'methods' => \WP_REST_Server::EDITABLE,
 						'callback' => array($this, 'update_items'),
+						'permission_callback' => array($this, 'update_items_permissions'),
 						'args' => $this->get_endpoint_args_for_item_schema(false)
 					)
 				));
@@ -141,6 +142,15 @@ namespace terraarcana {
 				}
 
 				return new \WP_REST_Response('Zodiaque sauvegardé avec succès!', 200);
+			}
+
+			/**
+			 * Get the permission for updating data through the graph-data route
+			 * @param WP_REST_Request $request The current request
+			 * @return bool
+			 */
+			public function update_items_permissions(\WP_REST_Request $request) {
+				return current_user_can('edit_others_posts');
 			}
 
 			/**
