@@ -28,7 +28,7 @@ export default class CharacterBuilder extends React.Component {
 		this.selectPerk = this.selectPerk.bind(this);
 		this.getNodeDataById = this.getNodeDataById.bind(this);
 		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
-		this.getPickedNodesArray = this.getPickedNodesArray.bind(this);
+		this.getPickedNodesFlatArray = this.getPickedNodesFlatArray.bind(this);
 		this.getTriangular = this.getTriangular.bind(this);
 		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
@@ -135,7 +135,7 @@ export default class CharacterBuilder extends React.Component {
 							<SkillGraph
 								initialNodeData = {this.state.nodeData}
 								initialLinkData = {this.state.linkData}
-								pickedNodes = {this.getPickedNodesArray()}
+								pickedNodes = {this.getPickedNodesFlatArray()}
 								contiguousSelection = {true}
 								onNodeMouseOver = {this.inspectSkill}
 								onNodeMouseOut = {this.uninspect}
@@ -151,7 +151,7 @@ export default class CharacterBuilder extends React.Component {
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
 					characterPeople = {this.props.character.people}
-					nodes = {this.getPickedNodesArray()}
+					skills = {this.getPickedNodesFlatArray(true)}
 					xp = {xpValues}
 					pp = {this.state.perkPoints}
 					activeSkill = {this.state.activeNode}
@@ -366,14 +366,18 @@ export default class CharacterBuilder extends React.Component {
 	 * Get a flat array of all currently picked nodes
 	 * @return {Array} The converted array
 	 */
-	getPickedNodesArray() {
-		var final = [];
+	getPickedNodesFlatArray(onlySkillsUpgrades = false) {
+		var i, len, buildNode,
+			final = [];
 
 		// Exit early on an undefined array
 		if (!Array.isArray(this.state.currentBuild)) return [];
 
-		for (var i = 0, len = this.state.currentBuild.length; i < len; i++) {
-			final.push(this.state.currentBuild[i].id);
+		for (i = 0, len = this.state.currentBuild.length; i < len; i++) {
+			buildNode = this.state.currentBuild[i];
+			if (!onlySkillsUpgrades || (buildNode.type === 'skill' || buildNode.type === 'upgrade')) {
+				final.push(buildNode.id);
+			}
 		}
 
 		return final;

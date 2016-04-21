@@ -138,6 +138,7 @@ namespace terraarcana {
 				// Add the skill to the graph data
 				array_push($result['nodes'], array(
 					'id' => (string)$skill->ID,
+					'name' => $skill->post_title,
 					'type' => 'skill',
 					'x' => intval($skillGraphData[0]['x']),
 					'y' => intval($skillGraphData[0]['y']),
@@ -162,6 +163,7 @@ namespace terraarcana {
 
 						array_push($result['nodes'], array(
 							'id' => $upgradeID,
+							'name' => $upgrade['title'],
 							'type' => 'upgrade',
 							'x' => intval($upgrade['graph_data'][0]['x']),
 							'y' => intval($upgrade['graph_data'][0]['y'])

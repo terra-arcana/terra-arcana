@@ -40,8 +40,8 @@ export default class CharacterSkillsPanel extends React.Component {
 			splitID;
 
 		// Build new skill list based on nodes received from props
-		for (var i = 0; i < props.nodes.length; i++) {
-			splitID = props.nodes[i].split('-');
+		for (var i = 0; i < props.skills.length; i++) {
+			splitID = props.skills[i].split('-');
 
 			// Create skill stub if it doesn't exist
 			if (skills[splitID[0]] === undefined) {
@@ -191,7 +191,7 @@ export default class CharacterSkillsPanel extends React.Component {
  */
 CharacterSkillsPanel.defaultProps = {
 	characterName: 'Boba Fett',
-	nodes: [],
+	skills: [],
 	energy: 8,
 	xp: {
 		current: 0,
@@ -213,7 +213,7 @@ CharacterSkillsPanel.propTypes = {
 		name: React.PropTypes.string.isRequired,
 		singular: React.PropTypes.string.isRequired
 	}).isRequired,
-	nodes: React.PropTypes.arrayOf(
+	skills: React.PropTypes.arrayOf(
 		React.PropTypes.string
 	),
 	energy: React.PropTypes.number,
