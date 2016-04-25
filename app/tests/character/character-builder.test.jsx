@@ -2,6 +2,7 @@
 
 var TestUtils = require('react-addons-test-utils'),
 	expect = require('expect'),
+	Lodash = require('lodash'),
 	CharacterBuilder = require('../../scripts/character/character-builder.jsx');
 
 describe('CharacterBuilder', function() {
@@ -84,19 +85,27 @@ describe('CharacterBuilder', function() {
 			}
 		];
 
-		expect(builder.calculateCurrentPerkBalance(builder.state.currentBuild))
-			.toEqual(expectedStartingBalance);
+		expect(Lodash.isEqual(
+			builder.calculateCurrentPerkBalance(builder.state.currentBuild),
+			expectedStartingBalance
+		)).toEqual(true);
 
 		builder.selectPerk('1', 'power', 'up');
-		expect(builder.calculateCurrentPerkBalance(builder.state.currentBuild))
-			.toEqual(expectedBalanceAfterPurchase);
+		expect(Lodash.isEqual(
+			builder.calculateCurrentPerkBalance(builder.state.currentBuild),
+			expectedBalanceAfterPurchase
+		)).toEqual(true);
 
 		builder.selectNode('2');
-		expect(builder.calculateCurrentPerkBalance(builder.state.currentBuild))
-			.toEqual(expectedBalanceAfterNewPerkNode);
+		expect(Lodash.isEqual(
+			builder.calculateCurrentPerkBalance(builder.state.currentBuild),
+			expectedBalanceAfterNewPerkNode
+		)).toEqual(true);
 
 		builder.selectPerk('1', 'uses', 'down');
-		expect(builder.calculateCurrentPerkBalance(builder.state.currentBuild))
-			.toEqual(expectedBalanceAfterRefund);
+		expect(Lodash.isEqual(
+			builder.calculateCurrentPerkBalance(builder.state.currentBuild),
+			expectedBalanceAfterRefund
+		)).toEqual(true);
 	});
 });

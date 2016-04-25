@@ -313,13 +313,14 @@ export default class CharacterBuilder extends React.Component {
 	 * @return {Object|null} The node data
 	 */
 	getNodeDataById(id) {
-		var nodeData = null;
+		var i, len, nodeData = null;
 
-		this.state.nodeData.map(function(node) {
-			if (node.id === id) {
-				nodeData = node;
+		for (i = 0, len = this.state.nodeData.length; i < len; i++) {
+			if (this.state.nodeData[i].id === id) {
+				nodeData = this.state.nodeData[i];
+				break;
 			}
-		}.bind(this));
+		}
 
 		return nodeData;
 	}
