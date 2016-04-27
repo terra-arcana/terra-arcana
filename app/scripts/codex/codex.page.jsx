@@ -57,6 +57,9 @@ export default class CodexPage extends React.Component {
 		return (
 			<div className='codex-archive'>
 				<h1>Codex Arcanum</h1>
+
+				<div className="alert alert-warning">Bientôt disponible!</div>
+
 				<ul>
 					{codexArticles}
 				</ul>
