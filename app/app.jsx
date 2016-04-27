@@ -7,6 +7,7 @@ import Lodash from 'lodash';
 import Sidenav from './scripts/sidenav/sidenav.jsx';
 import IndexPage from './scripts/index.page.jsx';
 import CharacterPage from './scripts/character/character.page.jsx';
+import CharacterNewPage from './scripts/character/character-new.page.jsx';
 import ZodiacViewerPage from './scripts/zodiac/zodiac-viewer.page.jsx';
 import CodexPage from './scripts/codex/codex.page.jsx';
 
@@ -108,6 +109,7 @@ let routes = (
 		<DefaultRoute handler={IndexPage} />
 		<Route path="/codex/" handler={CodexPage} />
 		<Route path="/zodiaque/" handler={ZodiacViewerPage} />
+		<Route path="/personnage/creer/" handler={CharacterNewPage} />
 		<Route path="/personnage/:characterSlug/" handler={CharacterPage} />
 	</Route>
 );

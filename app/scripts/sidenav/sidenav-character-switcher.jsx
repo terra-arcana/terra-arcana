@@ -29,21 +29,24 @@ export default class SidenavCharacterSwitcher extends React.Component {
 				{this.props.characters.map(function(character) {
 					return (
 						<Link
-							to={'/personnage/' + character.slug + '/'}
-							key={character.id}
-							className="list-group-item list-group-item-info"
-							onClick={this.onCharacterClick}
-							data-character-id={character.id}
+							to = {'/personnage/' + character.slug + '/'}
+							key = {character.id}
+							className = "list-group-item list-group-item-info"
+							onClick = {this.onCharacterClick}
+							data-character-id = {character.id}
 						>
 							<h4 className="list-group-item-heading no-events ta-sidenav-character-name">{character.title.rendered}</h4>
 							<p className="list-group-item-text no-events">Priorème {character.people.singular}</p>
 						</Link>
 					);
 				}.bind(this))}
-				<a href="#" className="list-group-item list-group-item-success">
+				<Link
+					to = '/personnage/creer/'
+					className = "list-group-item list-group-item-success"
+				>
 					<span className="glyphicon glyphicon-plus pull-right"></span>
 					Créer un personnage
-				</a>
+				</Link>
 			</div>
 		);
 	}
