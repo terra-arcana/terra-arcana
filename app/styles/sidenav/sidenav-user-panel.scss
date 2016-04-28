@@ -20,6 +20,17 @@ $glyphicon-chevron-down: '\e114';
 	}
 }
 
+.ta-sidenav-character-name {
+	font-family: "Cinzel Decorative", serif;
+	margin-top: 0.2em;
+}
+
+.ta-sidenav-active-character {
+	.ta-sidenav-character-name {
+		font-size: 1.6em;
+	}
+}
+
 #sidenav-page-wrapper.toggled .ta-sidenav-user-panel .panel {
 	left: 0;
 }

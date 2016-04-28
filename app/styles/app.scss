@@ -1,5 +1,20 @@
 @import '_utils.scss';
 
 body {
-	background-color: lightblue;
+	background-image: url(../images/background.png);
+	font-family: 'PT Serif', serif;
+}
+
+.ta-page-header {
+	margin-bottom: 1em;
+	background-image: url(../images/header.png);
+	color: white;
+
+	h1 {
+		font-family: 'PT Serif Caption', serif;
+
+		& > small {
+			color: #ddd;
+		}
+	}
 }

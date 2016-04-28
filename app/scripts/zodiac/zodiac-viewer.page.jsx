@@ -77,19 +77,27 @@ export default class ZodiacViewerPage extends React.Component {
 		}
 
 		return (
-			<div className="row ta-zodiac-viewer">
-				<h1 className="col-sm-12">Zodiaque</h1>
-
-				<div className="col-sm-12 col-lg-8">
-					<SkillGraph
-						initialNodeData = {this.state.nodeData}
-						initialLinkData = {this.state.linkData}
-						onNodeMouseOver = {this.inspectSkill}
-						onNodeMouseOut = {this.uninspect}
-					/>
+			<div className="ta-zodiac-viewer">
+				<div className="ta-page-header row">
+					<div className="col-xs-12">
+						<div className="page-header">
+							<h1>Zodiaque</h1>
+						</div>
+					</div>
 				</div>
 
-				{inspector}
+				<div className="row">
+					<div className="col-sm-12 col-lg-8">
+						<SkillGraph
+							initialNodeData = {this.state.nodeData}
+							initialLinkData = {this.state.linkData}
+							onNodeMouseOver = {this.inspectSkill}
+							onNodeMouseOut = {this.uninspect}
+						/>
+					</div>
+
+					{inspector}
+				</div>
 			</div>
 		);
 	}

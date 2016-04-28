@@ -67,8 +67,12 @@ export default class IndexPage extends React.Component {
 
 		return (
 			<div className="ta-home">
-				<div className="page-header">
-					<h1>Terra Arcana <small>Grandeur Nature médiéval fantastique</small></h1>
+				<div className="ta-page-header row">
+					<div className="col-xs-12">
+						<div className="page-header">
+							<h1>Terra Arcana <small>Grandeur Nature médiéval fantastique</small></h1>
+						</div>
+					</div>
 				</div>
 
 				{content}
