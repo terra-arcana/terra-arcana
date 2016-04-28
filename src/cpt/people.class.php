@@ -52,7 +52,8 @@ namespace terraarcana {
 				'hierarchical' 			=> true,
 				'supports' => array(
 					'title',
-					'editor'
+					'editor',
+					'excerpt'
 				)
 			));
 		}
