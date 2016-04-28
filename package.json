@@ -1,20 +1,30 @@
 {
   "name": "terra-arcana",
-  "version": "0.1.1",
-  "description": "Thème Terra Arcana",
-  "main": "index.js",
+  "version": "0.2.0",
+  "description": "Terra Arcana",
+  "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/ferdbold/terra-arcana.git"
+    "url": "https://github.com/terra-arcana/terra-arcana.git"
   },
-  "author": "Frédéric Bolduc <bolducfrederic@gmail.com>",
-  "license": "BSD-2-Clause",
+  "author": {
+    "name": "Frédéric Bolduc",
+    "email": "bolducfrederic@gmail.com",
+    "url": "http://ferdbold.com"
+  },
+  "contributors": [
+    {
+      "name": "François Drouin-Morin",
+      "email": "francois.drouinm@gmail.com"
+    }
+  ],
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/ferdbold/terra-arcana/issues"
+    "url": "https://github.com/terra-arcana/terra-arcana/issues"
   },
   "devDependencies": {
     "babel-core": "^5.8.25",
