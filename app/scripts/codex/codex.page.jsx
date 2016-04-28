@@ -42,12 +42,12 @@ export default class CodexPage extends React.Component {
 	render() {
 		let codexArticles = this.state.codexArticles.map(function(article) {
 			return(
-				<li key={article.id} className='panel panel-default'>
-					<div className = 'panel-heading'>
-						<h2 className = 'panel-title'>{article.title.rendered}</h2>
+				<li key={article.id} className="panel panel-default">
+					<div className="panel-heading">
+						<h2 className="panel-title">{article.title.rendered}</h2>
 					</div>
 					<div
-						className = 'panel-body'
+						className="panel-body"
 						dangerouslySetInnerHTML = {{__html: article.content.rendered}}
 					></div>
 				</li>
@@ -55,8 +55,10 @@ export default class CodexPage extends React.Component {
 		});
 
 		return (
-			<div className='codex-archive'>
-				<h1>Codex Arcanum</h1>
+			<div className="ta-codex-archive">
+				<div className="page-header">
+					<h1>Codex Arcanum</h1>
+				</div>
 
 				<div className="alert alert-warning">Bientôt disponible!</div>
 

@@ -55,6 +55,7 @@ namespace terraarcana {
 		public function enqueue_styles() {
 			$base = get_stylesheet_directory_uri() . '/';
 
+			wp_enqueue_style('gfonts', 'https://fonts.googleapis.com/css?family=Cinzel+Decorative:400,700|PT+Serif:400,700,700italic,400italic|PT+Serif+Caption');
 			wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
 			wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
 			wp_enqueue_style('terra-arcana', $base . 'dist/terra-arcana.css');

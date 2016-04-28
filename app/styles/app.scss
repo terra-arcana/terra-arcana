@@ -1,5 +1,10 @@
 @import '_utils.scss';
 
 body {
-	background-color: lightblue;
+	background-image: url(../images/background.png);
+	font-family: 'PT Serif', serif;
+}
+
+.page-header > h1 {
+	font-family: 'PT Serif Caption', serif;
 }
