@@ -78,8 +78,12 @@ export default class ZodiacViewerPage extends React.Component {
 
 		return (
 			<div className="ta-zodiac-viewer">
-				<div className="page-header">
-					<h1>Zodiaque</h1>
+				<div className="ta-page-header row">
+					<div className="col-xs-12">
+						<div className="page-header">
+							<h1>Zodiaque</h1>
+						</div>
+					</div>
 				</div>
 
 				<div className="row">
