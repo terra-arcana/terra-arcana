@@ -79,8 +79,11 @@ export default class CharacterNewPage extends React.Component {
 				alertClass = 'text-danger';
 				iconClass = 'glyphicon-exclamation-sign';
 			} else if (this.state.alert.type === 'saving') {
-				alertClass = 'text-success';
+				alertClass = 'text-info';
 				iconClass = 'glyphicon-asterisk glyphicon-spin';
+			} else if (this.state.alert.type === 'saved') {
+				alertClass = 'text-success';
+				iconClass = 'glyphicon-ok';
 			}
 
 			alert = (
@@ -257,6 +260,30 @@ export default class CharacterNewPage extends React.Component {
 			}
 		});
 
-		console.log(this.state.character);
+		jQuery.ajax({
+			url: WP_API_Settings.root + 'wp/v2/character',
+			method: 'POST',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+			},
+			data: {
+				title: this.state.character.name,
+				status: 'publish',
+				people: this.state.character.people,
+				startingSkill: this.state.character.startingSkill
+			},
+			success: function(response) {
+				this.setState({
+					alert: {
+						type: 'saved',
+						message: 'Personnage créé avec succès!'
+					}
+				});
+
+				// TODO: Save starting skills (Back-end)
+				// TODO: Redirect to player profile (Front-end)
+				// TODO: Set new character as active character (Back+Front)
+			}.bind(this)
+		});
 	}
 }
