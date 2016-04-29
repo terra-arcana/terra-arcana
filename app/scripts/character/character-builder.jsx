@@ -1,4 +1,5 @@
 import React from 'react';
+import Lodash from 'lodash';
 
 import SkillGraph from '../zodiac/skill-graph.jsx';
 import SkillNodeInspector from '../zodiac/skill-node-inspector.jsx';
@@ -21,6 +22,18 @@ export default class CharacterBuilder extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.inspectSkill = this.inspectSkill.bind(this);
+		this.uninspect = this.uninspect.bind(this);
+		this.selectNode = this.selectNode.bind(this);
+		this.selectPerk = this.selectPerk.bind(this);
+		this.getNodeDataById = this.getNodeDataById.bind(this);
+		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
+		this.getPickedNodesFlatArray = this.getPickedNodesFlatArray.bind(this);
+		this.getPickedSkillsUpgradesArray = this.getPickedSkillsUpgradesArray.bind(this);
+		this.getTriangular = this.getTriangular.bind(this);
+		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
+		this.saveBuild = this.saveBuild.bind(this);
+
 		/**
 		 * @type {Object}
 		 * @private
@@ -31,18 +44,16 @@ export default class CharacterBuilder extends React.Component {
 				type: '',
 				upgrades: []
 			},
-			pickedNodes: this.preparePickedNodesArray(props.character['current_build']),
+			currentBuild: props.character['current_build'] || [],
 			nodeData: [],
 			linkData: [],
+			graphMetadata: {},
+			perkPoints: {
+				current: 0,
+				total: 0
+			},
 			alert: undefined
 		};
-
-		this.inspectSkill = this.inspectSkill.bind(this);
-		this.uninspect = this.uninspect.bind(this);
-		this.selectNode = this.selectNode.bind(this);
-		this.preparePickedNodesArray = this.preparePickedNodesArray.bind(this);
-		this.prepareBuildForSave = this.prepareBuildForSave.bind(this);
-		this.saveBuild = this.saveBuild.bind(this);
 	}
 
 	/**
@@ -53,12 +64,8 @@ export default class CharacterBuilder extends React.Component {
 		var inspector = <noscript />,
 			alert = <noscript />,
 			xpValues = {
-				current: this.props.character.xp.total - this.state.pickedNodes.length,
+				current: this.props.character.xp.total - this.state.currentBuild.length,
 				total: this.props.character.xp.total
-			},
-			ppValues = {
-				current: 0,
-				total: this.props.character['perk_points'].total
 			};
 
 		if (this.state.activeNode.id !== '') {
@@ -68,6 +75,9 @@ export default class CharacterBuilder extends React.Component {
 				inspector = (
 					<SkillNodeInspector
 						skill = {this.state.activeNode}
+						perks = {this.getNodePerkLevels(this.state.activeNode.id)}
+						metadata = {this.state.graphMetadata}
+						onSelectPerk = {this.selectPerk}
 					/>
 				);
 				break;
@@ -90,6 +100,9 @@ export default class CharacterBuilder extends React.Component {
 			} else if (this.state.alert.type === 'success') {
 				alertClass = 'alert-success';
 				iconClass = 'glyphicon-ok';
+			} else if (this.state.alert.type === 'error') {
+				alertClass = 'alert-danger';
+				iconClass = 'glyphicon-exclamation-sign';
 			}
 
 			alert = (
@@ -111,19 +124,19 @@ export default class CharacterBuilder extends React.Component {
 								type = "button"
 								className = "btn btn-success pull-right"
 								onClick = {this.saveBuild}
-								>
+							>
 								<span className="glyphicon glyphicon-floppy-save"></span>
 								&nbsp;Sauvegarder
 							</button>
 							<h2 className="panel-title">{this.props.character.title.rendered}</h2>
-							<small> Priorème {this.props.character.people.singular}</small>
+							<small>Priorème {this.props.character.people.singular}</small>
 						</div>
 
 						<div className="panel-body">
 							<SkillGraph
 								initialNodeData = {this.state.nodeData}
 								initialLinkData = {this.state.linkData}
-								pickedNodes = {this.state.pickedNodes}
+								pickedNodes = {this.getPickedNodesFlatArray()}
 								contiguousSelection = {true}
 								onNodeMouseOver = {this.inspectSkill}
 								onNodeMouseOut = {this.uninspect}
@@ -139,9 +152,9 @@ export default class CharacterBuilder extends React.Component {
 				<CharacterSkillsPanel
 					characterName = {this.props.character.title.rendered}
 					characterPeople = {this.props.character.people}
-					nodes = {this.state.pickedNodes}
+					skills = {this.getPickedSkillsUpgradesArray()}
 					xp = {xpValues}
-					pp = {ppValues}
+					pp = {this.state.perkPoints}
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
@@ -158,7 +171,13 @@ export default class CharacterBuilder extends React.Component {
 		jQuery.get(WP_API_Settings.root + 'terraarcana/v1/graph-data', function(result) {
 			this.setState({
 				nodeData: result.nodes,
-				linkData: result.links
+				linkData: result.links,
+				graphMetadata: result.meta
+			});
+
+			// Now that `this.state.nodeData` exists, we can calculate the perk points
+			this.setState({
+				perkPoints: this.calculateCurrentPerkBalance(this.state.currentBuild)
 			});
 		}.bind(this));
 	}
@@ -216,23 +235,75 @@ export default class CharacterBuilder extends React.Component {
 	 * @param {String} id The picked node ID
 	 */
 	selectNode(id) {
-		var nodeIndex = this.state.pickedNodes.indexOf(id);
+		var i, len,
+			nodeIndex = -1,
+			nodeData = this.getNodeDataById(id),
+			newBuild = Lodash.cloneDeep(this.state.currentBuild);
+
+		// Find node index in current build
+		for (i = 0, len = newBuild.length; i < len; i++) {
+			if (newBuild[i].id === id) {
+				nodeIndex = i;
+				break;
+			}
+		}
 
 		// Add a node to the build
 		if (nodeIndex === -1) {
 			// Only add a node if there is XP left
-			if (this.state.pickedNodes.length < this.props.character.xp.total) {
-				this.state.pickedNodes[this.state.pickedNodes.length] = id;
+			if (newBuild.length < this.props.character.xp.total) {
+				newBuild[newBuild.length] = {
+					id: id,
+					type: nodeData.type,
+					perks: [{
+						power: 0,
+						cast: 0,
+						duration: 0,
+						range: 0,
+						uses: 0
+					}]
+				};
 			}
 		}
 
 		// Remove a node from the build
 		else {
-			this.state.pickedNodes.splice(nodeIndex, 1);
+			newBuild.splice(nodeIndex, 1);
 		}
 
 		this.setState({
-			pickedNodes: this.state.pickedNodes
+			currentBuild: newBuild,
+			perkPoints: this.calculateCurrentPerkBalance(newBuild)
+		});
+	}
+
+	/**
+	 * Select or unselect a perk from a skill
+	 * @param {string} id The skill ID
+	 * @param {string} property Property being modified. Either `power`, `cast`, `duration`, `range` or `uses`.
+	 * @param {string} direction Direction of the modification. Either `up` or `down`.
+	 */
+	selectPerk(id, property, direction) {
+		var i, len,
+			newBuild = Lodash.cloneDeep(this.state.currentBuild);
+
+		// Find node
+		for (i = 0, len = newBuild.length; i < len; i++) {
+			if (newBuild[i].id === id) {
+				// Update perk level
+				if (direction === 'up') {
+					newBuild[i].perks[0][property]++;
+				} else {
+					newBuild[i].perks[0][property]--;
+				}
+
+				break;
+			}
+		}
+
+		this.setState({
+			currentBuild: newBuild,
+			perkPoints: this.calculateCurrentPerkBalance(newBuild)
 		});
 	}
 
@@ -242,56 +313,167 @@ export default class CharacterBuilder extends React.Component {
 	 * @return {Object|null} The node data
 	 */
 	getNodeDataById(id) {
-		var nodeData = null;
+		var i, len, nodeData = null;
 
-		this.state.nodeData.map(function(node) {
-			if (node.id === id) {
-				nodeData = node;
+		for (i = 0, len = this.state.nodeData.length; i < len; i++) {
+			if (this.state.nodeData[i].id === id) {
+				nodeData = this.state.nodeData[i];
+				break;
 			}
-		}.bind(this));
+		}
 
 		return nodeData;
 	}
 
 	/**
-	 * Convert the picked nodes array from the API to a pure JS array
-	 * @param {Array} initial The initial Array
+	 * Get all the current and max perk levels for a given skill node
+	 * @param {string} id The skill node ID
+	 * @return {Object|null} The perk data
+	 */
+	getNodePerkLevels(id) {
+		var i, len,
+			nodeData = this.getNodeDataById(id),
+			buildNode = null,
+			perkProp = null,
+			perkValue = 0,
+			perkLevels = {};
+
+		// Get the corresponding node in the character build
+		for (i = 0, len = this.state.currentBuild.length; i < len; i++) {
+			if (this.state.currentBuild[i].id === id) {
+				buildNode = this.state.currentBuild[i];
+				break;
+			}
+		}
+
+		// Exit early if the node couldn't be found or
+		// if the node does not have any perk data
+		if (!buildNode || !Array.isArray(buildNode.perks)) return null;
+
+		// Append all perk levels
+		for (perkProp in buildNode.perks[0]) {
+			if (buildNode.perks[0].hasOwnProperty(perkProp)) {
+				perkValue = parseInt(buildNode.perks[0][perkProp]);
+				perkLevels[perkProp] = {
+					current: (isNaN(perkValue)) ? 0 : perkValue,
+					max: nodeData.perks[perkProp]
+				};
+			}
+		}
+
+		return perkLevels;
+	}
+
+	/**
+	 * Get a flat array of all currently picked nodes
 	 * @return {Array} The converted array
 	 */
-	preparePickedNodesArray(initial) {
-		var final = [];
+	getPickedNodesFlatArray() {
+		var i, len,
+			final = [];
 
 		// Exit early on an undefined array
-		if (!Array.isArray(initial)) return [];
+		if (!Array.isArray(this.state.currentBuild)) return [];
 
-		for (var i = 0, len = initial.length; i < len; i++) {
-			final.push(initial[i].id);
+		for (i = 0, len = this.state.currentBuild.length; i < len; i++) {
+			final.push(this.state.currentBuild[i].id);
 		}
 
 		return final;
 	}
 
 	/**
-	 * Convert the picked nodes state array to a format suitable for WP-API
-	 * @return {Array} The prepared array
+	 * Get an array of every skill and upgrade picked by the player
+	 * @return {Array} An array of objects containing the `id` and `name` of each skill/upgrade node
 	 */
-	prepareBuildForSave() {
-		var preparedBuild = [];
+	getPickedSkillsUpgradesArray() {
+		var i, len, buildNode,
+			final = [];
 
-		for (var i = 0, len = this.state.pickedNodes.length; i < len; i++) {
-			preparedBuild.push({
-				id: this.state.pickedNodes[i]
-			});
+		// Exit early on an undefined build
+		if (!Array.isArray(this.state.currentBuild)) return [];
+
+		// Exit early if node data isn't built yet
+		if (this.state.nodeData.length === 0) return [];
+
+		for (i = 0, len = this.state.currentBuild.length; i < len; i++) {
+			buildNode = this.state.currentBuild[i];
+			if (buildNode.type === 'skill' || buildNode.type === 'upgrade') {
+				final.push({
+					id: buildNode.id,
+					name: this.getNodeDataById(buildNode.id).name
+				});
+			}
 		}
 
-		return preparedBuild;
+		return final;
+	}
+
+	/**
+	 * Return the triangular value of a number. This is used to calculate the total cost
+	 * of perks bought on a single skill.
+	 * @param {number} value The number to triangulate
+	 * @return {number} The triangular value
+	 */
+	getTriangular(value) {
+		var abs = Math.abs(value);
+		return ((abs / 2) * (abs + 1)) * (abs / value) || 0;
+	}
+
+	/**
+	 * Return the current perk point balance considering all the current purchases in state
+	 * @param {Object} build The current character build to analyze
+	 * @return {Object} The `current` and `total` amount of perk points available
+	 */
+	calculateCurrentPerkBalance(build) {
+		var i, len, node, skillLevel, perkProp, value,
+			pointsSpent = 0,
+			totalPoints = parseInt(this.props.character['perk_points'].bonus);
+
+		for (i = 0, len = build.length; i < len; i++) {
+			node = build[i];
+
+			// Add perk nodes to the total point count
+			if (node.type === 'perk') {
+				value = parseInt(this.getNodeDataById(node.id).value);
+				totalPoints += (isNaN(value)) ? 0 : value;
+			}
+
+			// Add bought skill perks to the points spent count
+			else if (node.type === 'skill') {
+				skillLevel = 0;
+
+				for (perkProp in node.perks[0]) {
+					if (node.perks[0].hasOwnProperty(perkProp)) {
+						value = parseInt(node.perks[0][perkProp]);
+						skillLevel += (isNaN(value)) ? 0 : value;
+					}
+				}
+
+				pointsSpent += this.getTriangular(skillLevel);
+			}
+		}
+
+		return {
+			current: totalPoints - pointsSpent,
+			total: totalPoints
+		};
 	}
 
 	/**
 	 * Handle save button clicks
 	 */
 	saveBuild() {
-		var preparedBuild = this.prepareBuildForSave();
+		// Exit early if perk allocation is wrong
+		if (this.state.perkPoints.current < 0) {
+			this.setState({
+				alert: {
+					type: 'error',
+					message: 'Trop de points d\'essence dépensés!'
+				}
+			});
+			return;
+		}
 
 		this.setState({
 			alert: {
@@ -307,7 +489,7 @@ export default class CharacterBuilder extends React.Component {
 				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
 			},
 			data: {
-				'current_build': preparedBuild
+				'current_build': this.state.currentBuild
 			},
 			success: function() {
 				this.setState({
@@ -318,7 +500,7 @@ export default class CharacterBuilder extends React.Component {
 				});
 
 				if (this.props.onSuccessfulSave) {
-					this.props.onSuccessfulSave(preparedBuild);
+					this.props.onSuccessfulSave(this.state.currentBuild);
 				}
 			}.bind(this)
 		});
@@ -338,11 +520,7 @@ CharacterBuilder.defaultProps = {
  * @type {Object}
  */
 CharacterBuilder.propTypes = {
-	character: React.PropTypes.shape({
-		current_build: React.PropTypes.arrayOf(
-			React.PropTypes.object.isRequired
-		).isRequired
-	}),
+	character: React.PropTypes.object,
 
 	onSuccessfulSave: React.PropTypes.func
 };

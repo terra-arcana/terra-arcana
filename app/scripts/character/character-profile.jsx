@@ -12,6 +12,14 @@ export default class CharacterProfile extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		return <h2 className="col-xs-12">Profil</h2>;
+		return (
+			<div className="ta-character-profile">
+				<h2 className="col-xs-12">Profil</h2>
+
+				<div className="col-xs-12">
+					<div className="alert alert-warning">Bientôt disponible!</div>
+				</div>
+			</div>
+		);
 	}
 }

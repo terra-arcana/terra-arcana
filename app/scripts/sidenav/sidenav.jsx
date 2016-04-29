@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 
 import SidenavUserPanel from './sidenav-user-panel.jsx';
+import packageInfo from '../../../package.json';
 
 require('../../styles/sidenav/sidenav.scss');
 require('../../images/terra-logo-blanc.png');
@@ -20,13 +21,17 @@ export default class Sidenav extends React.Component {
 		return (
 			<nav className="ta-sidenav">
 				<div className="container-fluid">
+					<div className="ta-version-notice">
+						v{packageInfo.version}
+					</div>
+
 					<Link to="/" className="ta-sidenav-logo">
 						<img src={WP_Theme_Settings.imageRoot + 'terra-logo-blanc.png'} />
 					</Link>
 
 					<ul className="nav nav-pills nav-stacked">
 						<li><Link to="/codex/">Codex Arcanum</Link></li>
-						{/*<li><Link to="/zodiaque/">Zodiaque</Link></li>*/}
+						<li><Link to="/zodiaque/">Zodiaque</Link></li>
 					</ul>
 
 					<SidenavUserPanel

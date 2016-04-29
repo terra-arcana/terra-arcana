@@ -101,7 +101,10 @@ export default class SidenavUserPanel extends React.Component {
 			incarnatesLabel = <small>incarne</small>;
 
 			activeCharacterButton = (
-				<Link to={'/personnage/' + activeCharacterData.slug + '/'} className="list-group-item">
+				<Link
+					to = {'/personnage/' + activeCharacterData.slug + '/'}
+					className = "list-group-item ta-sidenav-active-character"
+				>
 					<button
 						ref = {(ref) => this.characterSwitcherToggle = ref}
 						type="button"
@@ -111,7 +114,7 @@ export default class SidenavUserPanel extends React.Component {
 					>
 						<span className="glyphicon"></span>
 					</button>
-					<h3 className="list-group-item-heading">{activeCharacterData.title.rendered}</h3>
+					<h3 className="list-group-item-heading ta-sidenav-character-name">{activeCharacterData.title.rendered}</h3>
 					<p className="list-group-item-text">Priorème {activeCharacterData.people.singular}</p>
 				</Link>
 			);

@@ -68,7 +68,7 @@ export default class CharacterPage extends React.Component {
 	render() {
 		// Show spinner by default
 		var contents = (
-			<div className="col-xs-12 text-center">
+			<div className="text-center">
 				<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
 			</div>
 		);
@@ -81,13 +81,19 @@ export default class CharacterPage extends React.Component {
 								ref = {(ref) => this.tabLinks['profile'] = ref}
 								className = {(this.state.activeTab === 'profile') ? 'active' : ''}
 							>
-								<a href="#" onClick={this.onTabButtonClick} data-tab="profile">Profil</a>
+								<a href="#" onClick={this.onTabButtonClick} data-tab="profile">
+									<span className="glyphicon glyphicon-user no-events" />
+									<span className="no-events">&nbsp;Profil</span>
+								</a>
 							</li>
 							<li
 								ref = {(ref) => this.tabLinks['builder'] = ref}
 								className = {(this.state.activeTab === 'builder') ? 'active' : ''}
 							>
-								<a href="#" onClick={this.onTabButtonClick} data-tab="builder">Zodiaque</a>
+								<a href="#" onClick={this.onTabButtonClick} data-tab="builder">
+									<span className="glyphicon glyphicon-th no-events" />
+									<span className="no-events">&nbsp;Zodiaque</span>
+								</a>
 							</li>
 						</ul>
 					</nav>
@@ -110,23 +116,28 @@ export default class CharacterPage extends React.Component {
 
 			contents = (
 				<div className="ta-character">
-					<h1 className="col-xs-12">{this.state.character.title.rendered}</h1>
-					{nav}
+					<div className="ta-page-header row">
+						<div className="col-xs-12">
+							<div className="page-header">
+								<h1>{this.state.character.title.rendered}</h1>
+							</div>
+						</div>
+					</div>
 
-					<div className="col-xs-12 ta-character-tab-content">
-						<div className="row">
-							{tabContents}
+					<div className="row">
+						{nav}
+
+						<div className="col-xs-12 ta-character-tab-content">
+							<div className="row">
+								{tabContents}
+							</div>
 						</div>
 					</div>
 				</div>
 			);
 		}
 
-		return (
-			<div className="row">
-				{contents}
-			</div>
-		);
+		return contents;
 	}
 
 	/**

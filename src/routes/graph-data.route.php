@@ -9,6 +9,16 @@ namespace terraarcana {
 		 */
 		class GraphDataRoute extends \WP_REST_Controller {
 
+			/**
+			 * ACF keys for custom fields relevant to the graph
+			 * @var Array<string>
+			 */
+			private $_metaFields = array(
+				'cast' => 'field_566f2273ae87f',
+				'duration' => 'field_566f20f65025c',
+				'range' => 'field_566f260724373'
+			);
+
 			public function register_routes() {
 				register_rest_route(API_PREFIX . '/v1', '/graph-data', array(
 					array(
@@ -18,6 +28,7 @@ namespace terraarcana {
 					array(
 						'methods' => \WP_REST_Server::EDITABLE,
 						'callback' => array($this, 'update_items'),
+						'permission_callback' => array($this, 'update_items_permissions'),
 						'args' => $this->get_endpoint_args_for_item_schema(false)
 					)
 				));
@@ -31,7 +42,8 @@ namespace terraarcana {
 			public function get_items($request) {
 				$result = array(
 					'nodes' => array(),
-					'links' => array()
+					'links' => array(),
+					'meta' => array()
 				);
 
 				$skillGraphData = DataController::getInstance()->getCPT('skill')->get_graph_data();
@@ -47,6 +59,14 @@ namespace terraarcana {
 				$links = array_merge($skillGraphData['links'], $pointGraphData['links']);
 				foreach ($links as $link) {
 					$this->push_unique_link($result['links'], $link[0], $link[1]);
+				}
+
+				// Add all metadata
+				if (function_exists('get_field_object')) {
+					foreach($this->_metaFields as $field => $acfKey) {
+						$fieldObject = get_field_object($acfKey);
+						$result['meta'][$field] = $fieldObject['choices'];
+					}
 				}
 
 				return $result;
@@ -122,6 +142,15 @@ namespace terraarcana {
 				}
 
 				return new \WP_REST_Response('Zodiaque sauvegardé avec succès!', 200);
+			}
+
+			/**
+			 * Get the permission for updating data through the graph-data route
+			 * @param WP_REST_Request $request The current request
+			 * @return bool
+			 */
+			public function update_items_permissions(\WP_REST_Request $request) {
+				return current_user_can('edit_others_posts');
 			}
 
 			/**

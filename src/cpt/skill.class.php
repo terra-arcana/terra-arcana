@@ -125,14 +125,25 @@ namespace terraarcana {
 
 			foreach ($skills as $skill) {
 				$skillGraphData = get_field($this->_fields['graph_data']['key'], $skill->ID);
+				$skillPerkData = get_field($this->_fields['perks']['key'], $skill->ID);
+
+				// Prepare perk data
+				if (is_array($skillPerkData)) {
+					$skillPerkData = $skillPerkData[0];
+					foreach ($skillPerkData as &$perkProp) {
+						$perkProp = intval($perkProp);
+					}
+				}
 
 				// Add the skill to the graph data
 				array_push($result['nodes'], array(
 					'id' => (string)$skill->ID,
+					'name' => $skill->post_title,
 					'type' => 'skill',
 					'x' => intval($skillGraphData[0]['x']),
 					'y' => intval($skillGraphData[0]['y']),
-					'start' => $skillGraphData[0]['start']
+					'start' => $skillGraphData[0]['start'],
+					'perks' => $skillPerkData
 				));
 
 				// Add links to the skill to the graph data
@@ -152,6 +163,7 @@ namespace terraarcana {
 
 						array_push($result['nodes'], array(
 							'id' => $upgradeID,
+							'name' => $upgrade['title'],
 							'type' => 'upgrade',
 							'x' => intval($upgrade['graph_data'][0]['x']),
 							'y' => intval($upgrade['graph_data'][0]['y'])
