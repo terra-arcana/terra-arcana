@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link} from 'react-router';
+import Lodash from 'lodash';
 
 /**
  * The CharacterNewPage is the page where users can create new characters for
@@ -14,36 +16,24 @@ export default class CharacterNewPage extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.onNameChange = this.onNameChange.bind(this);
+		this.onPeopleChange = this.onPeopleChange.bind(this);
+		this.onStartingSkillChange = this.onStartingSkillChange.bind(this);
+		this.createCharacter = this.createCharacter.bind(this);
+
 		/**
 		 * @type {Object}
 		 * @private
 		 */
 		this.state = {
-			characterName: '',
+			character: {
+				name: '',
+				people: null,
+				startingSkill: null
+			},
 			peoples: [],
-			startingSkills: [
-				{
-					id: '1',
-					title: {
-						rendered: 'Endurance'
-					},
-					effect: 'Plus de vie'
-				},
-				{
-					id: '2',
-					title: {
-						rendered: 'Méditation'
-					},
-					effect: 'Plus de regen'
-				},
-				{
-					id: '3',
-					title: {
-						rendered: 'Immersion'
-					},
-					effect: 'Plus de pioupiou'
-				}
-			]
+			startingSkills: [],
+			alert: null
 		};
 	}
 
@@ -51,9 +41,21 @@ export default class CharacterNewPage extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		jQuery.get(WP_API_Settings.root + 'wp/v2/people', function(result) {
+		var peoples = [],
+			startingSkills = [],
+
+			peopleRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/people', function(result) {
+				peoples = result;
+			}.bind(this)),
+
+			startingSkillRequest = jQuery.get(WP_API_Settings.root + 'terraarcana/v1/starting-skills', function(result) {
+				startingSkills = result;
+			}.bind(this));
+
+		jQuery.when(peopleRequest, startingSkillRequest).done(function() {
 			this.setState({
-				peoples: result
+				peoples: peoples,
+				startingSkills: startingSkills
 			});
 		}.bind(this));
 	}
@@ -64,8 +66,30 @@ export default class CharacterNewPage extends React.Component {
 	 */
 	render() {
 		var content = (
-			<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-		);
+				<div className="text-center">
+					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
+				</div>
+			),
+			alert = <noscript />;
+
+		if (this.state.alert !== null) {
+			var alertClass, iconClass;
+
+			if (this.state.alert.type === 'error') {
+				alertClass = 'text-danger';
+				iconClass = 'glyphicon-exclamation-sign';
+			} else if (this.state.alert.type === 'saving') {
+				alertClass = 'text-success';
+				iconClass = 'glyphicon-asterisk glyphicon-spin';
+			}
+
+			alert = (
+				<span className={'ta-button-alert ' + alertClass}>
+					<span className={'glyphicon ' + iconClass} />&nbsp;
+					{this.state.alert.message}
+				</span>
+			);
+		}
 
 		if (this.state.peoples.length > 0) {
 			content = (
@@ -80,6 +104,7 @@ export default class CharacterNewPage extends React.Component {
 								type = "text"
 								className = "form-control"
 								value = {this.state.characterName}
+								onChange = {this.onNameChange}
 							/>
 						</div>
 
@@ -96,6 +121,7 @@ export default class CharacterNewPage extends React.Component {
 															type = "radio"
 															name = "characterPeople"
 															value = {people.id}
+															onChange = {this.onPeopleChange}
 														/>&nbsp;
 														{people.title.rendered}
 													</label>
@@ -113,6 +139,10 @@ export default class CharacterNewPage extends React.Component {
 
 						<div className="form-group panel-group">
 							<label>Compétence de départ</label>
+							<p>
+								Cette compétence détermine votre méthode de régénération principale,
+								ainsi que votre point de départ sur le <Link to="/zodiaque/">Zodiaque</Link>.
+							</p>
 							<div className="row">
 								{this.state.startingSkills.map(function(skill) {
 									return (
@@ -124,6 +154,7 @@ export default class CharacterNewPage extends React.Component {
 															type = "radio"
 															name = "characterStartingSkill"
 															value = {skill.id}
+															onChange = {this.onStartingSkillChange}
 														/>&nbsp;
 														{skill.title.rendered}
 													</label>
@@ -143,12 +174,89 @@ export default class CharacterNewPage extends React.Component {
 							type = "submit"
 							className = "btn btn-success"
 							value = "Créer un personnage"
+							onClick = {this.createCharacter}
 						/>
+
+						{alert}
 					</form>
 				</div>
 			);
 		}
 
 		return content;
+	}
+
+	/**
+	 * Handle character name changes
+	 * @param {MouseSyntheticEvent} event Mouse event
+	 * @private
+	 */
+	onNameChange(event) {
+		var newCharacter = Lodash.cloneDeep(this.state.character);
+		newCharacter.name = event.target.value;
+
+		this.setState({
+			character: newCharacter
+		});
+	}
+
+	/**
+	 * Handle character people changes
+	 * @param {MouseSyntheticEvent} event Mouse event
+	 * @private
+	 */
+	onPeopleChange(event) {
+		var newCharacter = Lodash.cloneDeep(this.state.character);
+		newCharacter.people = event.target.value;
+
+		this.setState({
+			character: newCharacter
+		});
+	}
+
+	/**
+	 * Handle character starting skill changes
+	 * @param {MouseSyntheticEvent} event Mouse event
+	 * @private
+	 */
+	onStartingSkillChange(event) {
+		var newCharacter = Lodash.cloneDeep(this.state.character);
+		newCharacter.startingSkill = event.target.value;
+
+		this.setState({
+			character: newCharacter
+		});
+	}
+
+	/**
+	 * Handle save button click events
+	 * @param {MouseSyntheticEvent} event Mouse event
+	 * @private
+	 */
+	createCharacter(event) {
+		event.preventDefault();
+
+		if (
+			this.state.character.name === '' ||
+			this.state.character.people === null ||
+			this.state.character.startingSkill === null
+		) {
+			this.setState({
+				alert: {
+					type: 'error',
+					message: 'Veuillez remplir tous les champs'
+				}
+			});
+			return;
+		}
+
+		this.setState({
+			alert: {
+				type: 'saving',
+				message: 'Création du personnage...'
+			}
+		});
+
+		console.log(this.state.character);
 	}
 }
