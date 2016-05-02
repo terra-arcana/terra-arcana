@@ -123,10 +123,13 @@ export default class SidenavUserPanel extends React.Component {
 		// No active character
 		else if (!this.state.loadingCharacters) {
 			activeCharacterButton = (
-				<a className="list-group-item list-group-item-success" href="#">
+				<Link
+					to = "/personnage/creer/"
+					className = "list-group-item list-group-item-success"
+				>
 					<span className="glyphicon glyphicon-plus pull-right"></span>
 					Créer un personnage
-				</a>
+				</Link>
 			);
 		}
 

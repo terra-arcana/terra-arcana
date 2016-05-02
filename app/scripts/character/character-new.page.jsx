@@ -270,9 +270,9 @@ export default class CharacterNewPage extends React.Component {
 				title: this.state.character.name,
 				status: 'publish',
 				people: this.state.character.people,
-				startingSkill: this.state.character.startingSkill
+				starting_skill: this.state.character.startingSkill
 			},
-			success: function(response) {
+			success: function() {
 				this.setState({
 					alert: {
 						type: 'saved',
@@ -280,9 +280,8 @@ export default class CharacterNewPage extends React.Component {
 					}
 				});
 
-				// TODO: Save starting skills (Back-end)
 				// TODO: Redirect to player profile (Front-end)
-				// TODO: Set new character as active character (Back+Front)
+				// TODO: Reload app state to reflect change in active character
 			}.bind(this)
 		});
 	}
