@@ -272,7 +272,7 @@ export default class CharacterNewPage extends React.Component {
 				people: this.state.character.people,
 				starting_skill: this.state.character.startingSkill
 			},
-			success: function() {
+			success: function(response) {
 				this.setState({
 					alert: {
 						type: 'saved',
@@ -280,9 +280,18 @@ export default class CharacterNewPage extends React.Component {
 					}
 				});
 
-				// TODO: Redirect to player profile (Front-end)
+				// Redirect to new character profile
+				this.context.router.transitionTo('/personnage/' + response.slug + '/');
+
 				// TODO: Reload app state to reflect change in active character
 			}.bind(this)
 		});
 	}
 }
+
+/**
+ * @type {Object}
+ */
+CharacterNewPage.contextTypes = {
+	router: React.PropTypes.func.isRequired
+};
