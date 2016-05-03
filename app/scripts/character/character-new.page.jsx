@@ -283,11 +283,20 @@ export default class CharacterNewPage extends React.Component {
 				// Redirect to new character profile
 				this.context.router.transitionTo('/personnage/' + response.slug + '/');
 
-				// TODO: Reload app state to reflect change in active character
+				if (this.props.onSwitchActiveCharacter) {
+					this.props.onSwitchActiveCharacter(response.id, false);
+				}
 			}.bind(this)
 		});
 	}
 }
+
+/**
+ * @type {Object}
+ */
+CharacterNewPage.propTypes = {
+	onSwitchActiveCharacter: React.PropTypes.func
+};
 
 /**
  * @type {Object}
