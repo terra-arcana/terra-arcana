@@ -64,7 +64,8 @@ export default class CharacterBuilder extends React.Component {
 		var inspector = <noscript />,
 			alert = <noscript />,
 			xpValues = {
-				current: this.props.character.xp.total - this.state.currentBuild.length,
+				// Account for the starting skill and the auto skill, hence the `-2`
+				current: this.props.character.xp.total - (this.state.currentBuild.length - 2),
 				total: this.props.character.xp.total
 			};
 
@@ -239,6 +240,11 @@ export default class CharacterBuilder extends React.Component {
 			nodeIndex = -1,
 			nodeData = this.getNodeDataById(id),
 			newBuild = Lodash.cloneDeep(this.state.currentBuild);
+
+		// Do nothing with start nodes: those can't be added or deleted from the build
+		if (nodeData.start) {
+			return;
+		}
 
 		// Find node index in current build
 		for (i = 0, len = newBuild.length; i < len; i++) {
