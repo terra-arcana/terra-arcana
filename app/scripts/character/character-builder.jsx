@@ -125,7 +125,7 @@ export default class CharacterBuilder extends React.Component {
 								type = "button"
 								className = "btn btn-success pull-right"
 								onClick = {this.saveBuild}
-							>
+								>
 								<span className="glyphicon glyphicon-floppy-save"></span>
 								&nbsp;Sauvegarder
 							</button>
