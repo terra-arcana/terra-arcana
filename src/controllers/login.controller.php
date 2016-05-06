@@ -19,6 +19,7 @@ namespace terraarcana {
 		 */
 		public function init() {
 			add_action('login_enqueue_scripts', array($this, 'login_enqueue_scripts'));
+			add_filter('login_redirect', array($this, 'login_redirect'));
 		}
 
 		/**
@@ -26,6 +27,13 @@ namespace terraarcana {
 		 */
 		public function login_enqueue_scripts() {
 			wp_enqueue_style('ta-login', get_stylesheet_directory_uri() . '/dist/login.css');
+		}
+
+		/**
+		 * Redirects the user to the homepage after login
+		 */
+		public function login_redirect() {
+			return home_url();
 		}
 	}
 }

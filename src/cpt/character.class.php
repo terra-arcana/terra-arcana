@@ -73,6 +73,9 @@ namespace terraarcana {
 				'supports' => array(
 					'title',
 					'author'
+				),
+				'capabilities' => array(
+					'publish_posts' 	=> 'publish_characters'
 				)
 			));
 		}
