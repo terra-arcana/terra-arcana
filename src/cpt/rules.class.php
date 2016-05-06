@@ -47,6 +47,27 @@ namespace terraarcana {
 					'editor'
 				)
 			));
+
+			register_taxonomy('sections', $this->_postTypeName, array(
+				'hierarchical' 			=> true,
+				'labels' => array(
+					'name'				=> 'Sections',
+					'singular_name' 	=> 'Section',
+					'search_items' 		=> 'Rechercher les sections',
+					'all_items' 		=> 'Toutes les sections',
+					'parent_item' 		=> 'Section parente',
+					'parent_item_colon' => null,
+					'edit_item' 		=> 'Modifier la section',
+					'update_item' 		=> 'Mettre à jour la section',
+					'add_new_item' 		=> 'Ajouter une nouvelle section',
+					'new_item_name' 	=> 'Nom de la nouvelle section',
+					'menu_name' 		=> 'Sections de règlements',
+				),
+				'show_ui' 				=> true,
+				'show_admin_column' 	=> true,
+				'query_var' 			=> true,
+				'rewrite' 				=> array('slug' => 'section')
+			));
 		}
 	}
 }
