@@ -2,14 +2,30 @@ import React from 'react';
 
 import Node from './node.jsx';
 
+var icon = require('../../images/zodiac/upgrade.svg');
+
 /**
- * An UpgradeNode is a canvas element representing an upgrade of a 
- * single {@link SkillNode} on a {@link SkillGraph}. An UpgradeNode should always have 
- * a single link, either to its parent SkillNode or to another UpgradeNode related 
+ * An UpgradeNode is a canvas element representing an upgrade of a
+ * single {@link SkillNode} on a {@link SkillGraph}. An UpgradeNode should always have
+ * a single link, either to its parent SkillNode or to another UpgradeNode related
  * to the same SkillNode.
  * @class
  */
 export default class UpgradeNode extends React.Component {
+
+	/**
+	 * @constructor
+	 * @param {Object} props Custom props
+	 */
+	constructor(props) {
+		super(props);
+
+		// Parse icon SVGs
+		var parser = new DOMParser(),
+			parsedIcon = parser.parseFromString(icon, 'image/svg+xml');
+
+		this.ICON_DATA = jQuery(parsedIcon).find('path').attr('d');
+	}
 
 	/**
 	 * @override
@@ -22,8 +38,9 @@ export default class UpgradeNode extends React.Component {
 				id = {this.props.id}
 				x = {this.props.x}
 				y = {this.props.y}
-				radius = {this.props.radius}
-				fill = "purple"
+				size = {24}
+				icon = {this.ICON_DATA}
+				fill = "#6E400B"
 				selected = {this.props.selected}
 				draggable = {this.props.draggable}
 				onClick = {this.props.onClick}

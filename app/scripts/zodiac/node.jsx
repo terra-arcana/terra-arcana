@@ -2,8 +2,8 @@ import React from 'react';
 import ReactKonva from 'react-konva';
 
 /**
- * A Node component displays a single element in a {@link SkillGraph}. This is not 
- * intended to be rendered in the graph as-is, but rather extended through components 
+ * A Node component displays a single element in a {@link SkillGraph}. This is not
+ * intended to be rendered in the graph as-is, but rather extended through components
  * such as {@link SkillNode}, {@link UpgradeNode} or {@link PointNode}.
  * @class
  */
@@ -30,20 +30,35 @@ export default class Node extends React.Component {
 		var stroke = (this.props.selected) ? this.SELECTED_STROKE : 0;
 
 		return (
-			<ReactKonva.Circle
-				ref = {(ref) => this.circle = ref}
+			<ReactKonva.Group
+				ref = {(ref) => this.element = ref}
 				x = {this.props.x}
 				y = {this.props.y}
-				radius = {this.props.radius}
-				fill = {this.props.fill}
-				stroke = {stroke}
 				draggable = {this.props.draggable}
 				listening = {true}
 				onClick = {this.onClick}
 				onDragMove = {this.onDragMove}
 				onMouseOver = {this.onMouseOver}
 				onMouseOut = {this.onMouseOut}
-			/>
+			>
+				<ReactKonva.Path
+					ref = {(ref) => this.icon = ref}
+					x = {-this.props.size/2}
+					y = {-this.props.size/2}
+					scale = {{x: 1, y: 1}}
+					data = {this.props.icon}
+					fill = {this.props.fill}
+					listening = {false}
+				/>
+				<ReactKonva.Circle
+					ref = {(ref) => this.outline = ref}
+					x = {-this.props.size/1.5}
+					y = {-this.props.size/1.5}
+					radius = {this.props.size * 1.5}
+					stroke = {stroke}
+					listening = {false}
+				/>
+			</ReactKonva.Group>
 		);
 	}
 
@@ -62,8 +77,8 @@ export default class Node extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		this.circle.on('mouseover', this.onMouseOver);
-		this.circle.on('dragmove', this.onDragMove);
+		this.element.on('mouseover', this.onMouseOver);
+		this.element.on('dragmove', this.onDragMove);
 	}
 
 	/**
@@ -113,7 +128,7 @@ export default class Node extends React.Component {
 	 */
 	onDragMove() {
 		if (this.props.onDragMove) {
-			this.props.onDragMove(this.props.id, this.circle.x(), this.circle.y());
+			this.props.onDragMove(this.props.id, this.element.x(), this.element.y());
 		}
 	}
 }
@@ -125,7 +140,6 @@ Node.defaultProps = {
 	id: '',
 	x: 0,
 	y: 0,
-	radius: 15,
 	fill: 'green',
 	draggable: false,
 	selected: false
@@ -138,10 +152,11 @@ Node.propTypes = {
 	id: React.PropTypes.string.isRequired,
 	x: React.PropTypes.number.isRequired,
 	y: React.PropTypes.number.isRequired,
-	radius: React.PropTypes.number,
 	fill: React.PropTypes.string,
 	draggable: React.PropTypes.bool,
 	selected: React.PropTypes.bool,
+	size: React.PropTypes.number.isRequired,
+	icon: React.PropTypes.string.isRequired,
 
 	onClick: React.PropTypes.func,
 	onMouseOver: React.PropTypes.func,

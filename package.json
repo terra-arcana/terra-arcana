@@ -53,6 +53,7 @@
     "react-addons-test-utils": "^0.14.7",
     "sass-loader": "^2.0.1",
     "style-loader": "^0.12.4",
+    "svg-inline-loader": "^0.4.1",
     "webpack": "^1.12.2"
   },
   "dependencies": {

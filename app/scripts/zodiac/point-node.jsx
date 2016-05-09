@@ -3,6 +3,9 @@ import ReactKonva from 'react-konva';
 
 import Node from './node.jsx';
 
+var lifeIcon = require('../../images/zodiac/life.svg'),
+	perkIcon = require('../../images/zodiac/perk.svg');
+
 /**
  * A PointNode is a {@link Node} containing a certain amount of points of a given currency.
  * @class
@@ -27,11 +30,19 @@ export default class PointNode extends React.Component {
 		 * @type {Object}
 		 */
 		this.NODE_COLORS = {
-			'life': 'green',
-			'perk': 'orange'
+			'life': '#128020',
+			'perk': '#069992'
 		};
 
 		this.onDragMove = this.onDragMove.bind(this);
+
+		// Parse icon SVGs
+		var parser = new DOMParser(),
+			parsedLifeIcon = parser.parseFromString(lifeIcon, 'image/svg+xml'),
+			parsedPerkIcon = parser.parseFromString(perkIcon, 'image/svg+xml');
+
+		this.PERK_ICON_DATA = jQuery(parsedPerkIcon).find('path').attr('d');
+		this.LIFE_ICON_DATA = jQuery(parsedLifeIcon).find('path').attr('d');
 	}
 
 	/**
@@ -39,6 +50,14 @@ export default class PointNode extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
+		var icon = null;
+
+		if (this.props.type === 'life') {
+			icon = this.LIFE_ICON_DATA;
+		} else {
+			icon = this.PERK_ICON_DATA;
+		}
+
 		return (
 			<ReactKonva.Group
 				ref = {(ref) => this.group = ref}
@@ -50,7 +69,8 @@ export default class PointNode extends React.Component {
 				<Node
 					ref = {(ref) => this.node = ref}
 					id = {this.props.id}
-					radius = {this.NODE_RADIUS}
+					size = {36}
+					icon = {icon}
 					fill = {this.NODE_COLORS[this.props.type]}
 					selected = {this.props.selected}
 					draggable = {false}
@@ -58,14 +78,15 @@ export default class PointNode extends React.Component {
 					onMouseOver = {this.props.onMouseOver}
 					onMouseOut = {this.props.onMouseOut}
 				/>
+
 				<ReactKonva.Text
 					ref = {(ref) => this.label = ref}
 					x = {-5}
 					y = {-9}
 					text = {this.props.value}
 					fontSize = {18}
-					fontStyle = 'bold'
-					align = 'center'
+					fontStyle = "bold"
+					align = "center"
 					listening = {false}
 				/>
 			</ReactKonva.Group>
@@ -89,7 +110,7 @@ export default class PointNode extends React.Component {
 PointNode.defaultProps = {
 	id: '',
 	x: 0,
-	y: 0, 
+	y: 0,
 	type: 'life',
 	value: '0',
 	selected: false,
