@@ -40,6 +40,7 @@ export default class SkillNode extends React.Component {
 				icon = {this.ICON_DATA}
 				fill = "#99601F"
 				selected = {this.props.selected}
+				state = {this.props.state}
 				draggable = {this.props.draggable}
 				onClick = {this.props.onClick}
 				onDragMove = {this.props.onDragMove}
@@ -77,6 +78,7 @@ SkillNode.propTypes = {
 	y: React.PropTypes.number.isRequired,
 	radius: React.PropTypes.number,
 	selected: React.PropTypes.bool,
+	state: React.PropTypes.oneOf(['normal', 'picked', 'start']),
 	draggable: React.PropTypes.bool,
 
 	onClick: React.PropTypes.func,

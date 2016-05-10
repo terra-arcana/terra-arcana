@@ -73,6 +73,7 @@ export default class PointNode extends React.Component {
 					icon = {icon}
 					fill = {this.NODE_COLORS[this.props.type]}
 					selected = {this.props.selected}
+					state = {this.props.state}
 					draggable = {false}
 					onClick = {this.props.onClick}
 					onMouseOver = {this.props.onMouseOver}
@@ -127,6 +128,7 @@ PointNode.propTypes = {
 	type: React.PropTypes.string.isRequired,
 	value: React.PropTypes.string.isRequired,
 	selected: React.PropTypes.bool,
+	state: React.PropTypes.oneOf(['normal', 'picked', 'start']),
 	draggable: React.PropTypes.bool,
 
 	onClick: React.PropTypes.func,

@@ -16,6 +16,12 @@ export default class Node extends React.Component {
 	constructor(props) {
 		super(props);
 
+		/**
+		 * The fatness of the stroke displayed on a selected node
+		 * @type {Number}
+		 */
+		this.SELECTED_STROKE = 5;
+
 		this.onClick = this.onClick.bind(this);
 		this.onDragMove = this.onDragMove.bind(this);
 		this.onMouseOver = this.onMouseOver.bind(this);
@@ -24,10 +30,25 @@ export default class Node extends React.Component {
 
 	/**
 	 * @override
+	 */
+	componentDidMount() {
+		this.group.on('mouseover', this.onMouseOver);
+		this.group.on('dragmove', this.onDragMove);
+	}
+
+	/**
+	 * @override
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var stroke = (this.props.selected) ? this.SELECTED_STROKE : 0;
+		var stroke = (this.props.selected) ? this.SELECTED_STROKE : 0,
+			background = 'white';
+
+		if (this.props.state === 'picked') {
+			background = '#F0E5C9';
+		} else if (this.props.state === 'start') {
+			background = '#F5D850';
+		}
 
 		return (
 			<ReactKonva.Group
@@ -42,7 +63,7 @@ export default class Node extends React.Component {
 			>
 				<ReactKonva.Circle
 					radius = {this.props.size * 0.7}
-					fill = "white"
+					fill = {background}
 					listening = {false}
 				/>
 				<ReactKonva.Path
@@ -58,29 +79,10 @@ export default class Node extends React.Component {
 					ref = {(ref) => this.outline = ref}
 					radius = {this.props.size * 0.7}
 					stroke = {stroke}
-					listening = {false}
+					listening = {true}
 				/>
 			</ReactKonva.Group>
 		);
-	}
-
-	/**
-	 * @override
-	 */
-	componentWillMount() {
-		/**
-		 * The fatness of the stroke displayed on a selected node
-		 * @type {Number}
-		 */
-		this.SELECTED_STROKE = 5;
-	}
-
-	/**
-	 * @override
-	 */
-	componentDidMount() {
-		this.group.on('mouseover', this.onMouseOver);
-		this.group.on('dragmove', this.onDragMove);
 	}
 
 	/**
@@ -157,6 +159,7 @@ Node.propTypes = {
 	fill: React.PropTypes.string,
 	draggable: React.PropTypes.bool,
 	selected: React.PropTypes.bool,
+	state: React.PropTypes.oneOf(['normal', 'picked', 'start']),
 	size: React.PropTypes.number.isRequired,
 	icon: React.PropTypes.string.isRequired,
 
