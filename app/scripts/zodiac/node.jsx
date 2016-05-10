@@ -31,16 +31,20 @@ export default class Node extends React.Component {
 
 		return (
 			<ReactKonva.Group
-				ref = {(ref) => this.element = ref}
+				ref = {(ref) => this.group = ref}
 				x = {this.props.x}
 				y = {this.props.y}
 				draggable = {this.props.draggable}
-				listening = {true}
 				onClick = {this.onClick}
 				onDragMove = {this.onDragMove}
 				onMouseOver = {this.onMouseOver}
 				onMouseOut = {this.onMouseOut}
 			>
+				<ReactKonva.Circle
+					radius = {this.props.size * 0.7}
+					fill = "white"
+					listening = {false}
+				/>
 				<ReactKonva.Path
 					ref = {(ref) => this.icon = ref}
 					x = {-this.props.size/2}
@@ -52,9 +56,7 @@ export default class Node extends React.Component {
 				/>
 				<ReactKonva.Circle
 					ref = {(ref) => this.outline = ref}
-					x = {-this.props.size/1.5}
-					y = {-this.props.size/1.5}
-					radius = {this.props.size * 1.5}
+					radius = {this.props.size * 0.7}
 					stroke = {stroke}
 					listening = {false}
 				/>
@@ -77,8 +79,8 @@ export default class Node extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		this.element.on('mouseover', this.onMouseOver);
-		this.element.on('dragmove', this.onDragMove);
+		this.group.on('mouseover', this.onMouseOver);
+		this.group.on('dragmove', this.onDragMove);
 	}
 
 	/**
@@ -128,7 +130,7 @@ export default class Node extends React.Component {
 	 */
 	onDragMove() {
 		if (this.props.onDragMove) {
-			this.props.onDragMove(this.props.id, this.element.x(), this.element.y());
+			this.props.onDragMove(this.props.id, this.group.x(), this.group.y());
 		}
 	}
 }
