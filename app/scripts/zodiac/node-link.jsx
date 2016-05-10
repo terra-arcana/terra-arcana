@@ -24,7 +24,8 @@ export default class NodeLink extends React.Component {
 				y = {this.props.from.y}
 				points = {points}
 				stroke = {(this.props.highlighted) ? 'red' : 'black'}
-				tension = {0}
+				strokeWidth = {0.5}
+				tension = {5}
 			/>
 		);
 	}
@@ -35,11 +36,11 @@ export default class NodeLink extends React.Component {
  */
 NodeLink.defaultProps = {
 	from: {
-		x: 0, 
+		x: 0,
 		y: 0
 	},
 	to: {
-		x: 0, 
+		x: 0,
 		y: 0
 	},
 	highlighted: false

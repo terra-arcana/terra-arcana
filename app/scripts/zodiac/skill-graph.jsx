@@ -131,10 +131,10 @@ export default class SkillGraph extends React.Component {
 						{this.state.nodeData.map(function(node) {
 							var state;
 
-							if (node.start) {
-								state = 'start';
-							} else if (this.props.pickedNodes.indexOf(node.id) !== -1) {
+							if (this.props.pickedNodes.indexOf(node.id) !== -1) {
 								state = 'picked';
+							} else if (node.start) {
+								state = 'start';
 							} else {
 								state = 'normal';
 							}
