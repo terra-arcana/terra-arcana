@@ -75,7 +75,8 @@ namespace terraarcana {
 					'author'
 				),
 				'capabilities' => array(
-					'publish_posts' 	=> 'publish_characters'
+					'publish_posts' 	=> 'publish_characters',
+					'edit_post' 		=> 'edit_character'
 				)
 			));
 		}
