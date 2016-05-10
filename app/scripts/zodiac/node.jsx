@@ -20,7 +20,7 @@ export default class Node extends React.Component {
 		 * The fatness of the stroke displayed on a selected node
 		 * @type {Number}
 		 */
-		this.SELECTED_STROKE = 5;
+		this.SELECTED_STROKE = 1;
 
 		this.onClick = this.onClick.bind(this);
 		this.onDragMove = this.onDragMove.bind(this);
@@ -41,13 +41,14 @@ export default class Node extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var stroke = (this.props.selected) ? this.SELECTED_STROKE : 0,
-			background = 'white';
+		var background;
 
 		if (this.props.state === 'picked') {
 			background = '#F0E5C9';
 		} else if (this.props.state === 'start') {
 			background = '#F5D850';
+		} else {
+			background = 'white';
 		}
 
 		return (
@@ -64,7 +65,9 @@ export default class Node extends React.Component {
 				<ReactKonva.Circle
 					radius = {this.props.size * 0.7}
 					fill = {background}
-					listening = {false}
+					stroke = {(this.props.state !== 'normal') ? 'black' : 'white'}
+					strokeWidth = {0.5}
+					listening = {true}
 				/>
 				<ReactKonva.Path
 					ref = {(ref) => this.icon = ref}
@@ -74,12 +77,6 @@ export default class Node extends React.Component {
 					data = {this.props.icon}
 					fill = {this.props.fill}
 					listening = {false}
-				/>
-				<ReactKonva.Circle
-					ref = {(ref) => this.outline = ref}
-					radius = {this.props.size * 0.7}
-					stroke = {stroke}
-					listening = {true}
 				/>
 			</ReactKonva.Group>
 		);
