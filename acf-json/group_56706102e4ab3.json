@@ -769,6 +769,22 @@
                     "disabled": 0
                 }
             ]
+        },
+        {
+            "key": "field_57235889039c9",
+            "label": "Comp\u00e9tence de d\u00e9part",
+            "name": "starting_skill",
+            "type": "true_false",
+            "instructions": "Si cette comp\u00e9tence fait partie des comp\u00e9tences de d\u00e9part \u00e0 la cr\u00e9ation de personnage.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Comp\u00e9tence de d\u00e9part",
+            "default_value": 0
         }
     ],
     "location": [
@@ -788,5 +804,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1462324610
+    "modified": 1462324611
 }

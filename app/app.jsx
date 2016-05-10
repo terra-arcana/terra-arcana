@@ -7,6 +7,7 @@ import Lodash from 'lodash';
 import Sidenav from './scripts/sidenav/sidenav.jsx';
 import IndexPage from './scripts/index.page.jsx';
 import CharacterPage from './scripts/character/character.page.jsx';
+import CharacterNewPage from './scripts/character/character-new.page.jsx';
 import ZodiacViewerPage from './scripts/zodiac/zodiac-viewer.page.jsx';
 import CodexPage from './scripts/codex/codex.page.jsx';
 
@@ -70,7 +71,9 @@ class App extends React.Component {
 					onSwitchActiveCharacter = {this.switchActiveCharacter}
 				/>
 				<div id="sidenav-content-wrapper" className="container-fluid">
-					<RouteHandler />
+					<RouteHandler
+						onSwitchActiveCharacter = {this.switchActiveCharacter}
+					/>
 				</div>
 			</div>
 		);
@@ -79,8 +82,9 @@ class App extends React.Component {
 	/**
 	 * Changes the current user's active character to a new one.
 	 * @param {number} id The new active character's ID
+	 * @param {bool} [sendServerUpdate=true] Notify the back-end that the current user changed
 	 */
-	switchActiveCharacter(id) {
+	switchActiveCharacter(id, sendServerUpdate=true) {
 		var currentUser = Lodash.cloneDeep(this.state.currentUser);
 
 		currentUser['active_character'] = id;
@@ -90,16 +94,18 @@ class App extends React.Component {
 		});
 
 		// Update WordPress user model
-		jQuery.ajax({
-			url: WP_API_Settings.root + 'wp/v2/users/' + currentUser['id'],
-			method: 'POST',
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
-			},
-			data: {
-				'active_character': id
-			}
-		});
+		if (sendServerUpdate) {
+			jQuery.ajax({
+				url: WP_API_Settings.root + 'wp/v2/users/' + currentUser['id'],
+				method: 'POST',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+				},
+				data: {
+					'active_character': id
+				}
+			});
+		}
 	}
 }
 
@@ -108,6 +114,7 @@ let routes = (
 		<DefaultRoute handler={IndexPage} />
 		<Route path="/codex/" handler={CodexPage} />
 		<Route path="/zodiaque/" handler={ZodiacViewerPage} />
+		<Route path="/personnage/creer/" handler={CharacterNewPage} />
 		<Route path="/personnage/:characterSlug/" handler={CharacterPage} />
 	</Route>
 );

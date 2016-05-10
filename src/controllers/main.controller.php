@@ -82,10 +82,12 @@ namespace terraarcana {
 		 */
 		public function activate_theme() {
 			$admin = get_role('administrator');
-			$contributor = get_role('contributor');
-
 			$admin->add_cap('publish_characters');
+			$admin->add_cap('edit_character');
+
+			$contributor = get_role('contributor');
 			$contributor->add_cap('publish_characters');
+			$contributor->add_cap('edit_character');
 		}
 
 		/**
@@ -94,10 +96,12 @@ namespace terraarcana {
 		 */
 		public function deactivate_theme() {
 			$admin = get_role('administrator');
-			$contributor = get_role('contributor');
+			$admin->remove_cap('publish_characters');
+			$admin->remove_cap('edit_character');
 
-			$admin->remove_cap('publish_characters');
-			$admin->remove_cap('publish_characters');
+			$contributor = get_role('contributor');
+			$contributor->remove_cap('publish_characters');
+			$contributor->remove_cap('edit_character');
 		}
 
 		/**

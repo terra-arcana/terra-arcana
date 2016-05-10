@@ -75,7 +75,8 @@ namespace terraarcana {
 					'author'
 				),
 				'capabilities' => array(
-					'publish_posts' 	=> 'publish_characters'
+					'publish_posts' 	=> 'publish_characters',
+					'edit_post' 		=> 'edit_character'
 				)
 			));
 		}
@@ -93,6 +94,10 @@ namespace terraarcana {
 
 			register_rest_field($this->_postTypeName, 'perk_points', array(
 				'get_callback' => array($this, 'get_perk_points')
+			));
+
+			register_rest_field($this->_postTypeName, 'starting_skill', array(
+				'update_callback' => array($this, 'initialize_character')
 			));
 		}
 
@@ -150,6 +155,38 @@ namespace terraarcana {
 					'bonus' => $bonus_perk_points
 				);
 			}
+		}
+
+		/**
+		 * Initializes a new character's build with a starter skill.
+		 * @param mixed $value The value of the field
+		 * @param WP_Post $object The object from the response
+		 * @param string $field_name Name of field
+		 */
+		public function initialize_character($starting_skill, $object, $field_name) {
+			$starting_build = array(
+				array(
+					'id' => $starting_skill,
+					'type' => 'skill',
+					'perks' => false
+				)
+			);
+
+			// Add all automatic skills to the build
+			$auto_skills = get_field('auto_skills', 'option');
+			foreach($auto_skills as $skill) {
+				$starting_build[] = array(
+					'id' => $skill['skill']->ID,
+					'type' => 'skill',
+					'perks' => false
+				);
+			}
+
+			// Set starting build
+			update_field($this->_fields['current_build']['key'], $starting_build, $object->ID);
+
+			// Set character as active character
+			update_field('active_character', $object->ID, 'user_' . get_current_user_id());
 		}
 	}
 }

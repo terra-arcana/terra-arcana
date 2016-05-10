@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
+import Lodash from 'lodash';
 
 import SidenavCharacterSwitcher from './sidenav-character-switcher.jsx';
 
@@ -65,6 +66,11 @@ export default class SidenavUserPanel extends React.Component {
 
 				// Wait for all people requests to finish before updating state
 				jQuery.when.apply(jQuery, peopleRequests).done(function() {
+					// Close character switcher when user characters have changed
+					if (!Lodash.isEqual(this.state.userCharacters, charactersResult)) {
+						jQuery('#ta-sidenav-character-switcher').collapse('hide');
+					}
+
 					this.setState({
 						loadingCharacters: false,
 						userCharacters: charactersResult
@@ -123,10 +129,13 @@ export default class SidenavUserPanel extends React.Component {
 		// No active character
 		else if (!this.state.loadingCharacters) {
 			activeCharacterButton = (
-				<a className="list-group-item list-group-item-success" href="#">
+				<Link
+					to = "/personnage/creer/"
+					className = "list-group-item list-group-item-success"
+				>
 					<span className="glyphicon glyphicon-plus pull-right"></span>
 					Créer un personnage
-				</a>
+				</Link>
 			);
 		}
 
