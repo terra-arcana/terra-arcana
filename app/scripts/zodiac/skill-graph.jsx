@@ -129,6 +129,16 @@ export default class SkillGraph extends React.Component {
 						scale = {{x: this.state.zoom, y: this.state.zoom}}
 					>
 						{this.state.nodeData.map(function(node) {
+							var state;
+
+							if (this.props.pickedNodes.indexOf(node.id) !== -1) {
+								state = 'picked';
+							} else if (node.start) {
+								state = 'start';
+							} else {
+								state = 'normal';
+							}
+
 							switch (node.type) {
 
 							// Skill nodes
@@ -141,6 +151,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										selected = {(node.start || this.props.pickedNodes.indexOf(node.id) !== -1)}
+										state = {state}
 										draggable = {this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
@@ -159,6 +170,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
+										state = {state}
 										draggable = {this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
@@ -180,6 +192,7 @@ export default class SkillGraph extends React.Component {
 										type = {node.type}
 										value = {node.value}
 										selected = {(node.start || this.props.pickedNodes.indexOf(node.id) !== -1)}
+										state = {state}
 										draggable = {(this.props.canDragNodes)}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}

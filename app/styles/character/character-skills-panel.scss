@@ -1,7 +1,7 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
 
-.skill-graph-editor-character-skills-panel {
+.ta-skill-graph-editor-character-skills-panel {
 	@include make-sm-column(12);
 	@include make-lg-column(4);
 
@@ -10,7 +10,7 @@
 		padding-left: 0;
 	}
 
-	.skills-list {
+	.ta-skills-list {
 		span {
 			pointer-events: none;
 		}
@@ -21,4 +21,13 @@
 			pointer-events: none;
 		}
 	}
+}
+
+.ta-perk-icon {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	background-image: url(../../images/zodiac/perk.png);
+	background-repeat: no-repeat;
+	background-size: cover;
 }
