@@ -30,4 +30,13 @@
 	background-image: url(../../images/zodiac/perk.png);
 	background-repeat: no-repeat;
 	background-size: cover;
+
+	&.sm {
+		width: 10px;
+		height: 10px;
+	}
+
+	&.white {
+		background-image: url(../../images/zodiac/perk-white.png);
+	}
 }
