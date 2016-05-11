@@ -76,7 +76,8 @@ namespace terraarcana {
 				),
 				'capabilities' => array(
 					'publish_posts' 	=> 'publish_characters',
-					'edit_post' 		=> 'edit_character'
+					'edit_post' 		=> 'edit_character',
+					'delete_post' 		=> 'delete_character'
 				)
 			));
 		}
