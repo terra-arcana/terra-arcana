@@ -84,10 +84,12 @@ namespace terraarcana {
 			$admin = get_role('administrator');
 			$admin->add_cap('publish_characters');
 			$admin->add_cap('edit_character');
+			$admin->add_cap('delete_character');
 
 			$contributor = get_role('contributor');
 			$contributor->add_cap('publish_characters');
 			$contributor->add_cap('edit_character');
+			$contributor->add_cap('delete_character');
 		}
 
 		/**
@@ -98,10 +100,12 @@ namespace terraarcana {
 			$admin = get_role('administrator');
 			$admin->remove_cap('publish_characters');
 			$admin->remove_cap('edit_character');
+			$admin->remove_cap('delete_character');
 
 			$contributor = get_role('contributor');
 			$contributor->remove_cap('publish_characters');
 			$contributor->remove_cap('edit_character');
+			$contributor->remove_cap('delete_character');
 		}
 
 		/**
