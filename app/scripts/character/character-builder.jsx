@@ -257,7 +257,7 @@ export default class CharacterBuilder extends React.Component {
 		// Add a node to the build
 		if (nodeIndex === -1) {
 			// Only add a node if there is XP left
-			if (newBuild.length < this.props.character.xp.total) {
+			if (newBuild.length - 2 < this.props.character.xp.total) {
 				newBuild[newBuild.length] = {
 					id: id,
 					type: nodeData.type,
