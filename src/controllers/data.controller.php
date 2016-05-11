@@ -51,6 +51,8 @@ namespace terraarcana {
 					add_action('rest_api_init', array($route, 'register_routes'));
 				}
 			}
+
+			add_filter('rest_query_vars', array($this, 'allow_meta_filter'));
 		}
 
 		private function __clone() {}
@@ -84,6 +86,16 @@ namespace terraarcana {
 		 */
 		public function getCPT($slug) {
 			return $this->_cpts[$slug];
+		}
+
+		/**
+		 * Allow filtering by `meta_key` and `meta_value` in WP REST API
+		 * @param {Array} $vars The existing REST vars
+		 * @param {Array} The filtered array
+		 */
+		public function allow_meta_filter($vars) {
+			$vars = array_merge($vars, array('meta_key', 'meta_value'));
+			return $vars;
 		}
 	}
 }

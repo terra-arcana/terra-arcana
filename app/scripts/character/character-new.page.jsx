@@ -44,7 +44,7 @@ export default class CharacterNewPage extends React.Component {
 		var peoples = [],
 			startingSkills = [],
 
-			peopleRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/people', function(result) {
+			peopleRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/people?filter[meta_key]=playable&filter[meta_value]=1', function(result) {
 				peoples = result;
 			}.bind(this)),
 
