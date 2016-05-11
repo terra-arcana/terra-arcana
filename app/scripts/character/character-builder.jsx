@@ -22,6 +22,13 @@ export default class CharacterBuilder extends React.Component {
 	constructor(props) {
 		super(props);
 
+		/**
+		 * Base energy granted to all characters
+		 * @type {Number}
+		 * @private
+		 */
+		this.BASE_ENERGY = 6;
+
 		this.inspectSkill = this.inspectSkill.bind(this);
 		this.uninspect = this.uninspect.bind(this);
 		this.selectNode = this.selectNode.bind(this);
@@ -32,6 +39,7 @@ export default class CharacterBuilder extends React.Component {
 		this.getPickedSkillsUpgradesArray = this.getPickedSkillsUpgradesArray.bind(this);
 		this.getTriangular = this.getTriangular.bind(this);
 		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
+		this.calculateCurrentEnergy = this.calculateCurrentEnergy.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
 
 		/**
@@ -52,6 +60,7 @@ export default class CharacterBuilder extends React.Component {
 				current: 0,
 				total: 0
 			},
+			energy: this.BASE_ENERGY,
 			alert: undefined
 		};
 	}
@@ -156,6 +165,7 @@ export default class CharacterBuilder extends React.Component {
 					skills = {this.getPickedSkillsUpgradesArray()}
 					xp = {xpValues}
 					pp = {this.state.perkPoints}
+					energy = {this.state.energy}
 					activeSkill = {this.state.activeNode}
 					onSelectSkill = {this.inspectSkill}
 					onUnselectSkill = {this.uninspect}
@@ -178,6 +188,7 @@ export default class CharacterBuilder extends React.Component {
 
 			// Now that `this.state.nodeData` exists, we can calculate the perk points
 			this.setState({
+				energy: this.calculateCurrentEnergy(this.state.currentBuild),
 				perkPoints: this.calculateCurrentPerkBalance(this.state.currentBuild)
 			});
 		}.bind(this));
@@ -279,6 +290,7 @@ export default class CharacterBuilder extends React.Component {
 
 		this.setState({
 			currentBuild: newBuild,
+			energy: this.calculateCurrentEnergy(newBuild),
 			perkPoints: this.calculateCurrentPerkBalance(newBuild)
 		});
 	}
@@ -428,7 +440,7 @@ export default class CharacterBuilder extends React.Component {
 
 	/**
 	 * Return the current perk point balance considering all the current purchases in state
-	 * @param {Object} build The current character build to analyze
+	 * @param {Array} build The current character build to analyze
 	 * @return {Object} The `current` and `total` amount of perk points available
 	 */
 	calculateCurrentPerkBalance(build) {
@@ -464,6 +476,26 @@ export default class CharacterBuilder extends React.Component {
 			current: totalPoints - pointsSpent,
 			total: totalPoints
 		};
+	}
+
+	/**
+	 * Return the current energy totals considering all the current purchases
+	 * @param {Array} skillsList The current character build
+	 * @return {Number} The amount of energy collected through nodes for this character
+	 */
+	calculateCurrentEnergy(skillsList) {
+		var i, len, skill,
+			totalPoints = 0;
+
+		for (i = 0, len = skillsList.length; i < len; i++) {
+			skill = skillsList[i];
+
+			if (skill.type === 'life') {
+				totalPoints += parseInt(this.getNodeDataById(skill.id).value);
+			}
+		}
+
+		return this.BASE_ENERGY + totalPoints;
 	}
 
 	/**
