@@ -204,7 +204,6 @@ export default class CharacterSkillsPanel extends React.Component {
 CharacterSkillsPanel.defaultProps = {
 	characterName: 'Boba Fett',
 	skills: [],
-	energy: 8,
 	xp: {
 		current: 0,
 		total: 0
@@ -231,7 +230,6 @@ CharacterSkillsPanel.propTypes = {
 			name: React.PropTypes.string.isRequired
 		})
 	),
-	energy: React.PropTypes.number,
 	xp: React.PropTypes.shape({
 		current: React.PropTypes.number.isRequired,
 		total: React.PropTypes.number.isRequired
@@ -240,6 +238,7 @@ CharacterSkillsPanel.propTypes = {
 		current: React.PropTypes.number.isRequired,
 		total: React.PropTypes.number.isRequired
 	}),
+	energy: React.PropTypes.number.isRequired,
 	activeSkill: React.PropTypes.object,
 
 	onSelectSkill: React.PropTypes.func,
