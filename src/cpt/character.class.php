@@ -35,6 +35,9 @@ namespace terraarcana {
 				'last_validated_build' => array(
 					'key' => 'field_5701f2f9be275'
 				),
+				'picked_starting_skill' => array(
+					'key' => 'field_5733e30d21fff'
+				),
 				'photo' => array(
 					'key' => 'field_5701f25fbe272'
 				)
@@ -187,6 +190,7 @@ namespace terraarcana {
 
 			// Set starting build
 			update_field($this->_fields['current_build']['key'], $starting_build, $object->ID);
+			update_field($this->_fields['picked_starting_skill']['key'], $starting_skill, $object->ID);
 
 			// Set character as active character
 			update_field('active_character', $object->ID, 'user_' . get_current_user_id());
