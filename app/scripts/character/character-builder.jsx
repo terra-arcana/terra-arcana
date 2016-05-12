@@ -27,7 +27,7 @@ export default class CharacterBuilder extends React.Component {
 		 * @type {Number}
 		 * @private
 		 */
-		this.BASE_ENERGY = 6;
+		this.BASE_ENERGY = 8;
 
 		this.inspectSkill = this.inspectSkill.bind(this);
 		this.uninspect = this.uninspect.bind(this);
@@ -38,6 +38,7 @@ export default class CharacterBuilder extends React.Component {
 		this.getPickedNodesFlatArray = this.getPickedNodesFlatArray.bind(this);
 		this.getPickedSkillsUpgradesArray = this.getPickedSkillsUpgradesArray.bind(this);
 		this.getTriangular = this.getTriangular.bind(this);
+		this.filterUnpickedStartingNodes = this.filterUnpickedStartingNodes.bind(this);
 		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
 		this.calculateCurrentEnergy = this.calculateCurrentEnergy.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
@@ -179,11 +180,33 @@ export default class CharacterBuilder extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		jQuery.get(WP_API_Settings.root + 'terraarcana/v1/graph-data', function(result) {
+		var nodeData = [],
+			linkData = [],
+			graphMetadata = {},
+			startingSkills = [],
+
+			graphDataRequest = jQuery.get(WP_API_Settings.root + 'terraarcana/v1/graph-data', function(result) {
+				nodeData = result.nodes;
+				linkData = result.links;
+				graphMetadata = result.meta;
+			}.bind(this)),
+
+			startingSkillsRequest = jQuery.get(WP_API_Settings.root + 'terraarcana/v1/starting-skills', function(result) {
+				startingSkills = result;
+			}.bind(this));
+
+		jQuery.when(graphDataRequest, startingSkillsRequest).done(function() {
+			nodeData = this.filterUnpickedStartingNodes(
+				nodeData,
+				startingSkills,
+				this.props.character['picked_starting_skill']
+			);
+
 			this.setState({
-				nodeData: result.nodes,
-				linkData: result.links,
-				graphMetadata: result.meta
+				nodeData: nodeData,
+				linkData: linkData,
+				graphMetadata: graphMetadata,
+				startingSkills: startingSkills
 			});
 
 			// Now that `this.state.nodeData` exists, we can calculate the perk points
@@ -439,6 +462,34 @@ export default class CharacterBuilder extends React.Component {
 	}
 
 	/**
+	 * Filter out the node data and replace unpicked starting nodes by life nodes
+	 * @param {Array} nodeData The initial node data
+	 * @param {Array} startingSkills All the starting skills
+	 * @param {Number} pickedStartingSkill The starting skill picked by this character
+	 * @return {Array} The filtered node data
+	 */
+	filterUnpickedStartingNodes(nodeData, startingSkills, pickedStartingSkill) {
+		var i, ilen, j, jlen = startingSkills.length,
+			filteredNodeData = Lodash.cloneDeep(nodeData);
+
+		for (i = 0, ilen = filteredNodeData.length; i < ilen; i++) {
+			for (j = 0; j < jlen; j++) {
+				if (filteredNodeData[i].id === String(startingSkills[j].id) &&
+					filteredNodeData[i].id !== String(pickedStartingSkill)
+				) {
+					filteredNodeData[i].type = 'life';
+					filteredNodeData[i].value = '2';
+					filteredNodeData[i].start = false;
+					delete filteredNodeData[i].perks;
+					break;
+				}
+			}
+		}
+
+		return filteredNodeData;
+	}
+
+	/**
 	 * Return the current perk point balance considering all the current purchases in state
 	 * @param {Array} build The current character build to analyze
 	 * @return {Object} The `current` and `total` amount of perk points available
@@ -548,17 +599,11 @@ export default class CharacterBuilder extends React.Component {
 /**
  * @type {Object}
  */
-CharacterBuilder.defaultProps = {
-	character: {
-		current_build: []
-	}
-};
-
-/**
- * @type {Object}
- */
 CharacterBuilder.propTypes = {
-	character: React.PropTypes.object,
+	character: React.PropTypes.shape({
+		current_build: React.PropTypes.array,
+		picked_starting_skill: React.PropTypes.number
+	}),
 
 	onSuccessfulSave: React.PropTypes.func
 };
