@@ -14,8 +14,8 @@
 </p>
 
 <p>
-	<strong>ATTENTION:</strong> La validation de ce formulaire ne redirige nulle part,
-	mais votre compte se créera bel et bien. Il est sécuritaire de revenir à la
-	<a href="<?php echo site_url(); ?>">page d'accueil</a> par la suite. Il s'agit d'un bug connu
-	relié à WordPress et nous nous excusons du désagrément entretemps.
+	<strong>ATTENTION:</strong>Il se peut que la validation de ce formulaire ne redirige nulle part.
+	Si cela arrive, il est sécuritaire de revenir à la <a href="<?php echo site_url(); ?>">page d'accueil</a>
+	par la suite, car votre compte se crééra bel et bien. Il s'agit d'un bug connu relié à WordPress
+	et nous nous excusons du désagrément entretemps.
 </p>
