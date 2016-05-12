@@ -35,6 +35,9 @@ namespace terraarcana {
 				'last_validated_build' => array(
 					'key' => 'field_5701f2f9be275'
 				),
+				'picked_starting_skill' => array(
+					'key' => 'field_5733e30d21fff'
+				),
 				'photo' => array(
 					'key' => 'field_5701f25fbe272'
 				)
@@ -73,6 +76,11 @@ namespace terraarcana {
 				'supports' => array(
 					'title',
 					'author'
+				),
+				'capabilities' => array(
+					'publish_posts' 	=> 'publish_characters',
+					'edit_post' 		=> 'edit_character',
+					'delete_post' 		=> 'delete_character'
 				)
 			));
 		}
@@ -90,6 +98,10 @@ namespace terraarcana {
 
 			register_rest_field($this->_postTypeName, 'perk_points', array(
 				'get_callback' => array($this, 'get_perk_points')
+			));
+
+			register_rest_field($this->_postTypeName, 'starting_skill', array(
+				'update_callback' => array($this, 'initialize_character')
 			));
 		}
 
@@ -147,6 +159,41 @@ namespace terraarcana {
 					'bonus' => $bonus_perk_points
 				);
 			}
+		}
+
+		/**
+		 * Initializes a new character's build with a starter skill.
+		 * @param mixed $value The value of the field
+		 * @param WP_Post $object The object from the response
+		 * @param string $field_name Name of field
+		 */
+		public function initialize_character($starting_skill, $object, $field_name) {
+			$starting_build = array(
+				array(
+					'id' => $starting_skill,
+					'type' => 'skill',
+					'perks' => false
+				)
+			);
+
+			// Add all automatic skills to the build
+			$auto_skills = get_field('auto_skills', 'option');
+			if (is_array($auto_skills)) {
+				foreach($auto_skills as $skill) {
+					$starting_build[] = array(
+						'id' => $skill['skill']->ID,
+						'type' => 'skill',
+						'perks' => false
+					);
+				}
+			}
+
+			// Set starting build
+			update_field($this->_fields['current_build']['key'], $starting_build, $object->ID);
+			update_field($this->_fields['picked_starting_skill']['key'], $starting_skill, $object->ID);
+
+			// Set character as active character
+			update_field('active_character', $object->ID, 'user_' . get_current_user_id());
 		}
 	}
 }

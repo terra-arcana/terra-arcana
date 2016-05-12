@@ -24,13 +24,18 @@ export default class SkillGraph extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.ZOOM_SPEED = 0.001;
+		this.ZOOM_MIN = 0.1;
+		this.ZOOM_MAX = 1.5;
+
 		/**
 		 * @override
 		 * @type {Object}
 		 */
 		this.state = {
 			nodeData: this.props.initialNodeData,
-			linkData: this.props.initialLinkData
+			linkData: this.props.initialLinkData,
+			zoom: 1
 		};
 
 		/**
@@ -51,6 +56,8 @@ export default class SkillGraph extends React.Component {
 		this.hasAlternatePathToStart = this.hasAlternatePathToStart.bind(this);
 		this.onNodeClick = this.onNodeClick.bind(this);
 		this.onNodeDragMove = this.onNodeDragMove.bind(this);
+		this.onZoom = this.onZoom.bind(this);
+		this.onResetZoom = this.onResetZoom.bind(this);
 		this.getNodeData = this.getNodeData.bind(this);
 		this.getLinkData = this.getLinkData.bind(this);
 	}
@@ -74,13 +81,26 @@ export default class SkillGraph extends React.Component {
 		// the same size as the actual rendering of the stage after resizing, so
 		// putting big values seems to work as intended.
 		return (
-			<div className="skill-graph-editor">
+			<div
+				className = "ta-skill-graph-editor"
+				onWheel = {this.onZoom}
+			>
+				<button
+					type = "button"
+					className = "ta-reset-zoom-button btn btn-default pull-right"
+					onClick = {this.onResetZoom}
+				>
+					Restaurer zoom
+				</button>
 				<Stage
 					ref = {(ref) => this.stage = ref}
 					width = {2000}
 					height = {2000}
 				>
-					<Layer ref={(ref) => this.linkLayer = ref}>
+					<Layer
+						ref = {(ref) => this.linkLayer = ref}
+						scale = {{x: this.state.zoom, y: this.state.zoom}}
+					>
 						{this.state.linkData.map(function(link) {
 							var fromNode = this.getNodeDataById(link[0]),
 								toNode = this.getNodeDataById(link[1]),
@@ -104,8 +124,21 @@ export default class SkillGraph extends React.Component {
 							);
 						}.bind(this))}
 					</Layer>
-					<Layer ref={(ref) => this.nodeLayer = ref}>
+					<Layer
+						ref = {(ref) => this.nodeLayer = ref}
+						scale = {{x: this.state.zoom, y: this.state.zoom}}
+					>
 						{this.state.nodeData.map(function(node) {
+							var state;
+
+							if (this.props.pickedNodes.indexOf(node.id) !== -1) {
+								state = 'picked';
+							} else if (node.start) {
+								state = 'start';
+							} else {
+								state = 'normal';
+							}
+
 							switch (node.type) {
 
 							// Skill nodes
@@ -118,6 +151,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										selected = {(node.start || this.props.pickedNodes.indexOf(node.id) !== -1)}
+										state = {state}
 										draggable = {this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
@@ -136,6 +170,7 @@ export default class SkillGraph extends React.Component {
 										x = {node.x}
 										y = {node.y}
 										selected = {(this.props.pickedNodes.indexOf(node.id) !== -1)}
+										state = {state}
 										draggable = {this.props.canDragNodes}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
@@ -157,6 +192,7 @@ export default class SkillGraph extends React.Component {
 										type = {node.type}
 										value = {node.value}
 										selected = {(node.start || this.props.pickedNodes.indexOf(node.id) !== -1)}
+										state = {state}
 										draggable = {(this.props.canDragNodes)}
 										onClick = {this.onNodeClick}
 										onDragMove = {this.onNodeDragMove}
@@ -461,6 +497,30 @@ export default class SkillGraph extends React.Component {
 
 		this.setState({
 			nodeData: newNodeData
+		});
+	}
+
+	/**
+	 * Handle mouse wheel events to apply zoom on the graph
+	 * @param {SyntheticMouseEvent} event The mouse event
+	 */
+	onZoom(event) {
+		event.preventDefault();
+
+		this.setState({
+			zoom: Math.max(this.ZOOM_MIN, Math.min(this.ZOOM_MAX, this.state.zoom + event.deltaY*this.ZOOM_SPEED))
+		});
+	}
+
+	/**
+	 * Handle zoom reset button clicks
+	 * @param {SyntheticMouseEvent} event The click event
+	 */
+	onResetZoom(event) {
+		event.preventDefault();
+
+		this.setState({
+			zoom: 1
 		});
 	}
 

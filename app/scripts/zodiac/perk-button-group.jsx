@@ -23,7 +23,7 @@ export default class PerkButtonGroup extends React.Component {
 					>
 						<span className="glyphicon glyphicon-chevron-up"></span>&nbsp;
 						{this.props.cost}
-						<span className="glyphicon glyphicon-fire"></span>
+						<span className="ta-perk-icon sm white"></span>
 					</button>
 				) : null}
 				{(this.props.currentLevel > 0) ? (

@@ -19,7 +19,9 @@ module.exports = function(config) {
 			module: {
 				loaders: [
 					{test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader'},
-					{test: /\.scss$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract('css!sass')}
+					{test: /\.scss$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract('css!sass')},
+					{test: /\.(gif|jpe?g|png)$/, exclude: /node_modules/, loader: 'file?name=images/[name].[ext]'},
+					{test: /\.svg$/, exclude: /node_modules/, loader: 'svg-inline'}
 				]
 			},
 			plugins: [

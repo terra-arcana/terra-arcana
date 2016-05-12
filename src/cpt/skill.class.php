@@ -69,6 +69,9 @@ namespace terraarcana {
 				),
 				'perks' => array(
 					'key' => 'field_566f2e297ce74'
+				),
+				'starting_skill' => array(
+					'key' => 'field_57235889039c9'
 				)
 			);
 		}

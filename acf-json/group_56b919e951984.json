@@ -79,6 +79,49 @@
                     ]
                 }
             ]
+        },
+        {
+            "key": "field_5723a3904c13b",
+            "label": "Comp\u00e9tences automatiques",
+            "name": "auto_skills",
+            "type": "repeater",
+            "instructions": "Ces comp\u00e9tences sont automatiquement octroy\u00e9s aux nouveaux personnages. Elles ne comptent pas dans le calcul d'exp\u00e9rience du personnage.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": "",
+            "max": "",
+            "layout": "table",
+            "button_label": "Ajouter une comp\u00e9tence",
+            "sub_fields": [
+                {
+                    "key": "field_5723a3d04c13c",
+                    "label": "Comp\u00e9tence",
+                    "name": "skill",
+                    "type": "post_object",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": [
+                        "skill"
+                    ],
+                    "taxonomy": [],
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "return_format": "object",
+                    "ui": 1
+                }
+            ]
         }
     ],
     "location": [
@@ -98,5 +141,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1454972302
+    "modified": 1461953584
 }

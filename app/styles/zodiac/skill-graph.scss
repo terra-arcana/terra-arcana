@@ -1,4 +1,4 @@
-.skill-graph-editor {
+.ta-skill-graph-editor {
 	.konvajs-content {
 		background-color: white;
 		width: auto !important;
@@ -12,5 +12,13 @@
 				position: relative !important;
 			}
 		}
+	}
+
+	.ta-reset-zoom-button {
+		position: relative;
+		z-index: 10;
+		top: 1em;
+		right: 1em;
+		margin-bottom: -99px;
 	}
 }

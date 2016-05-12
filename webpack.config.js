@@ -36,8 +36,12 @@ module.exports = [
 					loader: ExtractTextPlugin.extract('css!sass')
 				},
 				{
-					test: /\.(gif|jpe?g|png|svg)$/,
+					test: /\.(gif|jpe?g|png)$/,
 					loader: 'file?name=images/[name].[ext]'
+				},
+				{
+					test: /\.svg$/,
+					loader: 'svg-inline'
 				},
 				{
 					test: /\.json$/,
@@ -97,6 +101,10 @@ module.exports = [
 				{
 					test: /\.scss$/,
 					loader: ExtractTextPlugin.extract('css!sass')
+				},
+				{
+					test: /\.svg$/,
+					loader: 'svg-inline'
 				}
 			]
 		},

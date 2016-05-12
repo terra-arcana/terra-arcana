@@ -79,7 +79,7 @@ export default class CharacterSkillsPanel extends React.Component {
 
 		if (this.state.displaySkills) {
 			skillsList = (
-				<ul className='list-group skills-list'>
+				<ul className='list-group ta-skills-list'>
 					{this.state.skills.map(function(skill) {
 						return (
 							<CharacterSkillsPanelSkillElement
@@ -109,7 +109,7 @@ export default class CharacterSkillsPanel extends React.Component {
 		}
 
 		return (
-			<div className="skill-graph-editor-character-skills-panel">
+			<div className="ta-skill-graph-editor-character-skills-panel">
 				<div className="panel panel-default">
 					<div className="panel-body">
 						<ul>
@@ -131,7 +131,7 @@ export default class CharacterSkillsPanel extends React.Component {
 							</li>
 							<li>
 								<h4 className={(this.props.pp.current < 0) ? 'text-danger' : ''}>
-									<span className="glyphicon glyphicon-fire"></span>&nbsp;
+									<span className="ta-perk-icon"></span>&nbsp;
 									Points d'essence: {this.props.pp.current}/{this.props.pp.total}
 								</h4>
 								<div className="progress">
@@ -204,7 +204,6 @@ export default class CharacterSkillsPanel extends React.Component {
 CharacterSkillsPanel.defaultProps = {
 	characterName: 'Boba Fett',
 	skills: [],
-	energy: 8,
 	xp: {
 		current: 0,
 		total: 0
@@ -231,7 +230,6 @@ CharacterSkillsPanel.propTypes = {
 			name: React.PropTypes.string.isRequired
 		})
 	),
-	energy: React.PropTypes.number,
 	xp: React.PropTypes.shape({
 		current: React.PropTypes.number.isRequired,
 		total: React.PropTypes.number.isRequired
@@ -240,6 +238,7 @@ CharacterSkillsPanel.propTypes = {
 		current: React.PropTypes.number.isRequired,
 		total: React.PropTypes.number.isRequired
 	}),
+	energy: React.PropTypes.number.isRequired,
 	activeSkill: React.PropTypes.object,
 
 	onSelectSkill: React.PropTypes.func,

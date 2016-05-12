@@ -54,6 +54,8 @@ namespace terraarcana {
 			$this->_adminController = new AdminController();
 			$this->_loginController = new LoginController();
 
+			add_action('after_switch_theme', array($this, 'activate_theme'));
+			add_action('switch_theme', array($this, 'deactivate_theme'));
 			add_action('tgmpa_register', array($this, 'register_plugin_dependencies'));
 		}
 
@@ -73,6 +75,38 @@ namespace terraarcana {
 		 * @override
 		 */
 		public function init() {}
+
+		/**
+		 * Adds all required custom capabilities to roles.
+		 * Runs on theme activation.
+		 */
+		public function activate_theme() {
+			$admin = get_role('administrator');
+			$admin->add_cap('publish_characters');
+			$admin->add_cap('edit_character');
+			$admin->add_cap('delete_character');
+
+			$contributor = get_role('contributor');
+			$contributor->add_cap('publish_characters');
+			$contributor->add_cap('edit_character');
+			$contributor->add_cap('delete_character');
+		}
+
+		/**
+		 * Removes all custom capabilities to roles.
+		 * Runs on theme deactivation.
+		 */
+		public function deactivate_theme() {
+			$admin = get_role('administrator');
+			$admin->remove_cap('publish_characters');
+			$admin->remove_cap('edit_character');
+			$admin->remove_cap('delete_character');
+
+			$contributor = get_role('contributor');
+			$contributor->remove_cap('publish_characters');
+			$contributor->remove_cap('edit_character');
+			$contributor->remove_cap('delete_character');
+		}
 
 		/**
 		 * Registers all dependent plugins for proper theme functionality
