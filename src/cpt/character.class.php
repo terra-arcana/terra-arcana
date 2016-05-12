@@ -175,12 +175,14 @@ namespace terraarcana {
 
 			// Add all automatic skills to the build
 			$auto_skills = get_field('auto_skills', 'option');
-			foreach($auto_skills as $skill) {
-				$starting_build[] = array(
-					'id' => $skill['skill']->ID,
-					'type' => 'skill',
-					'perks' => false
-				);
+			if (is_array($auto_skills)) {
+				foreach($auto_skills as $skill) {
+					$starting_build[] = array(
+						'id' => $skill['skill']->ID,
+						'type' => 'skill',
+						'perks' => false
+					);
+				}
 			}
 
 			// Set starting build
