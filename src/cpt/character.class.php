@@ -44,6 +44,12 @@ namespace terraarcana {
 			);
 		}
 
+		public function init() {
+			parent::init();
+
+			add_filter('post_row_actions', array($this, 'add_sheet_row_action'), 10, 2);
+		}
+
 		/**
 		 * @override
 		 */
@@ -159,6 +165,19 @@ namespace terraarcana {
 					'bonus' => $bonus_perk_points
 				);
 			}
+		}
+
+		/**
+		 * Filter row actions to add a link to the character sheet admin list tables
+		 * @param [Array] $actions Existing actions
+		 * @param [WP_Post] $post Post being parsed
+		 */
+		function add_sheet_row_action($actions, $post) {
+			if ($post->post_type == $this->_postTypeName) {
+				$actions['sheet'] = "<a href=\"/personnage/$post->post_name/fiche/\">Fiche</a>";//"<a href=\"post.php?post=$post->ID&action=sheet\">Fiche</a>";
+			}
+
+			return $actions;
 		}
 
 		/**

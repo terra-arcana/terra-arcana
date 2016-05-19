@@ -2,6 +2,7 @@ import React from 'react';
 
 import CharacterProfile from './character-profile.jsx';
 import CharacterBuilder from './character-builder.jsx';
+import CharacterSheet from './character-sheet.jsx';
 
 require('../../styles/character/character.page.scss');
 
@@ -95,6 +96,15 @@ export default class CharacterPage extends React.Component {
 									<span className="no-events">&nbsp;Zodiaque</span>
 								</a>
 							</li>
+							<li
+								ref = {(ref) => this.tabLinks['sheet'] = ref}
+								className = {(this.state.activeTab === 'sheet') ? 'active' : ''}
+							>
+								<a href="#" onClick={this.onTabButtonClick} data-tab="sheet">
+									<span className="glyphicon glyphicon-file no-events" />
+									<span className="no-events">&nbsp;Fiche</span>
+								</a>
+							</li>
 						</ul>
 					</nav>
 				),
@@ -112,6 +122,10 @@ export default class CharacterPage extends React.Component {
 					/>
 				);
 				break;
+			case 'sheet':
+				tabContents = (
+					<CharacterSheet />
+				)
 			}
 
 			contents = (
