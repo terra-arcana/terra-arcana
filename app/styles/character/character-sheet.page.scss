@@ -1,0 +1,33 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+.ta-character-sheet {
+	h2 {
+		font-family: 'Cinzel Decorative', serif;
+	}
+}
+
+/**
+ * Page layout
+ */
+@media print {
+	body, .no-print {
+		visibility: hidden;
+	}
+
+	.ta-character-sheet {
+		visibility: visible;
+	}
+
+	.ta-character-tab-content > .row {
+		margin-left: -$grid-gutter-width;
+		margin-right: -$grid-gutter-width;
+	}
+
+	.ta-page-header, .ta-character .nav-tabs {
+		display: none;
+	}
+
+	#sidenav-page-wrapper.toggled {
+		padding-left: 0px;
+	}
+}

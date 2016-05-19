@@ -14,7 +14,7 @@ export default class CharacterPage extends React.Component {
 
 	/**
 	 * @constructor
-	 * @param {Object} Default props
+	 * @param {Object} props Default props
 	 */
 	constructor(props) {
 		super(props);
@@ -124,8 +124,10 @@ export default class CharacterPage extends React.Component {
 				break;
 			case 'sheet':
 				tabContents = (
-					<CharacterSheet />
-				)
+					<CharacterSheet
+						character = {this.state.character}
+					/>
+				);
 			}
 
 			contents = (
