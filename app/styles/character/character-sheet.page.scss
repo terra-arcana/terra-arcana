@@ -1,8 +1,62 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 
 .ta-character-sheet {
-	h2 {
+	h2, h3 {
 		font-family: 'Cinzel Decorative', serif;
+	}
+
+	h3 {
+		margin-top: 0px;
+		padding-bottom: 0.5em;
+		color: #666;
+		font-weight: bold;
+		font-size: 1.2em;
+		border-bottom: 2px solid #aaa;
+	}
+
+	.panel {
+		margin-bottom: 0.5em;
+		border: 0px;
+		border-bottom: 2px solid #aaa;
+		border-radius: 0px;
+		background: none;
+
+		.panel-heading {
+			padding: 0px;
+			border: none;
+			background: none;
+		}
+
+		.panel-body {
+			padding: 0.5em 0;
+
+			p {
+				margin: 0px;
+			}
+		}
+	}
+
+	.ta-skills-list {
+		.ta-skills-list-col {
+			min-height: 50%;
+		}
+
+		ul {
+			padding: 0px;
+			list-style-type: none;
+		}
+
+		.list-group {
+			margin-top: -0.2em;
+			margin-bottom: 0.3em;
+		}
+
+		.list-group-item {
+			padding: 0px;
+			background: none;
+			border: none;
+			font-size: 6pt;
+		}
 	}
 }
 
@@ -16,6 +70,14 @@
 
 	.ta-character-sheet {
 		visibility: visible;
+
+		h2 {
+			margin-top: 0px;
+		}
+
+		h3 {
+			font-size: 10pt;
+		}
 	}
 
 	.ta-character-tab-content > .row {
@@ -29,5 +91,22 @@
 
 	#sidenav-page-wrapper.toggled {
 		padding-left: 0px;
+	}
+
+	h4.panel-title {
+		font-size: 8pt;
+		font-weight: bold;
+	}
+
+	.panel-heading small {
+		font-size: 6pt;
+	}
+
+	.panel-body {
+		font-size: 6pt;
+	}
+
+	.ta-skill-effect {
+		font-size: 8pt;
 	}
 }
