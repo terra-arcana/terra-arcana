@@ -110,6 +110,12 @@ export default class CharacterSheet extends React.Component {
 
 		return (
 			<div className="ta-character-sheet">
+				<div className="col-xs-12 no-print">
+					<a href="#" className="btn btn-primary btn-sm" onClick={() => window.print()}>
+						<span className="glyphicon glyphicon-print no-events" />
+						<span className="no-events">&nbsp;Imprimer</span>
+					</a>
+				</div>
 				<h2 className="col-xs-9">
 					<strong>{this.props.character.title.rendered}</strong>&nbsp;
 					<ul className="list-inline ta-character-stats-badge">
@@ -126,10 +132,6 @@ export default class CharacterSheet extends React.Component {
 							{this.props.character.perk_points.total}
 						</li>
 					</ul>
-					<a href="#" className="btn btn-primary btn-sm no-print" onClick={() => window.print()}>
-						<span className="glyphicon glyphicon-print no-events" />
-						<span className="no-events">&nbsp;Imprimer</span>
-					</a>
 					<br/><small>Incarné par {this.state.authorName}</small>
 				</h2>
 
