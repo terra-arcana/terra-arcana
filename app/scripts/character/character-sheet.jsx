@@ -143,7 +143,11 @@ export default class CharacterSheet extends React.Component {
 						{instants}
 					</div>
 					<div className="ta-skills-list-col col-xs-4">
-						<h3 className="text-center">Puissances<br/>Inspirations<br/>Enchantements</h3>
+						<h3 className="text-center">
+							Puissances <small>1</small><br/>
+							Inspirations <small>1</small><br/>
+							Enchantements <small>2</small>
+						</h3>
 						{buffs}
 					</div>
 					<div className="ta-skills-list-col col-xs-4">
