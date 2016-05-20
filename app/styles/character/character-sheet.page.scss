@@ -36,6 +36,14 @@
 		}
 	}
 
+	.ta-character-stats-badge {
+		position: relative;
+		display: inline-block;
+		margin: 0;
+		font-size: 11pt;
+		top: -4pt;
+	}
+
 	.ta-skills-list {
 		.ta-skills-list-col {
 			min-height: 50%;
@@ -64,15 +72,19 @@
  * Page layout
  */
 @media print {
-	body, .no-print {
+	body {
 		visibility: hidden;
+	}
+
+	.no-print {
+		display: none;
 	}
 
 	.ta-character-sheet {
 		visibility: visible;
 
 		h2 {
-			margin-top: 0px;
+			margin: 0px;
 		}
 
 		h3 {
@@ -80,9 +92,13 @@
 		}
 	}
 
-	.ta-character-tab-content > .row {
-		margin-left: -$grid-gutter-width;
-		margin-right: -$grid-gutter-width;
+	.ta-character-tab-content {
+		margin-top: 0 !important;
+
+		> .row {
+			margin-left: -$grid-gutter-width;
+			margin-right: -$grid-gutter-width;
+		}
 	}
 
 	.ta-page-header, .ta-character .nav-tabs {
@@ -107,6 +123,6 @@
 	}
 
 	.ta-skill-effect {
-		font-size: 8pt;
+		font-size: 7pt;
 	}
 }

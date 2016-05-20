@@ -112,6 +112,20 @@ export default class CharacterSheet extends React.Component {
 			<div className="ta-character-sheet">
 				<h2 className="col-xs-9">
 					<strong>{this.props.character.title.rendered}</strong>&nbsp;
+					<ul className="list-inline ta-character-stats-badge">
+						<li className="list-group-item">
+							<span className="glyphicon glyphicon-plus" />&nbsp;
+							<strong>8</strong>
+						</li>
+						<li className="list-group-item ta-seethrough">
+							<span className="glyphicon glyphicon-certificate" />&nbsp;
+							{this.props.character.xp.total}
+						</li>
+						<li className="list-group-item ta-seethrough">
+							<img className="ta-perk-icon-img" src={WP_Theme_Settings.imageRoot + 'perk-black.png'} />&nbsp;
+							{this.props.character.perk_points.total}
+						</li>
+					</ul>
 					<a href="#" className="btn btn-primary btn-sm no-print" onClick={() => window.print()}>
 						<span className="glyphicon glyphicon-print no-events" />
 						<span className="no-events">&nbsp;Imprimer</span>
@@ -120,21 +134,6 @@ export default class CharacterSheet extends React.Component {
 				</h2>
 
 				<img className="col-xs-3 pull-right" src={WP_Theme_Settings.imageRoot + 'terra-login-logo.png'} />
-
-				<ul className="col-xs-12 list-inline">
-					<li className="list-group-item">
-						<span className="glyphicon glyphicon-plus" />&nbsp;
-						<strong>8</strong>
-					</li>
-					<li className="list-group-item ta-seethrough">
-						<span className="glyphicon glyphicon-certificate" />&nbsp;
-						{this.props.character.xp.total}
-					</li>
-					<li className="list-group-item ta-seethrough">
-						<img className="ta-perk-icon-img" src={WP_Theme_Settings.imageRoot + 'perk-black.png'} />&nbsp;
-						{this.props.character.perk_points.total}
-					</li>
-				</ul>
 
 				<div className="ta-skills-list">
 					<div className="ta-skills-list-col col-xs-4">
