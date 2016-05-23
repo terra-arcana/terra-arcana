@@ -151,8 +151,21 @@ export default class CharacterSheetSkill extends React.Component {
 					</ul>
 					: <noscript/>
 				}
+				{this.props.pickedUpgrades.map(function(upgradeID) {
+					var upgradeData = this.props.skill.upgrades[parseInt(upgradeID)-1];
+
+					return (
+						<div
+							key = {upgradeID}
+							className = "panel-body ta-skill-upgrade"
+						>
+							<strong>{upgradeData.title}</strong>
+							<span dangerouslySetInnerHTML = {{__html: upgradeData.effect}} />
+						</div>
+					);
+				}.bind(this))}
 			</li>
-		)
+		);
 	}
 }
 
@@ -160,5 +173,8 @@ export default class CharacterSheetSkill extends React.Component {
  * @type {Object}
  */
 CharacterSheetSkill.propTypes = {
-	skill: React.PropTypes.object.isRequired
+	skill: React.PropTypes.object.isRequired,
+	pickedUpgrades: React.PropTypes.arrayOf(
+		React.PropTypes.string
+	)
 };

@@ -25,6 +25,7 @@ export default class CharacterSheet extends React.Component {
 		 */
 		this.state = {
 			skillInfo: [],
+			pickedUpgradesIDMap: {},
 			authorName: ''
 		};
 
@@ -35,16 +36,28 @@ export default class CharacterSheet extends React.Component {
 	 * @override
 	 */
 	componentWillMount() {
-		var i, len, skillInfo, skillInfoRequest, authorRequest,
+		var i, len, skillInfo, skillInfoRequest, authorRequest, splitID,
+			upgradeIDMap = {},
 			skillIDs = [],
 			authorName = '',
 			currentBuild = this.props.character.current_build;
 
 		for (i = 0, len = currentBuild.length; i < len; i++) {
+			splitID = currentBuild[i].id.split('-');
+			if (!Array.isArray(upgradeIDMap[splitID[0]])) {
+				upgradeIDMap[splitID[0]] = [];
+			}
+
 			if (currentBuild[i].type === 'skill') {
 				skillIDs.push(currentBuild[i].id);
+			} else if (currentBuild[i].type === 'upgrade') {
+				upgradeIDMap[splitID[0]].push(splitID[1]);
 			}
 		}
+
+		this.setState({
+			pickedUpgradesIDMap: upgradeIDMap
+		});
 
 		skillInfoRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/skill?include=' + skillIDs.join(','), function(result) {
 			skillInfo = result;
@@ -78,7 +91,9 @@ export default class CharacterSheet extends React.Component {
 					{skillList.instants.map(function(skill) {
 						return (
 							<CharacterSheetSkill
+								key = {skill.id}
 								skill = {skill}
+								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
 							/>
 						);
 					}.bind(this))}
@@ -89,7 +104,9 @@ export default class CharacterSheet extends React.Component {
 					{skillList.buffs.map(function(skill) {
 						return (
 							<CharacterSheetSkill
+								key = {skill.id}
 								skill = {skill}
+								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
 							/>
 						);
 					}.bind(this))}
@@ -100,7 +117,9 @@ export default class CharacterSheet extends React.Component {
 					{skillList.passives.map(function(skill) {
 						return (
 							<CharacterSheetSkill
+								key = {skill.id}
 								skill = {skill}
+								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
 							/>
 						);
 					}.bind(this))}
@@ -116,26 +135,31 @@ export default class CharacterSheet extends React.Component {
 						<span className="no-events">&nbsp;Imprimer</span>
 					</a>
 				</div>
-				<h2 className="col-xs-9">
-					<strong>{this.props.character.title.rendered}</strong>&nbsp;
-					<ul className="list-inline ta-character-stats-badge">
-						<li className="list-group-item">
-							<span className="glyphicon glyphicon-plus" />&nbsp;
-							<strong>8</strong>
-						</li>
-						<li className="list-group-item ta-seethrough">
-							<span className="glyphicon glyphicon-certificate" />&nbsp;
-							{this.props.character.xp.total}
-						</li>
-						<li className="list-group-item ta-seethrough">
-							<img className="ta-perk-icon-img" src={WP_Theme_Settings.imageRoot + 'perk-black.png'} />&nbsp;
-							{this.props.character.perk_points.total}
-						</li>
-					</ul>
-					<br/><small>Incarné par {this.state.authorName}</small>
-				</h2>
 
-				<img className="col-xs-3 pull-right" src={WP_Theme_Settings.imageRoot + 'terra-login-logo.png'} />
+				<div className="col-xs-12">
+					<div className="row">
+						<h2 className="col-xs-9">
+							<strong>{this.props.character.title.rendered}</strong>&nbsp;
+							<ul className="list-inline ta-character-stats-badge">
+								<li className="list-group-item">
+									<span className="glyphicon glyphicon-plus" />&nbsp;
+									<strong>8</strong>
+								</li>
+								<li className="list-group-item ta-seethrough">
+									<span className="glyphicon glyphicon-certificate" />&nbsp;
+									{this.props.character.xp.total}
+								</li>
+								<li className="list-group-item ta-seethrough">
+									<img className="ta-perk-icon-img" src={WP_Theme_Settings.imageRoot + 'perk-black.png'} />&nbsp;
+									{this.props.character.perk_points.total}
+								</li>
+							</ul>
+							<br/><small>Incarné par {this.state.authorName}</small>
+						</h2>
+
+						<img className="col-xs-3 pull-right" src={WP_Theme_Settings.imageRoot + 'terra-login-logo.png'} />
+					</div>
+				</div>
 
 				<div className="ta-skills-list">
 					<div className="ta-skills-list-col col-xs-4">
@@ -171,24 +195,23 @@ export default class CharacterSheet extends React.Component {
 				passives: []
 			};
 
-		console.log(this.state.skillInfo);
-
+		// Sort skills
 		for (i = 0, len = this.state.skillInfo.length; i < len; i++) {
 			skill = this.state.skillInfo[i];
 
 			switch(skill.skill_type.value) {
-				case 'instant':
-					skillList.instants.push(skill);
-					break;
-				case 'self-buff':
-				case 'ally-buff':
-				case 'item-buff':
-					skillList.buffs.push(skill);
-					break;
-				case 'form':
-				case 'passive':
-					skillList.passives.push(skill);
-					break;
+			case 'instant':
+				skillList.instants.push(skill);
+				break;
+			case 'self-buff':
+			case 'ally-buff':
+			case 'item-buff':
+				skillList.buffs.push(skill);
+				break;
+			case 'form':
+			case 'passive':
+				skillList.passives.push(skill);
+				break;
 			}
 		}
 

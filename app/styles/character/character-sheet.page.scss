@@ -14,6 +14,11 @@
 		border-bottom: 2px solid #aaa;
 	}
 
+	h5 {
+		margin: 0;
+		font-weight: bold;
+	}
+
 	.panel {
 		margin-bottom: 0.5em;
 		border: 0px;
@@ -32,6 +37,10 @@
 
 			p {
 				margin: 0px;
+			}
+
+			&.ta-skill-upgrade {
+				padding-top: 0;
 			}
 		}
 	}
@@ -89,6 +98,10 @@
 
 		h3 {
 			font-size: 10pt;
+		}
+
+		h5 {
+			font-size: 8pt;
 		}
 	}
 
