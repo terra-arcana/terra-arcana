@@ -9,6 +9,16 @@ import Lodash from 'lodash';
 export default class CharacterSheetSkill extends React.Component {
 
 	/**
+	 * @constructor
+	 * @param {Object} props Default props
+	 */
+	constructor(props) {
+		super(props);
+
+		this.parseSkillEffect = this.parseSkillEffect.bind(this);
+	}
+
+	/**
 	 * @override
 	 * @return {html} The component template
 	 */
@@ -42,11 +52,13 @@ export default class CharacterSheetSkill extends React.Component {
 					<strong>Incantation</strong>:&nbsp;
 
 					{function() {
+						var intPerkCast = parseInt(this.props.pickedPerks.cast) || 0;
+
 						// Display boosted value if perks were bought
-						if (this.props.perks && this.props.perks.cast.current) {
+						if (intPerkCast) {
 							var keys = Object.keys(this.props.metadata.cast),
 								index = keys.indexOf(this.props.skill.cast.value),
-								newIndex = Math.max(index - this.props.perks.cast.current, 0);
+								newIndex = Math.max(index - intPerkCast, 0);
 
 							return (
 								<span className="text-success">
@@ -67,11 +79,13 @@ export default class CharacterSheetSkill extends React.Component {
 					<strong>Durée</strong>:&nbsp;
 
 					{function() {
+						var intPerkDuration = parseInt(this.props.pickedPerks.duration) || 0;
+
 						// Display boosted value if perks were bought
-						if (this.props.perks && this.props.perks.duration.current) {
+						if (intPerkDuration) {
 							var keys = Object.keys(this.props.metadata.duration),
 								index = keys.indexOf(this.props.skill.duration.value),
-								newIndex = Math.min(index + this.props.perks.duration.current, keys.length - 1);
+								newIndex = Math.min(index + intPerkDuration, keys.length - 1);
 
 							return (
 								<span className="text-success">
@@ -90,16 +104,23 @@ export default class CharacterSheetSkill extends React.Component {
 			usesRow = (this.props.skill.uses[0].amount) ? (
 				<li className="list-group-item">
 					<strong>Utilisations</strong>:&nbsp;
-					{
-						// Display boosted value if perks were bought
-						(this.props.perks && this.props.perks.uses.current) ? (
-						<span className="text-success">
-							<strong>
-								{parseInt(this.props.skill.uses[0].amount) + parseInt(this.props.perks.uses.current)}
-							</strong>
-						</span>
-					) : this.props.skill.uses[0].amount}
 
+					{function() {
+						var intPerkUses = parseInt(this.props.pickedPerks.uses) || 0;
+
+						// Display boosted value if perks were bought
+						if (intPerkUses) {
+							return (
+								<span className="text-success">
+									<strong>
+										{parseInt(this.props.skill.uses[0].amount) + intPerkUses}
+									</strong>
+								</span>
+							);
+						} else {
+							return this.props.skill.uses[0].amount;
+						}
+					}.bind(this)()}
 					/{this.props.skill.uses[0].type.rendered}
 				</li>
 			) : null,
@@ -109,11 +130,13 @@ export default class CharacterSheetSkill extends React.Component {
 					<strong>Portée</strong>:&nbsp;
 
 					{function() {
+						var intPerkRange = parseInt(this.props.pickedPerks.range) || 0;
+
 						// Display boosted value if perks were bought
-						if (this.props.perks && this.props.perks.range.current) {
+						if (intPerkRange) {
 							var keys = Object.keys(this.props.metadata.range),
 								index = keys.indexOf(this.props.skill.range.value),
-								newIndex = Math.min(index + this.props.perks.range.current, keys.length - 1);
+								newIndex = Math.min(index + intPerkRange, keys.length - 1);
 
 							return (
 								<span className="text-success">
@@ -140,7 +163,7 @@ export default class CharacterSheetSkill extends React.Component {
 						{/* TODO: Add character class here */}
 					</small>
 				</div>
-				<div className="panel-body ta-skill-effect" dangerouslySetInnerHTML={{__html: this.props.skill.effect}} />
+				<div className="panel-body ta-skill-effect" dangerouslySetInnerHTML={{__html: this.parseSkillEffect(this.props.skill.effect)}} />
 				{(costRow || castRow || usesRow || durationRow || rangeRow) ?
 					<ul className="list-group">
 						{costRow}
@@ -167,6 +190,30 @@ export default class CharacterSheetSkill extends React.Component {
 			</li>
 		);
 	}
+
+	/**
+	 * Parses the skill effect for power level instances
+	 * @param {string} effect The skill effect HTML string
+	 * @return {jsx} The parsed HTML
+	 */
+	parseSkillEffect(effect) {
+		return effect.replace(/{(\d*)[+-](\d*)NP}/, function(match, basePower, scale) {
+			var intScale = parseInt(scale) || 1,
+				intPerkPower = parseInt(this.props.pickedPerks.power) || 0;
+
+			if (intPerkPower) {
+				// #SHAME. We have to have HTML as a literal string here for React to render properly
+				return basePower +
+					'<span class="text-success"><strong>(+' +
+					String(intScale * intPerkPower) +
+					')</strong></span>';
+			}
+
+			else {
+				return basePower;
+			}
+		}.bind(this));
+	}
 }
 
 /**
@@ -176,5 +223,17 @@ CharacterSheetSkill.propTypes = {
 	skill: React.PropTypes.object.isRequired,
 	pickedUpgrades: React.PropTypes.arrayOf(
 		React.PropTypes.string
-	)
+	),
+	pickedPerks: React.PropTypes.shape({
+		power: React.PropTypes.string.isRequired,
+		cast: React.PropTypes.string.isRequired,
+		duration: React.PropTypes.string.isRequired,
+		range: React.PropTypes.string.isRequired,
+		uses: React.PropTypes.string.isRequired
+	}).isRequired,
+	metadata: React.PropTypes.shape({
+		cast: React.PropTypes.object.isRequired,
+		duration: React.PropTypes.object.isRequired,
+		range: React.PropTypes.object.isRequired
+	})
 };

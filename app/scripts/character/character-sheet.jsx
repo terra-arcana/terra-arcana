@@ -26,9 +26,11 @@ export default class CharacterSheet extends React.Component {
 		this.state = {
 			skillInfo: [],
 			pickedUpgradesIDMap: {},
-			authorName: ''
+			authorName: '',
+			graphMetadata: {}
 		};
 
+		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
 		this.getSortedSkills = this.getSortedSkills.bind(this);
 	}
 
@@ -36,8 +38,10 @@ export default class CharacterSheet extends React.Component {
 	 * @override
 	 */
 	componentWillMount() {
-		var i, len, skillInfo, skillInfoRequest, authorRequest, splitID,
+		var i, len, skillInfo, splitID,
+			skillInfoRequest, authorRequest, graphMetadataRequest,
 			upgradeIDMap = {},
+			graphMetadata = {},
 			skillIDs = [],
 			authorName = '',
 			currentBuild = this.props.character.current_build;
@@ -67,10 +71,15 @@ export default class CharacterSheet extends React.Component {
 			authorName = result.name;
 		}.bind(this));
 
-		jQuery.when(skillInfoRequest, authorRequest).done(function() {
+		graphMetadataRequest = jQuery.get(WP_API_Settings.root + 'terraarcana/v1/graph-data', function(result) {
+			graphMetadata = result.meta;
+		}.bind(this));
+
+		jQuery.when(skillInfoRequest, authorRequest, graphMetadataRequest).done(function() {
 			this.setState({
 				skillInfo: skillInfo,
-				authorName: authorName
+				authorName: authorName,
+				graphMetadata: graphMetadata
 			});
 		}.bind(this));
 	}
@@ -94,6 +103,8 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
+								pickedPerks = {skill.pickedPerks[0]}
+								metadata = {this.state.graphMetadata}
 							/>
 						);
 					}.bind(this))}
@@ -107,6 +118,8 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
+								pickedPerks = {skill.pickedPerks[0]}
+								metadata = {this.state.graphMetadata}
 							/>
 						);
 					}.bind(this))}
@@ -120,6 +133,8 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
+								pickedPerks = {skill.pickedPerks[0]}
+								metadata = {this.state.graphMetadata}
 							/>
 						);
 					}.bind(this))}
@@ -184,11 +199,20 @@ export default class CharacterSheet extends React.Component {
 	}
 
 	/**
+	 * Get all the current and max perk levels for a given skill node
+	 * @param {string} id The skill node ID
+	 * @return {Object|null} The perk data
+	 */
+	getNodePerkLevels(id) {
+		return {};
+	}
+
+	/**
 	 * Get the sorted skill list ready for render
 	 * @return {Object} The sorted skill list, by `instants`, `buffs` and `passives` keys
 	 */
 	getSortedSkills() {
-		var i, len, skill,
+		var i, ilen, j, jlen, skill,
 			skillList = {
 				instants: [],
 				buffs: [],
@@ -196,8 +220,16 @@ export default class CharacterSheet extends React.Component {
 			};
 
 		// Sort skills
-		for (i = 0, len = this.state.skillInfo.length; i < len; i++) {
+		for (i = 0, ilen = this.state.skillInfo.length; i < ilen; i++) {
 			skill = this.state.skillInfo[i];
+
+			// Overload with picked perks
+			for (j = 0, jlen = this.props.character.current_build.length; j < jlen; j++) {
+				if (this.props.character.current_build[j].id === String(skill.id)) {
+					skill.pickedPerks = this.props.character.current_build[j].perks;
+					break;
+				}
+			}
 
 			switch(skill.skill_type.value) {
 			case 'instant':
