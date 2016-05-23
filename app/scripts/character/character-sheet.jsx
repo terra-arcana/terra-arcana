@@ -143,7 +143,7 @@ export default class CharacterSheet extends React.Component {
 							<ul className="list-inline ta-character-stats-badge">
 								<li className="list-group-item">
 									<span className="glyphicon glyphicon-plus" />&nbsp;
-									<strong>8</strong>
+									<strong>{this.props.character.energy.total}</strong>
 								</li>
 								<li className="list-group-item ta-seethrough">
 									<span className="glyphicon glyphicon-certificate" />&nbsp;
