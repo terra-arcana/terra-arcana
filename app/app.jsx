@@ -116,6 +116,9 @@ let routes = (
 		<Route path="/zodiaque/" handler={ZodiacViewerPage} />
 		<Route path="/personnage/creer/" handler={CharacterNewPage} />
 		<Route path="/personnage/:characterSlug/" handler={CharacterPage} />
+		// TODO: Find a way to default these to particular tabs. See #162
+		<Route path="/personnage/:characterSlug/zodiaque/" handler={CharacterPage} />
+		<Route path="/personnage/:characterSlug/fiche/" handler={CharacterPage} />
 	</Route>
 );
 

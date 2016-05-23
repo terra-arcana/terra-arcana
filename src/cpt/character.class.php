@@ -5,6 +5,9 @@ namespace terraarcana {
 
 	class Character extends CPT {
 
+		const BASE_XP = 8;
+		const BASE_ENERGY = 8;
+
 		/**
 		 * The ACF key for the `bonus_xp` field
 		 * @var string
@@ -16,6 +19,12 @@ namespace terraarcana {
 		 * @var string
 		 */
 		private $bonus_perk_key = 'field_5701f381be278';
+
+		/**
+		 * The ACF key for the `bonus_energy` field
+		 * @var string
+		 */
+		private $bonus_energy_key = 'field_574352d828a88';
 
 		public function __construct() {
 			$this->_postTypeName = 'character';
@@ -42,6 +51,12 @@ namespace terraarcana {
 					'key' => 'field_5701f25fbe272'
 				)
 			);
+		}
+
+		public function init() {
+			parent::init();
+
+			add_filter('post_row_actions', array($this, 'add_sheet_row_action'), 10, 2);
 		}
 
 		/**
@@ -100,6 +115,10 @@ namespace terraarcana {
 				'get_callback' => array($this, 'get_perk_points')
 			));
 
+			register_rest_field($this->_postTypeName, 'energy', array(
+				'get_callback' => array($this, 'get_energy_points')
+			));
+
 			register_rest_field($this->_postTypeName, 'starting_skill', array(
 				'update_callback' => array($this, 'initialize_character')
 			));
@@ -115,14 +134,13 @@ namespace terraarcana {
 		 */
 		public function get_xp(array $object, $field_name, \WP_REST_Request $request, $post_type) {
 			if (function_exists('get_field')) {
-				$base_xp = 8;
 				$xp_from_user = 0;
 				$xp_from_events = 0;
 				$bonus_xp = intval(get_field($this->bonus_xp_key, $object['id']));
 
 				return array(
-					'total' => $base_xp + $xp_from_user + $xp_from_events + $bonus_xp,
-					'base' => $base_xp,
+					'total' => self::BASE_XP + $xp_from_user + $xp_from_events + $bonus_xp,
+					'base' => self::BASE_XP,
 					'from_user' => $xp_from_user,
 					'from_events' => $xp_from_events,
 					'bonus' => $bonus_xp
@@ -159,6 +177,51 @@ namespace terraarcana {
 					'bonus' => $bonus_perk_points
 				);
 			}
+		}
+
+		/**
+		 * Callback for the `energy` custom REST field.
+		 * @param array $object Details of current post.
+		 * @param string $field_name Name of field.
+		 * @param WP_REST_Request $request The current request
+		 * @param string $post_type The post type
+		 * @return Array The character's perk point values
+		 */
+		public function get_energy_points(array $object, $field_name, \WP_REST_Request $request, $post_type) {
+			if (function_exists('get_field')) {
+				$node_energy_points = 0;
+				$bonus_energy_points = intval(get_field($this->bonus_energy_key, $object['id']));
+
+				// Sum all perk points from the character build
+				$character_build = get_field($this->_fields['current_build']['key'], $object['id']);
+				if (is_array($character_build)) {
+					foreach ($character_build as $character_skill) {
+						if ($character_skill['type'] == 'life') {
+							$node_energy_points += intval(get_field('value', $character_skill['id']));
+						}
+					}
+				}
+
+				return array(
+					'total' => self::BASE_ENERGY + $node_energy_points + $bonus_energy_points,
+					'base' => self::BASE_ENERGY,
+					'nodes' => $node_energy_points,
+					'bonus' => $bonus_energy_points
+				);
+			}
+		}
+
+		/**
+		 * Filter row actions to add a link to the character sheet admin list tables
+		 * @param [Array] $actions Existing actions
+		 * @param [WP_Post] $post Post being parsed
+		 */
+		function add_sheet_row_action($actions, $post) {
+			if ($post->post_type == $this->_postTypeName) {
+				$actions['sheet'] = "<a href=\"/personnage/$post->post_name/fiche/\">Fiche</a>";//"<a href=\"post.php?post=$post->ID&action=sheet\">Fiche</a>";
+			}
+
+			return $actions;
 		}
 
 		/**
