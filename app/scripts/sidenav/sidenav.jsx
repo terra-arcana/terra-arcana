@@ -22,7 +22,7 @@ export default class Sidenav extends React.Component {
 			<nav className="ta-sidenav">
 				<div className="container-fluid">
 					<div className="ta-version-notice">
-						v{packageInfo.version}
+						<a href={packageInfo.releases.url}>v{packageInfo.version}</a>
 					</div>
 
 					<Link to="/" className="ta-sidenav-logo">
