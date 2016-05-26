@@ -52,6 +52,11 @@ export default class CharacterSheetSkill extends React.Component {
 					<strong>Incantation</strong>:&nbsp;
 
 					{function() {
+						// Short circuit if invalid perks were supplied
+						if (!this.props.pickedPerks) {
+							return this.props.skill.cast.rendered;
+						}
+
 						var intPerkCast = parseInt(this.props.pickedPerks.cast) || 0;
 
 						// Display boosted value if perks were bought
@@ -79,6 +84,11 @@ export default class CharacterSheetSkill extends React.Component {
 					<strong>Durée</strong>:&nbsp;
 
 					{function() {
+						// Short circuit if invalid perks were supplied
+						if (!this.props.pickedPerks) {
+							return this.props.skill.duration.rendered;
+						}
+
 						var intPerkDuration = parseInt(this.props.pickedPerks.duration) || 0;
 
 						// Display boosted value if perks were bought
@@ -106,6 +116,11 @@ export default class CharacterSheetSkill extends React.Component {
 					<strong>Utilisations</strong>:&nbsp;
 
 					{function() {
+						// Short circuit if invalid perks were supplied
+						if (!this.props.pickedPerks) {
+							return this.props.skill.uses[0].amount;
+						}
+
 						var intPerkUses = parseInt(this.props.pickedPerks.uses) || 0;
 
 						// Display boosted value if perks were bought
@@ -130,6 +145,11 @@ export default class CharacterSheetSkill extends React.Component {
 					<strong>Portée</strong>:&nbsp;
 
 					{function() {
+						// Short circuit if invalid perks were supplied
+						if (!this.props.pickedPerks) {
+							return this.props.skill.range.rendered;
+						}
+
 						var intPerkRange = parseInt(this.props.pickedPerks.range) || 0;
 
 						// Display boosted value if perks were bought
@@ -197,6 +217,11 @@ export default class CharacterSheetSkill extends React.Component {
 	 * @return {jsx} The parsed HTML
 	 */
 	parseSkillEffect(effect) {
+		// Short circuit if invalid perks were supplied
+		if (!this.props.pickedPerks) {
+			return effect;
+		}
+
 		return effect.replace(/{(\d*)[+-](\d*)NP}/, function(match, basePower, scale) {
 			var intScale = parseInt(scale) || 1,
 				intPerkPower = parseInt(this.props.pickedPerks.power) || 0;
@@ -224,13 +249,16 @@ CharacterSheetSkill.propTypes = {
 	pickedUpgrades: React.PropTypes.arrayOf(
 		React.PropTypes.string
 	),
-	pickedPerks: React.PropTypes.shape({
-		power: React.PropTypes.string.isRequired,
-		cast: React.PropTypes.string.isRequired,
-		duration: React.PropTypes.string.isRequired,
-		range: React.PropTypes.string.isRequired,
-		uses: React.PropTypes.string.isRequired
-	}).isRequired,
+	pickedPerks: React.PropTypes.oneOfType([
+		React.PropTypes.shape({
+			power: React.PropTypes.string.isRequired,
+			cast: React.PropTypes.string.isRequired,
+			duration: React.PropTypes.string.isRequired,
+			range: React.PropTypes.string.isRequired,
+			uses: React.PropTypes.string.isRequired
+		}),
+		React.PropTypes.bool
+	]).isRequired,
 	metadata: React.PropTypes.shape({
 		cast: React.PropTypes.object.isRequired,
 		duration: React.PropTypes.object.isRequired,

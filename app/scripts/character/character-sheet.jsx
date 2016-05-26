@@ -102,7 +102,7 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
-								pickedPerks = {skill.pickedPerks[0]}
+								pickedPerks = {skill.pickedPerks[0] || false}
 								metadata = {this.state.graphMetadata}
 							/>
 						);
@@ -117,7 +117,7 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
-								pickedPerks = {skill.pickedPerks[0]}
+								pickedPerks = {skill.pickedPerks[0] || false}
 								metadata = {this.state.graphMetadata}
 							/>
 						);
@@ -132,7 +132,7 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
-								pickedPerks = {skill.pickedPerks[0]}
+								pickedPerks = {skill.pickedPerks[0] || false}
 								metadata = {this.state.graphMetadata}
 							/>
 						);
