@@ -33,6 +33,8 @@ export default class SidenavUserPanel extends React.Component {
 		this.getActiveCharacterData = this.getActiveCharacterData.bind(this);
 		this.getInactiveCharactersData = this.getInactiveCharactersData.bind(this);
 		this.onSwitchActiveCharacter = this.onSwitchActiveCharacter.bind(this);
+		this.onActiveCharacterClick = this.onActiveCharacterClick.bind(this);
+		this.onCharacterSwitcherToggleClick = this.onCharacterSwitcherToggleClick.bind(this);
 	}
 
 	/**
@@ -110,13 +112,15 @@ export default class SidenavUserPanel extends React.Component {
 				<Link
 					to = {'/personnage/' + activeCharacterData.slug + '/'}
 					className = "list-group-item ta-sidenav-active-character"
+					onClick = {this.onActiveCharacterClick}
 				>
 					<button
 						ref = {(ref) => this.characterSwitcherToggle = ref}
-						type="button"
-						className="ta-sidenav-character-switcher-toggle btn btn-link pull-right collapsed"
-						data-toggle="collapse"
-						data-target="#ta-sidenav-character-switcher"
+						type = "button"
+						className = "ta-sidenav-character-switcher-toggle btn btn-link pull-right"
+						data-toggle = "collapse"
+						data-target = "#ta-sidenav-character-switcher"
+						onClick = {this.onCharacterSwitcherToggleClick}
 					>
 						<span className="glyphicon"></span>
 					</button>
@@ -231,6 +235,26 @@ export default class SidenavUserPanel extends React.Component {
 			// Close the character switcher
 			this.characterSwitcherToggle.click();
 		}
+	}
+
+	/**
+	 * Handle clicks on active character link
+	 * @param {SynthemicMouseEvent} event The click event
+	 */
+	onActiveCharacterClick(event) {
+		if (jQuery(this.characterSwitcherToggle).hasClass('collapsed')) {
+			this.characterSwitcherToggle.click();
+		}
+	}
+
+	/**
+	 * Handle clicks on menu toggle button
+	 * @param {MouseSyntheticEvent} event The click event
+	 */
+	onCharacterSwitcherToggleClick(event) {
+		jQuery(this.characterSwitcherToggle).toggleClass('collapsed');
+		event.stopPropagation();
+		event.preventDefault();
 	}
 }
 

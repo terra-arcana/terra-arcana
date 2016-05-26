@@ -29,6 +29,10 @@ $glyphicon-chevron-down: '\e114';
 	.ta-sidenav-character-name {
 		font-size: 1.6em;
 	}
+
+	&.active .ta-sidenav-character-switcher-toggle {
+		color: #23527c;
+	}
 }
 
 #sidenav-page-wrapper.toggled .ta-sidenav-user-panel .panel {
