@@ -1,6 +1,6 @@
 {
   "name": "terra-arcana",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Terra Arcana",
   "main": "dist/app.js",
   "scripts": {
@@ -25,6 +25,9 @@
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/terra-arcana/terra-arcana/issues"
+  },
+  "releases": {
+    "url": "https://github.com/terra-arcana/terra-arcana/releases"
   },
   "devDependencies": {
     "babel-core": "^5.8.25",

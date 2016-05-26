@@ -30,7 +30,6 @@ export default class CharacterSheet extends React.Component {
 			graphMetadata: {}
 		};
 
-		this.getNodePerkLevels = this.getNodePerkLevels.bind(this);
 		this.getSortedSkills = this.getSortedSkills.bind(this);
 	}
 
@@ -63,7 +62,7 @@ export default class CharacterSheet extends React.Component {
 			pickedUpgradesIDMap: upgradeIDMap
 		});
 
-		skillInfoRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/skill?include=' + skillIDs.join(','), function(result) {
+		skillInfoRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/skill?per_page=100&include=' + skillIDs.join(','), function(result) {
 			skillInfo = result;
 		}.bind(this));
 
@@ -103,7 +102,7 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
-								pickedPerks = {skill.pickedPerks[0]}
+								pickedPerks = {skill.pickedPerks[0] || false}
 								metadata = {this.state.graphMetadata}
 							/>
 						);
@@ -118,7 +117,7 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
-								pickedPerks = {skill.pickedPerks[0]}
+								pickedPerks = {skill.pickedPerks[0] || false}
 								metadata = {this.state.graphMetadata}
 							/>
 						);
@@ -133,7 +132,7 @@ export default class CharacterSheet extends React.Component {
 								key = {skill.id}
 								skill = {skill}
 								pickedUpgrades = {this.state.pickedUpgradesIDMap[skill.id]}
-								pickedPerks = {skill.pickedPerks[0]}
+								pickedPerks = {skill.pickedPerks[0] || false}
 								metadata = {this.state.graphMetadata}
 							/>
 						);
@@ -196,15 +195,6 @@ export default class CharacterSheet extends React.Component {
 				</div>
 			</div>
 		);
-	}
-
-	/**
-	 * Get all the current and max perk levels for a given skill node
-	 * @param {string} id The skill node ID
-	 * @return {Object|null} The perk data
-	 */
-	getNodePerkLevels(id) {
-		return {};
 	}
 
 	/**
