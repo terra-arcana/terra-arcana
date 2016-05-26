@@ -357,7 +357,7 @@ export default class SkillNodeInspector extends React.Component {
 	 * @return {jsx} The parsed HTML
 	 */
 	parseSkillEffect(effect) {
-		return effect.replace(/{(\d*)[+-](\d*)NP}/, function(match, basePower, scale) {
+		return effect.replace(/{(\d*)[+-](\d*)NP}/g, function(match, basePower, scale) {
 			// Set default scale to 1 if it isn't specified
 			var intScale = parseInt(scale) || 1;
 
