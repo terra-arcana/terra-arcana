@@ -222,7 +222,7 @@ export default class CharacterSheetSkill extends React.Component {
 			return effect;
 		}
 
-		return effect.replace(/{(\d*)[+-](\d*)NP}/, function(match, basePower, scale) {
+		return effect.replace(/{(\d*)[+-](\d*)NP}/g, function(match, basePower, scale) {
 			var intScale = parseInt(scale) || 1,
 				intPerkPower = parseInt(this.props.pickedPerks.power) || 0;
 
