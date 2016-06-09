@@ -28,7 +28,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
   # config.vm.synced_folder('----localfolder-----', '/home/vagrant/code', :nfs => true)
-  config.vm.synced_folder '.', '/home/vagrant/code', nfs: true
+  #config.vm.synced_folder '.', '/home/vagrant/code', nfs: true
+  config.vm.synced_folder '.', '/var/wordpress/wp-content/themes/terra-arcana', nfs: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -48,5 +49,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
   # install some base packages
-  config.vm.provision :shell, path: "provision_3.0.sh"
+  config.vm.provision :shell, path: "provision.sh"
 end
