@@ -1,7 +1,9 @@
-# Terra Arcana
-http://www.gnterraarcana.com
+Staging - [![Build Status](http://yu-shan.net:5555/job/Terra%20Arcana%202.0%20Staging/badge/icon)](http://yu-shan.net:5555/job/Terra%20Arcana%202.0%20Staging/)
 
-Bienvenue au futur du site web de Terra Arcana! Le site refera prochainement peau neuve, avec un nouveau thème WordPress supportant des technologies modernes telles que **WP REST API**, **ReactJS** et **Konva**.
+# Terra Arcana
+http://www.terraarcana.com
+
+Bienvenue au futur du site web du GN Terra Arcana! Le site refera prochainement peau neuve, avec un nouveau thème WordPress supportant des technologies modernes telles que **WP REST API**, **ReactJS** et **Konva**.
 
 Avec celle nouvelle approche, nous nous tournons vers GitHub et la communauté open-source québécoise, pour faire de Terra Arcana le leader en site de GN au Québec.
 
@@ -13,7 +15,7 @@ Avec celle nouvelle approche, nous nous tournons vers GitHub et la communauté o
 
 3. **Si votre installation d'Apache est manuelle** (c'est-à-dire pas WAMP, MAMP, XAMPP, ou etc):
   * Assurez-vous dans votre fichier `httpd.conf` que AllowOverride est bien configuré à All et non à None pour votre dossier qui vous sert de racine web (normalement `htdocs` ou `/var/www`)
-  
+
 4. Clonez le repositoire de Terra Arcana dans le dossier wp-content/themes/ de votre installation WordPress.
 
 5. Exécutez les commandes suivantes pour installer toutes les dépendances du projet (installez préalablement [NPM](https://www.npmjs.com) et [Composer](https://getcomposer.org) si ce n'est pas déjà fait):

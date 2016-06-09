@@ -1,0 +1,27 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
+
+@import '../../../app/styles/_utils.scss';
+
+.skill-graph-editor-control-panel {
+	margin-bottom: 1em;
+
+	.skill-graph-editor-control-panel-title {
+		/* Account for button in panel heading */
+		margin-top: 0.4em;
+	}
+}
+
+.skill-graph-editor-control-panel-links {
+	margin-top: 1em;
+}
+
+.skill-graph-editor-control-panel-node-details .panel .table td {
+	&:first-child {
+		padding-left: $panel-body-padding;
+	}
+
+	&:last-child {
+		padding-right: $panel-body-padding;
+	}
+}

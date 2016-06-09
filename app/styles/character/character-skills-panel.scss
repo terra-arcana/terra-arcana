@@ -1,0 +1,24 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
+
+.ta-skill-graph-editor-character-skills-panel {
+	@include make-sm-column(12);
+	@include make-lg-column(4);
+
+	.panel-body ul {
+		list-style-type: none;
+		padding-left: 0;
+	}
+
+	.ta-skills-list {
+		span {
+			pointer-events: none;
+		}
+
+		ul {
+			list-style-type: none;
+			padding-left: 0;
+			pointer-events: none;
+		}
+	}
+}

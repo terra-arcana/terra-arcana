@@ -1,20 +1,33 @@
 {
   "name": "terra-arcana",
-  "version": "0.0.0",
-  "description": "Thème Terra Arcana",
-  "main": "index.js",
+  "version": "0.4.2",
+  "description": "Terra Arcana",
+  "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/ferdbold/terra-arcana.git"
+    "url": "https://github.com/terra-arcana/terra-arcana.git"
   },
-  "author": "Frédéric Bolduc <bolducfrederic@gmail.com>",
-  "license": "BSD-2-Clause",
+  "author": {
+    "name": "Frédéric Bolduc",
+    "email": "bolducfrederic@gmail.com",
+    "url": "http://ferdbold.com"
+  },
+  "contributors": [
+    {
+      "name": "François Drouin-Morin",
+      "email": "francois.drouinm@gmail.com"
+    }
+  ],
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/ferdbold/terra-arcana/issues"
+    "url": "https://github.com/terra-arcana/terra-arcana/issues"
+  },
+  "releases": {
+    "url": "https://github.com/terra-arcana/terra-arcana/releases"
   },
   "devDependencies": {
     "babel-core": "^5.8.25",
@@ -25,18 +38,33 @@
     "eslint-config-google": "^0.3.0",
     "eslint-loader": "^1.1.1",
     "eslint-plugin-react": "^3.10.0",
+    "expect": "^1.14.0",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
+    "jquery": "^2.2.0",
+    "json-loader": "^0.5.4",
+    "karma": "^0.13.19",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-cli": "^0.1.2",
+    "karma-junit-reporter": "^0.3.8",
+    "karma-mocha": "^0.2.1",
+    "karma-scss-preprocessor": "^1.0.1",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.4.5",
     "node-sass": "^3.3.3",
     "on-build-webpack": "^0.1.0",
+    "react-addons-test-utils": "^0.14.7",
     "sass-loader": "^2.0.1",
     "style-loader": "^0.12.4",
+    "svg-inline-loader": "^0.4.1",
     "webpack": "^1.12.2"
   },
   "dependencies": {
-    "konva": "^0.9.5",
-    "react": "~0.13.3",
-    "react-konva": "^0.4.2",
+    "konva": "^0.11.1",
+    "lodash": "^4.0.0",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-konva": "0.6.4",
     "react-router": "^0.13.3"
   },
   "keywords": []

@@ -1,0 +1,19 @@
+.login {
+	h1 a {
+		background-image: url(../../images/terra-login-logo.png);
+		background-size: contain;
+		width: auto;
+	}
+
+	.acf-field {
+		display: none;
+	}
+
+	.sm {
+		font-size: 0.8em;
+	}
+
+	#reg_passmail {
+		display: none;
+	}
+}

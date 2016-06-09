@@ -1,0 +1,47 @@
+$sidebar-width: 250px;
+
+#sidenav-page-wrapper {
+	padding-left: 0px;
+	transition: all 0.5s ease;
+}
+
+.ta-sidenav {
+	background-color: #333;
+	position: fixed;
+	left: 0;
+	margin-left: -$sidebar-width;
+	overflow-y: auto;
+	transition: all 0.5s ease;
+	width: $sidebar-width;
+	height: 100%;
+
+	.ta-version-notice {
+		margin: 0.5em 0.6em -0.5em 0;
+		text-align: right;
+
+		a {
+			color: #666;
+		}
+	}
+
+	.ta-sidenav-logo {
+		display: block;
+
+		img {
+			width: 100%;
+		}
+	}
+}
+
+#sidenav-content-wrapper {
+	width: 100%;
+	position: relative;
+}
+
+#sidenav-page-wrapper.toggled {
+	padding-left: $sidebar-width;
+
+	.ta-sidenav {
+		left: $sidebar-width;
+	}
+}

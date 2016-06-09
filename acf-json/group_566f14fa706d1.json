@@ -1,6 +1,6 @@
 {
     "key": "group_566f14fa706d1",
-    "title": "Comp\u00e9tences",
+    "title": "Comp\u00e9tence",
     "fields": [
         {
             "key": "field_566f24d16f2b3",
@@ -23,7 +23,7 @@
         {
             "key": "field_566f24f36f2b4",
             "label": "Description",
-            "name": "flavor-text",
+            "name": "flavor_text",
             "type": "textarea",
             "instructions": "Flavor text",
             "required": 0,
@@ -102,7 +102,7 @@
                 {
                     "key": "field_566f2c8b054d4",
                     "label": "Toile",
-                    "name": "graph-data",
+                    "name": "graph_data",
                     "type": "repeater",
                     "instructions": "",
                     "required": 0,
@@ -209,113 +209,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "key": "field_566f2d31054d9",
-            "label": "Toile",
-            "name": "graph-data",
-            "type": "repeater",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "collapsed": "",
-            "min": 1,
-            "max": 1,
-            "layout": "row",
-            "button_label": "Ajouter un \u00e9l\u00e9ment",
-            "sub_fields": [
-                {
-                    "key": "field_566f2d72054db",
-                    "label": "X",
-                    "name": "x",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "min": "",
-                    "max": "",
-                    "step": "",
-                    "readonly": 0,
-                    "disabled": 0
-                },
-                {
-                    "key": "field_566f2d7b054dc",
-                    "label": "Y",
-                    "name": "y",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": "",
-                    "readonly": 0,
-                    "disabled": 0
-                },
-                {
-                    "key": "field_566f2d81054dd",
-                    "label": "Liens",
-                    "name": "links",
-                    "type": "repeater",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "collapsed": "",
-                    "min": "",
-                    "max": "",
-                    "layout": "row",
-                    "button_label": "Ajouter un lien",
-                    "sub_fields": [
-                        {
-                            "key": "field_566f2dfb054de",
-                            "label": "ID",
-                            "name": "id",
-                            "type": "text",
-                            "instructions": "",
-                            "required": 1,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": "",
-                            "maxlength": "",
-                            "readonly": 0,
-                            "disabled": 0
-                        }
-                    ]
-                }
-            ]
         }
     ],
     "location": [
@@ -335,5 +228,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1450205539
+    "modified": 1460686082
 }

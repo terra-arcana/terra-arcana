@@ -1,6 +1,6 @@
 {
     "key": "group_56706102e4ab3",
-    "title": "Comp\u00e9tences - C\u00f4t\u00e9",
+    "title": "Comp\u00e9tence - C\u00f4t\u00e9",
     "fields": [
         {
             "key": "field_566f1505b9255",
@@ -33,6 +33,28 @@
             "placeholder": "",
             "disabled": 0,
             "readonly": 0
+        },
+        {
+            "key": "field_56bf9ccd4d4e3",
+            "label": "Signe",
+            "name": "character-class",
+            "type": "post_object",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "character-class"
+            ],
+            "taxonomy": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "id",
+            "ui": 1
         },
         {
             "key": "field_566f2786a877f",
@@ -170,10 +192,10 @@
                             "choices": {
                                 "racine": "Racine",
                                 "petale": "P\u00e9tale",
-                                "pierre": "Pierre",
+                                "granite": "Granite",
                                 "fer": "Fer",
                                 "gemme": "Gemme",
-                                "os": "Os",
+                                "fourrure": "Fourrure",
                                 "oeil": "Oeil",
                                 "sang": "Sang"
                             },
@@ -747,6 +769,22 @@
                     "disabled": 0
                 }
             ]
+        },
+        {
+            "key": "field_57235889039c9",
+            "label": "Comp\u00e9tence de d\u00e9part",
+            "name": "starting_skill",
+            "type": "true_false",
+            "instructions": "Si cette comp\u00e9tence fait partie des comp\u00e9tences de d\u00e9part \u00e0 la cr\u00e9ation de personnage.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Comp\u00e9tence de d\u00e9part",
+            "default_value": 0
         }
     ],
     "location": [
@@ -766,5 +804,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1450854439
+    "modified": 1462324611
 }

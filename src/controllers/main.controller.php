@@ -1,25 +1,61 @@
 <?php
 
 namespace terraarcana {
-	require_once(ROOT . '/src/managers/data.manager.php');
-	require_once(ROOT . '/src/managers/script.manager.php');
+	require_once(ROOT . '/src/controllers/controller.aclass.php');
+
+	require_once(ROOT . '/src/controllers/data.controller.php');
+	require_once(ROOT . '/src/controllers/script.controller.php');
+	require_once(ROOT . '/src/controllers/admin.controller.php');
+	require_once(ROOT . '/src/controllers/login.controller.php');
 
 	require_once(ROOT . '/vendor/tgmpa/tgm-plugin-activation/class-tgm-plugin-activation.php');
 
 	/**
 	 * Main app controller
 	 */
-	class MainController {
+	class MainController extends Controller {
 
+		/**
+		 * Singleton instance reference
+		 * @var MainController
+		 * @static
+		 */
 		private static $_instance;
-		private $_dataManager;
-		private $_scriptManager;
+
+		/**
+		 * Data controller reference
+		 * @var DataController
+		 */
+		private $_dataController;
+
+		/**
+		 * Script controller reference
+		 * @var ScriptController
+		 */
+		private $_scriptController;
+
+		/**
+		 * Admin controller reference
+		 * @var AdminController
+		 */
+		private $_adminController;
+
+		/**
+		 * Login controller reference
+		 * @var LoginController
+		 */
+		private $_loginController;
 
 		public function __construct() {
-			$this->_dataManager = new DataManager();
-			$this->_scriptManager = new ScriptManager();
+			parent::__construct();
 
-			add_action('init', array($this, 'init'));
+			$this->_dataController = DataController::getInstance();
+			$this->_scriptController = new ScriptController();
+			$this->_adminController = new AdminController();
+			$this->_loginController = new LoginController();
+
+			add_action('after_switch_theme', array($this, 'activate_theme'));
+			add_action('switch_theme', array($this, 'deactivate_theme'));
 			add_action('tgmpa_register', array($this, 'register_plugin_dependencies'));
 		}
 
@@ -36,11 +72,40 @@ namespace terraarcana {
 		}
 
 		/**
-		 * Initializes the controller. Called on init WP hook.
+		 * @override
 		 */
-		public function init() {
-			$this->_dataManager->init();
-			$this->_scriptManager->init();
+		public function init() {}
+
+		/**
+		 * Adds all required custom capabilities to roles.
+		 * Runs on theme activation.
+		 */
+		public function activate_theme() {
+			$admin = get_role('administrator');
+			$admin->add_cap('publish_characters');
+			$admin->add_cap('edit_character');
+			$admin->add_cap('delete_character');
+
+			$contributor = get_role('contributor');
+			$contributor->add_cap('publish_characters');
+			$contributor->add_cap('edit_character');
+			$contributor->add_cap('delete_character');
+		}
+
+		/**
+		 * Removes all custom capabilities to roles.
+		 * Runs on theme deactivation.
+		 */
+		public function deactivate_theme() {
+			$admin = get_role('administrator');
+			$admin->remove_cap('publish_characters');
+			$admin->remove_cap('edit_character');
+			$admin->remove_cap('delete_character');
+
+			$contributor = get_role('contributor');
+			$contributor->remove_cap('publish_characters');
+			$contributor->remove_cap('edit_character');
+			$contributor->remove_cap('delete_character');
 		}
 
 		/**
@@ -54,15 +119,8 @@ namespace terraarcana {
 					'required' 		=> true,
 				),
 				array(
-					'name' 			=> 'OAuth Server',
-					'slug' 			=> 'OAuth1-master',
-					'source' 		=> 'https://github.com/WP-API/OAuth1/archive/master.zip',
-					'required' 		=> true,
-					'external_url' 	=> 'https://github.com/WP-API/OAuth1',
-				),
-				array(
-					'name' 			=> 'Advanced Custom Fields',
-					'slug' 			=> 'advanced-custom-fields',
+					'name' 			=> 'Advanced Custom Fields Pro',
+					'slug' 			=> 'advanced-custom-fields-pro',
 					'source' 		=> 'http://connect.advancedcustomfields.com/index.php?p=pro&a=download',
 					'required' 		=> true,
 					'external_url' 	=> 'http://www.advancedcustomfields.com'

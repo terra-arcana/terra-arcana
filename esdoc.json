@@ -1,6 +1,6 @@
 {
-	"source": "./app",
+	"source": ".",
 	"destination": "./docs",
 	"access": ["public", "protected", "private"],
-	"includes": ["\\.(js|jsx)$"]
+	"includes": ["^(?:app|src\/views)(?:\/(?:.*))*\/[^\/]*[.](?:js|jsx)$"]
 }

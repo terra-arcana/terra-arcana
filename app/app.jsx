@@ -1,23 +1,64 @@
-/* jshint ignore:start */
-
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Router from 'react-router';
-import { Route, DefaultRoute, RouteHandler } from 'react-router';
+import {Route, DefaultRoute, RouteHandler} from 'react-router';
+import Lodash from 'lodash';
 
-import Sidenav from './scripts/sidenav.jsx';
-import Index from './scripts/index.jsx';
-import CharacterBuilder from './scripts/toile/character-builder.jsx';
-import Codex from './scripts/codex/codex.jsx';
+import Sidenav from './scripts/sidenav/sidenav.jsx';
+import IndexPage from './scripts/index.page.jsx';
+import CharacterPage from './scripts/character/character.page.jsx';
+import CharacterNewPage from './scripts/character/character-new.page.jsx';
+import ZodiacViewerPage from './scripts/zodiac/zodiac-viewer.page.jsx';
+import CodexPage from './scripts/codex/codex.page.jsx';
 
 require('./styles/app.scss');
 
 /**
- * Main application wrapper
- * 
+ * An App is the main application wrapper. It is the single most top-level React component.
  * @class
  */
 class App extends React.Component {
-	
+
+	/**
+	 * @constructor
+	 * @param {Object} Default props
+	 */
+	constructor(props) {
+		super(props);
+
+		/**
+		 * @type {Object}
+		 * @private
+		 */
+		this.state = {
+			currentUser: undefined
+		};
+
+		this.switchActiveCharacter = this.switchActiveCharacter.bind(this);
+	}
+
+	componentDidMount() {
+		jQuery.ajax({
+			url: WP_API_Settings.root + 'wp/v2/users/me',
+			method: 'GET',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+			},
+			statusCode: {
+				401: function() {
+					this.setState({
+						currentUser: null
+					});
+				}.bind(this)
+			},
+			success: function(response) {
+				this.setState({
+					currentUser: response
+				});
+			}.bind(this)
+		});
+	}
+
 	/**
 	 * @override
 	 * @return {jsx} The component template
@@ -25,26 +66,62 @@ class App extends React.Component {
 	render() {
 		return (
 			<div id="sidenav-page-wrapper" className="toggled">
-				<Sidenav />
+				<Sidenav
+					currentUser = {this.state.currentUser}
+					onSwitchActiveCharacter = {this.switchActiveCharacter}
+				/>
 				<div id="sidenav-content-wrapper" className="container-fluid">
-					<div className="row">
-						<h1 className="col-xs-12">Terra Arcana</h1>
-					</div>
-					<RouteHandler />
+					<RouteHandler
+						onSwitchActiveCharacter = {this.switchActiveCharacter}
+					/>
 				</div>
 			</div>
 		);
+	}
+
+	/**
+	 * Changes the current user's active character to a new one.
+	 * @param {number} id The new active character's ID
+	 * @param {bool} [sendServerUpdate=true] Notify the back-end that the current user changed
+	 */
+	switchActiveCharacter(id, sendServerUpdate=true) {
+		var currentUser = Lodash.cloneDeep(this.state.currentUser);
+
+		currentUser['active_character'] = id;
+
+		this.setState({
+			currentUser: currentUser
+		});
+
+		// Update WordPress user model
+		if (sendServerUpdate) {
+			jQuery.ajax({
+				url: WP_API_Settings.root + 'wp/v2/users/' + currentUser['id'],
+				method: 'POST',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+				},
+				data: {
+					'active_character': id
+				}
+			});
+		}
 	}
 }
 
 let routes = (
 	<Route name="app" path="/" handler={App}>
-		<DefaultRoute handler={Index} />
-		<Route path="/competences" handler={CharacterBuilder} />
-		<Route path="/codex" handler={Codex} />
+		<DefaultRoute handler={IndexPage} />
+		<Route path="/codex/" handler={CodexPage} />
+		<Route path="/zodiaque/" handler={ZodiacViewerPage} />
+		<Route path="/personnage/creer/" handler={CharacterNewPage} />
+		<Route path="/personnage/:characterSlug/" handler={CharacterPage} />
+		// TODO: Find a way to default these to particular tabs. See #162
+		<Route path="/personnage/:characterSlug/zodiaque/" handler={CharacterPage} />
+		<Route path="/personnage/:characterSlug/fiche/" handler={CharacterPage} />
 	</Route>
 );
 
 Router.run(routes, Router.HistoryLocation, function (Handler) {
-	React.render(<Handler/>, document.getElementById('main'));
+	ReactDOM.render(<Handler/>, document.getElementById('main'));
 });

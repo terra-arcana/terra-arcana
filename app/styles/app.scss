@@ -1,3 +1,64 @@
+@import '_utils.scss';
+
 body {
-	background-color: lightblue;
+	background-image: url(../images/background.png);
+	font-family: 'PT Serif', serif;
+}
+
+.ta-page-header {
+	margin-bottom: 1em;
+	background-image: url(../images/header.png);
+	color: white;
+
+	h1 {
+		font-family: 'PT Serif Caption', serif;
+
+		& > small {
+			color: #ddd;
+		}
+	}
+}
+
+.ta-button-alert {
+	margin-left: 0.5em;
+}
+
+.ta-perk-icon {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	background-image: url(../images/zodiac/perk-black.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	&.sm {
+		width: 10px;
+		height: 10px;
+	}
+
+	&.white {
+		background-image: url(../images/zodiac/perk-white.png);
+	}
+
+	&.sm {
+		width: 12px;
+		height: 12px;
+	}
+}
+
+.ta-perk-icon-img {
+	position: relative;
+	width: 12px;
+	height: 12px;
+	margin: 1px;
+	top: -2px;
+}
+
+.list-inline .list-group-item {
+	background: none;
+	border: none;
+}
+
+.ta-seethrough {
+	opacity: 0.5;
 }
