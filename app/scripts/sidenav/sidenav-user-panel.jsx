@@ -239,9 +239,8 @@ export default class SidenavUserPanel extends React.Component {
 
 	/**
 	 * Handle clicks on active character link
-	 * @param {SynthemicMouseEvent} event The click event
 	 */
-	onActiveCharacterClick(event) {
+	onActiveCharacterClick() {
 		if (jQuery(this.characterSwitcherToggle).hasClass('collapsed')) {
 			this.characterSwitcherToggle.click();
 		}

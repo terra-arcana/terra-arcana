@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Router from 'react-router';
-import {Route, DefaultRoute, RouteHandler} from 'react-router';
+import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import Lodash from 'lodash';
 
 import Sidenav from './scripts/sidenav/sidenav.jsx';
@@ -71,9 +70,9 @@ class App extends React.Component {
 					onSwitchActiveCharacter = {this.switchActiveCharacter}
 				/>
 				<div id="sidenav-content-wrapper" className="container-fluid">
-					<RouteHandler
-						onSwitchActiveCharacter = {this.switchActiveCharacter}
-					/>
+					{React.cloneElement(this.props.children, {
+						onSwitchActiveCharacter: this.switchActiveCharacter
+					})}
 				</div>
 			</div>
 		);
@@ -109,19 +108,25 @@ class App extends React.Component {
 	}
 }
 
-let routes = (
-	<Route name="app" path="/" handler={App}>
-		<DefaultRoute handler={IndexPage} />
-		<Route path="/codex/" handler={CodexPage} />
-		<Route path="/zodiaque/" handler={ZodiacViewerPage} />
-		<Route path="/personnage/creer/" handler={CharacterNewPage} />
-		<Route path="/personnage/:characterSlug/" handler={CharacterPage} />
-		// TODO: Find a way to default these to particular tabs. See #162
-		<Route path="/personnage/:characterSlug/zodiaque/" handler={CharacterPage} />
-		<Route path="/personnage/:characterSlug/fiche/" handler={CharacterPage} />
-	</Route>
-);
+/**
+ * @type {Object}
+ */
+App.propTypes = {
+	children: React.PropTypes.element
+};
 
-Router.run(routes, Router.HistoryLocation, function (Handler) {
-	ReactDOM.render(<Handler/>, document.getElementById('main'));
-});
+ReactDOM.render(
+	<Router history={browserHistory} >
+		<Route path="/" component={App}>
+			<IndexRoute component={IndexPage} />
+			<Route path="/codex/" component={CodexPage} />
+			<Route path="/zodiaque/" component={ZodiacViewerPage} />
+			<Route path="/personnage/creer/" component={CharacterNewPage} />
+			<Route path="/personnage/:characterSlug/" component={CharacterPage} />
+			// TODO: Find a way to default these to particular tabs. See #162
+			<Route path="/personnage/:characterSlug/zodiaque/" component={CharacterPage} />
+			<Route path="/personnage/:characterSlug/fiche/" component={CharacterPage} />
+		</Route>
+	</Router>,
+	document.getElementById('main')
+);

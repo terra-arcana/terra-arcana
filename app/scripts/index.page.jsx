@@ -49,7 +49,7 @@ export default class IndexPage extends React.Component {
 				<div className="ta-index-content">
 					{this.state.posts.map(function(post) {
 						return (
-							<div className="ta-post">
+							<div key={post.id} className="ta-post">
 								<div className="page-header">
 									<h2>{post.title.rendered}</h2>
 								</div>
