@@ -64,7 +64,7 @@ export default class CharacterNewPage extends React.Component {
 	 * @override
 	 * @return {HTML} The component template
 	 */
-	render() {
+	render() {	
 		var content = (
 				<div className="text-center">
 					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
@@ -302,5 +302,5 @@ CharacterNewPage.propTypes = {
  * @type {Object}
  */
 CharacterNewPage.contextTypes = {
-	router: React.PropTypes.func.isRequired
+	router: React.PropTypes.object.isRequired
 };
