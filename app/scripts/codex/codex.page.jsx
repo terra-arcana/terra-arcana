@@ -3,7 +3,7 @@ import React from 'react';
 require('../../styles/codex/codex.scss');
 
 /**
- * A CodexPage is the main view for listing all Codex entries
+ * A CodexPage is the root view for listing all Codex entries, sorted by chapters.
  * @class
  */
 export default class CodexPage extends React.Component {
@@ -20,7 +20,7 @@ export default class CodexPage extends React.Component {
 		 * @private
 		 */
 		this.state = {
-			codexArticles: []
+			codexContents: []
 		};
 	}
 
@@ -28,10 +28,28 @@ export default class CodexPage extends React.Component {
 	 * @override
  	 */
 	componentDidMount() {
-		jQuery.get(WP_API_Settings.root + 'wp/v2/codex', function(result) {
-			this.setState({
-				codexArticles: result
-			});
+		jQuery.get(WP_API_Settings.root + 'wp/v2/chapters', function(chapters) {
+			chapters.map(function(chapter) {
+				chapter.articles = [];
+			}.bind(this));
+
+			jQuery.get(WP_API_Settings.root + 'wp/v2/codex', function(articles) {
+				// Sort all articles in their respective chapter
+				articles.map(function(article) {
+					article.chapters.map(function(articleChapter) {
+						chapters.map(function(chapter) {
+							if (chapter.id === articleChapter) {
+								chapter.articles.push(article);
+								return;
+							}
+						}.bind(this));
+					}.bind(this));
+				}.bind(this));
+
+				this.setState({
+					codexContents: chapters
+				});
+			}.bind(this));
 		}.bind(this));
 	}
 
@@ -40,34 +58,53 @@ export default class CodexPage extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		let codexArticles = this.state.codexArticles.map(function(article) {
-			return(
-				<li key={article.id} className="panel panel-default">
-					<div className="panel-heading">
-						<h2 className="panel-title">{article.title.rendered}</h2>
-					</div>
-					<div
-						className="panel-body"
-						dangerouslySetInnerHTML = {{__html: article.content.rendered}}
-					></div>
-				</li>
-			);
-		});
+		let codexContents = (
+			<div className="text-center">
+				<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
+			</div>
+		);
+
+		if (this.state.codexContents.length) {
+			codexContents = this.state.codexContents.map(function(chapter) {
+				return (
+					<li key={chapter.id} className="ta-codex-chapter col-xs-12 col-md-6 col-lg-4">
+						<h2>{chapter.name}
+							<br />
+							<small>{chapter.description}</small>
+						</h2>
+						<ul className="list-group">
+							{chapter.articles.map(function(article) {
+								return (
+									<li key={article.id} className="panel panel-default">
+										<div className="panel-heading">
+											<a href={article.link}>
+												<h3 className="panel-title">{article.title.rendered}</h3>
+											</a>
+										</div>
+										<div
+											className="panel-body"
+											dangerouslySetInnerHTML= {{__html: article.excerpt.rendered}}
+										/>
+									</li>
+								);
+							}.bind(this))}
+						</ul>
+					</li>
+				);
+			});
+		}
 
 		return (
 			<div className="ta-codex-archive">
 				<div className="ta-page-header row">
 					<div className="col-xs-12">
 						<div className="page-header">
-							<h1>Codex Arcanum</h1>
+							<h1>Codex Arcanum <small>Le recensement de l'histoire de Raffin et d'Atropos</small></h1>
 						</div>
 					</div>
 				</div>
-
-				<div className="alert alert-warning">Bientôt disponible!</div>
-
-				<ul>
-					{codexArticles}
+				<ul className="row">
+					{codexContents}
 				</ul>
 			</div>
 		);
