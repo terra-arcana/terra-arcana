@@ -9,6 +9,7 @@ import CharacterPage from './scripts/character/character.page.jsx';
 import CharacterNewPage from './scripts/character/character-new.page.jsx';
 import ZodiacViewerPage from './scripts/zodiac/zodiac-viewer.page.jsx';
 import CodexPage from './scripts/codex/codex.page.jsx';
+import CodexArticlePage from './scripts/codex/codex-article.page.jsx';
 
 require('./styles/app.scss');
 
@@ -120,6 +121,7 @@ ReactDOM.render(
 		<Route path="/" component={App}>
 			<IndexRoute component={IndexPage} />
 			<Route path="/codex/" component={CodexPage} />
+			<Route path="/codex/:articleSlug/" component={CodexArticlePage} />
 			<Route path="/zodiaque/" component={ZodiacViewerPage} />
 			<Route path="/personnage/creer/" component={CharacterNewPage} />
 			<Route path="/personnage/:characterSlug/" component={CharacterPage} />

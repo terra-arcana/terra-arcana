@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 require('../../styles/codex/codex.scss');
 
@@ -77,9 +78,9 @@ export default class CodexPage extends React.Component {
 								return (
 									<li key={article.id} className="panel panel-default">
 										<div className="panel-heading">
-											<a href={article.link}>
+											<Link to={article.link}>
 												<h3 className="panel-title">{article.title.rendered}</h3>
-											</a>
+											</Link>
 										</div>
 										<div
 											className="panel-body"
