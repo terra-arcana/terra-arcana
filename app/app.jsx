@@ -5,12 +5,14 @@ import Lodash from 'lodash';
 
 import Navbar from './scripts/layout/navbar.jsx';
 import Footer from './scripts/layout/footer.jsx';
-import IndexPage from './scripts/index.page.jsx';
+
 import CharacterPage from './scripts/character/character.page.jsx';
 import CharacterNewPage from './scripts/character/character-new.page.jsx';
-import ZodiacViewerPage from './scripts/zodiac/zodiac-viewer.page.jsx';
-import CodexPage from './scripts/codex/codex.page.jsx';
+import CodexArchivePage from './scripts/codex/codex-archive.page.jsx';
 import CodexArticlePage from './scripts/codex/codex-article.page.jsx';
+import IndexPage from './scripts/index.page.jsx';
+import RulesArchivePage from './scripts/rules/rules-archive.page.jsx';
+import ZodiacViewerPage from './scripts/zodiac/zodiac-viewer.page.jsx';
 
 require('./styles/app.scss');
 
@@ -122,14 +124,15 @@ ReactDOM.render(
 	<Router history={browserHistory} >
 		<Route path="/" component={App}>
 			<IndexRoute component={IndexPage} />
-			<Route path="/codex/" component={CodexPage} />
+			<Route path="/codex/" component={CodexArchivePage} />
 			<Route path="/codex/:articleSlug/" component={CodexArticlePage} />
-			<Route path="/zodiaque/" component={ZodiacViewerPage} />
 			<Route path="/personnage/creer/" component={CharacterNewPage} />
 			<Route path="/personnage/:characterSlug/" component={CharacterPage} />
 			// TODO: Find a way to default these to particular tabs. See #162
 			<Route path="/personnage/:characterSlug/zodiaque/" component={CharacterPage} />
 			<Route path="/personnage/:characterSlug/fiche/" component={CharacterPage} />
+			<Route path="/systeme/" component={RulesArchivePage} />
+			<Route path="/zodiaque/" component={ZodiacViewerPage} />
 		</Route>
 	</Router>,
 	document.getElementById('main')
