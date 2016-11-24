@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, IndexLink} from 'react-router';
 
 import SidenavUserPanel from './sidenav-user-panel.jsx';
 import packageInfo from '../../../package.json';
@@ -25,9 +25,9 @@ export default class Sidenav extends React.Component {
 						<a href={packageInfo.releases.url}>v{packageInfo.version}</a>
 					</div>
 
-					<Link to="/" className="ta-sidenav-logo">
+					<IndexLink to="/" className="ta-sidenav-logo">
 						<img src={WP_Theme_Settings.imageRoot + 'terra-logo-blanc.png'} />
-					</Link>
+					</IndexLink>
 
 					<ul className="nav nav-pills nav-stacked">
 						<li><Link to="/codex/">Codex Arcanum</Link></li>

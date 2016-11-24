@@ -232,7 +232,7 @@ export default class SkillGraph extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		var root = ReactDOM.findDOMNode(this);
+		var root = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
 
 		/**
 		 * Canvas DOM elements
@@ -284,7 +284,7 @@ export default class SkillGraph extends React.Component {
 	 * @return {Object} The desired width and height of the editor canvas
 	 */
 	getEditorSize() {
-		var root = ReactDOM.findDOMNode(this),
+		var root = ReactDOM.findDOMNode(this), // eslint-disable-line react/no-find-dom-node
 			editorStyle = window.getComputedStyle(root),
 			paddings = {
 				left: SkillGraph.pxStringToNumber(editorStyle.paddingLeft),

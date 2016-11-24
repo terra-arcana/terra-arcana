@@ -1,30 +1,24 @@
 /* global __dirname, module */
-/* eslint-disable no-console */
 
-var ExtractTextPlugin = require('extract-text-webpack-plugin'),
-	OnBuildPlugin = require('on-build-webpack'),
-	exec = require('child_process').exec;
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = [
 	{
 		context: __dirname + '/app',
-
 		entry: {
 			'terra-arcana': './app.jsx',
 			html: './index.html',
 			login: './styles/login/login.scss'
 		},
-
 		output: {
 			filename: 'app.js',
 			path: __dirname + '/dist'
 		},
-
 		module: {
 			loaders: [
 				{
 					test: /\.jsx$/,
-					loaders: ['babel-loader', 'eslint-loader'],
+					loaders: ['babel?presets[]=es2015&presets[]=react', 'eslint'],
 					exclude: /node_modules/
 				},
 				{
@@ -45,53 +39,32 @@ module.exports = [
 				},
 				{
 					test: /\.json$/,
-					loader: 'json-loader'
+					loader: 'json'
 				}
 			]
 		},
-
 		plugins: [
 			new ExtractTextPlugin('[name].css', {
 				allChunks: true
-			} ),
-
-			new OnBuildPlugin(function(stats) { // eslint-disable-line no-unused-vars
-				exec(
-					'esdoc -c esdoc.json',
-					function (error, stdout, stderr) {
-						console.log('\nBUILDING DOCUMENTATION\n======================\n' + stdout);
-
-						if (stderr.length > 0) {
-							console.log('\nERRORS\n======\n' + stderr);
-						}
-
-						if (error !== null) {
-							console.log('\nEXEC ERRORS\n===========\n' + error);
-						}
-					}
-				);
 			} )
 		]
 	},
 
 	{
 		context: __dirname + '/src/views/zodiac',
-
 		entry: {
 			javascript: './zodiac-admin-app.jsx',
 			html: './zodiac.html'
 		},
-
 		output: {
 			filename: 'zodiac.js',
 			path: __dirname + '/dist/admin/zodiac'
 		},
-
 		module: {
 			loaders: [
 				{
 					test: /\.jsx$/,
-					loaders: ['babel-loader', 'eslint-loader'],
+					loaders: ['babel?presets[]=es2015&presets[]=react', 'eslint'],
 					exclude: /node_modules/
 				},
 				{
@@ -108,7 +81,6 @@ module.exports = [
 				}
 			]
 		},
-
 		plugins: [
 			new ExtractTextPlugin('style.css', {
 				allChunks: true

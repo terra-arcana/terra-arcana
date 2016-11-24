@@ -76,5 +76,7 @@ CharacterSkillsPanelSkillElement.propTypes = {
 			name: React.PropTypes.string.isRequired
 		})
 	),
-	active: React.PropTypes.bool
+	active: React.PropTypes.bool,
+
+	onSelect: React.PropTypes.func
 };

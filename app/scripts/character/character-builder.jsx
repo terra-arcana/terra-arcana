@@ -601,6 +601,19 @@ export default class CharacterBuilder extends React.Component {
  */
 CharacterBuilder.propTypes = {
 	character: React.PropTypes.shape({
+		id: React.PropTypes.number,
+		title: React.PropTypes.shape({
+			rendered: React.PropTypes.string
+		}),
+		people: React.PropTypes.shape({
+			singular: React.PropTypes.string
+		}),
+		xp: React.PropTypes.shape({
+			total: React.PropTypes.number
+		}),
+		perk_points: React.PropTypes.shape({
+			bonus: React.PropTypes.number
+		}),
 		current_build: React.PropTypes.array,
 		picked_starting_skill: React.PropTypes.number
 	}),

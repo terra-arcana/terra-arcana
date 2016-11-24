@@ -74,6 +74,7 @@ UpgradeNode.propTypes = {
 	radius: React.PropTypes.number,
 	selected: React.PropTypes.bool,
 	state: React.PropTypes.oneOf(['normal', 'picked', 'start']),
+	draggable: React.PropTypes.bool,
 
 	onClick: React.PropTypes.func,
 	onDragMove: React.PropTypes.func,
