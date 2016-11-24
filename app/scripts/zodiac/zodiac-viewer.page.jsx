@@ -81,7 +81,7 @@ export default class ZodiacViewerPage extends React.Component {
 				<div className="ta-page-header row">
 					<div className="col-xs-12">
 						<div className="page-header">
-							<h1>Zodiaque</h1>
+							<h1>Le Zodiaque <small>L'étendue complète des compétences priorèmes connues</small></h1>
 						</div>
 					</div>
 				</div>
