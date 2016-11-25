@@ -11,6 +11,7 @@ stage("Tests"){
         //git url: 'https://github.com/terra-arcana/terra-arcana', branch: 'development'
         checkout scm
         env.DISPLAY = ":0"
+        env.CHROME_BIN = "google-chrome-stable"
         sh 'npm install -g esdoc karma webpack'
         sh 'npm install'
         sh './node_modules/.bin/webpack'
