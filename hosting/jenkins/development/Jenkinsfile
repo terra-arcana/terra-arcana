@@ -6,7 +6,7 @@ stage("Tests"){
         def nodeHome = tool 'Stable V6 Terra'
         env.PATH = "${nodeHome}/bin:${env.PATH}"
         //sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
-        sh "if ! [-a ${nodeHome}/bin/node] then ln -s ${nodeHome}/bin/nodejs ${nodeHome}/bin/node fi"
+        sh "if [ ! -f ${nodeHome}/bin/node ]; then ln -s ${nodeHome}/bin/nodejs ${nodeHome}/bin/node fi"
 
         //git url: 'https://github.com/terra-arcana/terra-arcana', branch: 'development'
         scm checkout
