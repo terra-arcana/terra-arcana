@@ -15,7 +15,7 @@ stage("Tests"){
         sh 'npm install'
         sh './node_modules/.bin/webpack'
         //sh 'esdoc'
-        sh './node_modules/.bin/karma start'
+        sh 'xvfb-run ./node_modules/.bin/karma start'
       }
   }
 }
