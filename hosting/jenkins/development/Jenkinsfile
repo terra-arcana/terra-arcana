@@ -9,7 +9,7 @@ stage("Tests"){
         sh "if [ ! -f ${nodeHome}/bin/node ]; then ln -s ${nodeHome}/bin/nodejs ${nodeHome}/bin/node; fi"
 
         //git url: 'https://github.com/terra-arcana/terra-arcana', branch: 'development'
-        scm checkout
+        checkout scm
         sh 'npm install -g esdoc karma webpack'
         sh 'npm install'
         sh './node_modules/.bin/webpack'
