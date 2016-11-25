@@ -8,7 +8,8 @@ stage("Tests"){
         //sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
         //sh 'ln -s ${nodeHome}/bin/nodejs ${nodeHome}/bin/node'
 
-        git url: 'https://github.com/terra-arcana/terra-arcana', branch: 'development'
+        //git url: 'https://github.com/terra-arcana/terra-arcana', branch: 'development'
+        scm checkout
         //sh 'npm install -g esdoc karma webpack'
         sh 'npm install'
         sh './node_modules/.bin/webpack'
