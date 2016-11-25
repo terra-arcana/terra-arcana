@@ -1,9 +1,10 @@
 /* global describe, it */
 
-var Lodash = require('lodash'),
-	TestUtils = require('react-addons-test-utils'),
-	expect = require('expect'),
-	SkillGraph = require('../../scripts/zodiac/skill-graph.jsx');
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import expect from 'expect';
+import Lodash from 'lodash';
+import SkillGraph from '../../scripts/zodiac/skill-graph.jsx';
 
 describe('SkillGraph', function() {
 	it('has constants defined', function() {
@@ -21,6 +22,7 @@ describe('SkillGraph', function() {
 					initialNodeData = {[
 						{
 							id: '1',
+							name: 'Skill 1',
 							x: 10,
 							y: 10,
 							type: 'skill',
@@ -28,6 +30,7 @@ describe('SkillGraph', function() {
 						},
 						{
 							id: '2',
+							name: 'Skill 2',
 							x: 10,
 							y: 20,
 							type: 'skill',
@@ -35,6 +38,7 @@ describe('SkillGraph', function() {
 						},
 						{
 							id: '3',
+							name: 'Skill 3',
 							x: 30,
 							y: 50,
 							type: 'skill',
@@ -42,6 +46,7 @@ describe('SkillGraph', function() {
 						},
 						{
 							id: '4',
+							name: 'Skill 4',
 							x: 80,
 							y: 20,
 							type: 'skill',

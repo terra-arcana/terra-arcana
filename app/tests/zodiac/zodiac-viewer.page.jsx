@@ -1,9 +1,10 @@
 /* global describe, it */
 
-var TestUtils = require('react-addons-test-utils'),
-	expect = require('expect'),
-	Lodash = require('lodash'),
-	ZodiacViewerPage = require('../../scripts/zodiac/zodiac-viewer.page.jsx');
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import expect from 'expect';
+import Lodash from 'lodash';
+import ZodiacViewerPage from '../../scripts/zodiac/zodiac-viewer.page.jsx';
 
 describe('ZodiacViewerPage', function() {
 	it ('inspects nodes', function() {

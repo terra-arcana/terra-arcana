@@ -1,9 +1,10 @@
 /* global describe, it */
 
-var TestUtils = require('react-addons-test-utils'),
-	Lodash = require('lodash'),
-	expect = require('expect'),
-	ZodiacEditor = require('../zodiac/zodiac-editor.jsx');
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import expect from 'expect';
+import Lodash from 'lodash';
+import ZodiacEditor from '../zodiac/zodiac-editor.jsx';
 
 describe('ZodiacEditor', function() {
 	it('initializes the active node', function() {
