@@ -1,9 +1,10 @@
 /* global describe, it */
 
-var TestUtils = require('react-addons-test-utils'),
-	expect = require('expect'),
-	Lodash = require('lodash'),
-	CharacterBuilder = require('../../scripts/character/character-builder.jsx');
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import expect from 'expect';
+import Lodash from 'lodash';
+import CharacterBuilder from '../../scripts/character/character-builder.jsx';
 
 describe('CharacterBuilder', function() {
 	it('adds perks to character', function() {
@@ -14,6 +15,7 @@ describe('CharacterBuilder', function() {
 							{
 								id: '1',
 								type: 'skill',
+								name: 'Skill 1',
 								perks: [{
 									power: 0,
 									cast: 1,
@@ -66,6 +68,7 @@ describe('CharacterBuilder', function() {
 			{
 				id: '1',
 				type: 'skill',
+				name: 'Skill 1',
 				perks: [{
 					power: 1,
 					cast: 1,
