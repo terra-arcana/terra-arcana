@@ -53,7 +53,7 @@
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
     "node-sass": "^3.8.0",
-    "react-addons-test-utils": "^15.3.1",
+    "react-addons-test-utils": "^15.4.0",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "svg-inline-loader": "^0.6.1",
@@ -62,9 +62,9 @@
   "dependencies": {
     "konva": "^1.1.1",
     "lodash": "^4.15.0",
-    "react": "^15.3.1",
-    "react-dom": "^15.3.1",
-    "react-konva": "1.0.5",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-konva": "^1.1.0",
     "react-router": "^2.7.0"
   },
   "keywords": []
