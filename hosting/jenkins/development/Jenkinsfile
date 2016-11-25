@@ -1,0 +1,31 @@
+stage("Tests"){
+  node("xvfb"){
+      wrap ([$class: 'Xvfb']){
+        echo "Tests running"
+        //Setup Node
+        def nodeHome = tool 'Stable V6 Terra'
+        env.PATH = "${nodeHome}/bin:${env.PATH}"
+        //sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
+        //sh 'ln -s ${nodeHome}/bin/nodejs ${nodeHome}/bin/node'
+
+        git url: 'https://github.com/terra-arcana/terra-arcana', branch: 'development'
+        //sh 'npm install -g esdoc karma webpack'
+        sh 'npm install'
+        sh './node_modules/.bin/webpack'
+        //sh 'esdoc'
+        sh './node_modules/.bin/karma start'
+      }
+  }
+}
+
+stage("Packaging"){
+  node ("docker"){
+      echo "Image packaging"
+  }
+}
+
+stage("Deployment"){
+  node {
+      echo "Image deploying"
+  }
+}
