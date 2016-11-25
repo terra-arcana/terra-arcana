@@ -5,6 +5,12 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = function(config) {
 	config.set({
 		browsers: ['Chrome'],
+		customLaunchers: {
+      Chrome_without_sandbox: {
+        base: 'Chrome',
+        flags: ['--no-sandbox'] // with sandbox it fails under Docker
+      }
+    },
 		singleRun: true,
 		frameworks: ['mocha'],
 		files: [
