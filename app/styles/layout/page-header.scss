@@ -1,0 +1,23 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+.ta-page-header {
+	margin-bottom: 1em;
+	padding-top: 4em;
+	background-image: url(../../images/header.png);
+	background-position: center bottom;
+	color: white;
+
+	h1 {
+		font-family: 'PT Serif Caption', serif;
+
+		& > small {
+			color: #ddd;
+		}
+	}
+}
+
+@media (min-width: $screen-sm-min) {
+	.ta-page-header {
+		padding-top: 0;
+	}
+}

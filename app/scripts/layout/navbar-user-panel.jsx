@@ -2,17 +2,17 @@ import React from 'react';
 import {Link} from 'react-router';
 import Lodash from 'lodash';
 
-import SidenavCharacterSwitcher from './sidenav-character-switcher.jsx';
+import NavbarCharacterSwitcher from './navbar-character-switcher.jsx';
 
-require('../../styles/sidenav/sidenav-user-panel.scss');
+require('../../styles/navbar/navbar-user-panel.scss');
 
 /**
- * A SidenavUserPanel displays the currently logged in user in a {@link Sidenav},
+ * A NavbarUserPanel displays the currently logged in user in a {@link Sidenav},
  * along with any useful information and links related to the currently logged in user.
  * If logged out, the panel will display links to the login and register pages.
  * @class
  */
-export default class SidenavUserPanel extends React.Component {
+export default class NavbarUserPanel extends React.Component {
 
 	/**
 	 * @constructor
@@ -88,101 +88,92 @@ export default class SidenavUserPanel extends React.Component {
 	 */
 	render() {
 		var contents = (
-				<div className="panel panel-default navbar-fixed-bottom">
-					<ul className="list-group">
-						<li className="list-group-item text-center">
-							<span className="glyphicon glyphicon-asterisk glyphicon-spin text-center" />
-						</li>
-					</ul>
-				</div>
+				<ul className="nav navbar-nav navbar-right ta-sidenav-user-panel">
+					<li className="text-center">
+						<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
+					</li>
+				</ul>
 			),
 			activeCharacterButton = (
-				<li className="list-group-item text-center">
+				<li className="text-center">
 					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
 				</li>
 			),
-			incarnatesLabel = <noscript />,
+			createCharacterButton = (
+				<li>
+					<Link
+						to = '/personnage/creer/'
+						className = "list-group-item list-group-item-success"
+						>
+						<span className="glyphicon glyphicon-plus pull-right"></span>
+						Créer un personnage
+					</Link>
+				</li>
+			),
 			activeCharacterData = this.getActiveCharacterData();
 
 		// There is an active character
 		if (activeCharacterData) {
-			incarnatesLabel = <small>incarne</small>;
-
 			activeCharacterButton = (
-				<Link
-					to = {'/personnage/' + activeCharacterData.slug + '/'}
-					className = "list-group-item ta-sidenav-active-character"
-					onClick = {this.onActiveCharacterClick}
-				>
-					<button
-						ref = {(ref) => this.characterSwitcherToggle = ref}
-						type = "button"
-						className = "ta-sidenav-character-switcher-toggle btn btn-link pull-right"
-						data-toggle = "collapse"
-						data-target = "#ta-sidenav-character-switcher"
-						onClick = {this.onCharacterSwitcherToggleClick}
+				<li>
+					<Link
+						className = "list-group-item ta-sidenav-active-character"
+						to = {'/personnage/' + activeCharacterData.slug + '/'}
+						onClick = {this.onActiveCharacterClick}
 					>
-						<span className="glyphicon"></span>
-					</button>
-					<h3 className="list-group-item-heading ta-sidenav-character-name">{activeCharacterData.title.rendered}</h3>
-					<p className="list-group-item-text">Priorème {activeCharacterData.people.singular}</p>
-				</Link>
+						<h3 className="list-group-item-heading ta-sidenav-character-name">{activeCharacterData.title.rendered}</h3>
+						<p className="list-group-item-text">Priorème {activeCharacterData.people.singular}</p>
+					</Link>
+				</li>
 			);
 		}
 
 		// No active character
 		else if (!this.state.loadingCharacters) {
 			activeCharacterButton = (
-				<Link
-					to = "/personnage/creer/"
-					className = "list-group-item list-group-item-success"
-				>
-					<span className="glyphicon glyphicon-plus pull-right"></span>
-					Créer un personnage
-				</Link>
+				<li>
+					<Link
+						className = "list-group-item list-group-item-success"
+						to = "/personnage/creer/"
+					>
+						<span className="glyphicon glyphicon-plus pull-right"></span>
+						Créer un personnage
+					</Link>
+				</li>
 			);
 		}
 
 		// Logged in
 		if (this.props.currentUser) {
 			contents = (
-				<div className="panel panel-default navbar-fixed-bottom">
-					<div className="panel-heading">
-						<h2 className="panel-title">
-							<a href="#">{this.props.currentUser.name}</a> {incarnatesLabel}
-						</h2>
-					</div>
-					<div className="list-group">
-						{activeCharacterButton}
-						<SidenavCharacterSwitcher
-							characters = {this.getInactiveCharactersData()}
-							onCharacterClick = {this.onSwitchActiveCharacter}
-						/>
-
-						<a className="list-group-item" href={WP_Theme_Settings.logoutURL}>Déconnexion</a>
-					</div>
-				</div>
+				<ul className="nav navbar-nav navbar-right ta-sidenav-user-panel">
+					<li className="dropdown">
+						<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button">{this.props.currentUser.name} <span className="caret"></span></a>
+						<ul className="dropdown-menu list-group">
+							{activeCharacterButton}
+							<NavbarCharacterSwitcher
+								characters = {this.getInactiveCharactersData()}
+								onCharacterClick = {this.onSwitchActiveCharacter}
+							/>
+							{createCharacterButton}
+						</ul>
+					</li>
+					<li><a href={WP_Theme_Settings.logoutURL}>Déconnexion</a></li>
+				</ul>
 			);
 		}
 
 		// Logged off
 		else if (this.props.currentUser === null) {
 			contents = (
-				<div className="panel panel-default navbar-fixed-bottom">
-
-					<ul className="list-group">
-						<li className="list-group-item"><a href="/wp-login.php">Connexion</a></li>
-						<li className="list-group-item list-group-item-success"><a href="/wp-register.php">Inscription</a></li>
-					</ul>
-				</div>
+				<ul className="nav navbar-nav navbar-right ta-sidenav-user-panel">
+					<li><a href="/wp-login.php">Connexion</a></li>
+					<li><a href="/wp-register.php">Inscription</a></li>
+				</ul>
 			);
 		}
 
-		return (
-			<div className="ta-sidenav-user-panel">
-				{contents}
-			</div>
-		);
+		return contents;
 	}
 
 	/**
@@ -260,7 +251,7 @@ export default class SidenavUserPanel extends React.Component {
 /**
  * @type {Object}
  */
-SidenavUserPanel.propTypes = {
+NavbarUserPanel.propTypes = {
 	currentUser: React.PropTypes.object,
 
 	onSwitchActiveCharacter: React.PropTypes.func

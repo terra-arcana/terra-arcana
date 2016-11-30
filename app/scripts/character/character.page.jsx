@@ -1,8 +1,9 @@
 import React from 'react';
 
-import CharacterProfile from './character-profile.jsx';
 import CharacterBuilder from './character-builder.jsx';
+import CharacterProfile from './character-profile.jsx';
 import CharacterSheet from './character-sheet.jsx';
+import PageHeader from '../layout/page-header.jsx';
 
 require('../../styles/character/character.page.scss');
 
@@ -132,20 +133,17 @@ export default class CharacterPage extends React.Component {
 
 			contents = (
 				<div className="ta-character">
-					<div className="ta-page-header row">
-						<div className="col-xs-12">
-							<div className="page-header">
-								<h1>{this.state.character.title.rendered}</h1>
-							</div>
-						</div>
-					</div>
+					<PageHeader
+						content = {'<h1>' + this.state.character.title.rendered + '</h1>'}
+					/>
+					<div className="container">
+						<div className="row">
+							{nav}
 
-					<div className="row">
-						{nav}
-
-						<div className="col-xs-12 ta-character-tab-content">
-							<div className="row">
-								{tabContents}
+							<div className="col-xs-12 ta-character-tab-content">
+								<div className="row">
+									{tabContents}
+								</div>
 							</div>
 						</div>
 					</div>

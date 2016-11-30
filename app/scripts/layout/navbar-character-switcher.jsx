@@ -2,12 +2,12 @@ import React from 'react';
 import {Link} from 'react-router';
 
 /**
- * A SidenavCharacterSwitcher lists all characters belonging to a user, except
+ * A NavbarCharacterSwitcher lists all characters belonging to a user, except
  * the currently active one. It allows users to switch their active character to
  * another one. This is meant to be used within a {@link SidenavUserPanel}.
  * @class
  */
-export default class SidenavCharacterSwitcher extends React.Component {
+export default class NavbarCharacterSwitcher extends React.Component {
 
 	/**
 	 * @constructor
@@ -25,28 +25,22 @@ export default class SidenavCharacterSwitcher extends React.Component {
 	 */
 	render() {
 		return(
-			<div id="ta-sidenav-character-switcher" className="ta-sidenav-character-switcher collapse">
+			<div className="ta-sidenav-character-switcher">
 				{this.props.characters.map(function(character) {
 					return (
-						<Link
-							to = {'/personnage/' + character.slug + '/'}
-							key = {character.id}
-							className = "list-group-item list-group-item-info"
-							onClick = {this.onCharacterClick}
-							data-character-id = {character.id}
-						>
-							<h4 className="list-group-item-heading no-events ta-sidenav-character-name">{character.title.rendered}</h4>
-							<p className="list-group-item-text no-events">Priorème {character.people.singular}</p>
-						</Link>
+						<li key = {character.id}>
+							<Link
+								to = {'/personnage/' + character.slug + '/'}
+								className = "list-group-item list-group-item-info"
+								onClick = {this.onCharacterClick}
+								data-character-id = {character.id}
+							>
+								<h4 className="list-group-item-heading no-events ta-sidenav-character-name">{character.title.rendered}</h4>
+								<p className="list-group-item-text no-events">Priorème {character.people.singular}</p>
+							</Link>
+						</li>
 					);
 				}.bind(this))}
-				<Link
-					to = '/personnage/creer/'
-					className = "list-group-item list-group-item-success"
-				>
-					<span className="glyphicon glyphicon-plus pull-right"></span>
-					Créer un personnage
-				</Link>
 			</div>
 		);
 	}
@@ -65,7 +59,7 @@ export default class SidenavCharacterSwitcher extends React.Component {
 /**
  * @type {Object}
  */
-SidenavCharacterSwitcher.propTypes = {
+NavbarCharacterSwitcher.propTypes = {
 	characters: React.PropTypes.arrayOf(
 		React.PropTypes.object
 	).isRequired,

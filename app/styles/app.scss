@@ -5,20 +5,6 @@ body {
 	font-family: 'PT Serif', serif;
 }
 
-.ta-page-header {
-	margin-bottom: 1em;
-	background-image: url(../images/header.png);
-	color: white;
-
-	h1 {
-		font-family: 'PT Serif Caption', serif;
-
-		& > small {
-			color: #ddd;
-		}
-	}
-}
-
 .ta-button-alert {
 	margin-left: 0.5em;
 }

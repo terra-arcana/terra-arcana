@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+import PageHeader from '../layout/page-header.jsx';
+
 require('../../styles/codex/codex.scss');
 
 /**
@@ -97,16 +99,14 @@ export default class CodexPage extends React.Component {
 
 		return (
 			<div className="ta-codex-archive">
-				<div className="ta-page-header row">
-					<div className="col-xs-12">
-						<div className="page-header">
-							<h1>Codex Arcanum <small>Le recensement de l'histoire de Raffin et d'Atropos</small></h1>
-						</div>
-					</div>
+				<PageHeader
+					content = "<h1>Codex Arcanum <small>Le recensement de l'histoire de Raffin et d'Atropos</small></h1>"
+				/>
+				<div className="container">
+					<ul className="row list-unstyled">
+						{codexContents}
+					</ul>
 				</div>
-				<ul className="row">
-					{codexContents}
-				</ul>
 			</div>
 		);
 	}

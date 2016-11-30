@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PageHeader from '../layout/page-header.jsx';
+
 /**
  * A CodexArticlePage is the view for a single Codex article.
  * @class
@@ -82,15 +84,12 @@ export default class CodexArticlePage extends React.Component {
 
 		return (
 			<div className="ta-codex-article">
-				<div className="ta-page-header row">
-					<div className="col-xs-12">
-						<div className="page-header">
-							<h1><span dangerouslySetInnerHTML={{__html: title}} /> <small>{this.getChapterList(this.state.chapters)}</small></h1>
-						</div>
-					</div>
+				<PageHeader
+					content = {'<h1><span>' + title + '</span> <small>' + this.getChapterList(this.state.chapters) + '</small></h1>'}
+				/>
+				<div className="container">
+					{content}
 				</div>
-
-				{content}
 			</div>
 		);
 	}
