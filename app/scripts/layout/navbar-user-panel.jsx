@@ -2,9 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import Lodash from 'lodash';
 
-import NavbarCharacterSwitcher from './navbar-character-switcher.jsx';
-
-require('../../styles/navbar/navbar-user-panel.scss');
+require('../../styles/layout/navbar-user-panel.scss');
 
 /**
  * A NavbarUserPanel displays the currently logged in user in a {@link Sidenav},
@@ -29,12 +27,6 @@ export default class NavbarUserPanel extends React.Component {
 			loadingCharacters: true,
 			userCharacters: []
 		};
-
-		this.getActiveCharacterData = this.getActiveCharacterData.bind(this);
-		this.getInactiveCharactersData = this.getInactiveCharactersData.bind(this);
-		this.onSwitchActiveCharacter = this.onSwitchActiveCharacter.bind(this);
-		this.onActiveCharacterClick = this.onActiveCharacterClick.bind(this);
-		this.onCharacterSwitcherToggleClick = this.onCharacterSwitcherToggleClick.bind(this);
 	}
 
 	/**
@@ -93,69 +85,39 @@ export default class NavbarUserPanel extends React.Component {
 						<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
 					</li>
 				</ul>
-			),
-			activeCharacterButton = (
-				<li className="text-center">
-					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-				</li>
-			),
-			createCharacterButton = (
-				<li>
-					<Link
-						to = '/personnage/creer/'
-						className = "list-group-item list-group-item-success"
-						>
-						<span className="glyphicon glyphicon-plus pull-right"></span>
-						Créer un personnage
-					</Link>
-				</li>
-			),
-			activeCharacterData = this.getActiveCharacterData();
-
-		// There is an active character
-		if (activeCharacterData) {
-			activeCharacterButton = (
-				<li>
-					<Link
-						className = "list-group-item ta-sidenav-active-character"
-						to = {'/personnage/' + activeCharacterData.slug + '/'}
-						onClick = {this.onActiveCharacterClick}
-					>
-						<h3 className="list-group-item-heading ta-sidenav-character-name">{activeCharacterData.title.rendered}</h3>
-						<p className="list-group-item-text">Priorème {activeCharacterData.people.singular}</p>
-					</Link>
-				</li>
 			);
-		}
-
-		// No active character
-		else if (!this.state.loadingCharacters) {
-			activeCharacterButton = (
-				<li>
-					<Link
-						className = "list-group-item list-group-item-success"
-						to = "/personnage/creer/"
-					>
-						<span className="glyphicon glyphicon-plus pull-right"></span>
-						Créer un personnage
-					</Link>
-				</li>
-			);
-		}
 
 		// Logged in
 		if (this.props.currentUser) {
 			contents = (
-				<ul className="nav navbar-nav navbar-right ta-sidenav-user-panel">
+				<ul className="nav navbar-nav navbar-right">
 					<li className="dropdown">
 						<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button">{this.props.currentUser.name} <span className="caret"></span></a>
-						<ul className="dropdown-menu list-group">
-							{activeCharacterButton}
-							<NavbarCharacterSwitcher
-								characters = {this.getInactiveCharactersData()}
-								onCharacterClick = {this.onSwitchActiveCharacter}
-							/>
-							{createCharacterButton}
+						<ul className="dropdown-menu ta-character-picker">
+							<li className="dropdown-header">Mes personnages</li>
+							{this.state.userCharacters.map(function(character) {
+								return (
+									<li>
+										<Link
+											to = {'/personnage/' + character.slug + '/'}
+											className = "ta-user-panel-character"
+										>
+											<span className="ta-user-panel-character-name">{character.title.rendered}</span><br />
+											Priorème {character.people.singular}
+										</Link>
+									</li>
+								);
+							})}
+							<li className="divider"></li>
+							<li>
+								<Link
+									to = '/personnage/creer/'
+									className = "text-success"
+								>
+									<span className="glyphicon glyphicon-plus pull-right"></span>
+									Créer un personnage
+								</Link>
+							</li>
 						</ul>
 					</li>
 					<li><a href={WP_Theme_Settings.logoutURL}>Déconnexion</a></li>
@@ -175,77 +137,6 @@ export default class NavbarUserPanel extends React.Component {
 
 		return contents;
 	}
-
-	/**
-	 * Get the data model for the current user's active character
-	 * @return {Object|null} The character data model, or `null` if the character cannot be found
-	 */
-	getActiveCharacterData() {
-		var character;
-
-		if (this.props.currentUser) {
-			for (var i = 0, len = this.state.userCharacters.length; i < len; i++) {
-				character = this.state.userCharacters[i];
-				if (character.id === this.props.currentUser['active_character']) {
-					return character;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Get an array of all data models of the current user's inactive characters
-	 * @return {Array} The character data models, as objects
-	 */
-	getInactiveCharactersData() {
-		var inactiveCharacters = [],
-			character;
-
-		if (this.props.currentUser) {
-			for (var i = 0, len = this.state.userCharacters.length; i < len; i++) {
-				character = this.state.userCharacters[i];
-				if (character.id !== this.props.currentUser['active_character']) {
-					inactiveCharacters.push(character);
-				}
-			}
-		}
-
-		return inactiveCharacters;
-	}
-
-	/**
-	 * Handle character switches
-	 * @param {Number} id The new active character's ID
-	 */
-	onSwitchActiveCharacter(id) {
-		if (this.props.onSwitchActiveCharacter) {
-			this.props.onSwitchActiveCharacter(id);
-
-			// Close the character switcher
-			this.characterSwitcherToggle.click();
-		}
-	}
-
-	/**
-	 * Handle clicks on active character link
-	 */
-	onActiveCharacterClick() {
-		if (jQuery(this.characterSwitcherToggle).hasClass('collapsed')) {
-			this.characterSwitcherToggle.click();
-		}
-	}
-
-	/**
-	 * Handle clicks on menu toggle button
-	 * @param {MouseSyntheticEvent} event The click event
-	 */
-	onCharacterSwitcherToggleClick(event) {
-		jQuery(this.characterSwitcherToggle).toggleClass('collapsed');
-		event.stopPropagation();
-		event.preventDefault();
-	}
 }
 
 /**
@@ -253,6 +144,4 @@ export default class NavbarUserPanel extends React.Component {
  */
 NavbarUserPanel.propTypes = {
 	currentUser: React.PropTypes.object,
-
-	onSwitchActiveCharacter: React.PropTypes.func
 };

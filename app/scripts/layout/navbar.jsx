@@ -3,7 +3,7 @@ import {Link, IndexLink} from 'react-router';
 
 import NavbarUserPanel from './navbar-user-panel.jsx';
 
-require('../../styles/navbar/navbar.scss');
+require('../../styles/layout/navbar.scss');
 require('../../images/terra-logo-blanc.png');
 
 /**
