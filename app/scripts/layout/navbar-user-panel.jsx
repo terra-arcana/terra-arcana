@@ -2,6 +2,8 @@ import React from 'react';
 import {Link} from 'react-router';
 import Lodash from 'lodash';
 
+import Spinner from './spinner.jsx';
+
 require('../../styles/layout/navbar-user-panel.scss');
 
 /**
@@ -81,9 +83,7 @@ export default class NavbarUserPanel extends React.Component {
 	render() {
 		var contents = (
 				<ul className="nav navbar-nav navbar-right ta-sidenav-user-panel">
-					<li className="text-center">
-						<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-					</li>
+					<Spinner />
 				</ul>
 			);
 

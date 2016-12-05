@@ -3,7 +3,9 @@ import React from 'react';
 import CharacterBuilder from './character-builder.jsx';
 import CharacterProfile from './character-profile.jsx';
 import CharacterSheet from './character-sheet.jsx';
+
 import PageHeader from '../layout/page-header.jsx';
+import Spinner from '../layout/spinner.jsx';
 
 require('../../styles/character/character.page.scss');
 
@@ -72,9 +74,7 @@ export default class CharacterPage extends React.Component {
 		var contents = (
 			<div className="ta-character">
 				<PageHeader content='&nbsp;' />
-				<div className="text-center">
-					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-				</div>
+				<Spinner />
 			</div>
 		);
 

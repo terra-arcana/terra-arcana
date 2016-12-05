@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PageHeader from '../layout/page-header.jsx';
+import Spinner from '../layout/spinner.jsx';
 
 /**
  * A CodexArticlePage is the view for a single Codex article.
@@ -63,11 +64,7 @@ export default class CodexArticlePage extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var content = (
-				<div className="text-center">
-					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-				</div>
-			),
+		var content = <Spinner />,
 			title = '&nbsp';
 
 		if (this.state.article) {

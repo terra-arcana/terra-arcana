@@ -2,6 +2,8 @@ import React from 'react';
 import {Link} from 'react-router';
 import Lodash from 'lodash';
 
+import Spinner from '../layout/spinner.jsx';
+
 /**
  * The CharacterNewPage is the page where users can create new characters for
  * their account.
@@ -64,12 +66,8 @@ export default class CharacterNewPage extends React.Component {
 	 * @override
 	 * @return {HTML} The component template
 	 */
-	render() {	
-		var content = (
-				<div className="text-center">
-					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-				</div>
-			),
+	render() {
+		var content = <Spinner />,
 			alert = <noscript />;
 
 		if (this.state.alert !== null) {

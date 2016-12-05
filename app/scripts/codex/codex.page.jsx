@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 
 import PageHeader from '../layout/page-header.jsx';
+import Spinner from '../layout/spinner.jsx';
 
 require('../../styles/codex/codex.scss');
 
@@ -61,11 +62,7 @@ export default class CodexPage extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		let codexContents = (
-			<div className="text-center">
-				<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-			</div>
-		);
+		var codexContents = <Spinner />;
 
 		if (this.state.codexContents.length) {
 			codexContents = this.state.codexContents.map(function(chapter) {
