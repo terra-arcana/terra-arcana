@@ -135,7 +135,10 @@ export default class NavbarUserPanel extends React.Component {
 		// Logged off
 		else if (this.props.currentUser === null) {
 			contents = (
-				<ul className="nav navbar-nav navbar-right ta-sidenav-user-panel">
+				<ul
+					id = "ta-navbar-user-panel"
+					className = "ta-navbar-sidebar nav navbar-nav navbar-right"
+				>
 					<li><a href="/wp-login.php">Connexion</a></li>
 					<li><a href="/wp-register.php">Inscription</a></li>
 				</ul>
