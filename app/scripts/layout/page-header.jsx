@@ -9,10 +9,10 @@ export default class PageHeader extends React.Component {
 				<div className="container">
 					<div className="row">
 						<div className="col-xs-12">
-							<div
+							<h1
 								className = "page-header"
 								dangerouslySetInnerHTML = {{__html: this.props.content }}>
-							</div>
+							</h1>
 						</div>
 					</div>
 				</div>

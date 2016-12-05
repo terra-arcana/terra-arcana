@@ -85,7 +85,7 @@ export default class CodexArticlePage extends React.Component {
 		return (
 			<div className="ta-codex-article">
 				<PageHeader
-					content = {'<h1><span>' + title + '</span> <small>' + this.getChapterList(this.state.chapters) + '</small></h1>'}
+					content = {'<span>' + title + '</span> <small>' + this.getChapterList(this.state.chapters) + '</small>'}
 				/>
 				<div className="container">
 					{content}

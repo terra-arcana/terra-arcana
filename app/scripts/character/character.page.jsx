@@ -70,8 +70,11 @@ export default class CharacterPage extends React.Component {
 	render() {
 		// Show spinner by default
 		var contents = (
-			<div className="text-center">
-				<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
+			<div className="ta-character">
+				<PageHeader content='&nbsp;' />
+				<div className="text-center">
+					<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
+				</div>
 			</div>
 		);
 
@@ -134,7 +137,7 @@ export default class CharacterPage extends React.Component {
 			contents = (
 				<div className="ta-character">
 					<PageHeader
-						content = {'<h1>' + this.state.character.title.rendered + '</h1>'}
+						content = {this.state.character.title.rendered}
 					/>
 					<div className="container">
 						<div className="row">

@@ -99,9 +99,7 @@ export default class CodexPage extends React.Component {
 
 		return (
 			<div className="ta-codex-archive">
-				<PageHeader
-					content = "<h1>Codex Arcanum <small>Le recensement de l'histoire de Raffin et d'Atropos</small></h1>"
-				/>
+				<PageHeader content="Codex Arcanum <small>Le recensement de l'histoire de Raffin et d'Atropos</small>" />
 				<div className="container">
 					<ul className="row list-unstyled">
 						{codexContents}

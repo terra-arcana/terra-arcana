@@ -90,29 +90,35 @@ export default class NavbarUserPanel extends React.Component {
 		// Logged in
 		if (this.props.currentUser) {
 			contents = (
-				<ul className="nav navbar-nav navbar-right">
+				<ul
+					id = "ta-navbar-user-panel"
+					className = "ta-navbar-sidebar nav navbar-nav navbar-right"
+				>
 					<li className="dropdown">
 						<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button">{this.props.currentUser.name} <span className="caret"></span></a>
 						<ul className="dropdown-menu ta-character-picker">
 							<li className="dropdown-header">Mes personnages</li>
 							{this.state.userCharacters.map(function(character) {
 								return (
-									<li>
+									<li key={character.id}>
 										<Link
 											to = {'/personnage/' + character.slug + '/'}
 											className = "ta-user-panel-character"
+											onClick = {this.props.onNavLinkClick}
 										>
 											<span className="ta-user-panel-character-name">{character.title.rendered}</span><br />
 											Priorème {character.people.singular}
 										</Link>
 									</li>
 								);
-							})}
+							}.bind(this))}
+
 							<li className="divider"></li>
 							<li>
 								<Link
 									to = '/personnage/creer/'
 									className = "text-success"
+									onClick = {this.props.onNavLinkClick}
 								>
 									<span className="glyphicon glyphicon-plus pull-right"></span>
 									Créer un personnage
@@ -120,6 +126,7 @@ export default class NavbarUserPanel extends React.Component {
 							</li>
 						</ul>
 					</li>
+
 					<li><a href={WP_Theme_Settings.logoutURL}>Déconnexion</a></li>
 				</ul>
 			);
@@ -144,4 +151,6 @@ export default class NavbarUserPanel extends React.Component {
  */
 NavbarUserPanel.propTypes = {
 	currentUser: React.PropTypes.object,
+
+	onNavLinkClick: React.PropTypes.func
 };

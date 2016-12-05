@@ -79,9 +79,7 @@ export default class ZodiacViewerPage extends React.Component {
 
 		return (
 			<div className="ta-zodiac-viewer">
-				<PageHeader
-					content = "<h1>Le Zodiaque <small>L'étendue complète des compétences priorèmes connues</small></h1>"
-				/>
+				<PageHeader content="Le Zodiaque <small>L'étendue complète des compétences priorèmes connues</small>" />
 				<div className="row">
 					<div className="col-sm-12 col-lg-8">
 						<SkillGraph

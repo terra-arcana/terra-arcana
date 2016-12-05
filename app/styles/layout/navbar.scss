@@ -1,5 +1,7 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 
+$sidebar-width: 300px;
+
 .ta-navbar {
 	margin-bottom: -5.5em;
 	padding-top: 1em;
@@ -21,6 +23,38 @@
 	.navbar-header {
 		text-align: center;
 	}
+
+	.ta-navbar-sidebar {
+		display: block;
+		position: absolute;
+		width: $sidebar-width;
+		height: 100vh;
+		top: 0;
+		margin: 0;
+		padding: 1em;
+		background-color: $gray-darker;
+
+		.dropdown.open {
+			background-color: $gray-dark;
+		}
+
+		&#ta-navbar-sections {
+			left: -$sidebar-width;
+		}
+
+		&#ta-navbar-user-panel {
+			right: -$sidebar-width;
+		}
+	}
+
+	.ta-navbar-toggle {
+		position: absolute;
+		top: 1em;
+
+		&#ta-navbar-user-panel-toggle {
+			right: 1em;
+		}
+	}
 }
 
 @media (min-width: $screen-sm-min) {
@@ -29,6 +63,18 @@
 
 		.navbar-nav {
 			display: block;
+		}
+
+		.ta-navbar-sidebar {
+			position: static;
+			width: auto;
+			height: auto;
+			padding: 0;
+			background-color: transparent;
+		}
+
+		.ta-navbar-toggle {
+			display: none;
 		}
 	}
 }
