@@ -3,9 +3,42 @@
 
 $sidebar-width: 300px;
 
+html {
+	height: 100%;
+	overflow-x: hidden;
+}
+
 body {
 	background-color: $gray-darker;
 	font-family: 'PT Serif', serif;
+}
+
+#main {
+	position: relative;
+	left: 0;
+	right: 0;
+	background-image: url(../images/background.png);
+	transition: all 0.3s;
+
+	> div { // reactroot
+		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&.sections-menu-open {
+		left: $sidebar-width;
+		right: -$sidebar-width;
+	}
+
+	&.user-panel-open {
+		left: -$sidebar-width;
+		right: $sidebar-width;
+	}
+}
+
+#page-content {
+	flex: 1;
 }
 
 .ta-button-alert {
@@ -50,24 +83,6 @@ body {
 
 .ta-seethrough {
 	opacity: 0.5;
-}
-
-#main {
-	position: relative;
-	background-image: url(../images/background.png);
-	left: 0;
-	right: 0;
-	transition: all 0.3s;
-
-	&.sections-menu-open {
-		left: $sidebar-width;
-		right: -$sidebar-width;
-	}
-
-	&.user-panel-open {
-		left: -$sidebar-width;
-		right: $sidebar-width;
-	}
 }
 
 @media (min-width: $screen-sm-min) {

@@ -3,8 +3,8 @@
 $sidebar-width: 300px;
 
 .ta-navbar {
-	margin-bottom: -5.5em;
-	padding-top: 1em;
+	margin-bottom: -9.2em;
+	padding-top: 4em;
 	background: none;
 	border: none;
 
@@ -30,6 +30,7 @@ $sidebar-width: 300px;
 		width: $sidebar-width;
 		top: 0;
 		margin: 0;
+		margin-top: 3em;
 		padding: 1em;
 		background-color: $gray-darker;
 
@@ -48,7 +49,8 @@ $sidebar-width: 300px;
 
 	.ta-navbar-toggle {
 		position: absolute;
-		top: 1em;
+		top: 3.3em;
+		z-index: 100;
 
 		&#ta-navbar-user-panel-toggle {
 			right: 1em;
@@ -58,7 +60,7 @@ $sidebar-width: 300px;
 
 @media (min-width: $screen-sm-min) {
 	.ta-navbar {
-		margin-bottom: -100%;
+		margin-bottom: -7.5em;
 
 		.navbar-nav {
 			display: block;
@@ -68,6 +70,7 @@ $sidebar-width: 300px;
 			position: static;
 			width: auto;
 			height: auto;
+			margin-top: 0;
 			padding: 0;
 			background-color: transparent;
 		}

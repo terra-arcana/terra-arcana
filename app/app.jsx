@@ -71,9 +71,11 @@ class App extends React.Component {
 					currentUser = {this.state.currentUser}
 					onSwitchActiveCharacter = {this.switchActiveCharacter}
 				/>
-				{React.cloneElement(this.props.children, {
-					onSwitchActiveCharacter: this.switchActiveCharacter
-				})}
+				<div id="page-content">
+					{React.cloneElement(this.props.children, {
+						onSwitchActiveCharacter: this.switchActiveCharacter
+					})}
+				</div>
 				<Footer />
 			</div>
 		);

@@ -1,0 +1,47 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+.ta-footer {
+	margin-top: 2em;
+	padding-top: 2em;
+	padding-bottom: 2em;
+	background-color: $gray-darker;
+	color: $gray;
+	text-align: center;
+
+	img {
+		width: 100%;
+		max-width: 120px;
+		opacity: 0.2;
+	}
+
+	.ta-footer-nav {
+		margin-top: 1em;
+
+		li {
+			margin-bottom: 0.5em;
+		}
+
+		hr {
+			border-color: $gray-dark;
+		}
+	}
+
+	.ta-opensource-disclaimer {
+		margin-top: 4em;
+	}
+
+	.ta-version {
+		font-size: 0.8em;
+		color: $gray;
+	}
+}
+
+@media (min-width: $screen-sm-min) {
+	.ta-footer {
+		text-align: inherit;
+
+		.ta-footer-nav li {
+			text-align: right;
+		}
+	}
+}
