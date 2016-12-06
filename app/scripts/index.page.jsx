@@ -1,5 +1,8 @@
 import React from 'react';
 
+import PageHeader from './layout/page-header.jsx';
+import Spinner from './layout/spinner.jsx';
+
 /**
  * An IndexPage is the main view for displaying the homepage.
  * @class
@@ -38,15 +41,11 @@ export default class IndexPage extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var content = (
-			<div className="text-center">
-				<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-			</div>
-		);
+		var content = <Spinner />;
 
 		if (this.state.posts.length) {
 			content = (
-				<div className="ta-index-content">
+				<div className="ta-index-content container">
 					{this.state.posts.map(function(post) {
 						return (
 							<div key={post.id} className="ta-post">
@@ -67,14 +66,9 @@ export default class IndexPage extends React.Component {
 
 		return (
 			<div className="ta-home">
-				<div className="ta-page-header row">
-					<div className="col-xs-12">
-						<div className="page-header">
-							<h1>Terra Arcana <small>Grandeur Nature médiéval fantastique</small></h1>
-						</div>
-					</div>
-				</div>
-
+				<PageHeader
+					content = "<h1>Terra Arcana <small>Grandeur Nature médiéval fantastique</small></h1>"
+				/>
 				{content}
 			</div>
 		);

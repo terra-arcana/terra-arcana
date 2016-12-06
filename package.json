@@ -1,6 +1,6 @@
 {
   "name": "terra-arcana",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Terra Arcana",
   "main": "dist/app.js",
   "scripts": {

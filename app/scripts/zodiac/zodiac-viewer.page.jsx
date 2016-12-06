@@ -1,8 +1,9 @@
 import React from 'react';
 
+import PageHeader from '../layout/page-header.jsx';
+import PointNodeInspector from './point-node-inspector.jsx';
 import SkillGraph from './skill-graph.jsx';
 import SkillNodeInspector from './skill-node-inspector.jsx';
-import PointNodeInspector from './point-node-inspector.jsx';
 
 export default class ZodiacViewerPage extends React.Component {
 
@@ -78,14 +79,7 @@ export default class ZodiacViewerPage extends React.Component {
 
 		return (
 			<div className="ta-zodiac-viewer">
-				<div className="ta-page-header row">
-					<div className="col-xs-12">
-						<div className="page-header">
-							<h1>Le Zodiaque <small>L'étendue complète des compétences priorèmes connues</small></h1>
-						</div>
-					</div>
-				</div>
-
+				<PageHeader content="Le Zodiaque <small>L'étendue complète des compétences priorèmes connues</small>" />
 				<div className="row">
 					<div className="col-sm-12 col-lg-8">
 						<SkillGraph

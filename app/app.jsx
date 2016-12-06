@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import Lodash from 'lodash';
 
-import Sidenav from './scripts/sidenav/sidenav.jsx';
+import Navbar from './scripts/layout/navbar.jsx';
+import Footer from './scripts/layout/footer.jsx';
 import IndexPage from './scripts/index.page.jsx';
 import CharacterPage from './scripts/character/character.page.jsx';
 import CharacterNewPage from './scripts/character/character-new.page.jsx';
@@ -65,16 +66,17 @@ class App extends React.Component {
 	 */
 	render() {
 		return (
-			<div id="sidenav-page-wrapper" className="toggled">
-				<Sidenav
+			<div>
+				<Navbar
 					currentUser = {this.state.currentUser}
 					onSwitchActiveCharacter = {this.switchActiveCharacter}
 				/>
-				<div id="sidenav-content-wrapper" className="container-fluid">
+				<div id="page-content">
 					{React.cloneElement(this.props.children, {
 						onSwitchActiveCharacter: this.switchActiveCharacter
 					})}
 				</div>
+				<Footer />
 			</div>
 		);
 	}

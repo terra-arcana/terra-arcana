@@ -2,6 +2,8 @@ import React from 'react';
 
 import CharacterSheetSkill from './character-sheet-skill.jsx';
 
+import {InlineSpinner} from '../layout/spinner.jsx';
+
 require('../../styles/character/character-sheet.page.scss');
 require('../../images/zodiac/perk-black.png');
 
@@ -89,9 +91,9 @@ export default class CharacterSheet extends React.Component {
 	 */
 	render() {
 		var skillList = this.getSortedSkills(),
-			instants = <span className="glyphicon glyphicon-asterisk glyphicon-spin text-center" />,
-			buffs = <span className="glyphicon glyphicon-asterisk glyphicon-spin text-center" />,
-			passives = <span className="glyphicon glyphicon-asterisk glyphicon-spin text-center" />;
+			instants = <InlineSpinner />,
+			buffs = <InlineSpinner />,
+			passives = <InlineSpinner />;
 
 		if (skillList) {
 			instants = (
