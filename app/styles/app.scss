@@ -1,9 +1,10 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 @import '_utils.scss';
 
 $sidebar-width: 300px;
 
 body {
-	background-image: url(../images/background.png);
+	background-color: $gray-darker;
 	font-family: 'PT Serif', serif;
 }
 
@@ -53,6 +54,7 @@ body {
 
 #main {
 	position: relative;
+	background-image: url(../images/background.png);
 	left: 0;
 	right: 0;
 	transition: all 0.3s;
@@ -65,5 +67,16 @@ body {
 	&.user-panel-open {
 		left: -$sidebar-width;
 		right: $sidebar-width;
+	}
+}
+
+@media (min-width: $screen-sm-min) {
+	body {
+		background-color: transparent;
+		background-image: url(../images/background.png);
+	}
+
+	#main {
+		background-image: none;
 	}
 }
