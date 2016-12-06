@@ -9,6 +9,9 @@ $sidebar-width: 300px;
 	border: none;
 
 	.ta-navbar-logo {
+		display: block;
+		position: relative;
+		z-index: 90;
 		padding-right: 1em;
 
 		img {
