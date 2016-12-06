@@ -1,6 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+import PageHeader from '../layout/page-header.jsx';
+import Spinner from '../layout/spinner.jsx';
+
 require('../../styles/codex/codex.scss');
 
 /**
@@ -59,11 +62,7 @@ export default class CodexPage extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		let codexContents = (
-			<div className="text-center">
-				<span className="glyphicon glyphicon-asterisk glyphicon-spin" />
-			</div>
-		);
+		var codexContents = <Spinner />;
 
 		if (this.state.codexContents.length) {
 			codexContents = this.state.codexContents.map(function(chapter) {
@@ -97,16 +96,12 @@ export default class CodexPage extends React.Component {
 
 		return (
 			<div className="ta-codex-archive">
-				<div className="ta-page-header row">
-					<div className="col-xs-12">
-						<div className="page-header">
-							<h1>Codex Arcanum <small>Le recensement de l'histoire de Raffin et d'Atropos</small></h1>
-						</div>
-					</div>
+				<PageHeader content="Codex Arcanum <small>Le recensement de l'histoire de Raffin et d'Atropos</small>" />
+				<div className="container">
+					<ul className="row list-unstyled">
+						{codexContents}
+					</ul>
 				</div>
-				<ul className="row">
-					{codexContents}
-				</ul>
 			</div>
 		);
 	}

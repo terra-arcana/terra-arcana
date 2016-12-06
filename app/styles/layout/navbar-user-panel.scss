@@ -1,0 +1,20 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+.ta-character-picker {
+	min-width: 250px;
+
+	li > .ta-user-panel-character {
+		padding-top: 0.8em;
+
+		.ta-user-panel-character-name {
+			font-size: 1.5em;
+			font-family: "Cinzel Decorative", serif;
+			margin-top: 0.2em;
+			line-height: 1em;
+		}
+	}
+
+	.text-success {
+		color: $brand-success;
+	}
+}

@@ -18,7 +18,7 @@ module.exports = function(config) {
 		webpack: {
 			module: {
 				loaders: [
-					{test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader'},
+					{test: /\.jsx$/, exclude: /node_modules/, loader: 'babel?presets[]=es2015&presets[]=react'},
 					{test: /\.scss$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract('css!sass')},
 					{test: /\.(gif|jpe?g|png)$/, exclude: /node_modules/, loader: 'file?name=images/[name].[ext]'},
 					{test: /\.svg$/, exclude: /node_modules/, loader: 'svg-inline'}
