@@ -3,11 +3,12 @@ import React from 'react';
 import PageHeader from '../layout/page-header.jsx';
 import Spinner from '../layout/spinner.jsx';
 
+require('../../styles/codex/codex-article.scss');
+
 /**
  * A CodexArticlePage is the view for a single Codex article.
  * @class
  */
-
 export default class CodexArticlePage extends React.Component {
 
 	/**
@@ -70,22 +71,23 @@ export default class CodexArticlePage extends React.Component {
 		if (this.state.article) {
 			title = this.state.article.title.rendered;
 			content = (
-				<div className="row">
-					<div
-						className="col-xs-12 col-lg-8"
-						dangerouslySetInnerHTML={{__html: this.state.article.content.rendered}}
-					/>
-				</div>
+				<div
+					className = "col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"
+					dangerouslySetInnerHTML = {{__html: this.state.article.content.rendered}}
+				/>
 			);
 		}
 
 		return (
 			<div className="ta-codex-article">
 				<PageHeader
+					articleMode = {true}
 					content = {'<span>' + title + '</span> <small>' + this.getChapterList(this.state.chapters) + '</small>'}
 				/>
-				<div className="container">
-					{content}
+			<div className="ta-codex-article-content container">
+					<div className="row">
+						{content}
+					</div>
 				</div>
 			</div>
 		);
