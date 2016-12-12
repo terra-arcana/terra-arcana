@@ -27,6 +27,12 @@ stage("Tests"){
 stage("Packaging"){
   node ("docker"){
       echo "Image packaging"
+      checkout scm
+      docker.withRegistry([credentialsId: 'dockerhub-chapeau']) {
+        def newApp = docker.build "terraarcana/terra-arcana-dev:${env.BUILD_TAG}"
+        newApp.push()
+        newApp.push 'latest'
+    }
   }
 }
 
