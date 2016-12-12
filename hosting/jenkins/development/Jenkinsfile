@@ -1,6 +1,6 @@
 stage("Tests"){
   node("xvfb"){
-      wrap ([$class: 'Xvfb']){
+      wrap ([$class: 'Xvfb', debug: true, displayName: 99, displayNameOffset: 0, installationName: 'Xvfb', screen: '1024x758x24']){
         echo "Tests running"
         //Setup Node
         def nodeHome = tool 'Stable V6 Terra'
@@ -8,15 +8,18 @@ stage("Tests"){
         //sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
         sh "if [ ! -f ${nodeHome}/bin/node ]; then ln -s ${nodeHome}/bin/nodejs ${nodeHome}/bin/node; fi"
 
-        //git url: 'https://github.com/terra-arcana/terra-arcana', branch: 'development'
+        //git url: 'https://github.com/terra-arcana/terra-arcana', branch: 'Jenkins_pipeline'
         checkout scm
-        env.DISPLAY = ":0"
-        env.CHROME_BIN = "/usr/bin/google-chrome"
+        
         sh 'npm install -g esdoc karma webpack'
         sh 'npm install'
         sh './node_modules/.bin/webpack'
         //sh 'esdoc'
-        sh 'xvfb-run ./node_modules/.bin/karma start'
+        withEnv(['DISPLAY=:99', 'CHROME_BIN=chromium']){
+            sh './node_modules/.bin/karma start --browsers Chrome_without_sandbox'
+        }
+        junit 'build-reports/*.xml'
+
       }
   }
 }
@@ -28,7 +31,7 @@ stage("Packaging"){
 }
 
 stage("Deployment"){
-  node {
+  node ("pure"){
       echo "Image deploying"
   }
 }
