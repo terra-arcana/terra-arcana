@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 
 import PageHeader from '../layout/page-header.jsx';
 import Spinner from '../layout/spinner.jsx';
+import {stripLinkDomain} from '../utils/routered-text.jsx';
 
 require('../../styles/codex/codex.scss');
 
@@ -79,18 +80,16 @@ export default class CodexPage extends React.Component {
 									<Link
 										key = {article.id}
 										className = "list-group-item"
-										to = {article.link}>
-										<h3
-											className = "panel-title"
-											dangerouslySetInnerHTML = {{__html: article.title.rendered }}
-										/>
+										to = {stripLinkDomain(article.link)}
+									>
+										<span dangerouslySetInnerHTML={{ __html: article.title.rendered }} />
 									</Link>
 								);
 							})}
 						</div>
 					</li>
 				);
-			});
+			}.bind(this));
 		}
 
 		return (
