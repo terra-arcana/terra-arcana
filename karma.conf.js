@@ -4,7 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function(config) {
 	config.set({
-		browsers: ['Chrome'],
+		browsers: ['Chrome', 'Chrome_without_sandbox'],
 		customLaunchers: {
       Chrome_without_sandbox: {
         base: 'Chrome',
