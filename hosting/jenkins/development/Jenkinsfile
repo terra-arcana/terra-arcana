@@ -29,7 +29,7 @@ stage("Packaging"){
       echo "Image packaging"
       checkout scm
       docker.withRegistry([credentialsId: 'dockerhub-chapeau']) {
-        def newApp = docker.build "terraarcana/terra-arcana-dev:${env.BUILD_TAG}"
+        def newApp = docker.build("terraarcana/terra-arcana-dev:${env.BUILD_TAG}")
         newApp.push()
         newApp.push 'latest'
     }
