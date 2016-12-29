@@ -1,13 +1,15 @@
 import React from 'react';
+import RouteredText from '../utils/routered-text.jsx';
 
 import PageHeader from '../layout/page-header.jsx';
 import Spinner from '../layout/spinner.jsx';
+
+require('../../styles/codex/codex-article.scss');
 
 /**
  * A CodexArticlePage is the view for a single Codex article.
  * @class
  */
-
 export default class CodexArticlePage extends React.Component {
 
 	/**
@@ -26,6 +28,7 @@ export default class CodexArticlePage extends React.Component {
 			chapters: []
 		};
 
+		this.fetchChapter = this.fetchChapter.bind(this);
 		this.getChapterList = this.getChapterList.bind(this);
 	}
 
@@ -33,7 +36,26 @@ export default class CodexArticlePage extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		jQuery.get(WP_API_Settings.root + 'wp/v2/codex?slug=' + this.props.params.articleSlug, function(result) {
+		this.fetchChapter(this.props.params.articleSlug);
+	}
+
+	/**
+	 * @override
+	 */
+	componentWillReceiveProps(nextProps) {
+		this.fetchChapter(nextProps.params.articleSlug);
+	}
+
+	/**
+	 * @private
+	 */
+	fetchChapter(articleSlug) {
+		this.setState({
+			article: null,
+			chapters: []
+		});
+
+		jQuery.get(WP_API_Settings.root + 'wp/v2/codex?slug=' + articleSlug, function(result) {
 			if (result.length) {
 				var article = result[0];
 
@@ -70,11 +92,8 @@ export default class CodexArticlePage extends React.Component {
 		if (this.state.article) {
 			title = this.state.article.title.rendered;
 			content = (
-				<div className="row">
-					<div
-						className="col-xs-12 col-lg-8"
-						dangerouslySetInnerHTML={{__html: this.state.article.content.rendered}}
-					/>
+				<div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+					<RouteredText text={this.state.article.content.rendered} />
 				</div>
 			);
 		}
@@ -82,10 +101,13 @@ export default class CodexArticlePage extends React.Component {
 		return (
 			<div className="ta-codex-article">
 				<PageHeader
+					articleMode = {true}
 					content = {'<span>' + title + '</span> <small>' + this.getChapterList(this.state.chapters) + '</small>'}
 				/>
-				<div className="container">
-					{content}
+				<div className="ta-codex-article-content container">
+					<div className="row">
+						{content}
+					</div>
 				</div>
 			</div>
 		);

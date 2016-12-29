@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 
 import PageHeader from '../layout/page-header.jsx';
 import Spinner from '../layout/spinner.jsx';
+import {stripLinkDomain} from '../utils/routered-text.jsx';
 
 require('../../styles/codex/codex.scss');
 
@@ -32,12 +33,13 @@ export default class CodexPage extends React.Component {
 	 * @override
  	 */
 	componentDidMount() {
-		jQuery.get(WP_API_Settings.root + 'wp/v2/chapters', function(chapters) {
+		jQuery.get(WP_API_Settings.root + 'wp/v2/chapters?per_page=100', function(chapters) {
 			chapters.map(function(chapter) {
 				chapter.articles = [];
 			}.bind(this));
 
-			jQuery.get(WP_API_Settings.root + 'wp/v2/codex', function(articles) {
+			// TODO: batch all requests once we hit 101+ codex articles :/
+			jQuery.get(WP_API_Settings.root + 'wp/v2/codex?per_page=100', function(articles) {
 				// Sort all articles in their respective chapter
 				articles.map(function(article) {
 					article.chapters.map(function(articleChapter) {
@@ -72,26 +74,22 @@ export default class CodexPage extends React.Component {
 							<br />
 							<small>{chapter.description}</small>
 						</h2>
-						<ul className="list-group">
+						<div className="list-group">
 							{chapter.articles.map(function(article) {
 								return (
-									<li key={article.id} className="panel panel-default">
-										<div className="panel-heading">
-											<Link to={article.link}>
-												<h3 className="panel-title">{article.title.rendered}</h3>
-											</Link>
-										</div>
-										<div
-											className="panel-body"
-											dangerouslySetInnerHTML= {{__html: article.excerpt.rendered}}
-										/>
-									</li>
+									<Link
+										key = {article.id}
+										className = "list-group-item"
+										to = {stripLinkDomain(article.link)}
+									>
+										<span dangerouslySetInnerHTML={{ __html: article.title.rendered }} />
+									</Link>
 								);
-							}.bind(this))}
-						</ul>
+							})}
+						</div>
 					</li>
 				);
-			});
+			}.bind(this));
 		}
 
 		return (
