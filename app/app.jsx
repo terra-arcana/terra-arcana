@@ -12,6 +12,7 @@ import CodexArchivePage from './scripts/codex/codex-archive.page.jsx';
 import CodexArticlePage from './scripts/codex/codex-article.page.jsx';
 import IndexPage from './scripts/index.page.jsx';
 import RulesArchivePage from './scripts/rules/rules-archive.page.jsx';
+import RulesArticlePage from './scripts/rules/rules-article.page.jsx';
 import ZodiacViewerPage from './scripts/zodiac/zodiac-viewer.page.jsx';
 
 require('./styles/app.scss');
@@ -132,6 +133,7 @@ ReactDOM.render(
 			<Route path="/personnage/:characterSlug/zodiaque/" component={CharacterPage} />
 			<Route path="/personnage/:characterSlug/fiche/" component={CharacterPage} />
 			<Route path="/systeme/" component={RulesArchivePage} />
+			<Route path="/systeme/:articleSlug/" component={RulesArticlePage} />
 			<Route path="/zodiaque/" component={ZodiacViewerPage} />
 		</Route>
 	</Router>,
