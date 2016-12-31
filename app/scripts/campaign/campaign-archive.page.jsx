@@ -5,11 +5,13 @@ import PageHeader from '../layout/page-header.jsx';
 import Spinner from '../layout/spinner.jsx';
 import {stripLinkDomain} from '../utils/routered-text.jsx';
 
+require('../../styles/campaign/campaign-archive.scss');
+
 /**
  * An ArchivePage is a generic view for an archive of posts sorted by a taxonomy.
  * @class
  */
-export default class ArchivePage extends React.Component {
+export default class CampaignArchivePage extends React.Component {
 
 	/**
 	 * @constructor
@@ -31,14 +33,20 @@ export default class ArchivePage extends React.Component {
 		 * @type {String}
 		 * @protected
 		 */
-		this.headerTitle = '';
+		this.headerTitle = 'Campagnes';
 	}
 
 	/**
 	 * Implement this in a subclass to populate state.contents with the posts.
 	 * @abstract
- 	 */
-	componentDidMount() {}
+	 */
+	componentDidMount() {
+		jQuery.get(WP_API_Settings.root + 'wp/v2/campaign?per_page=100', function(posts) {
+			this.setState({
+				contents: posts
+			});
+		}.bind(this));
+	}
 
 	/**
 	 * @override
@@ -48,26 +56,14 @@ export default class ArchivePage extends React.Component {
 		var contents = <Spinner />;
 
 		if (this.state.contents.length) {
-			contents = this.state.contents.map(function(taxonomy) {
+			contents = this.state.contents.map(function(post) {
 				return (
-					<li key={taxonomy.id} className="ta-archive-taxonomy col-xs-12 col-md-6 col-lg-4">
-						<h2>{taxonomy.name}
-							<br />
-							<small>{taxonomy.description}</small>
+					<li key={post.id} className="ta-archive-campaign col-xs-12 col-md-6">
+						<h2>
+							<Link to={stripLinkDomain(post.link)}>
+								<img src={post.banner.url} alt={post.title.rendered} title={post.title.rendered} />
+							</Link>
 						</h2>
-						<div className="list-group">
-							{taxonomy.posts.map(function(post) {
-								return (
-									<Link
-										key = {post.id}
-										className = "list-group-item"
-										to = {stripLinkDomain(post.link)}
-									>
-										<span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
-									</Link>
-								);
-							})}
-						</div>
 					</li>
 				);
 			}.bind(this));
