@@ -15,6 +15,7 @@ namespace terraarcana {
 	require_once(ROOT . '/src/cpt/rules.class.php');
 	require_once(ROOT . '/src/cpt/skill.class.php');
 
+	require_once(ROOT . '/src/routes/campaign-events.route.php');
 	require_once(ROOT . '/src/routes/graph-data.route.php');
 	require_once(ROOT . '/src/routes/starting-skills.route.php');
 
@@ -41,10 +42,11 @@ namespace terraarcana {
 					'people'           => new People(),
 					'point-node'       => new PointNode(),
 					'rules'            => new Rules(),
-					'skill'            => new Skill(),
+					'skill'            => new Skill()
 				);
 
 				$this->_routes = array(
+					'campaign-events'  => new CampaignEventsRoute('event'),
 					'graph-data'       => new GraphDataRoute(),
 					'starting-skills'  => new StartingSkillsRoute('skill')
 				);
