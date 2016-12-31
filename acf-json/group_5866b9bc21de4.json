@@ -56,8 +56,8 @@
                         "class": "",
                         "id": ""
                     },
-                    "display_format": "d\/m\/Y",
-                    "return_format": "d\/m\/Y",
+                    "display_format": "j F",
+                    "return_format": "j F",
                     "first_day": 0
                 },
                 {
@@ -73,8 +73,8 @@
                         "class": "",
                         "id": ""
                     },
-                    "display_format": "d\/m\/Y",
-                    "return_format": "d\/m\/Y",
+                    "display_format": "j F",
+                    "return_format": "j F Y",
                     "first_day": 0
                 }
             ]
@@ -97,5 +97,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1483144883
+    "modified": 1483163490
 }

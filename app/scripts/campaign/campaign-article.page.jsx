@@ -59,11 +59,14 @@ export default class CampaignArticlePage extends React.Component {
 		jQuery.get(WP_API_Settings.root + 'wp/v2/campaign?slug=' + articleSlug, function(result) {
 			if (result.length) {
 				var article = result[0];
-				// TODO: Fetch and set events. They should be available through the campaign API.
-
-				this.setState({
-					article: article,
-				});
+				jQuery.get(WP_API_Settings.root + 'terraarcana/v1/campaign-events/' + article.id + '?order=asc', function(result) {
+					if (result.length) {
+						this.setState({
+							article: article,
+							events: result
+						});
+					}
+				}.bind(this));
 			}
 		}.bind(this));
 	}
@@ -81,8 +84,24 @@ export default class CampaignArticlePage extends React.Component {
 			title = this.state.article.title.rendered;
 			subtitle = this.state.article.subtitle;
 			content = (
-				<div className="col-xs-12 col-lg-8">
-					<RouteredText text={this.state.article.content.rendered} />
+				<div>
+					<div className="col-xs-12 col-lg-8">
+						<RouteredText text={this.state.article.content.rendered} />
+					</div>
+					<div className="col-xs-12 col-lg-4">
+						<h2>Dates</h2>
+						<div className="list-group">
+							{this.state.events.map(function(event) {
+								return (
+									<div
+										key = {event.id}
+										className = "list-group-item"
+										dangerouslySetInnerHTML = {{__html: 'du ' + event.date[0].start + ' au ' + event.date[0].end}}
+									/>
+								);
+							})}
+						</div>
+					</div>
 				</div>
 			);
 		}
