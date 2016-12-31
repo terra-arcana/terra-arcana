@@ -11,6 +11,37 @@ namespace terraarcana {
 
 		public function __construct() {
 			$this->_postTypeName = 'event';
+			$this->_fields = array(
+				'attendees' => array(
+					'key' => 'field_5866c62240dd4',
+					'override' => array(
+						'player' => array(
+							'key' => 'field_5866c63840dd5'
+						),
+						'character' => array(
+							'key' => 'field_5866c64d40dd6'
+						)
+					)
+				),
+				'pictures' => array(
+					'key' => 'field_5866c84f25c29'
+				),
+				'campaign' => array(
+					'key' => 'field_5866b9ef3f073'
+				),
+				'date' => array(
+					'key' => 'field_5866c69c4b0d6',
+					'override' => array(
+						'start' => array(
+							'key' => 'field_5866c6b24b0d7'
+						),
+						'end' => array(
+							'key' => 'field_5866c6cf4b0d8'
+						)
+					)
+				)
+			);
+
 			add_filter('post_type_link', array($this, 'campaign_rewrite_slug'), 10, 2);
 		}
 

@@ -11,6 +11,14 @@ namespace terraarcana {
 
 		public function __construct() {
 			$this->_postTypeName = 'campaign';
+			$this->_fields = array(
+				'subtitle' => array(
+					'key' => 'field_5866c7bf2c151'
+				),
+				'banner' => array(
+					'key' => 'field_5866c9121904f'
+				)
+			);
 		}
 
 		/**
