@@ -7,8 +7,9 @@ import Navbar from './scripts/layout/navbar.jsx';
 import Footer from './scripts/layout/footer.jsx';
 
 import CampaignArchivePage from './scripts/campaign/campaign-archive.page.jsx';
-import CharacterPage from './scripts/character/character.page.jsx';
+import CampaignArticlePage from './scripts/campaign/campaign-article.page.jsx';
 import CharacterNewPage from './scripts/character/character-new.page.jsx';
+import CharacterPage from './scripts/character/character.page.jsx';
 import CodexArchivePage from './scripts/codex/codex-archive.page.jsx';
 import CodexArticlePage from './scripts/codex/codex-article.page.jsx';
 import IndexPage from './scripts/index.page.jsx';
@@ -127,6 +128,7 @@ ReactDOM.render(
 		<Route path="/" component={App}>
 			<IndexRoute component={IndexPage} />
 			<Route path="/campagne/" component={CampaignArchivePage} />
+			<Route path="/campagne/:articleSlug/" component={CampaignArticlePage} />
 			<Route path="/codex/" component={CodexArchivePage} />
 			<Route path="/codex/:articleSlug/" component={CodexArticlePage} />
 			<Route path="/personnage/creer/" component={CharacterNewPage} />

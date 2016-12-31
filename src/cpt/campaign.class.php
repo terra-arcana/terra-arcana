@@ -19,6 +19,8 @@ namespace terraarcana {
 					'key' => 'field_5866c9121904f'
 				)
 			);
+
+			add_filter('embed_oembed_html', array($this, 'wrap_video_trailers'), 10, 3);
 		}
 
 		/**
@@ -56,6 +58,13 @@ namespace terraarcana {
 					'excerpt'
 				)
 			));
+		}
+
+		/**
+		 * Wrap YouTube embeds with a div to control its width/height with CSS
+		 */
+		public function wrap_video_trailers($html, $url, $attr) {
+			return '<div class="ta-video-container">' . $html . '</div>';
 		}
 	}
 }
