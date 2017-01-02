@@ -35,6 +35,10 @@ export default class Navbar extends React.Component {
 				caption: 'Codex Arcanum'
 			},
 			{
+				link: '/systeme/',
+				caption: 'Système de jeu'
+			},
+			{
 				link: '/zodiaque/',
 				caption: 'Zodiaque'
 			}

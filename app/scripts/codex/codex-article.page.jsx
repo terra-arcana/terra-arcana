@@ -1,39 +1,21 @@
-import React from 'react';
-
-import PageHeader from '../layout/page-header.jsx';
-import Spinner from '../layout/spinner.jsx';
+import ArticlePage from '../templates/article.page.jsx';
 
 /**
  * A CodexArticlePage is the view for a single Codex article.
  * @class
  */
-
-export default class CodexArticlePage extends React.Component {
-
-	/**
-	 * @constructor
-	 * @param {props} Initial props
-	 */
-	constructor(props) {
-		super(props);
-
-		/**
-		 * @type {Object}
-		 * @private
-		 */
-		this.state = {
-			article: null,
-			chapters: []
-		};
-
-		this.getChapterList = this.getChapterList.bind(this);
-	}
+export default class CodexArticlePage extends ArticlePage {
 
 	/**
 	 * @override
 	 */
-	componentDidMount() {
-		jQuery.get(WP_API_Settings.root + 'wp/v2/codex?slug=' + this.props.params.articleSlug, function(result) {
+	fetchTaxonomy(articleSlug) {
+		this.setState({
+			article: null,
+			taxonomies: []
+		});
+
+		jQuery.get(WP_API_Settings.root + 'wp/v2/codex?slug=' + articleSlug, function(result) {
 			if (result.length) {
 				var article = result[0];
 
@@ -52,66 +34,10 @@ export default class CodexArticlePage extends React.Component {
 
 					this.setState({
 						article: article,
-						chapters: articleChapters
+						taxonomies: articleChapters
 					});
 				}.bind(this));
 			}
 		}.bind(this));
 	}
-
-	/**
-	 * @override
-	 * @return {jsx} The component template
-	 */
-	render() {
-		var content = <Spinner />,
-			title = '&nbsp';
-
-		if (this.state.article) {
-			title = this.state.article.title.rendered;
-			content = (
-				<div className="row">
-					<div
-						className="col-xs-12 col-lg-8"
-						dangerouslySetInnerHTML={{__html: this.state.article.content.rendered}}
-					/>
-				</div>
-			);
-		}
-
-		return (
-			<div className="ta-codex-article">
-				<PageHeader
-					content = {'<span>' + title + '</span> <small>' + this.getChapterList(this.state.chapters) + '</small>'}
-				/>
-				<div className="container">
-					{content}
-				</div>
-			</div>
-		);
-	}
-
-	/**
-	 * Get all chapters of the article separated by commas
-	 * @param {Array} chapters The chapter data from the article
-	 * @return {string}
-	 */
-	getChapterList(chapters) {
-		var chapterNames = [];
-
-		chapters.map(function(chapter) {
-			chapterNames.push(chapter.name);
-		}.bind(this));
-
-		return chapterNames.join(', ');
-	}
 }
-
-/**
- * @type {Object}
- */
-CodexArticlePage.propTypes = {
-	params: React.PropTypes.shape({
-		articleSlug: React.PropTypes.string.isRequired
-	}).isRequired
-};

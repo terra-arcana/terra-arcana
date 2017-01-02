@@ -47,7 +47,8 @@ module.exports = [
 			new ExtractTextPlugin('[name].css', {
 				allChunks: true
 			} )
-		]
+		],
+		devtool: 'source-map'
 	},
 
 	{
