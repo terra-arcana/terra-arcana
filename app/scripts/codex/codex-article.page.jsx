@@ -1,58 +1,18 @@
-import React from 'react';
-import RouteredText from '../utils/routered-text.jsx';
-
-import PageHeader from '../layout/page-header.jsx';
-import Spinner from '../layout/spinner.jsx';
-
-require('../../styles/codex/codex-article.scss');
+import ArticlePage from '../templates/article.page.jsx';
 
 /**
  * A CodexArticlePage is the view for a single Codex article.
  * @class
  */
-export default class CodexArticlePage extends React.Component {
-
-	/**
-	 * @constructor
-	 * @param {props} Initial props
-	 */
-	constructor(props) {
-		super(props);
-
-		/**
-		 * @type {Object}
-		 * @private
-		 */
-		this.state = {
-			article: null,
-			chapters: []
-		};
-
-		this.fetchChapter = this.fetchChapter.bind(this);
-		this.getChapterList = this.getChapterList.bind(this);
-	}
+export default class CodexArticlePage extends ArticlePage {
 
 	/**
 	 * @override
 	 */
-	componentDidMount() {
-		this.fetchChapter(this.props.params.articleSlug);
-	}
-
-	/**
-	 * @override
-	 */
-	componentWillReceiveProps(nextProps) {
-		this.fetchChapter(nextProps.params.articleSlug);
-	}
-
-	/**
-	 * @private
-	 */
-	fetchChapter(articleSlug) {
+	fetchTaxonomy(articleSlug) {
 		this.setState({
 			article: null,
-			chapters: []
+			taxonomies: []
 		});
 
 		jQuery.get(WP_API_Settings.root + 'wp/v2/codex?slug=' + articleSlug, function(result) {
@@ -74,66 +34,10 @@ export default class CodexArticlePage extends React.Component {
 
 					this.setState({
 						article: article,
-						chapters: articleChapters
+						taxonomies: articleChapters
 					});
 				}.bind(this));
 			}
 		}.bind(this));
 	}
-
-	/**
-	 * @override
-	 * @return {jsx} The component template
-	 */
-	render() {
-		var content = <Spinner />,
-			title = '&nbsp';
-
-		if (this.state.article) {
-			title = this.state.article.title.rendered;
-			content = (
-				<div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-					<RouteredText text={this.state.article.content.rendered} />
-				</div>
-			);
-		}
-
-		return (
-			<div className="ta-codex-article">
-				<PageHeader
-					articleMode = {true}
-					content = {'<span>' + title + '</span> <small>' + this.getChapterList(this.state.chapters) + '</small>'}
-				/>
-				<div className="ta-codex-article-content container">
-					<div className="row">
-						{content}
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	/**
-	 * Get all chapters of the article separated by commas
-	 * @param {Array} chapters The chapter data from the article
-	 * @return {string}
-	 */
-	getChapterList(chapters) {
-		var chapterNames = [];
-
-		chapters.map(function(chapter) {
-			chapterNames.push(chapter.name);
-		}.bind(this));
-
-		return chapterNames.join(', ');
-	}
 }
-
-/**
- * @type {Object}
- */
-CodexArticlePage.propTypes = {
-	params: React.PropTypes.shape({
-		articleSlug: React.PropTypes.string.isRequired
-	}).isRequired
-};

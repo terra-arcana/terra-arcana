@@ -14,6 +14,10 @@ export default class Footer extends React.Component {
 				caption: 'Codex Arcanum'
 			},
 			{
+				link: '/systeme/',
+				caption: 'Système de jeu'
+			},
+			{
 				link: '/zodiaque/',
 				caption: 'Zodiaque'
 			}
