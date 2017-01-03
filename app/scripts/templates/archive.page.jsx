@@ -32,6 +32,13 @@ export default class ArchivePage extends React.Component {
 		 * @protected
 		 */
 		this.headerTitle = '';
+
+		/**
+		 * The breadcrumb data model for this page.
+		 * @type {Array}
+		 * @protected
+		 */
+		this.breadcrumbs = [];
 	}
 
 	/**
@@ -75,7 +82,10 @@ export default class ArchivePage extends React.Component {
 
 		return (
 			<div className="ta-archive">
-				<PageHeader content={this.headerTitle} />
+				<PageHeader
+					content = {this.headerTitle}
+					breadcrumbs= {this.breadcrumbs}
+				/>
 				<div className="container">
 					<ul className="row list-unstyled">
 						{contents}

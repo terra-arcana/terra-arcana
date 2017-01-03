@@ -25,7 +25,8 @@ export default class ArticlePage extends React.Component {
 		 */
 		this.state = {
 			article: null,
-			taxonomies: []
+			taxonomies: [],
+			breadcrumbs: []
 		};
 
 		this.fetchTaxonomy = this.fetchTaxonomy.bind(this);
@@ -75,6 +76,7 @@ export default class ArticlePage extends React.Component {
 				<PageHeader
 					articleMode = {true}
 					content = {'<span>' + title + '</span> <small>' + this.getTaxonomyList(this.state.taxonomies) + '</small>'}
+					breadcrumbs = {this.state.breadcrumbs}
 				/>
 				<div className="ta-article-content container">
 					<div className="row">

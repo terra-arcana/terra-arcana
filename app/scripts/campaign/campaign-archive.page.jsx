@@ -34,6 +34,12 @@ export default class CampaignArchivePage extends React.Component {
 		 * @protected
 		 */
 		this.headerTitle = 'Campagnes';
+
+		/**
+		 * The breadcrumb data model for this page.
+		 * @type {Array}
+		 */
+		this.breadcrumbs = [{ caption: 'Campagnes' }];
 	}
 
 	/**
@@ -71,7 +77,10 @@ export default class CampaignArchivePage extends React.Component {
 
 		return (
 			<div className="ta-archive">
-				<PageHeader content={this.headerTitle} />
+				<PageHeader
+					content = {this.headerTitle}
+					breadcrumbs = {this.breadcrumbs}
+				/>
 				<div className="container">
 					<ul className="row list-unstyled">
 						{contents}

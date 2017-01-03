@@ -17,6 +17,11 @@ export default class CodexArchivePage extends ArchivePage {
 		 * @override
 		 */
 		this.headerTitle = 'Codex Arcanum <small>Le recensement de l\'histoire de Raffin et d\'Atropos</small>';
+
+		/**
+		 * @override
+		 */
+		this.breadcrumbs = [{ caption: 'Codex Arcanum' }];
 	}
 
 	/**

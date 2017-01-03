@@ -12,12 +12,13 @@ export default class RulesArticlePage extends ArticlePage {
 	fetchTaxonomy(articleSlug) {
 		this.setState({
 			article: null,
-			taxonomies: []
+			taxonomies: [],
+			breadcrumbs: []
 		});
 
 		jQuery.get(WP_API_Settings.root + 'wp/v2/rules?slug=' + articleSlug, function(result) {
 			if (result.length) {
-				var article = result[0];
+				const article = result[0];
 
 				jQuery.get(WP_API_Settings.root + 'wp/v2/rule-sections', function(sections) {
 					var articleSections = [];
@@ -32,9 +33,23 @@ export default class RulesArticlePage extends ArticlePage {
 						}.bind(this));
 					}
 
+					const breadcrumbs = [
+						{
+							uri: '/systeme/',
+							caption: 'Système de jeu'
+						},
+						{
+							caption: articleSections[0].name
+						},
+						{
+							caption: article.title.rendered
+						}
+					];
+
 					this.setState({
 						article: article,
-						taxonomies: articleSections
+						taxonomies: articleSections,
+						breadcrumbs: breadcrumbs
 					});
 				}.bind(this));
 			}

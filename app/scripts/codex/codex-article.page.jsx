@@ -12,12 +12,22 @@ export default class CodexArticlePage extends ArticlePage {
 	fetchTaxonomy(articleSlug) {
 		this.setState({
 			article: null,
-			taxonomies: []
+			taxonomies: [],
+			breadcrumbs: []
 		});
 
 		jQuery.get(WP_API_Settings.root + 'wp/v2/codex?slug=' + articleSlug, function(result) {
 			if (result.length) {
-				var article = result[0];
+				const article = result[0],
+					breadcrumbs = [
+						{
+							uri: '/codex/',
+							caption: 'Codex Arcanum'
+						},
+						{
+							caption: article.title.rendered
+						}
+					];
 
 				jQuery.get(WP_API_Settings.root + 'wp/v2/chapters', function(chapters) {
 					var articleChapters = [];
@@ -34,7 +44,8 @@ export default class CodexArticlePage extends ArticlePage {
 
 					this.setState({
 						article: article,
-						taxonomies: articleChapters
+						taxonomies: articleChapters,
+						breadcrumbs: breadcrumbs
 					});
 				}.bind(this));
 			}

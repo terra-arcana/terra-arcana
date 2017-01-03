@@ -17,6 +17,11 @@ export default class RulesArchivePage extends ArchivePage {
 		 * @override
 		 */
 		this.headerTitle = 'Système de jeu <small>Le registre officiel des règles de jeu de Terra Arcana</small>';
+
+		/**
+		 * @override
+		 */
+		this.breadcrumbs = [{ caption: 'Système de jeu' }];
 	}
 
 	/**
