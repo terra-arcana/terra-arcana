@@ -1,7 +1,9 @@
 import React from 'react';
-import RouteredText from '../utils/routered-text.jsx';
+import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 
 import PageHeader from '../layout/page-header.jsx';
+import RouteredText from '../utils/routered-text.jsx';
 import Spinner from '../layout/spinner.jsx';
 
 require('../../styles/templates/article.scss');
@@ -31,6 +33,7 @@ export default class CampaignArticlePage extends React.Component {
 		};
 
 		this.fetchData = this.fetchData.bind(this);
+		this.getLocationGoogleMap = this.getLocationGoogleMap.bind(this);
 	}
 
 	/**
@@ -60,12 +63,10 @@ export default class CampaignArticlePage extends React.Component {
 			if (result.length) {
 				var article = result[0];
 				jQuery.get(WP_API_Settings.root + 'terraarcana/v1/campaign-events/' + article.id + '?order=asc', function(result) {
-					if (result.length) {
-						this.setState({
-							article: article,
-							events: result
-						});
-					}
+					this.setState({
+						article: article,
+						events: (result.length) ? result : []
+					});
 				}.bind(this));
 			}
 		}.bind(this));
@@ -83,12 +84,13 @@ export default class CampaignArticlePage extends React.Component {
 		if (this.state.article) {
 			title = this.state.article.title.rendered;
 			subtitle = this.state.article.subtitle;
-			content = (
-				<div>
-					<div className="col-xs-12 col-lg-8">
-						<RouteredText text={this.state.article.content.rendered} />
-					</div>
-					<div className="col-xs-12 col-lg-4">
+
+			var dates = null,
+				location = null;
+
+			if (this.state.events.length) {
+				dates = (
+					<div>
 						<h2>Dates</h2>
 						<div className="list-group">
 							{this.state.events.map(function(event) {
@@ -101,6 +103,27 @@ export default class CampaignArticlePage extends React.Component {
 								);
 							})}
 						</div>
+					</div>
+				);
+			}
+
+			if (this.state.article.location) {
+				location = (
+					<div>
+						<h2>Adresse</h2>
+						{this.getLocationGoogleMap(this.state.article.location)}
+					</div>
+				);
+			}
+
+			content = (
+				<div>
+					<div className="col-xs-12 col-lg-8">
+						<RouteredText text={this.state.article.content.rendered} />
+					</div>
+					<div className="col-xs-12 col-lg-4">
+						{dates}
+						{location}
 					</div>
 				</div>
 			);
@@ -117,6 +140,37 @@ export default class CampaignArticlePage extends React.Component {
 					</div>
 				</div>
 			</div>
+		);
+	}
+
+	/**
+	 * Build the campaign's location Google Maps embed
+	 * @param {Object} mapData The `address`, `lat` and `lng` of the campaign
+	 * @return {DOM} The Google Maps embed
+	 */
+	getLocationGoogleMap(mapData) {
+		const AsyncGoogleMap = withScriptjs(withGoogleMap(() => (
+			<GoogleMap
+				defaultZoom = {9}
+				defaultCenter = {{ lat: parseFloat(mapData.lat), lng: parseFloat(mapData.lng) }}
+				options = {{
+					mapTypeControl: false,
+					streetViewControl: false
+				}}
+			>
+				<Marker
+					position = {{ lat: parseFloat(mapData.lat), lng: parseFloat(mapData.lng) }}
+				/>
+			</GoogleMap>
+		)));
+
+		return (
+			<AsyncGoogleMap
+				googleMapURL = {'https://maps.googleapis.com/maps/api/js?key=' + WP_Theme_Settings.googleMapsAPIKey}
+				loadingElement = {<Spinner />}
+				containerElement = {<div />}
+				mapElement = {<div className='ta-location-map' />}
+			/>
 		);
 	}
 }

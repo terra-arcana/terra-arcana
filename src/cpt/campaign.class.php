@@ -17,6 +17,9 @@ namespace terraarcana {
 				),
 				'banner' => array(
 					'key' => 'field_5866c9121904f'
+				),
+				'location' => array(
+					'key' => 'field_586ad435aa2bb'
 				)
 			);
 
