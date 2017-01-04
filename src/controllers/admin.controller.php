@@ -27,6 +27,7 @@ namespace terraarcana {
 		 */
 		public function register_admin_pages() {
 			add_submenu_page('edit.php?post_type=rules', 'Éditer le Zodiaque', 'Zodiaque', 'manage_options', 'terraarcana_zodiac', array($this, 'render_zodiac_page'));
+			add_submenu_page('edit.php?post_type=character', 'Attribuer les points d\'expérience', 'Points d\'expérience', 'manage_options', 'terraarcana_xp', array($this, 'render_xp_page'));
 
 			if (function_exists('acf_add_options_page')) {
 				acf_add_options_page(array(
@@ -44,19 +45,30 @@ namespace terraarcana {
 		 */
 		function enqueue_admin_scripts($slug) {
 			$base = get_stylesheet_directory_uri() . '/';
+			wp_register_script('bootstrap-min', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js', array('jquery'));
+
+			$apiSettings = array(
+				'root' => esc_url_raw(rest_url()),
+				'nonce' => wp_create_nonce('wp_rest')
+			);
 
 			if ($slug === 'rules_page_terraarcana_zodiac') {
-				wp_register_script('bootstrap-min', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js', array('jquery'));
 				wp_enqueue_script('zodiac-admin', $base . 'dist/admin/zodiac/zodiac.js', array('bootstrap-min'), null, true);
 
 				wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
 				wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
 				wp_enqueue_style('zodiac-admin', $base . 'dist/admin/zodiac/style.css');
 
-				wp_localize_script('zodiac-admin', 'WP_API_Settings', array(
-					'root' => esc_url_raw(rest_url()),
-					'nonce' => wp_create_nonce('wp_rest')
-				));
+				wp_localize_script('zodiac-admin', 'WP_API_Settings', $apiSettings);
+			}
+
+			else if ($slug == 'character_page_terraarcana_xp') {
+				wp_enqueue_script('xp-admin', $base . 'dist/admin/xp/xp.js', array('bootstrap-min'), null, true);
+
+				wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
+				wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
+
+				wp_localize_script('zodiac-admin', 'WP_API_Settings', $apiSettings);
 			}
 		}
 
@@ -65,6 +77,13 @@ namespace terraarcana {
 		 */
 		public function render_zodiac_page() {
 			include(ROOT . '/dist/admin/zodiac/zodiac.html');
+		}
+
+		/**
+		 * Render the XP attribution admin page
+		 */
+		public function render_xp_page() {
+			include(ROOT . '/dist/admin/xp/xp.html');
 		}
 	}
 }
