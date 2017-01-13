@@ -114,11 +114,6 @@ namespace terraarcana {
 		public function register_plugin_dependencies() {
 			$plugins = array(
 				array(
-					'name' 			=> 'WP REST API',
-					'slug' 			=> 'rest-api',
-					'required' 		=> true,
-				),
-				array(
 					'name' 			=> 'Advanced Custom Fields Pro',
 					'slug' 			=> 'advanced-custom-fields-pro',
 					'source' 		=> 'http://connect.advancedcustomfields.com/index.php?p=pro&a=download',
