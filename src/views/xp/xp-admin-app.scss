@@ -1,6 +1,13 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
 .ta-table {
   & > tbody > tr > td {
     vertical-align: middle;
+
+		em {
+			font-style: normal;
+			color: $gray-light;
+		}
   }
 
 	.ta-character-name-row {
