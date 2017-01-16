@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import update from 'immutability-helper';
 
 import Spinner from '../../../app/scripts/layout/spinner.jsx';
 
@@ -25,46 +26,50 @@ export default class XpAdminApp extends React.Component {
 			characters: [],
 			players: [],
 			events: [],
-			selectedCharacters: []
+			selectedCharacters: [],
+			bonusValues: {}
 		};
 
-		/**
-		 * The inputs used for storing bonus XP values
-		 * @private
-		 */
-		this.bonusXpInputs = [];
-
 		this.getPlayer = this.getPlayer.bind(this);
-		this.calculatePlayerXP = this.calculatePlayerXP.bind(this);
 		this.onToggleCharacter = this.onToggleCharacter.bind(this);
 		this.onToggleAll = this.onToggleAll.bind(this);
 		this.onBonusXpChanged = this.onBonusXpChanged.bind(this);
 	}
 
+	/**
+	 * @override
+	 */
 	componentDidMount() {
 		var characterData = [],
 			playerData = [],
 			eventData = [],
+			bonusValues = {},
 
-			characterRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/character?per_page=100&order=asc&orderby=title', function(result) {
+			// TODO: Handle more than 100 characters
+			characterRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/character?per_page=100&order=asc&orderby=title', result => {
 				characterData = result;
+
+				for (let i = 0; i < result.length; ++i) {
+					bonusValues[result[i].id] = result[i].xp.bonus;
+				}
 			}),
 
-			playerRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/users?per_page=100', function(result) {
+			playerRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/users?per_page=100', result => {
 				playerData = result;
 			}),
 
-			eventRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/event?er_page=100', function(result) {
+			eventRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/event?er_page=100', result => {
 				eventData = result;
 			});
 
-		jQuery.when(characterRequest, playerRequest, eventRequest).done(function() {
+		jQuery.when(characterRequest, playerRequest, eventRequest).done(() => {
 			this.setState({
 				characters: characterData,
 				players: playerData,
-				events: eventData
+				events: eventData,
+				bonusValues: bonusValues
 			});
-		}.bind(this));
+		});
 	}
 
 	/**
@@ -102,10 +107,18 @@ export default class XpAdminApp extends React.Component {
 					<table className="table table-hover ta-table">
 						<thead>{headerRow}</thead>
 						<tbody>
-							{this.state.characters.map(function(character) {
-								let newValues = this.calculatePlayerXP(character.id, character.author),
-									checked = (this.state.selectedCharacters.indexOf(character.id) !== -1),
-									rowClass = (checked) ? 'success' : '';
+							{this.state.characters.map(character => {
+								let checked = (this.state.selectedCharacters.indexOf(character.id) !== -1),
+									rowClass = (checked) ? 'success' : '',
+									bonus = this.state.bonusValues[character.id],
+									total = character.xp.base + character.xp.from_events + character.xp.from_user + bonus,
+									totalClass = '';
+
+								if (total < character.xp.total) {
+									totalClass = 'text-danger';
+								} else if (total > character.xp.total) {
+									totalClass = 'text-success';
+								}
 
 								return (
 									<tr
@@ -121,24 +134,23 @@ export default class XpAdminApp extends React.Component {
 										</td>
 										<td><strong dangerouslySetInnerHTML={{__html: character.title.rendered}} /></td>
 										<td>{this.getPlayer(character.author).name}</td>
-										<td>{newValues.from_events} <em>({character.xp.from_events})</em></td>
-										<td>{newValues.from_user} <em>({character.xp.from_user})</em></td>
+										<td>{character.xp.from_events}</td>
+										<td>{character.xp.from_user}</td>
 										<td>
 											<div className="input-group">
 												<input
-													ref = {(ref) => this.bonusXpInputs[character.id] = ref}
 													type = "text"
 													className = "form-control"
-													value = {character.xp.bonus}
-													onChange = {(event) => this.onBonusXpChanged.bind(this, event, character.id)}
+													value = {(bonus !== 0) ? bonus : ''}
+													onChange = {this.onBonusXpChanged.bind(this, character.id)}
 												/>
 												<span className="input-group-addon">PX</span>
 											</div>
 										</td>
-										<td><strong>{newValues.total}</strong> <em>({character.xp.total})</em></td>
+										<td><strong className={totalClass}>{total}</strong> <em>({character.xp.total})</em></td>
 									</tr>
 								);
-							}.bind(this))}
+							})}
 						</tbody>
 						<tfoot>{headerRow}</tfoot>
 					</table>
@@ -167,24 +179,6 @@ export default class XpAdminApp extends React.Component {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Calculate and return the XP values for a given character
-	 * @param {Number} characterId
-	 * @param {Number} playerId
-	 * @return {Object} The computed XP values
-	 * @private
-	 */
-	calculatePlayerXP(characterId, playerId) {
-		// TODO: Calculate these values
-		return {
-			total: 8,
-			base: 8,
-			from_user: 0,
-			from_events: 0,
-			bonus: 0
-		};
 	}
 
 	/**
@@ -226,13 +220,23 @@ export default class XpAdminApp extends React.Component {
 
 	/**
 	 * Handle bonus XP changes for a character
-	 * @param {SyntheticEvent} event The change event
 	 * @param {string} characterId The character ID
+	 * @param {SyntheticEvent} event The change event
 	 * @private
 	 */
-	onBonusXpChanged(event, characterId) {
-		// TODO: Update XP
-		
+	onBonusXpChanged(characterId, event) {
+		var newBonus = parseInt(event.target.value);
+		if (isNaN(newBonus)) {
+			newBonus = 0;
+		}
+
+		var newBonusValues = update(this.state.bonusValues, {
+			[characterId]: {$set: newBonus}
+		});
+
+		this.setState({
+			bonusValues: newBonusValues
+		});
 	}
 }
 
