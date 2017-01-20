@@ -108,7 +108,8 @@ namespace terraarcana {
 
 			// Custom fields
 			register_rest_field($this->_postTypeName, 'xp', array(
-				'get_callback' => array($this, 'get_xp')
+				'get_callback' => array($this, 'get_xp'),
+				'update_callback' => array($this, 'update_xp')
 			));
 
 			register_rest_field($this->_postTypeName, 'perk_points', array(
@@ -146,6 +147,16 @@ namespace terraarcana {
 					'bonus' => $bonus_xp
 				);
 			}
+		}
+
+		/**
+		 * Updates a character's XP values.
+		 * @param mixed $values The XP values supplied by the request
+		 * @param WP_Post $object The object from the response
+		 * @param string $field_name Name of field
+		 */
+		public function update_xp($values, $object, $field_name) {
+			// TODO
 		}
 
 		/**
