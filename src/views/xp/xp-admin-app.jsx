@@ -31,6 +31,8 @@ export default class XpAdminApp extends React.Component {
 		};
 
 		this.getPlayer = this.getPlayer.bind(this);
+		this.getXpFromCharacterEvents = this.getXpFromCharacterEvents.bind(this);
+		this.getXpFromPlayerEvents = this.getXpFromPlayerEvents.bind(this);
 		this.onToggleCharacter = this.onToggleCharacter.bind(this);
 		this.onToggleAll = this.onToggleAll.bind(this);
 		this.onBonusXpChanged = this.onBonusXpChanged.bind(this);
@@ -54,11 +56,12 @@ export default class XpAdminApp extends React.Component {
 				}
 			}),
 
+			// TODO: Handle more than 100 players
 			playerRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/users?per_page=100', result => {
 				playerData = result;
 			}),
 
-			eventRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/event?er_page=100', result => {
+			eventRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/event?per_page=100', result => {
 				eventData = result;
 			});
 
@@ -110,8 +113,10 @@ export default class XpAdminApp extends React.Component {
 							{this.state.characters.map(character => {
 								let checked = (this.state.selectedCharacters.indexOf(character.id) !== -1),
 									rowClass = (checked) ? 'success' : '',
+									eventXp = this.getXpFromCharacterEvents(character.id),
+									playerXp = this.getXpFromPlayerEvents(character.author),
 									bonus = this.state.bonusValues[character.id],
-									total = character.xp.base + character.xp.from_events + character.xp.from_user + bonus,
+									total = character.xp.base + eventXp + playerXp + bonus,
 									totalClass = '';
 
 								if (total < character.xp.total) {
@@ -134,8 +139,14 @@ export default class XpAdminApp extends React.Component {
 										</td>
 										<td><strong dangerouslySetInnerHTML={{__html: character.title.rendered}} /></td>
 										<td>{this.getPlayer(character.author).name}</td>
-										<td>{character.xp.from_events}</td>
-										<td>{character.xp.from_user}</td>
+										<td>
+											<strong>{eventXp}</strong>&nbsp;
+											<em>({character.xp.from_events})</em>
+										</td>
+										<td>
+											<strong>{playerXp}</strong>&nbsp;
+											<em>({character.xp.from_user})</em>
+										</td>
 										<td>
 											<div className="input-group">
 												<input
@@ -179,6 +190,48 @@ export default class XpAdminApp extends React.Component {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get the amount of XP awarded from events a character has attended
+	 * @param {Number} characterId The character ID
+	 * @return {Number} The event count
+	 * @private
+	 */
+	getXpFromCharacterEvents(characterId) {
+		var eventCount = 0;
+		
+		this.state.events.map((event) => {
+			event.attendees.map((attendee) => {
+				if (attendee.character === characterId) {
+					eventCount++;
+					return;
+				}
+			});
+		});
+
+		return eventCount;
+	}
+
+	/**
+	 * Get the amount of XP awarded from events a player has attended
+	 * @param {Number} playerId The player's user ID
+	 * @return {Number} The event count
+	 * @private
+	 */
+	getXpFromPlayerEvents(playerId) {
+		var eventCount = 0;
+		
+		this.state.events.map((event) => {
+			event.attendees.map((attendee) => {
+				if (attendee.player.ID === playerId) {
+					eventCount++;
+					return;
+				}
+			});
+		});
+
+		return Math.min(eventCount, 4);
 	}
 
 	/**
