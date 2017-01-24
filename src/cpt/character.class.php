@@ -108,8 +108,11 @@ namespace terraarcana {
 
 			// Custom fields
 			register_rest_field($this->_postTypeName, 'xp', array(
-				'get_callback' => array($this, 'get_xp'),
-				'update_callback' => array($this, 'update_xp')
+				'get_callback' => array($this, 'get_xp')
+			));
+
+			register_rest_field($this->_postTypeName, 'bonus_xp', array(
+				'update_callback' => array($this, 'update_bonus_xp')
 			));
 
 			register_rest_field($this->_postTypeName, 'perk_points', array(
@@ -135,8 +138,8 @@ namespace terraarcana {
 		 */
 		public function get_xp(array $object, $field_name, \WP_REST_Request $request, $post_type) {
 			if (function_exists('get_field')) {
-				$xp_from_user = 0;
-				$xp_from_events = 0;
+				$xp_from_user = $this->get_xp_count_for_user($object['author']);
+				$xp_from_events = $this->get_xp_count_for_character($object['id']);
 				$bonus_xp = intval(get_field($this->bonus_xp_key, $object['id']));
 
 				return array(
@@ -150,13 +153,17 @@ namespace terraarcana {
 		}
 
 		/**
-		 * Updates a character's XP values.
-		 * @param mixed $values The XP values supplied by the request
+		 * Updates a character's bonus XP value.
+		 * @param string $bonus_xp The bonus XP value supplied by the request
 		 * @param WP_Post $object The object from the response
 		 * @param string $field_name Name of field
 		 */
-		public function update_xp($values, $object, $field_name) {
-			// TODO
+		public function update_bonus_xp($bonus_xp, $object, $field_name) {
+			error_log('Updating bonus XP for character ' . $object->ID);
+
+			if (function_exists('update_field')) {
+				update_field($this->bonus_xp_key, $bonus_xp, $object->ID);
+			}
 		}
 
 		/**
@@ -229,7 +236,7 @@ namespace terraarcana {
 		 */
 		function add_sheet_row_action($actions, $post) {
 			if ($post->post_type == $this->_postTypeName) {
-				$actions['sheet'] = "<a href=\"/personnage/$post->post_name/fiche/\">Fiche</a>";//"<a href=\"post.php?post=$post->ID&action=sheet\">Fiche</a>";
+				$actions['sheet'] = "<a href=\"/personnage/$post->post_name/fiche/\">Fiche</a>";
 			}
 
 			return $actions;
@@ -268,6 +275,26 @@ namespace terraarcana {
 
 			// Set character as active character
 			update_field('active_character', $object->ID, 'user_' . get_current_user_id());
+		}
+
+		/**
+		 * Returns the player XP awarded from events to all of a user's characters.
+		 * A user accumulates up to 4 player XP by attending events, at a rate of 1 XP per event.
+		 * @param int $user_id The user ID
+		 * @return int The amount of player XP 
+		 */
+		private function get_xp_count_for_user($user_id) {
+			return min(4, DataController::getInstance()->getCPT('event')->get_event_count_for_user($user_id));
+		}
+
+		/**
+		 * Returns the character XP awarded from events to a character.
+		 * A character accumulates 1 XP per event he has been played, up to an unlimited amount.
+		 * @param int $id The character ID 
+		 * @return int The amount of character XP 
+		 */
+		private function get_xp_count_for_character($id) {
+			return DataController::getInstance()->getCPT('event')->get_event_count_for_character($id);
 		}
 	}
 }

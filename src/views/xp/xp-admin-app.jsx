@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import update from 'immutability-helper';
+import Lodash from 'lodash';
 
 import Spinner from '../../../app/scripts/layout/spinner.jsx';
 
@@ -27,15 +28,18 @@ export default class XpAdminApp extends React.Component {
 			players: [],
 			events: [],
 			selectedCharacters: [],
-			bonusValues: {}
+			bonusValues: {},
+			alert: null
 		};
 
 		this.getPlayer = this.getPlayer.bind(this);
+		this.getCharacter = this.getCharacter.bind(this);
 		this.getXpFromCharacterEvents = this.getXpFromCharacterEvents.bind(this);
 		this.getXpFromPlayerEvents = this.getXpFromPlayerEvents.bind(this);
 		this.onToggleCharacter = this.onToggleCharacter.bind(this);
 		this.onToggleAll = this.onToggleAll.bind(this);
 		this.onBonusXpChanged = this.onBonusXpChanged.bind(this);
+		this.onSaveChanges = this.onSaveChanges.bind(this);
 	}
 
 	/**
@@ -82,31 +86,45 @@ export default class XpAdminApp extends React.Component {
 		var content = <Spinner />;
 
 		if (this.state.characters.length) {
-			let allCharactersSelected = (this.state.selectedCharacters.length === this.state.characters.length);
-			let headerRow = (
-				<tr>
-					<th>
-						<input
-							type = "checkbox"
-							checked = {allCharactersSelected}
-							onChange = {this.onToggleAll}
-						/>
-					</th>
-					<th className="ta-character-name-row">Nom</th>
-					<th>Joueur</th>
-					<th>GNs participés</th>
-					<th>GNs participés (joueur)</th>
-					<th className="ta-bonus-xp-row">Bonus</th>
-					<th>Total</th>
-				</tr>
-			);
+			let allCharactersSelected = (this.state.selectedCharacters.length === this.state.characters.length),
+				headerRow = (
+					<tr>
+						<th>
+							<input
+								type = "checkbox"
+								checked = {allCharactersSelected}
+								onChange = {this.onToggleAll}
+							/>
+						</th>
+						<th className="ta-character-name-row">Nom</th>
+						<th>Joueur</th>
+						<th>GNs participés</th>
+						<th>GNs participés (joueur)</th>
+						<th className="ta-bonus-xp-row">Bonus</th>
+						<th>Total</th>
+					</tr>
+				),
+				saveButton = (
+					<button
+						type = "button"
+						className = "btn btn-primary pull-right"
+						onClick = {this.onSaveChanges}
+					>
+							Soumettre les modifications
+					</button>
+				),
+				alert = (this.state.alert !== null) 
+					? <div className={'alert alert-' + this.state.alert.type}>{this.state.alert.message}</div>
+					: null;
 
 			content = (
 				<div>
+					{alert}
 					<div className="alert alert-info">
 						<strong>Seuls les personnages sélectionnés seront modifiés.</strong><br />
 						Les premières valeurs sont les valeurs recalculées, celles en <em>(parenthèses)</em> sont les valeurs actuelles.
 					</div>
+					{saveButton}
 					<table className="table table-hover ta-table">
 						<thead>{headerRow}</thead>
 						<tbody>
@@ -165,7 +183,7 @@ export default class XpAdminApp extends React.Component {
 						</tbody>
 						<tfoot>{headerRow}</tfoot>
 					</table>
-					<button type="button" className="btn btn-primary pull-right">Soumettre les modifications</button>
+					{saveButton}
 				</div>
 			);
 		}
@@ -176,7 +194,7 @@ export default class XpAdminApp extends React.Component {
 	/**
 	 * Get a player by ID from the player data
 	 * @param {Number} id The player ID
-	 * @return {Object|null} THe player entry
+	 * @return {Object|null} The player entry
 	 * @private
 	 */
 	getPlayer(id) {
@@ -185,6 +203,25 @@ export default class XpAdminApp extends React.Component {
 				let player = this.state.players[i];
 				if (player.id === id) {
 					return player;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get a character by ID from the character data
+	 * @param {Number} id The character ID
+	 * @param {Object|null} The character entry
+	 * @private
+	 */
+	getCharacter(id) {
+		if (this.state.characters.length) {
+			for (let i = 0; i < this.state.characters.length; ++i) {
+				let character = this.state.characters[i];
+				if (character.id === id) {
+					return character;
 				}
 			}
 		}
@@ -202,12 +239,14 @@ export default class XpAdminApp extends React.Component {
 		var eventCount = 0;
 		
 		this.state.events.map((event) => {
-			event.attendees.map((attendee) => {
-				if (attendee.character === characterId) {
-					eventCount++;
-					return;
-				}
-			});
+			if (Date.now() / 1000 > event.date.end.timestamp) {
+				event.attendees.map((attendee) => {
+					if (attendee.character === characterId) {
+						eventCount++;
+						return;
+					}
+				});
+			}
 		});
 
 		return eventCount;
@@ -223,12 +262,14 @@ export default class XpAdminApp extends React.Component {
 		var eventCount = 0;
 		
 		this.state.events.map((event) => {
-			event.attendees.map((attendee) => {
-				if (attendee.player.ID === playerId) {
-					eventCount++;
-					return;
-				}
-			});
+			if (Date.now() / 1000 > event.date.end.timestamp) {
+				event.attendees.map((attendee) => {
+					if (attendee.player.ID === playerId) {
+						eventCount++;
+						return;
+					}
+				});
+			}
 		});
 
 		return Math.min(eventCount, 4);
@@ -284,11 +325,76 @@ export default class XpAdminApp extends React.Component {
 		}
 
 		var newBonusValues = update(this.state.bonusValues, {
-			[characterId]: {$set: newBonus}
-		});
+				[characterId]: {$set: newBonus}
+			}),
+			newSelectedCharacters = this.state.selectedCharacters.slice();
+
+		if (this.state.selectedCharacters.indexOf(characterId) === -1) {
+			newSelectedCharacters.push(characterId);
+		}
 
 		this.setState({
-			bonusValues: newBonusValues
+			bonusValues: newBonusValues,
+			selectedCharacters: newSelectedCharacters
+		});
+	}
+
+	/**
+	 * Handle clicks on save button
+	 * @param {MouseSyntheticEvent} event The click event
+	 * @private
+	 */
+	onSaveChanges(event) {
+		event.preventDefault();
+
+		var requests = [],
+			sendRequest = (characterId) => {
+				let deferred = jQuery.Deferred();
+
+				// Send new data to REST
+				jQuery.ajax({
+					url: WP_API_Settings.root + 'wp/v2/character/' + characterId,
+					method: 'POST',
+					beforeSend: (xhr) => {
+						xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+					},
+					data: {
+						bonus_xp: this.state.bonusValues[characterId]
+					},
+					success: () => {
+						deferred.resolve(characterId);
+					},
+					error: () => {
+						deferred.reject(characterId);
+					}
+				});
+
+				return deferred.promise();
+			};
+
+		// Start saving process
+		this.setState({
+			alert: {
+				type: 'warning',
+				message: 'Sauvegarde de ' + this.state.selectedCharacters.length + ' personnages en cours...'
+			}
+		});
+
+		// Enqueue all character requests
+		this.state.selectedCharacters.map((characterId) => {
+			requests.push(sendRequest(characterId));
+		});
+
+		// Wait for all promises to resolve
+		jQuery.when.apply(null, requests).done(() => {
+			this.setState({
+				alert: {
+					type: 'success',
+					message: 'Tous les personnages ont été sauvegardés avec succès!'
+				}
+			});
+
+			// TODO: Update table view with new saved data
 		});
 	}
 }

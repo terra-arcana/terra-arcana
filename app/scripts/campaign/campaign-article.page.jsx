@@ -111,7 +111,7 @@ export default class CampaignArticlePage extends React.Component {
 									<div
 										key = {event.id}
 										className = "list-group-item"
-										dangerouslySetInnerHTML = {{__html: 'du ' + event.date[0].start + ' au ' + event.date[0].end}}
+										dangerouslySetInnerHTML = {{__html: 'du ' + event.date.start.rendered + ' au ' + event.date.end.rendered}}
 									/>
 								);
 							})}
