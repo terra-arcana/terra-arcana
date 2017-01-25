@@ -5,14 +5,17 @@ namespace terraarcana {
 
 	require_once(ROOT . '/src/controllers/controller.aclass.php');
 
+	require_once(ROOT . '/src/cpt/campaign.class.php');
 	require_once(ROOT . '/src/cpt/character.class.php');
 	require_once(ROOT . '/src/cpt/character-class.class.php');
 	require_once(ROOT . '/src/cpt/codex.class.php');
+	require_once(ROOT . '/src/cpt/event.class.php');
 	require_once(ROOT . '/src/cpt/people.class.php');
 	require_once(ROOT . '/src/cpt/point-node.class.php');
 	require_once(ROOT . '/src/cpt/rules.class.php');
 	require_once(ROOT . '/src/cpt/skill.class.php');
 
+	require_once(ROOT . '/src/routes/campaign-events.route.php');
 	require_once(ROOT . '/src/routes/graph-data.route.php');
 	require_once(ROOT . '/src/routes/starting-skills.route.php');
 
@@ -31,18 +34,21 @@ namespace terraarcana {
 
 			if (class_exists('WP_REST_Controller')) {
 				$this->_cpts = array(
-					'character' => new Character(),
-					'character-class' => new CharacterClass(),
-					'codex' => new Codex(),
-					'people' => new People(),
-					'point-node' => new PointNode(),
-					'rules' => new Rules(),
-					'skill' => new Skill(),
+					'campaign'         => new Campaign(),
+					'character'        => new Character(),
+					'character-class'  => new CharacterClass(),
+					'codex'            => new Codex(),
+					'event'            => new Event(),
+					'people'           => new People(),
+					'point-node'       => new PointNode(),
+					'rules'            => new Rules(),
+					'skill'            => new Skill()
 				);
 
 				$this->_routes = array(
-					'graph-data' => new GraphDataRoute(),
-					'starting-skills' => new StartingSkillsRoute('skill')
+					'campaign-events'  => new CampaignEventsRoute('event'),
+					'graph-data'       => new GraphDataRoute(),
+					'starting-skills'  => new StartingSkillsRoute('skill')
 				);
 
 				foreach ($this->_routes as $route) {

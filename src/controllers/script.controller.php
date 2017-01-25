@@ -20,6 +20,7 @@ namespace terraarcana {
 		public function init() {
 			add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 			add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
+			add_filter('acf/fields/google_map/api', array($this, 'register_gmaps_api'));
 		}
 
 		/**
@@ -41,7 +42,8 @@ namespace terraarcana {
 
 			wp_localize_script('app', 'WP_Theme_Settings', array(
 				'imageRoot' => get_template_directory_uri() . '/dist/images/',
-				'logoutURL' => wp_logout_url(home_url())
+				'logoutURL' => wp_logout_url(home_url()),
+				'googleMapsAPIKey' => 'AIzaSyAPVHFI_O9iN7bKW_oz3kw_NTOup1qi4zQ'
 			));
 			wp_localize_script('app', 'WP_API_Settings', array(
 				'root' => esc_url_raw(rest_url()),
@@ -59,6 +61,15 @@ namespace terraarcana {
 			wp_enqueue_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css');
 			wp_enqueue_style('bootstrap-theme', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css', array('bootstrap'));
 			wp_enqueue_style('terra-arcana', $base . 'dist/terra-arcana.css');
+		}
+
+		/**
+		 * Register the API key for ACF Google Maps fields
+		 * @see https://developers.google.com/maps/documentation/javascript/get-api-key
+		 */
+		public function register_gmaps_api($api) {
+			$api['key'] = 'AIzaSyAPVHFI_O9iN7bKW_oz3kw_NTOup1qi4zQ';
+			return $api;
 		}
 	}
 }
