@@ -25,7 +25,8 @@ export default class ArticlePage extends React.Component {
 		 */
 		this.state = {
 			article: null,
-			taxonomies: []
+			taxonomies: [],
+			breadcrumbs: []
 		};
 
 		this.fetchTaxonomy = this.fetchTaxonomy.bind(this);
@@ -51,37 +52,7 @@ export default class ArticlePage extends React.Component {
 	 * @abstract
 	 * @protected
 	 */
-	fetchTaxonomy(articleSlug) {
-		this.setState({
-			article: null,
-			chapters: []
-		});
-
-		jQuery.get(WP_API_Settings.root + 'wp/v2/codex?slug=' + articleSlug, function(result) {
-			if (result.length) {
-				var article = result[0];
-
-				jQuery.get(WP_API_Settings.root + 'wp/v2/chapters', function(chapters) {
-					var articleChapters = [];
-
-					if (chapters.length) {
-						article.chapters.map(function(articleChapterId) {
-							chapters.map(function(chapter) {
-								if (articleChapterId === chapter.id) {
-									articleChapters.push(chapter);
-								}
-							}.bind(this));
-						}.bind(this));
-					}
-
-					this.setState({
-						article: article,
-						chapters: articleChapters
-					});
-				}.bind(this));
-			}
-		}.bind(this));
-	}
+	fetchTaxonomy() {}
 
 	/**
 	 * @override
@@ -105,6 +76,7 @@ export default class ArticlePage extends React.Component {
 				<PageHeader
 					articleMode = {true}
 					content = {'<span>' + title + '</span> <small>' + this.getTaxonomyList(this.state.taxonomies) + '</small>'}
+					breadcrumbs = {this.state.breadcrumbs}
 				/>
 				<div className="ta-article-content container">
 					<div className="row">

@@ -82,29 +82,29 @@ namespace terraarcana {
 		protected function register_post_type() {
 			register_post_type($this->_postTypeName, array(
 				'labels' => array(
-					'name'				=> 'Compétences',
-					'singular_name' 	=> 'Compétence',
-					'menu_name' 		=> 'Compétences',
-					'all_items'			=> 'Compétences',
-					'add_new'			=> 'Ajouter une compétence',
-					'add_new_item'		=> 'Ajouter une compétence',
-					'edit_item' 		=> 'Modifier la compétence',
-					'new_item' 			=> 'Nouvelle compétence',
-					'view_item' 		=> 'Voir la compétence',
-					'search_items' 		=> 'Rechercher les compétences',
-					'not_found' 		=> 'Aucune compétence trouvée',
-					'not_found_in_trash' => 'Aucune compétence trouvée dans la corbeille'
+					'name'                => 'Compétences',
+					'singular_name'       => 'Compétence',
+					'menu_name'           => 'Compétences',
+					'all_items'           => 'Compétences',
+					'add_new'             => 'Ajouter une compétence',
+					'add_new_item'        => 'Ajouter une compétence',
+					'edit_item'           => 'Modifier la compétence',
+					'new_item'            => 'Nouvelle compétence',
+					'view_item'           => 'Voir la compétence',
+					'search_items'        => 'Rechercher les compétences',
+					'not_found'           => 'Aucune compétence trouvée',
+					'not_found_in_trash'  => 'Aucune compétence trouvée dans la corbeille'
 				),
-				'rewrite' 				=> array(
-					'slug' 					=> 'competence'
+				'rewrite' => array(
+					'slug'                => 'competence'
 				),
-				'menu_icon' 			=> 'dashicons-shield-alt',
-				'description' 			=> 'Compétences du système de jeu',
-				'public' 				=> true,
-				'show_in_menu' 			=> 'edit.php?post_type=rules',
-				'show_in_rest' 			=> true,
-				'rest_base' 			=> 'skill',
-				'hierarchical' 			=> false,
+				'menu_icon'             => 'dashicons-shield-alt',
+				'description'           => 'Compétences du système de jeu',
+				'public'                => true,
+				'show_in_menu'          => 'edit.php?post_type=rules',
+				'show_in_rest'          => true,
+				'rest_base'             => 'skill',
+				'hierarchical'          => false,
 				'supports' => array(
 					'title'
 				)
@@ -122,7 +122,7 @@ namespace terraarcana {
 			);
 
 			$skills = get_posts(array(
-				'post_type' => 'skill',
+				'post_type'      => 'skill',
 				'posts_per_page' => -1
 			));
 
@@ -140,11 +140,11 @@ namespace terraarcana {
 
 				// Add the skill to the graph data
 				array_push($result['nodes'], array(
-					'id' => (string)$skill->ID,
-					'name' => $skill->post_title,
-					'type' => 'skill',
-					'x' => intval($skillGraphData[0]['x']),
-					'y' => intval($skillGraphData[0]['y']),
+					'id'    => (string)$skill->ID,
+					'name'  => $skill->post_title,
+					'type'  => 'skill',
+					'x'     => intval($skillGraphData[0]['x']),
+					'y'     => intval($skillGraphData[0]['y']),
 					'start' => $skillGraphData[0]['start'],
 					'perks' => $skillPerkData
 				));
@@ -165,11 +165,11 @@ namespace terraarcana {
 						$upgradeID = (string)$skill->ID . '-' . (string)($i+1); // Ensure one-indexation of skill upgrades
 
 						array_push($result['nodes'], array(
-							'id' => $upgradeID,
-							'name' => $upgrade['title'],
-							'type' => 'upgrade',
-							'x' => intval($upgrade['graph_data'][0]['x']),
-							'y' => intval($upgrade['graph_data'][0]['y'])
+							'id'    => $upgradeID,
+							'name'  => $upgrade['title'],
+							'type'  => 'upgrade',
+							'x'     => intval($upgrade['graph_data'][0]['x']),
+							'y'     => intval($upgrade['graph_data'][0]['y'])
 						));
 
 						// Add any links from the upgrades to the graph data

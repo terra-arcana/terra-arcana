@@ -28,6 +28,12 @@ export default class ZodiacViewerPage extends React.Component {
 			linkData: [],
 			graphMetadata: {}
 		};
+
+		/**
+		 * The breadcrumb data model for this page.
+		 * @type {Array}
+		 */
+		this.breadcrumbs = [{ caption: 'Zodiaque' }];
 	}
 
 	/**
@@ -79,7 +85,10 @@ export default class ZodiacViewerPage extends React.Component {
 
 		return (
 			<div className="ta-zodiac-viewer">
-				<PageHeader content="Le Zodiaque <small>L'étendue complète des compétences priorèmes connues</small>" />
+				<PageHeader
+					content = "Le Zodiaque <small>L'étendue complète des compétences priorèmes connues</small>"
+					breadcrumbs = {this.breadcrumbs}
+				/>
 				<div className="row">
 					<div className="col-sm-12 col-lg-8">
 						<SkillGraph
