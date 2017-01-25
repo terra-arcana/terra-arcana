@@ -67,7 +67,7 @@ export default class IndexPage extends React.Component {
 		return (
 			<div className="ta-home">
 				<PageHeader
-					content = "<h1>Terra Arcana <small>Grandeur Nature médiéval fantastique</small></h1>"
+					content = "Terra Arcana <small>Grandeur Nature médiéval fantastique</small>"
 				/>
 				{content}
 			</div>

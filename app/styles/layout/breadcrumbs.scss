@@ -1,0 +1,23 @@
+.ta-breadcrumbs {
+	background: none;
+	padding: 0;
+	margin-bottom: 0.8em;
+
+	img {
+		position: relative;
+		top: -2px;
+		opacity: 0.6;
+	}
+
+	& > .active {
+		color: #bbb;
+	}
+
+	a {
+		color: white;
+	}
+
+	li+li:before {
+		content: '>';
+	}
+}

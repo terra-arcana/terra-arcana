@@ -38,6 +38,15 @@ export default class CharacterNewPage extends React.Component {
 			startingSkills: [],
 			alert: null
 		};
+
+		/**
+		 * The breadcrumb data model for this page.
+		 * @type {Array}
+		 */
+		this.breadcrumbs = [
+			{ caption: 'Personnages' },
+			{ caption: 'Créer un nouveau personnage' }
+		];
 	}
 
 	/**
@@ -183,7 +192,10 @@ export default class CharacterNewPage extends React.Component {
 
 		return (
 			<div className="ta-character-new">
-				<PageHeader content='Créer un nouveau personnage' />
+				<PageHeader
+					content = 'Créer un nouveau personnage'
+					breadcrumbs = {this.breadcrumbs}
+				/>
 				<div className="container">
 					{content}
 				</div>

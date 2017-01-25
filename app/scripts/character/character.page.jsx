@@ -28,6 +28,7 @@ export default class CharacterPage extends React.Component {
 		 */
 		this.state = {
 			character: undefined,
+			breadcrumbs: [],
 			activeTab: 'profile'
 		};
 
@@ -138,6 +139,7 @@ export default class CharacterPage extends React.Component {
 				<div className="ta-character">
 					<PageHeader
 						content = {this.state.character.title.rendered}
+						breadcrumbs = {this.state.breadcrumbs}
 					/>
 					<div className="container">
 						<div className="row">
@@ -173,8 +175,14 @@ export default class CharacterPage extends React.Component {
 					singular: peopleResponse.singular
 				};
 
+				const breadcrumbs = [
+					{ caption: 'Personnages' },
+					{ caption: characterResponse[0].title.rendered }
+				];
+
 				this.setState({
-					character: characterResponse[0]
+					character: characterResponse[0],
+					breadcrumbs: breadcrumbs
 				});
 			}.bind(this));
 		}.bind(this));

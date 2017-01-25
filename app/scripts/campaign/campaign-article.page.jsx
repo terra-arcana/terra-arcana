@@ -29,6 +29,7 @@ export default class CampaignArticlePage extends React.Component {
 		 */
 		this.state = {
 			article: null,
+			breadcrumbs: [],
 			events: []
 		};
 
@@ -56,15 +57,27 @@ export default class CampaignArticlePage extends React.Component {
 	fetchData(articleSlug) {
 		this.setState({
 			article: null,
+			breadcrumbs: [],
 			events: []
 		});
 
 		jQuery.get(WP_API_Settings.root + 'wp/v2/campaign?slug=' + articleSlug, function(result) {
 			if (result.length) {
-				var article = result[0];
+				const article = result[0],
+					breadcrumbs = [
+						{
+							uri: '/campagne/',
+							caption: 'Campagnes'
+						},
+						{
+							caption: article.title.rendered
+						}
+					];
+
 				jQuery.get(WP_API_Settings.root + 'terraarcana/v1/campaign-events/' + article.id + '?order=asc', function(result) {
 					this.setState({
 						article: article,
+						breadcrumbs: breadcrumbs,
 						events: (result.length) ? result : []
 					});
 				}.bind(this));
@@ -98,7 +111,7 @@ export default class CampaignArticlePage extends React.Component {
 									<div
 										key = {event.id}
 										className = "list-group-item"
-										dangerouslySetInnerHTML = {{__html: 'du ' + event.date[0].start + ' au ' + event.date[0].end}}
+										dangerouslySetInnerHTML = {{__html: 'du ' + event.date.start.rendered + ' au ' + event.date.end.rendered}}
 									/>
 								);
 							})}
@@ -133,6 +146,7 @@ export default class CampaignArticlePage extends React.Component {
 			<div className="ta-article">
 				<PageHeader
 					content = {'<span>' + title + '</span> <small>' + subtitle + '</small>'}
+					breadcrumbs = {this.state.breadcrumbs}
 				/>
 				<div className="ta-article-content ta-campaign-article-content container">
 					<div className="row">

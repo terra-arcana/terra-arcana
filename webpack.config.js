@@ -51,6 +51,7 @@ module.exports = [
 		devtool: 'source-map'
 	},
 
+	// admin:zodiac
 	{
 		context: __dirname + '/src/views/zodiac',
 		entry: {
@@ -60,6 +61,45 @@ module.exports = [
 		output: {
 			filename: 'zodiac.js',
 			path: __dirname + '/dist/admin/zodiac'
+		},
+		module: {
+			loaders: [
+				{
+					test: /\.jsx$/,
+					loaders: ['babel?presets[]=es2015&presets[]=react', 'eslint'],
+					exclude: /node_modules/
+				},
+				{
+					test: /\.html$/,
+					loader: 'file?name=[name].[ext]'
+				},
+				{
+					test: /\.scss$/,
+					loader: ExtractTextPlugin.extract('css!sass')
+				},
+				{
+					test: /\.svg$/,
+					loader: 'svg-inline'
+				}
+			]
+		},
+		plugins: [
+			new ExtractTextPlugin('style.css', {
+				allChunks: true
+			} )
+		]
+	},
+
+	// admin:xp
+	{
+		context: __dirname + '/src/views/xp',
+		entry: {
+			javascript: './xp-admin-app.jsx',
+			html: './xp.html'
+		},
+		output: {
+			filename: 'xp.js',
+			path: __dirname + '/dist/admin/xp'
 		},
 		module: {
 			loaders: [
