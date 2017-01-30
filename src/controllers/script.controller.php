@@ -8,6 +8,12 @@ namespace terraarcana {
 	 */
 	class ScriptController extends Controller {
 
+		/**
+		 * Google Maps API key
+		 * @var string
+		 */
+		private $google_maps_api_key = 'AIzaSyAPVHFI_O9iN7bKW_oz3kw_NTOup1qi4zQ';
+
 		public function __construct() {
 			parent::__construct();
 		}
@@ -20,7 +26,7 @@ namespace terraarcana {
 		public function init() {
 			add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 			add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
-			add_filter('acf/fields/google_map/api', array($this, 'register_gmaps_api'));
+			add_filter('acf/settings/google_api_key', array($this, 'register_gmaps_api'));
 		}
 
 		/**
@@ -43,7 +49,7 @@ namespace terraarcana {
 			wp_localize_script('app', 'WP_Theme_Settings', array(
 				'imageRoot' => get_template_directory_uri() . '/dist/images/',
 				'logoutURL' => wp_logout_url(home_url()),
-				'googleMapsAPIKey' => 'AIzaSyAPVHFI_O9iN7bKW_oz3kw_NTOup1qi4zQ'
+				'googleMapsAPIKey' => $this->google_maps_api_key
 			));
 			wp_localize_script('app', 'WP_API_Settings', array(
 				'root' => esc_url_raw(rest_url()),
@@ -68,8 +74,7 @@ namespace terraarcana {
 		 * @see https://developers.google.com/maps/documentation/javascript/get-api-key
 		 */
 		public function register_gmaps_api($api) {
-			$api['key'] = 'AIzaSyAPVHFI_O9iN7bKW_oz3kw_NTOup1qi4zQ';
-			return $api;
+			return $this->google_maps_api_key;
 		}
 	}
 }
