@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import update from 'immutability-helper';
-import Lodash from 'lodash';
 
 import Spinner from '../../../app/scripts/layout/spinner.jsx';
 
@@ -12,7 +11,7 @@ require('./xp-admin-app.scss');
  * @class
  */
 export default class XpAdminApp extends React.Component {
-	
+
 	/**
 	 * @constructor
 	 * @param {Object} props Default props
@@ -113,7 +112,7 @@ export default class XpAdminApp extends React.Component {
 							Soumettre les modifications
 					</button>
 				),
-				alert = (this.state.alert !== null) 
+				alert = (this.state.alert !== null)
 					? <div className={'alert alert-' + this.state.alert.type}>{this.state.alert.message}</div>
 					: null;
 
@@ -237,7 +236,7 @@ export default class XpAdminApp extends React.Component {
 	 */
 	getXpFromCharacterEvents(characterId) {
 		var eventCount = 0;
-		
+
 		this.state.events.map((event) => {
 			if (Date.now() / 1000 > event.date.end.timestamp) {
 				event.attendees.map((attendee) => {
@@ -260,11 +259,11 @@ export default class XpAdminApp extends React.Component {
 	 */
 	getXpFromPlayerEvents(playerId) {
 		var eventCount = 0;
-		
+
 		this.state.events.map((event) => {
 			if (Date.now() / 1000 > event.date.end.timestamp) {
 				event.attendees.map((attendee) => {
-					if (attendee.player.ID === playerId) {
+					if (attendee.player !== null && attendee.player.ID === playerId) {
 						eventCount++;
 						return;
 					}
