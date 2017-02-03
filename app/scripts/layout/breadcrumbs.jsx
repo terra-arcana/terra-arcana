@@ -18,7 +18,9 @@ export default class Breadcrumbs extends React.Component {
 						? <li key={index}>
 								<Link to={link.uri}>{link.caption}</Link>
 							</li>
-						: <li className="active">{link.caption}</li>
+						: <li key={index} className="active">
+								{link.caption}
+							</li>
 					);
 				})}
 			</ol>

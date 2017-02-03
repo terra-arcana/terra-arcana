@@ -1,0 +1,25 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+.ta-masonry {
+	width: 100%;
+	column-count: 1;
+	column-gap: $grid-gutter-width;
+
+	> .ta-masonry-element {
+		display: inline-block;
+		width: 100%;
+		break-inside: avoid;
+	}
+}
+
+@media (min-width: $screen-sm-min) {
+	.ta-masonry {
+		column-count: 2;
+	}
+}
+
+@media (min-width: $screen-lg-min) {
+	.ta-masonry {
+		column-count: 3;
+	}
+}
