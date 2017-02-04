@@ -83,9 +83,9 @@ export default class IndexPage extends React.Component {
 					<Link to={this.state.campaign.link}>
 						<div className="ta-campaign-banner-hover-text text-center">
 							<div>
-								<em>prochaine campagne</em>
+								Prochaine campagne
 								<h2>{this.state.campaign.title.rendered}</h2>
-								<em>du {date.start.rendered} au {date.end.rendered}</em>
+								du {date.start.rendered} au {date.end.rendered}
 							</div>
 						</div>
 						<img src={this.state.campaign.banner.url} alt={this.state.campaign.title.rendered} />
@@ -99,7 +99,7 @@ export default class IndexPage extends React.Component {
 				<div className="ta-index-content container">
 					<div className="row">
 						<div className="col-xs-12 col-lg-8">
-							<strong>Terra Arcana</strong>
+							À venir
 						</div>
 
 						<div className="col-xs-12 col-lg-4">

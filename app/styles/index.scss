@@ -30,16 +30,21 @@
 			justify-content: center;
 			z-index: 10;
 			color: white;
-			font: 'Cinzel Decorative', serif;
+			font-family: 'Cinzel Decorative', serif;
+			letter-spacing: 5;
 			opacity: 0;
 			transform: scale(0.95);
 			transition: all 0.3s;
+
+			h2 {
+				letter-spacing: 15;
+			}
 		}
 
 		&:hover {
 			img {
 				filter: blur(3px);
-				opacity: 0.8;
+				opacity: 0.6;
 				transform: scale(1.05);
 			}
 
