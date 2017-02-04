@@ -1,0 +1,52 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+.ta-campaign-background {
+	margin-top: -1em;
+	background-color: #080808;
+	transition: height 1.0s;
+	overflow: hidden;
+
+	img {
+		width: 100%;
+	}
+
+	.ta-campaign-banner-hover-text {
+		display: none;
+	}
+}
+
+@media (min-width: $screen-sm-min) {
+	.ta-campaign-background {
+		img {
+			transition: all 0.3s;
+		}
+
+		.ta-campaign-banner-hover-text {
+			display: flex;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			align-items: center;
+			justify-content: center;
+			z-index: 10;
+			color: white;
+			font: 'Cinzel Decorative', serif;
+			opacity: 0;
+			transform: scale(0.95);
+			transition: all 0.3s;
+		}
+
+		&:hover {
+			img {
+				filter: blur(3px);
+				opacity: 0.8;
+				transform: scale(1.05);
+			}
+
+			.ta-campaign-banner-hover-text {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+	}
+}
