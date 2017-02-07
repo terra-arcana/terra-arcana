@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
+import Lodash from 'lodash';
 
-import PageHeader from './layout/page-header.jsx';
 import Spinner from './layout/spinner.jsx';
 
 require('../styles/index.scss');
@@ -24,9 +24,10 @@ export default class IndexPage extends React.Component {
 		 * @private
 		 */
 		this.state = {
-			posts: [],
-			campaign: null,
-			campaignNextEvent: null
+			campaign: {},
+			campaignNextEvent: {},
+			homeContent: {},
+			posts: []
 		};
 	}
 
@@ -37,10 +38,7 @@ export default class IndexPage extends React.Component {
 		var postsData = [],
 			campaignData = {},
 			campaignNextEventData = {},
-
-			newsRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/posts?per_page=3', result => {
-				postsData = result;
-			}),
+			homeContentData = {},
 
 			campaignRequest = () => {
 				let deferred = jQuery.Deferred();
@@ -56,13 +54,31 @@ export default class IndexPage extends React.Component {
 				});
 
 				return deferred.promise();
-			};
+			},
 
-		jQuery.when(newsRequest, campaignRequest()).done(() => {
+			homeContentRequest = () => {
+				let deferred = jQuery.Deferred();
+
+				jQuery.get(WP_API_Settings.root + 'terraarcana/v1/pages', result => {
+					jQuery.get(WP_API_Settings.root + 'wp/v2/pages/' + result.home, result => {
+						homeContentData = result.content.rendered;
+						deferred.resolve();
+					});
+				});
+
+				return deferred.promise();
+			},
+
+			newsRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/posts?per_page=3', result => {
+				postsData = result;
+			});
+
+		jQuery.when(newsRequest, campaignRequest(), homeContentRequest()).done(() => {
 			this.setState({
-				posts: postsData,
 				campaign: campaignData,
-				campaignNextEvent: campaignNextEventData
+				campaignNextEvent: campaignNextEventData,
+				homeContent: homeContentData,
+				posts: postsData
 			});
 		});
 	}
@@ -75,7 +91,7 @@ export default class IndexPage extends React.Component {
 		var banner = null,
 			content = <Spinner />;
 
-		if (this.state.campaign !== null && this.state.campaignNextEvent !== null) {
+		if (!Lodash.isEmpty(this.state.campaign) && !Lodash.isEmpty(this.state.campaignNextEvent)) {
 			let date = this.state.campaignNextEvent.date;
 
 			banner = (
@@ -94,14 +110,14 @@ export default class IndexPage extends React.Component {
 			);
 		}
 
-		if (this.state.posts.length) {
+		if (this.state.posts.length && !Lodash.isEmpty(this.state.homeContent)) {
 			content = (
 				<div className="ta-index-content container">
 					<div className="row">
-						<div className="col-xs-12 col-lg-8">
-							À venir
-						</div>
-
+						<div
+							className = "col-xs-12 col-lg-8"
+							dangerouslySetInnerHTML = {{__html: this.state.homeContent}}
+						/>
 						<div className="col-xs-12 col-lg-4">
 							<h2>Actualités</h2>
 							<ul className="list-unstyled">
@@ -130,9 +146,6 @@ export default class IndexPage extends React.Component {
 
 		return (
 			<div className="ta-home">
-				<PageHeader
-					content = "Terra Arcana <small>Grandeur Nature médiéval fantastique</small>"
-				/>
 				<div className="ta-campaign-background">
 					<div className="container">
 						<div className="row">
