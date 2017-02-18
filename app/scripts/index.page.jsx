@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import Lodash from 'lodash';
 
-import Spinner from './layout/spinner.jsx';
+import {CenteredSpinner} from './layout/spinner.jsx';
 
 require('../styles/index.scss');
 
@@ -89,7 +89,7 @@ export default class IndexPage extends React.Component {
 	 */
 	render() {
 		var banner = null,
-			content = <Spinner />;
+			content = <CenteredSpinner />;
 
 		if (!Lodash.isEmpty(this.state.campaign) && !Lodash.isEmpty(this.state.campaignNextEvent)) {
 			let date = this.state.campaignNextEvent.date;
