@@ -11,6 +11,7 @@ html {
 body {
 	background-color: $gray-darker;
 	font-family: 'PT Serif', serif;
+	overflow-x: hidden;
 }
 
 #main {
