@@ -124,6 +124,10 @@ export default class CampaignArticlePage extends React.Component {
 				location = (
 					<div>
 						<h2>Adresse</h2>
+						<a className="btn btn-primary btn-block" href={'https://www.google.ca/maps/place/' + this.state.article.location.address}>
+							<span className="glyphicon glyphicon-map-marker" />&nbsp;
+							{this.state.article.location.address}
+						</a>
 						{this.getLocationGoogleMap(this.state.article.location)}
 					</div>
 				);
