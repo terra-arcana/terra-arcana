@@ -29,23 +29,29 @@ export default class Navbar extends React.Component {
 	 * @return {jsx} The component template
 	 */
 	render() {
-		var linkData = [
-			{
-				link: '/codex/',
-				caption: 'Codex Arcanum'
-			},
-			{
-				link: '/systeme/',
-				caption: 'Système de jeu'
-			},
-			{
-				link: '/zodiaque/',
-				caption: 'Zodiaque'
-			}
-		];
+		var linkData =
+			[
+				{
+					link: '/codex/',
+					caption: 'Codex Arcanum'
+				},
+				{
+					link: '/systeme/',
+					caption: 'Système de jeu'
+				},
+				{
+					link: '/zodiaque/',
+					caption: 'Zodiaque'
+				}
+			],
+			navbarClasses = ['ta-navbar', 'navbar', 'navbar-inverse'];
+
+		if (this.context.router.location.pathname === '/') {
+			navbarClasses.push('ta-navbar-home');
+		}
 
 		return (
-			<nav className="ta-navbar navbar navbar-inverse">
+			<nav className={navbarClasses.join(' ')}>
 				<div className="container">
 					<div className="navbar-header">
 						<IndexLink to="/" className="ta-navbar-logo">
@@ -125,4 +131,11 @@ Navbar.propTypes = {
 	currentUser: React.PropTypes.object,
 
 	onSwitchActiveCharacter: React.PropTypes.func
+};
+
+/**
+ * @type {Object}
+ */
+Navbar.contextTypes = {
+	router: React.PropTypes.object.isRequired
 };

@@ -2,7 +2,7 @@
 
 .ta-page-header {
 	margin-bottom: 1em;
-	padding-top: 6.7em;
+	padding-top: 3em;
 	background-image: url(../../images/header.png);
 	background-position: center bottom;
 	color: white;
@@ -18,7 +18,7 @@
 	}
 }
 
-@media (min-width: $screen-sm-min) {
+@media (min-width: $screen-md-min) {
 	.ta-page-header {
 		padding-top: 6em;
 	}

@@ -48,7 +48,8 @@ export default class Footer extends React.Component {
 								);
 							}.bind(this))}
 							<li><hr /></li>
-							<li><a href="https://www.facebook.com/groups/terraarcana/">Facebook</a></li>
+							<li><a href="https://www.facebook.com/groups/terraarcana/" target="_blank">Facebook</a></li>
+							<li><a href="https://discord.gg/DskSMeC" target="_blank">Discord</a></li>
 						</ul>
 					</nav>
 				</div>
