@@ -1,8 +1,10 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+@import '_utils.scss';
+@import '_colors.scss';
 
 .ta-campaign-background {
 	margin-top: 73px;
-	background-color: #080808;
+	background-color: $ta-dark;
 	transition: height 1.0s;
 	overflow: hidden;
 
@@ -12,6 +14,26 @@
 
 	.ta-campaign-banner-hover-text {
 		display: none;
+	}
+}
+
+.ta-discord-panel {
+	@include clearfix;
+	display: block;
+	margin-top: 2em;
+	background-image: linear-gradient(to bottom, lighten($ta-major, 10%) 0, $ta-major 100%);
+	transition: all 0.3s;
+	color: black;
+
+	&:hover {
+		background-image: linear-gradient(to bottom, lighten($ta-major, 20%) 0, lighten($ta-major, 10%) 100%);
+		text-decoration: none;
+	}
+
+	img {
+		max-width: 30%;
+		float: left;
+		margin-right: 1em;
 	}
 }
 
