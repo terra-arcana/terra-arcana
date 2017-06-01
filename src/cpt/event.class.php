@@ -212,7 +212,7 @@ namespace terraarcana {
 				while (have_rows($this->_fields['attendees']['key'])) {
 					the_row();
 
-					if ($predicate) {
+					if ($predicate()) {
 						$event_count++;
 						continue;
 					}
