@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 /**
@@ -101,16 +102,16 @@ export default class NodeDetailsLinkElement extends React.Component {
  * @type {Object}
  */
 NodeDetailsLinkElement.propTypes = {
-	node: React.PropTypes.shape({
-		id: React.PropTypes.string.isRequired,
-		x: React.PropTypes.number.isRequired,
-		y: React.PropTypes.number.isRequired,
-		type: React.PropTypes.string.isRequired,
-		value: React.PropTypes.string
+	node: PropTypes.shape({
+		id: PropTypes.string.isRequired,
+		x: PropTypes.number.isRequired,
+		y: PropTypes.number.isRequired,
+		type: PropTypes.string.isRequired,
+		value: PropTypes.string
 	}).isRequired,
-	highlight: React.PropTypes.bool.isRequired,
+	highlight: PropTypes.bool.isRequired,
 
-	onMouseOver: React.PropTypes.func,
-	onMouseOut: React.PropTypes.func,
-	onDelete: React.PropTypes.func
+	onMouseOver: PropTypes.func,
+	onMouseOut: PropTypes.func,
+	onDelete: PropTypes.func
 };

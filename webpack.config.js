@@ -18,35 +18,33 @@ module.exports = [
 			loaders: [
 				{
 					test: /\.jsx$/,
-					loaders: ['babel?presets[]=es2015&presets[]=react', 'eslint'],
+					loaders: ['babel-loader?presets[]=es2015&presets[]=react', 'eslint-loader'],
 					exclude: /node_modules/
 				},
 				{
 					test: /\.html$/,
-					loader: 'file?name=[name].[ext]'
+					loader: 'file-loader?name=[name].[ext]'
 				},
 				{
 					test: /\.scss$/,
-					loader: ExtractTextPlugin.extract('css!sass')
+					loader: ExtractTextPlugin.extract('css-loader!sass-loader')
 				},
 				{
 					test: /\.(gif|jpe?g|png)$/,
-					loader: 'file?name=images/[name].[ext]'
+					loader: 'file-loader?name=images/[name].[ext]'
 				},
 				{
 					test: /\.svg$/,
-					loader: 'svg-inline'
+					loader: 'svg-inline-loader'
 				},
 				{
 					test: /\.json$/,
-					loader: 'json'
+					loader: 'json-loader'
 				}
 			]
 		},
 		plugins: [
-			new ExtractTextPlugin('[name].css', {
-				allChunks: true
-			} )
+			new ExtractTextPlugin({ filename: '[name].css', allChunks: true })
 		],
 		devtool: 'source-map'
 	},
@@ -66,27 +64,25 @@ module.exports = [
 			loaders: [
 				{
 					test: /\.jsx$/,
-					loaders: ['babel?presets[]=es2015&presets[]=react', 'eslint'],
+					loaders: ['babel-loader?presets[]=es2015&presets[]=react', 'eslint-loader'],
 					exclude: /node_modules/
 				},
 				{
 					test: /\.html$/,
-					loader: 'file?name=[name].[ext]'
+					loader: 'file-loader?name=[name].[ext]'
 				},
 				{
 					test: /\.scss$/,
-					loader: ExtractTextPlugin.extract('css!sass')
+					loader: ExtractTextPlugin.extract('css-loader!sass-loader')
 				},
 				{
 					test: /\.svg$/,
-					loader: 'svg-inline'
+					loader: 'svg-inline-loader'
 				}
 			]
 		},
 		plugins: [
-			new ExtractTextPlugin('style.css', {
-				allChunks: true
-			} )
+			new ExtractTextPlugin({ filename: 'style.css', allChunks: true })
 		]
 	},
 
@@ -105,27 +101,25 @@ module.exports = [
 			loaders: [
 				{
 					test: /\.jsx$/,
-					loaders: ['babel?presets[]=es2015&presets[]=react', 'eslint'],
+					loaders: ['babel-loader?presets[]=es2015&presets[]=react', 'eslint-loader'],
 					exclude: /node_modules/
 				},
 				{
 					test: /\.html$/,
-					loader: 'file?name=[name].[ext]'
+					loader: 'file-loader?name=[name].[ext]'
 				},
 				{
 					test: /\.scss$/,
-					loader: ExtractTextPlugin.extract('css!sass')
+					loader: ExtractTextPlugin.extract('css-loader!sass-loader')
 				},
 				{
 					test: /\.svg$/,
-					loader: 'svg-inline'
+					loader: 'svg-inline-loader'
 				}
 			]
 		},
 		plugins: [
-			new ExtractTextPlugin('style.css', {
-				allChunks: true
-			} )
+			new ExtractTextPlugin({ filename: 'style.css', allChunks: true })
 		]
 	}
 ];

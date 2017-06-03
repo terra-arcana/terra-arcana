@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactKonva from 'react-konva';
 
@@ -150,18 +151,18 @@ Node.defaultProps = {
  * @type {Object}
  */
 Node.propTypes = {
-	id: React.PropTypes.string.isRequired,
-	x: React.PropTypes.number.isRequired,
-	y: React.PropTypes.number.isRequired,
-	fill: React.PropTypes.string,
-	draggable: React.PropTypes.bool,
-	selected: React.PropTypes.bool,
-	state: React.PropTypes.oneOf(['normal', 'picked', 'start']),
-	size: React.PropTypes.number.isRequired,
-	icon: React.PropTypes.string.isRequired,
+	id: PropTypes.string.isRequired,
+	x: PropTypes.number.isRequired,
+	y: PropTypes.number.isRequired,
+	fill: PropTypes.string,
+	draggable: PropTypes.bool,
+	selected: PropTypes.bool,
+	state: PropTypes.oneOf(['normal', 'picked', 'start']),
+	size: PropTypes.number.isRequired,
+	icon: PropTypes.string.isRequired,
 
-	onClick: React.PropTypes.func,
-	onMouseOver: React.PropTypes.func,
-	onMouseOut: React.PropTypes.func,
-	onDragMove: React.PropTypes.func
+	onClick: PropTypes.func,
+	onMouseOver: PropTypes.func,
+	onMouseOut: PropTypes.func,
+	onDragMove: PropTypes.func
 };

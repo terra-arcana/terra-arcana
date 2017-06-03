@@ -1,5 +1,6 @@
-import React from 'react';
 import Lodash from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import SkillGraph from '../zodiac/skill-graph.jsx';
 import SkillNodeInspector from '../zodiac/skill-node-inspector.jsx';
@@ -638,23 +639,23 @@ export default class CharacterBuilder extends React.Component {
  * @type {Object}
  */
 CharacterBuilder.propTypes = {
-	character: React.PropTypes.shape({
-		id: React.PropTypes.number,
-		title: React.PropTypes.shape({
-			rendered: React.PropTypes.string
+	character: PropTypes.shape({
+		id: PropTypes.number,
+		title: PropTypes.shape({
+			rendered: PropTypes.string
 		}),
-		people: React.PropTypes.shape({
-			singular: React.PropTypes.string
+		people: PropTypes.shape({
+			singular: PropTypes.string
 		}),
-		xp: React.PropTypes.shape({
-			total: React.PropTypes.number
+		xp: PropTypes.shape({
+			total: PropTypes.number
 		}),
-		perk_points: React.PropTypes.shape({
-			bonus: React.PropTypes.number
+		perk_points: PropTypes.shape({
+			bonus: PropTypes.number
 		}),
-		current_build: React.PropTypes.array,
-		picked_starting_skill: React.PropTypes.number
+		current_build: PropTypes.array,
+		picked_starting_skill: PropTypes.number
 	}),
 
-	onSuccessfulSave: React.PropTypes.func
+	onSuccessfulSave: PropTypes.func
 };

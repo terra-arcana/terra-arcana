@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
@@ -120,7 +121,7 @@ class App extends React.Component {
  * @type {Object}
  */
 App.propTypes = {
-	children: React.PropTypes.element
+	children: PropTypes.element
 };
 
 ReactDOM.render(
@@ -133,7 +134,7 @@ ReactDOM.render(
 			<Route path="/codex/:articleSlug/" component={CodexArticlePage} />
 			<Route path="/personnage/creer/" component={CharacterNewPage} />
 			<Route path="/personnage/:characterSlug/" component={CharacterPage} />
-			// TODO: Find a way to default these to particular tabs. See #162
+			{/* TODO: Find a way to default these to particular tabs. See #162 */}
 			<Route path="/personnage/:characterSlug/zodiaque/" component={CharacterPage} />
 			<Route path="/personnage/:characterSlug/fiche/" component={CharacterPage} />
 			<Route path="/systeme/" component={RulesArchivePage} />

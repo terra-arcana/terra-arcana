@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
+import Lodash from 'lodash';
 import React from 'react';
 import {Link} from 'react-router';
-import Lodash from 'lodash';
 
 import Spinner from './spinner.jsx';
 
@@ -153,7 +154,7 @@ export default class NavbarUserPanel extends React.Component {
  * @type {Object}
  */
 NavbarUserPanel.propTypes = {
-	currentUser: React.PropTypes.object,
+	currentUser: PropTypes.object,
 
-	onNavLinkClick: React.PropTypes.func
+	onNavLinkClick: PropTypes.func
 };

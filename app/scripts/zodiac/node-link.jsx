@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactKonva from 'react-konva';
 
@@ -50,13 +51,13 @@ NodeLink.defaultProps = {
  * @type {Object}
  */
 NodeLink.propTypes = {
-	from: React.PropTypes.shape({
-		x: React.PropTypes.number.isRequired,
-		y: React.PropTypes.number.isRequired
+	from: PropTypes.shape({
+		x: PropTypes.number.isRequired,
+		y: PropTypes.number.isRequired
 	}),
-	to: React.PropTypes.shape({
-		x: React.PropTypes.number.isRequired,
-		y: React.PropTypes.number.isRequired
+	to: PropTypes.shape({
+		x: PropTypes.number.isRequired,
+		y: PropTypes.number.isRequired
 	}),
-	highlighted: React.PropTypes.bool
+	highlighted: PropTypes.bool
 };

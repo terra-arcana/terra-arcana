@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Link, IndexLink} from 'react-router';
 
@@ -32,10 +33,10 @@ export default class Breadcrumbs extends React.Component {
  * @type {Object}
  */
 Breadcrumbs.propTypes = {
-	links: React.PropTypes.arrayOf(
-		React.PropTypes.shape({
-			uri: React.PropTypes.string,
-			caption: React.PropTypes.string.isRequired
+	links: PropTypes.arrayOf(
+		PropTypes.shape({
+			uri: PropTypes.string,
+			caption: PropTypes.string.isRequired
 		})
 	).isRequired
 };

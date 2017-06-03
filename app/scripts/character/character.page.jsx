@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import CharacterBuilder from './character-builder.jsx';
@@ -225,7 +226,7 @@ export default class CharacterPage extends React.Component {
  * @type {Object}
  */
 CharacterPage.propTypes = {
-	params: React.PropTypes.shape({
-		characterSlug: React.PropTypes.string.isRequired
+	params: PropTypes.shape({
+		characterSlug: PropTypes.string.isRequired
 	}).isRequired
 };

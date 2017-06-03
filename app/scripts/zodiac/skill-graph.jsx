@@ -1,7 +1,8 @@
+import Lodash from 'lodash';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Stage, Layer} from 'react-konva';
-import Lodash from 'lodash';
 
 import SkillNode from './skill-node.jsx';
 import UpgradeNode from './upgrade-node.jsx';
@@ -557,33 +558,33 @@ SkillGraph.defaultProps = {
  * @type {Object}
  */
 SkillGraph.propTypes = {
-	initialNodeData: React.PropTypes.arrayOf(
-		React.PropTypes.shape({
-			id: React.PropTypes.string.isRequired,
-			type: React.PropTypes.string.isRequired,
-			x: React.PropTypes.number.isRequired,
-			y: React.PropTypes.number.isRequired,
-			start: React.PropTypes.bool,
-			value: React.PropTypes.string
+	initialNodeData: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			type: PropTypes.string.isRequired,
+			x: PropTypes.number.isRequired,
+			y: PropTypes.number.isRequired,
+			start: PropTypes.bool,
+			value: PropTypes.string
 		})
 	).isRequired,
-	initialLinkData: React.PropTypes.arrayOf(
-		React.PropTypes.arrayOf(
-			React.PropTypes.string.isRequired
+	initialLinkData: PropTypes.arrayOf(
+		PropTypes.arrayOf(
+			PropTypes.string.isRequired
 		)
 	).isRequired,
-	pickedNodes: React.PropTypes.arrayOf(
-		React.PropTypes.string
+	pickedNodes: PropTypes.arrayOf(
+		PropTypes.string
 	),
-	contiguousSelection: React.PropTypes.bool,
-	canDragNodes: React.PropTypes.bool,
-	highlightedLinks: React.PropTypes.arrayOf(
-		React.PropTypes.arrayOf(
-			React.PropTypes.string
+	contiguousSelection: PropTypes.bool,
+	canDragNodes: PropTypes.bool,
+	highlightedLinks: PropTypes.arrayOf(
+		PropTypes.arrayOf(
+			PropTypes.string
 		)
 	),
 
-	onNodeSelect: React.PropTypes.func,
-	onNodeMouseOver: React.PropTypes.func,
-	onNodeMouseOut: React.PropTypes.func
+	onNodeSelect: PropTypes.func,
+	onNodeMouseOver: PropTypes.func,
+	onNodeMouseOut: PropTypes.func
 };

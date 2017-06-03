@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import Node from './node.jsx';
@@ -73,16 +74,16 @@ SkillNode.defaultProps = {
  * @type {Object}
  */
 SkillNode.propTypes = {
-	id: React.PropTypes.string.isRequired,
-	x: React.PropTypes.number.isRequired,
-	y: React.PropTypes.number.isRequired,
-	radius: React.PropTypes.number,
-	selected: React.PropTypes.bool,
-	state: React.PropTypes.oneOf(['normal', 'picked', 'start']),
-	draggable: React.PropTypes.bool,
+	id: PropTypes.string.isRequired,
+	x: PropTypes.number.isRequired,
+	y: PropTypes.number.isRequired,
+	radius: PropTypes.number,
+	selected: PropTypes.bool,
+	state: PropTypes.oneOf(['normal', 'picked', 'start']),
+	draggable: PropTypes.bool,
 
-	onClick: React.PropTypes.func,
-	onDragMove: React.PropTypes.func,
-	onMouseOver: React.PropTypes.func,
-	onMouseOut: React.PropTypes.func
+	onClick: PropTypes.func,
+	onDragMove: PropTypes.func,
+	onMouseOver: PropTypes.func,
+	onMouseOut: PropTypes.func
 };

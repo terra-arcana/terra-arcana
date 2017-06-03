@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 /**
@@ -45,10 +46,10 @@ export default class PerkButtonGroup extends React.Component {
  * @type {Object}
  */
 PerkButtonGroup.propTypes = {
-	currentLevel: React.PropTypes.number.isRequired,
-	maxLevel: React.PropTypes.number.isRequired,
-	cost: React.PropTypes.number.isRequired,
+	currentLevel: PropTypes.number.isRequired,
+	maxLevel: PropTypes.number.isRequired,
+	cost: PropTypes.number.isRequired,
 
-	onPerkUpClick: React.PropTypes.func,
-	onPerkDownClick: React.PropTypes.func
+	onPerkUpClick: PropTypes.func,
+	onPerkDownClick: PropTypes.func
 };

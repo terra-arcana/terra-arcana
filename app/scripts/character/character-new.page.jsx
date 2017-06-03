@@ -1,6 +1,7 @@
+import Lodash from 'lodash';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router';
-import Lodash from 'lodash';
 
 import PageHeader from '../layout/page-header.jsx';
 import Spinner from '../layout/spinner.jsx';
@@ -309,12 +310,12 @@ export default class CharacterNewPage extends React.Component {
  * @type {Object}
  */
 CharacterNewPage.propTypes = {
-	onSwitchActiveCharacter: React.PropTypes.func
+	onSwitchActiveCharacter: PropTypes.func
 };
 
 /**
  * @type {Object}
  */
 CharacterNewPage.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 };

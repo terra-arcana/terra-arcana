@@ -1,5 +1,6 @@
-import React from 'react';
 import Lodash from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import PerkButtonGroup from './perk-button-group.jsx';
 
@@ -326,7 +327,7 @@ export default class SkillNodeInspector extends React.Component {
 							<h2 className="panel-title">Chargement...</h2>
 						</div>
 						<div className="panel-body">
-							<p>Consultation des archives d'Asaké...</p>
+							<p>Consultation des archives d&apos;Asaké...</p>
 						</div>
 					</div>
 				</div>
@@ -403,39 +404,39 @@ SkillNodeInspector.defaultProps = {
  * @type {Object}
  */
 SkillNodeInspector.propTypes = {
-	skill: React.PropTypes.shape({
-		id: React.PropTypes.string.isRequired,
-		upgrades: React.PropTypes.arrayOf(
-			React.PropTypes.string
+	skill: PropTypes.shape({
+		id: PropTypes.string.isRequired,
+		upgrades: PropTypes.arrayOf(
+			PropTypes.string
 		).isRequired
 	}),
-	perks: React.PropTypes.shape({
-		power: React.PropTypes.shape({
-			current: React.PropTypes.number.isRequired,
-			max: React.PropTypes.number.isRequired
+	perks: PropTypes.shape({
+		power: PropTypes.shape({
+			current: PropTypes.number.isRequired,
+			max: PropTypes.number.isRequired
 		}),
-		cast: React.PropTypes.shape({
-			current: React.PropTypes.number.isRequired,
-			max: React.PropTypes.number.isRequired
+		cast: PropTypes.shape({
+			current: PropTypes.number.isRequired,
+			max: PropTypes.number.isRequired
 		}),
-		duration: React.PropTypes.shape({
-			current: React.PropTypes.number.isRequired,
-			max: React.PropTypes.number.isRequired
+		duration: PropTypes.shape({
+			current: PropTypes.number.isRequired,
+			max: PropTypes.number.isRequired
 		}),
-		range: React.PropTypes.shape({
-			current: React.PropTypes.number.isRequired,
-			max: React.PropTypes.number.isRequired
+		range: PropTypes.shape({
+			current: PropTypes.number.isRequired,
+			max: PropTypes.number.isRequired
 		}),
-		uses: React.PropTypes.shape({
-			current: React.PropTypes.number.isRequired,
-			max: React.PropTypes.number.isRequired
+		uses: PropTypes.shape({
+			current: PropTypes.number.isRequired,
+			max: PropTypes.number.isRequired
 		})
 	}),
-	metadata: React.PropTypes.shape({
-		cast: React.PropTypes.object.isRequired,
-		duration: React.PropTypes.object.isRequired,
-		range: React.PropTypes.object.isRequired
+	metadata: PropTypes.shape({
+		cast: PropTypes.object.isRequired,
+		duration: PropTypes.object.isRequired,
+		range: PropTypes.object.isRequired
 	}),
 
-	onSelectPerk: React.PropTypes.func
+	onSelectPerk: PropTypes.func
 };

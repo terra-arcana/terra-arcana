@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 /**
@@ -57,9 +58,9 @@ PointNodeInspector.defaultProps = {
  * @type {Object}
  */
 PointNodeInspector.propTypes = {
-	pointNode: React.PropTypes.shape({
-		id: React.PropTypes.string.isRequired,
-		type: React.PropTypes.string.isRequired,
-		value: React.PropTypes.string.isRequired
+	pointNode: PropTypes.shape({
+		id: PropTypes.string.isRequired,
+		type: PropTypes.string.isRequired,
+		value: PropTypes.string.isRequired
 	})
 };

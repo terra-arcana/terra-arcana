@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Link, IndexLink} from 'react-router';
 
@@ -128,14 +129,14 @@ export default class Navbar extends React.Component {
  * @type {Object}
  */
 Navbar.propTypes = {
-	currentUser: React.PropTypes.object,
+	currentUser: PropTypes.object,
 
-	onSwitchActiveCharacter: React.PropTypes.func
+	onSwitchActiveCharacter: PropTypes.func
 };
 
 /**
  * @type {Object}
  */
 Navbar.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 };

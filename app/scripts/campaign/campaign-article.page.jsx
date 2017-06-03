@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
@@ -197,7 +198,7 @@ export default class CampaignArticlePage extends React.Component {
  * @type {Object}
  */
 CampaignArticlePage.propTypes = {
-	params: React.PropTypes.shape({
-		articleSlug: React.PropTypes.string.isRequired
+	params: PropTypes.shape({
+		articleSlug: PropTypes.string.isRequired
 	}).isRequired
 };

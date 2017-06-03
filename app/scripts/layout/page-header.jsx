@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import Breadcrumbs from './breadcrumbs.jsx';
@@ -20,8 +21,8 @@ export default class PageHeader extends React.Component {
 						<div className={contentClasses}>
 							<h1
 								className = "page-header"
-								dangerouslySetInnerHTML = {{__html: this.props.content }}>
-							</h1>
+								dangerouslySetInnerHTML = {{__html: this.props.content }}
+							/>
 							{breadcrumbs}
 						</div>
 					</div>
@@ -35,14 +36,14 @@ export default class PageHeader extends React.Component {
  * @type {Object}
  */
 PageHeader.propTypes = {
-	articleMode: React.PropTypes.bool,
-	breadcrumbs: React.PropTypes.arrayOf(
-		React.PropTypes.shape({
-			uri: React.PropTypes.string,
-			caption: React.PropTypes.string.isRequired
+	articleMode: PropTypes.bool,
+	breadcrumbs: PropTypes.arrayOf(
+		PropTypes.shape({
+			uri: PropTypes.string,
+			caption: PropTypes.string.isRequired
 		})
 	),
-	content: React.PropTypes.string
+	content: PropTypes.string
 };
 
 /**

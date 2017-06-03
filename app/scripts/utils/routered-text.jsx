@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 /**
@@ -73,14 +74,14 @@ RouteredText.parserPattern = /\/{2}([^\/]+)(\/.*)/;
  * @type {Object}
  */
 RouteredText.propTypes = {
-	text: React.PropTypes.string.isRequired
+	text: PropTypes.string.isRequired
 };
 
 /**
  * @type {Object}
  */
 RouteredText.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 };
 
 /**

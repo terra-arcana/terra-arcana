@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import RouteredText from '../utils/routered-text.jsx';
 
@@ -108,7 +109,7 @@ export default class ArticlePage extends React.Component {
  * @type {Object}
  */
 ArticlePage.propTypes = {
-	params: React.PropTypes.shape({
-		articleSlug: React.PropTypes.string.isRequired
+	params: PropTypes.shape({
+		articleSlug: PropTypes.string.isRequired
 	}).isRequired
 };

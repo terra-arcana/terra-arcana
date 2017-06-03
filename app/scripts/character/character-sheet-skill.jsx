@@ -1,5 +1,6 @@
-import React from 'react';
 import Lodash from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 /**
  * A CharacterSheetSkill displays a single skill with its upgrades in a
@@ -245,23 +246,23 @@ export default class CharacterSheetSkill extends React.Component {
  * @type {Object}
  */
 CharacterSheetSkill.propTypes = {
-	skill: React.PropTypes.object.isRequired,
-	pickedUpgrades: React.PropTypes.arrayOf(
-		React.PropTypes.string
+	skill: PropTypes.object.isRequired,
+	pickedUpgrades: PropTypes.arrayOf(
+		PropTypes.string
 	),
-	pickedPerks: React.PropTypes.oneOfType([
-		React.PropTypes.shape({
-			power: React.PropTypes.string.isRequired,
-			cast: React.PropTypes.string.isRequired,
-			duration: React.PropTypes.string.isRequired,
-			range: React.PropTypes.string.isRequired,
-			uses: React.PropTypes.string.isRequired
+	pickedPerks: PropTypes.oneOfType([
+		PropTypes.shape({
+			power: PropTypes.string.isRequired,
+			cast: PropTypes.string.isRequired,
+			duration: PropTypes.string.isRequired,
+			range: PropTypes.string.isRequired,
+			uses: PropTypes.string.isRequired
 		}),
-		React.PropTypes.bool
+		PropTypes.bool
 	]).isRequired,
-	metadata: React.PropTypes.shape({
-		cast: React.PropTypes.object.isRequired,
-		duration: React.PropTypes.object.isRequired,
-		range: React.PropTypes.object.isRequired
+	metadata: PropTypes.shape({
+		cast: PropTypes.object.isRequired,
+		duration: PropTypes.object.isRequired,
+		range: PropTypes.object.isRequired
 	})
 };

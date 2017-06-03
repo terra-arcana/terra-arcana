@@ -119,7 +119,7 @@ export default class IndexPage extends React.Component {
 							dangerouslySetInnerHTML = {{__html: this.state.homeContent}}
 						/>
 						<div className="col-xs-12 col-lg-4">
-							<a className="well ta-discord-panel" href="https://discord.gg/DskSMeC" target="_blank">
+							<a className="well ta-discord-panel" href="https://discord.gg/DskSMeC" target="_blank" rel="noopener noreferrer">
 								<img src="https://discordapp.com/assets/e05ead6e6ebc08df9291738d0aa6986d.png" />
 								Vous avez des <strong>questions</strong>? Des <strong>commentaires</strong>? Vous voulez <strong>faire du RP</strong> avec la communauté?
 								Rejoignez notre serveur Discord!

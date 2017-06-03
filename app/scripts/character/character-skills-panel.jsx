@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import CharacterSkillsPanelSkillElement from './character-skills-panel-skill-element.jsx';
@@ -116,7 +117,7 @@ export default class CharacterSkillsPanel extends React.Component {
 							<li>
 								<h4>
 									<span className="glyphicon glyphicon-certificate"></span>&nbsp;
-									Points d'expérience: {this.props.xp.current}/{this.props.xp.total}
+									Points d&apos;expérience: {this.props.xp.current}/{this.props.xp.total}
 								</h4>
 								<div className="progress">
 									<div
@@ -132,7 +133,7 @@ export default class CharacterSkillsPanel extends React.Component {
 							<li>
 								<h4 className={(this.props.pp.current < 0) ? 'text-danger' : ''}>
 									<span className="ta-perk-icon"></span>&nbsp;
-									Points d'essence: {this.props.pp.current}/{this.props.pp.total}
+									Points d&apos;essence: {this.props.pp.current}/{this.props.pp.total}
 								</h4>
 								<div className="progress">
 									<div
@@ -148,7 +149,7 @@ export default class CharacterSkillsPanel extends React.Component {
 							<li>
 								<h4>
 									<span className="glyphicon glyphicon-heart"></span>&nbsp;
-									Points d'énergie: {this.props.energy}
+									Points d&apos;énergie: {this.props.energy}
 								</h4>
 							</li>
 						</ul>
@@ -218,30 +219,30 @@ CharacterSkillsPanel.defaultProps = {
  * @type {Object}
  */
 CharacterSkillsPanel.propTypes = {
-	characterName: React.PropTypes.string.isRequired,
-	characterPeople: React.PropTypes.shape({
-		id: React.PropTypes.number.isRequired,
-		name: React.PropTypes.string.isRequired,
-		singular: React.PropTypes.string.isRequired
+	characterName: PropTypes.string.isRequired,
+	characterPeople: PropTypes.shape({
+		id: PropTypes.number.isRequired,
+		name: PropTypes.string.isRequired,
+		singular: PropTypes.string.isRequired
 	}).isRequired,
-	skills: React.PropTypes.arrayOf(
-		React.PropTypes.shape({
-			id: React.PropTypes.string.isRequired,
-			name: React.PropTypes.string.isRequired
+	skills: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired
 		})
 	),
-	xp: React.PropTypes.shape({
-		current: React.PropTypes.number.isRequired,
-		total: React.PropTypes.number.isRequired
+	xp: PropTypes.shape({
+		current: PropTypes.number.isRequired,
+		total: PropTypes.number.isRequired
 	}),
-	pp: React.PropTypes.shape({
-		current: React.PropTypes.number.isRequired,
-		total: React.PropTypes.number.isRequired
+	pp: PropTypes.shape({
+		current: PropTypes.number.isRequired,
+		total: PropTypes.number.isRequired
 	}),
-	energy: React.PropTypes.number.isRequired,
-	activeSkill: React.PropTypes.object,
+	energy: PropTypes.number.isRequired,
+	activeSkill: PropTypes.object,
 
-	onSelectSkill: React.PropTypes.func,
-	onUnselectSkill: React.PropTypes.func,
-	onSaveClick: React.PropTypes.func
+	onSelectSkill: PropTypes.func,
+	onUnselectSkill: PropTypes.func,
+	onSaveClick: PropTypes.func
 };

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactKonva from 'react-konva';
 
@@ -122,17 +123,17 @@ PointNode.defaultProps = {
  * @type {Object}
  */
 PointNode.propTypes = {
-	id: React.PropTypes.string.isRequired,
-	x: React.PropTypes.number.isRequired,
-	y: React.PropTypes.number.isRequired,
-	type: React.PropTypes.string.isRequired,
-	value: React.PropTypes.string.isRequired,
-	selected: React.PropTypes.bool,
-	state: React.PropTypes.oneOf(['normal', 'picked', 'start']),
-	draggable: React.PropTypes.bool,
+	id: PropTypes.string.isRequired,
+	x: PropTypes.number.isRequired,
+	y: PropTypes.number.isRequired,
+	type: PropTypes.string.isRequired,
+	value: PropTypes.string.isRequired,
+	selected: PropTypes.bool,
+	state: PropTypes.oneOf(['normal', 'picked', 'start']),
+	draggable: PropTypes.bool,
 
-	onClick: React.PropTypes.func,
-	onDragMove: React.PropTypes.func,
-	onMouseOver: React.PropTypes.func,
-	onMouseOut: React.PropTypes.func
+	onClick: PropTypes.func,
+	onDragMove: PropTypes.func,
+	onMouseOver: PropTypes.func,
+	onMouseOut: PropTypes.func
 };

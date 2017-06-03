@@ -264,7 +264,7 @@ export default class ZodiacEditor extends React.Component {
 										className = 'btn btn-sm btn-success'
 										onClick = {this.createPointNode.bind(this, 'life')}>
 										<span className='glyphicon glyphicon-plus' />&nbsp;
-										Noeud d'énergie
+										Noeud d&apos;énergie
 									</button>
 									<button
 										ref = {(ref) => this.addPerkNodeButton = ref}
@@ -272,7 +272,7 @@ export default class ZodiacEditor extends React.Component {
 										className = 'btn btn-sm btn-success'
 										onClick = {this.createPointNode.bind(this, 'perk')}>
 										<span className='glyphicon glyphicon-plus' />&nbsp;
-										Noeud d'essence
+										Noeud d&apos;essence
 									</button>
 								</div>
 

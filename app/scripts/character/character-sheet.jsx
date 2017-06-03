@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import CharacterSheetSkill from './character-sheet-skill.jsx';
@@ -292,5 +293,5 @@ export default class CharacterSheet extends React.Component {
  * @type {Object}
  */
 CharacterSheet.propTypes = {
-	character: React.PropTypes.object.isRequired
+	character: PropTypes.object.isRequired
 };

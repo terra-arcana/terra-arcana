@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 /**
@@ -68,15 +69,15 @@ CharacterSkillsPanelSkillElement.defaultProps = {
  * @type {Object}
  */
 CharacterSkillsPanelSkillElement.propTypes = {
-	id: React.PropTypes.string.isRequired,
-	name: React.PropTypes.string.isRequired,
-	upgrades: React.PropTypes.arrayOf(
-		React.PropTypes.shape({
-			id: React.PropTypes.string.isRequired,
-			name: React.PropTypes.string.isRequired
+	id: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	upgrades: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired
 		})
 	),
-	active: React.PropTypes.bool,
+	active: PropTypes.bool,
 
-	onSelect: React.PropTypes.func
+	onSelect: PropTypes.func
 };
