@@ -140,13 +140,14 @@ namespace terraarcana {
 
 				// Add the skill to the graph data
 				array_push($result['nodes'], array(
-					'id'    => (string)$skill->ID,
-					'name'  => $skill->post_title,
-					'type'  => 'skill',
-					'x'     => intval($skillGraphData[0]['x']),
-					'y'     => intval($skillGraphData[0]['y']),
-					'start' => $skillGraphData[0]['start'],
-					'perks' => $skillPerkData
+					'id'              => (string)$skill->ID,
+					'name'            => $skill->post_title,
+					'type'            => 'skill',
+					'character-class' => get_field($this->_fields['character_class']['key'], $skill->ID),
+					'x'               => intval($skillGraphData[0]['x']),
+					'y'               => intval($skillGraphData[0]['y']),
+					'start'           => $skillGraphData[0]['start'],
+					'perks'           => $skillPerkData
 				));
 
 				// Add links to the skill to the graph data
@@ -165,11 +166,12 @@ namespace terraarcana {
 						$upgradeID = (string)$skill->ID . '-' . (string)($i+1); // Ensure one-indexation of skill upgrades
 
 						array_push($result['nodes'], array(
-							'id'    => $upgradeID,
-							'name'  => $upgrade['title'],
-							'type'  => 'upgrade',
-							'x'     => intval($upgrade['graph_data'][0]['x']),
-							'y'     => intval($upgrade['graph_data'][0]['y'])
+							'id'              => $upgradeID,
+							'name'            => $upgrade['title'],
+							'type'            => 'upgrade',
+							'character-class' => get_field($this->_fields['character_class']['key'], $skill->ID),
+							'x'               => intval($upgrade['graph_data'][0]['x']),
+							'y'               => intval($upgrade['graph_data'][0]['y'])
 						));
 
 						// Add any links from the upgrades to the graph data

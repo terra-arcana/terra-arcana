@@ -34,7 +34,7 @@ export default class CharacterSkillsPanelSkillElement extends React.Component {
 				<ul>
 					{this.props.upgrades.map(function(upgrade) {
 						return (
-							<li><small>{upgrade.name}</small></li>
+							<li key={upgrade.id}><small>{upgrade.name}</small></li>
 						);
 					})}
 				</ul>

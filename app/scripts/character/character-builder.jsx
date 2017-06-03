@@ -41,6 +41,7 @@ export default class CharacterBuilder extends React.Component {
 		this.filterUnpickedStartingNodes = this.filterUnpickedStartingNodes.bind(this);
 		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
 		this.calculateCurrentEnergy = this.calculateCurrentEnergy.bind(this);
+		this.updatePrimaryCharacterClassName = this.updatePrimaryCharacterClassName.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
 
 		/**
@@ -62,7 +63,8 @@ export default class CharacterBuilder extends React.Component {
 				total: 0
 			},
 			energy: this.BASE_ENERGY,
-			alert: undefined
+			alert: undefined,
+			primaryCharacterClassName: ''
 		};
 	}
 
@@ -140,7 +142,10 @@ export default class CharacterBuilder extends React.Component {
 								&nbsp;Sauvegarder
 							</button>
 							<h2 className="panel-title">{this.props.character.title.rendered}</h2>
-							<small>Priorème {this.props.character.people.singular}</small>
+							<small dangerouslySetInnerHTML={{__html: (this.state.primaryCharacterClassName) 
+								? this.state.primaryCharacterClassName + '&nbsp;' + this.props.character.people.singular 
+								: '&nbsp;'}}
+							/>
 						</div>
 
 						<div className="panel-body">
@@ -214,6 +219,9 @@ export default class CharacterBuilder extends React.Component {
 				energy: this.calculateCurrentEnergy(this.state.currentBuild),
 				perkPoints: this.calculateCurrentPerkBalance(this.state.currentBuild)
 			});
+
+			// Now that `this.state.nodeData` exists, we can calculate the primary character class
+			this.updatePrimaryCharacterClassName();
 		}.bind(this));
 	}
 
@@ -316,6 +324,8 @@ export default class CharacterBuilder extends React.Component {
 			energy: this.calculateCurrentEnergy(newBuild),
 			perkPoints: this.calculateCurrentPerkBalance(newBuild)
 		});
+
+		this.updatePrimaryCharacterClassName();
 	}
 
 	/**
@@ -428,8 +438,7 @@ export default class CharacterBuilder extends React.Component {
 	 * @return {Array} An array of objects containing the `id` and `name` of each skill/upgrade node
 	 */
 	getPickedSkillsUpgradesArray() {
-		var i, len, buildNode,
-			final = [];
+		var final = [];
 
 		// Exit early on an undefined build
 		if (!Array.isArray(this.state.currentBuild)) return [];
@@ -437,12 +446,15 @@ export default class CharacterBuilder extends React.Component {
 		// Exit early if node data isn't built yet
 		if (this.state.nodeData.length === 0) return [];
 
-		for (i = 0, len = this.state.currentBuild.length; i < len; i++) {
-			buildNode = this.state.currentBuild[i];
+		for (let i = 0, len = this.state.currentBuild.length; i < len; i++) {
+			let buildNode = this.state.currentBuild[i],
+				buildNodeData = this.getNodeDataById(buildNode.id);
+
 			if (buildNode.type === 'skill' || buildNode.type === 'upgrade') {
 				final.push({
 					id: buildNode.id,
-					name: this.getNodeDataById(buildNode.id).name
+					name: buildNodeData.name,
+					characterClass: buildNodeData['character-class']
 				});
 			}
 		}
@@ -547,6 +559,32 @@ export default class CharacterBuilder extends React.Component {
 		}
 
 		return this.BASE_ENERGY + totalPoints;
+	}
+
+	/**
+	 * Returns the name of the character class that has the most nodes picked by the character.
+	 * @return {string} The character class name
+	 */
+	updatePrimaryCharacterClassName() {
+		var classMap = {},
+			pickedNodes = this.getPickedSkillsUpgradesArray();
+
+		for (let i = 0, len = pickedNodes.length; i < len; ++i) {
+			let buildNode = pickedNodes[i];
+			if (!classMap.hasOwnProperty(buildNode.characterClass)) {
+				classMap[buildNode.characterClass] = 0;
+			}
+			classMap[buildNode.characterClass]++;
+		}
+
+		// Get key of highest rated character class
+		var highestClassId = Object.keys(classMap).reduce((a, b) => { return (classMap[a] > classMap[b]) ? a : b; });
+		
+		jQuery.get(WP_API_Settings.root + 'wp/v2/character-class/' + highestClassId, function(result) {
+			this.setState({
+				primaryCharacterClassName: result.title.rendered
+			});
+		}.bind(this));
 	}
 
 	/**
