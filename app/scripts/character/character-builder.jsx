@@ -562,7 +562,7 @@ export default class CharacterBuilder extends React.Component {
 	}
 
 	/**
-	 * Returns the name of the character class that has the most nodes picked by the character.
+	 * Computes and updates in state the name of the character class that has the most nodes picked by the character.
 	 * @return {string} The character class name
 	 */
 	updatePrimaryCharacterClassName() {

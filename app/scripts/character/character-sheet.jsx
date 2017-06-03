@@ -29,10 +29,12 @@ export default class CharacterSheet extends React.Component {
 			skillInfo: [],
 			pickedUpgradesIDMap: {},
 			authorName: '',
-			graphMetadata: {}
+			graphMetadata: {},
+			primaryCharacterClassName: ''
 		};
 
 		this.getSortedSkills = this.getSortedSkills.bind(this);
+		this.updatePrimaryCharacterClassName = this.updatePrimaryCharacterClassName.bind(this);
 	}
 
 	/**
@@ -82,6 +84,9 @@ export default class CharacterSheet extends React.Component {
 				authorName: authorName,
 				graphMetadata: graphMetadata
 			});
+
+			// TODO: Do this in a single setState call instead of adding another loop
+			this.updatePrimaryCharacterClassName();
 		}.bind(this));
 	}
 
@@ -93,7 +98,8 @@ export default class CharacterSheet extends React.Component {
 		var skillList = this.getSortedSkills(),
 			instants = <InlineSpinner />,
 			buffs = <InlineSpinner />,
-			passives = <InlineSpinner />;
+			passives = <InlineSpinner />,
+			tagline = '';
 
 		if (skillList) {
 			instants = (
@@ -143,6 +149,14 @@ export default class CharacterSheet extends React.Component {
 			);
 		}
 
+		if (   this.state.primaryCharacterClassName
+			&& this.state.authorName)
+		{
+			tagline = this.state.primaryCharacterClassName + ' ' 
+					+ this.props.character.people.singular + '<br>'
+					+ 'Incarné par <strong>' + this.state.authorName + '</strong>';
+		}
+
 		return (
 			<div className="ta-character-sheet">
 				<div className="col-xs-12 no-print">
@@ -170,7 +184,7 @@ export default class CharacterSheet extends React.Component {
 									{this.props.character.perk_points.total}
 								</li>
 							</ul>
-							<br/><small>Incarné par {this.state.authorName}</small>
+							<br/><small dangerouslySetInnerHTML={{__html: tagline}} />
 						</h2>
 
 						<img className="col-xs-3 pull-right" src={WP_Theme_Settings.imageRoot + 'terra-login-logo.png'} />
@@ -240,6 +254,37 @@ export default class CharacterSheet extends React.Component {
 		}
 
 		return skillList;
+	}
+
+	/**
+	 * Computes and updates in state the name of the character class that has the most nodes picked by the character.
+	 * @return {string} The character class name
+	 */
+	updatePrimaryCharacterClassName() {
+		var classMap = {};
+
+		for (let i = 0, len = this.state.skillInfo.length; i < len; ++i) {
+			let buildNode = this.state.skillInfo[i];
+
+			if (!classMap.hasOwnProperty(buildNode['character_class'])) {
+				classMap[buildNode['character_class']] = 0;
+			}
+			classMap[buildNode['character_class']]++;
+
+			// Count all picked upgrades as being part of the character class
+			if (buildNode.upgrades.length) {
+				classMap[buildNode['character_class']] += buildNode.upgrades.length;
+			}
+		}
+
+		// Get key of highest rated character class
+		var highestClassId = Object.keys(classMap).reduce((a, b) => { return (classMap[a] > classMap[b]) ? a : b; });
+
+		jQuery.get(WP_API_Settings.root + 'wp/v2/character-class/' + highestClassId, function(result) {
+			this.setState({
+				primaryCharacterClassName: result.title.rendered
+			});
+		}.bind(this));
 	}
 }
 
