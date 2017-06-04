@@ -18,16 +18,14 @@ module.exports = function(config) {
 		webpack: {
 			module: {
 				loaders: [
-					{test: /\.jsx$/, exclude: /node_modules/, loader: 'babel?presets[]=es2015&presets[]=react'},
-					{test: /\.scss$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract('css!sass')},
-					{test: /\.(gif|jpe?g|png)$/, exclude: /node_modules/, loader: 'file?name=images/[name].[ext]'},
-					{test: /\.svg$/, exclude: /node_modules/, loader: 'svg-inline'}
+					{test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader?presets[]=es2015&presets[]=react'},
+					{test: /\.scss$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract('css-loader!sass-loader')},
+					{test: /\.(gif|jpe?g|png)$/, exclude: /node_modules/, loader: 'file-loader?name=images/[name].[ext]'},
+					{test: /\.svg$/, exclude: /node_modules/, loader: 'svg-inline-loader'}
 				]
 			},
 			plugins: [
-				new ExtractTextPlugin('style.css', {
-					allChunks: true
-				})
+				new ExtractTextPlugin({ filename: 'style.css', allChunks: true })
 			],
 			watch: true
 		},

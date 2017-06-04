@@ -1,14 +1,14 @@
 /* global describe, it */
 
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import ReactTestUtils from 'react-dom/test-utils';
 import expect from 'expect';
 import Lodash from 'lodash';
 import ZodiacViewerPage from '../../scripts/zodiac/zodiac-viewer.page.jsx';
 
 describe('ZodiacViewerPage', function() {
 	it ('inspects nodes', function() {
-		var viewer = TestUtils.renderIntoDocument(
+		var viewer = ReactTestUtils.renderIntoDocument(
 				<ZodiacViewerPage/>
 			),
 			expectedInitialActiveNode = {

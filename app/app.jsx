@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Route, IndexRoute, browserHistory} from 'react-router';
+import { BrowserRouter, Route, IndexRoute } from 'react-router-dom';
 import Lodash from 'lodash';
 
 import Navbar from './scripts/layout/navbar.jsx';
@@ -125,7 +125,7 @@ App.propTypes = {
 };
 
 ReactDOM.render(
-	<Router history={browserHistory} >
+	<BrowserRouter>
 		<Route path="/" component={App}>
 			<IndexRoute component={IndexPage} />
 			<Route path="/campagne/" component={CampaignArchivePage} />
@@ -141,6 +141,6 @@ ReactDOM.render(
 			<Route path="/systeme/:articleSlug/" component={RulesArticlePage} />
 			<Route path="/zodiaque/" component={ZodiacViewerPage} />
 		</Route>
-	</Router>,
+	</BrowserRouter>,
 	document.getElementById('main')
 );

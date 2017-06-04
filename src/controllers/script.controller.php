@@ -43,7 +43,7 @@ namespace terraarcana {
 				wp_register_script('bootstrap-min', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js', array('jquery'));
 
 				// FIXME: Enqueue minified scripts in production
-				wp_enqueue_script('app', $base . 'dist/app.js', array('bootstrap-min'), null, true);
+				wp_enqueue_script('app', $base . 'dist/terra-arcana.js', array('bootstrap-min'), null, true);
 			}
 
 			wp_localize_script('app', 'WP_Theme_Settings', array(

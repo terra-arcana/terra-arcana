@@ -1,14 +1,14 @@
 /* global describe, it */
 
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import ReactTestUtils from 'react-dom/test-utils'; 
 import expect from 'expect';
 import Lodash from 'lodash';
 import SkillGraph from '../../scripts/zodiac/skill-graph.jsx';
 
 describe('SkillGraph', function() {
 	it('has constants defined', function() {
-		var graph = TestUtils.renderIntoDocument(
+		var graph = ReactTestUtils.renderIntoDocument(
 			<SkillGraph/>
 		);
 
@@ -17,7 +17,7 @@ describe('SkillGraph', function() {
 	});
 
 	it('returns start nodes', function() {
-		var graph = TestUtils.renderIntoDocument(
+		var graph = ReactTestUtils.renderIntoDocument(
 				<SkillGraph
 					initialNodeData = {[
 						{

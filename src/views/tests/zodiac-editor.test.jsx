@@ -1,14 +1,14 @@
 /* global describe, it */
 
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import ReactTestUtils from 'react-dom/test-utils';
 import expect from 'expect';
 import Lodash from 'lodash';
 import ZodiacEditor from '../zodiac/zodiac-editor.jsx';
 
 describe('ZodiacEditor', function() {
 	it('initializes the active node', function() {
-		var editor = TestUtils.renderIntoDocument(
+		var editor = ReactTestUtils.renderIntoDocument(
 				<ZodiacEditor/>
 			),
 			defaultActiveNode = {
@@ -21,7 +21,7 @@ describe('ZodiacEditor', function() {
 	});
 
 	it('adds a life node upon clicking new life node button', function() {
-		var editor = TestUtils.renderIntoDocument(
+		var editor = ReactTestUtils.renderIntoDocument(
 				<ZodiacEditor/>
 			),
 			defaultLifeNode = {
@@ -32,13 +32,13 @@ describe('ZodiacEditor', function() {
 				y: 0
 			};
 
-		TestUtils.Simulate.click(editor.addLifeNodeButton);
+		ReactTestUtils.Simulate.click(editor.addLifeNodeButton);
 
 		expect(Lodash.isEqual(editor.getNodeDataById('n0'), defaultLifeNode)).toEqual(true);
 	});
 
 	it('edits life node values', function() {
-		var editor = TestUtils.renderIntoDocument(
+		var editor = ReactTestUtils.renderIntoDocument(
 			<ZodiacEditor />
 		);
 
@@ -58,13 +58,13 @@ describe('ZodiacEditor', function() {
 		});
 
 		editor.pointNodeValueInput.value = '5';
-		TestUtils.Simulate.change(editor.pointNodeValueInput);
+		ReactTestUtils.Simulate.change(editor.pointNodeValueInput);
 
 		expect(editor.getNodeDataById('0').value).toEqual('5');
 	});
 
 	it('deletes life nodes', function() {
-		var editor = TestUtils.renderIntoDocument(
+		var editor = ReactTestUtils.renderIntoDocument(
 			<ZodiacEditor />
 		);
 
@@ -104,7 +104,7 @@ describe('ZodiacEditor', function() {
 			deletedNodes: []
 		});
 
-		TestUtils.Simulate.click(editor.deletePointNodeButton);
+		ReactTestUtils.Simulate.click(editor.deletePointNodeButton);
 
 		expect(Lodash.isEqual(editor.state.nodeData, [
 			{
@@ -136,7 +136,7 @@ describe('ZodiacEditor', function() {
 	});
 
 	it('edits start node properties', function() {
-		var editor = TestUtils.renderIntoDocument(
+		var editor = ReactTestUtils.renderIntoDocument(
 			<ZodiacEditor />
 		);
 
@@ -157,7 +157,7 @@ describe('ZodiacEditor', function() {
 			}
 		});
 
-		TestUtils.Simulate.change(editor.startNodeButton, {
+		ReactTestUtils.Simulate.change(editor.startNodeButton, {
 			target: {
 				checked: true
 			}

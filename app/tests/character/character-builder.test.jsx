@@ -1,14 +1,14 @@
 /* global describe, it */
 
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import ReactTestUtils from 'react-dom/test-utils'; 
 import expect from 'expect';
 import Lodash from 'lodash';
 import CharacterBuilder from '../../scripts/character/character-builder.jsx';
 
 describe('CharacterBuilder', function() {
 	it('adds perks to character', function() {
-		var builder = TestUtils.renderIntoDocument(
+		var builder = ReactTestUtils.renderIntoDocument(
 				<CharacterBuilder
 					character = {{
 						'current_build': [

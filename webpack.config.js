@@ -11,7 +11,7 @@ module.exports = [
 			login: './styles/login/login.scss'
 		},
 		output: {
-			filename: 'app.js',
+			filename: '[name].js',
 			path: __dirname + '/dist'
 		},
 		module: {
@@ -53,11 +53,11 @@ module.exports = [
 	{
 		context: __dirname + '/src/views/zodiac',
 		entry: {
-			javascript: './zodiac-admin-app.jsx',
+			zodiac: './zodiac-admin-app.jsx',
 			html: './zodiac.html'
 		},
 		output: {
-			filename: 'zodiac.js',
+			filename: '[name].js',
 			path: __dirname + '/dist/admin/zodiac'
 		},
 		module: {
@@ -90,11 +90,11 @@ module.exports = [
 	{
 		context: __dirname + '/src/views/xp',
 		entry: {
-			javascript: './xp-admin-app.jsx',
+			xp: './xp-admin-app.jsx',
 			html: './xp.html'
 		},
 		output: {
-			filename: 'xp.js',
+			filename: '[name].js',
 			path: __dirname + '/dist/admin/xp'
 		},
 		module: {
