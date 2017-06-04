@@ -38,14 +38,14 @@ export default class ArticlePage extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		this.fetchTaxonomy(this.props.params.articleSlug);
+		this.fetchTaxonomy(this.props.match.params.articleSlug);
 	}
 
 	/**
 	 * @override
 	 */
 	componentWillReceiveProps(nextProps) {
-		this.fetchTaxonomy(nextProps.params.articleSlug);
+		this.fetchTaxonomy(nextProps.match.params.articleSlug);
 	}
 
 	/**
@@ -109,7 +109,9 @@ export default class ArticlePage extends React.Component {
  * @type {Object}
  */
 ArticlePage.propTypes = {
-	params: PropTypes.shape({
-		articleSlug: PropTypes.string.isRequired
-	}).isRequired
+	match: PropTypes.shape({
+		params: PropTypes.shape({
+			articleSlug: PropTypes.string.isRequired
+		})
+	})
 };

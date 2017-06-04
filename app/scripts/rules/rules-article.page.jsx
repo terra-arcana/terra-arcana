@@ -35,7 +35,7 @@ export default class RulesArticlePage extends ArticlePage {
 
 					const breadcrumbs = [
 						{
-							uri: '/systeme/',
+							uri: '/systeme',
 							caption: 'Système de jeu'
 						},
 						{

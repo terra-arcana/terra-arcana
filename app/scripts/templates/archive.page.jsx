@@ -1,9 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router-dom';
 
 import PageHeader from '../layout/page-header.jsx';
 import Spinner from '../layout/spinner.jsx';
-import {stripLinkDomain} from '../utils/routered-text.jsx';
+import { stripLinkDomain } from '../utils/routered-text.jsx';
 
 require('../../styles/templates/archive.scss');
 

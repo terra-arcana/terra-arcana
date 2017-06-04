@@ -21,7 +21,7 @@ export default class CodexArticlePage extends ArticlePage {
 				const article = result[0],
 					breadcrumbs = [
 						{
-							uri: '/codex/',
+							uri: '/codex',
 							caption: 'Codex Arcanum'
 						},
 						{

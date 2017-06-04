@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link, IndexLink} from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 
 import NavbarUserPanel from './navbar-user-panel.jsx';
 
@@ -11,7 +11,7 @@ require('../../images/terra-logo-blanc.png');
  * Top navigation bar component
  * @class
  */
-export default class Navbar extends React.Component {
+class Navbar extends React.Component {
 
 	/**
 	 * @constructor
@@ -33,21 +33,21 @@ export default class Navbar extends React.Component {
 		var linkData =
 			[
 				{
-					link: '/codex/',
+					link: '/codex',
 					caption: 'Codex Arcanum'
 				},
 				{
-					link: '/systeme/',
+					link: '/systeme',
 					caption: 'Système de jeu'
 				},
 				{
-					link: '/zodiaque/',
+					link: '/zodiaque',
 					caption: 'Zodiaque'
 				}
 			],
 			navbarClasses = ['ta-navbar', 'navbar', 'navbar-inverse'];
 
-		if (this.context.router.location.pathname === '/') {
+		if (this.props.location.pathname === '/') {
 			navbarClasses.push('ta-navbar-home');
 		}
 
@@ -55,9 +55,9 @@ export default class Navbar extends React.Component {
 			<nav className={navbarClasses.join(' ')}>
 				<div className="container">
 					<div className="navbar-header">
-						<IndexLink to="/" className="ta-navbar-logo">
+						<Link to="/" className="ta-navbar-logo">
 							<img src={WP_Theme_Settings.imageRoot + 'terra-logo-blanc.png'} />
-						</IndexLink>
+						</Link>
 					</div>
 
 					<button
@@ -131,12 +131,8 @@ export default class Navbar extends React.Component {
 Navbar.propTypes = {
 	currentUser: PropTypes.object,
 
-	onSwitchActiveCharacter: PropTypes.func
+	// Router properties
+	location: PropTypes.object.isRequired
 };
 
-/**
- * @type {Object}
- */
-Navbar.contextTypes = {
-	router: PropTypes.object.isRequired
-};
+export default withRouter(Navbar);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, IndexLink} from 'react-router';
+import { Link } from 'react-router-dom';
 
 import packageInfo from '../../../package.json';
 
@@ -10,15 +10,15 @@ export default class Footer extends React.Component {
 	render() {
 		var linkData = [
 			{
-				link: '/codex/',
+				link: '/codex',
 				caption: 'Codex Arcanum'
 			},
 			{
-				link: '/systeme/',
+				link: '/systeme',
 				caption: 'Système de jeu'
 			},
 			{
-				link: '/zodiaque/',
+				link: '/zodiaque',
 				caption: 'Zodiaque'
 			}
 		];
@@ -27,9 +27,9 @@ export default class Footer extends React.Component {
 			<div className="ta-footer">
 				<div className="container">
 					<div className="col-xs-12 col-sm-4 col-lg-2">
-						<IndexLink to="/" className="ta-navbar-logo">
+						<Link to="/" className="ta-navbar-logo">
 							<img src={WP_Theme_Settings.imageRoot + 'terra-logo-blanc.png'} />
-						</IndexLink>
+						</Link>
 						<p className="text-xs-center">Grandeur Nature médiéval fantastique</p>
 					</div>
 

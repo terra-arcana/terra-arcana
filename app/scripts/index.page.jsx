@@ -1,8 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router-dom';
 import Lodash from 'lodash';
 
-import {CenteredSpinner} from './layout/spinner.jsx';
+import { CenteredSpinner } from './layout/spinner.jsx';
+import { stripLinkDomain } from './utils/routered-text.jsx';
 
 require('../styles/index.scss');
 
@@ -96,7 +97,7 @@ export default class IndexPage extends React.Component {
 
 			banner = (
 				<div className="col-xs-12">
-					<Link to={this.state.campaign.link}>
+					<Link to={stripLinkDomain(this.state.campaign.link)}>
 						<div className="ta-campaign-banner-hover-text text-center">
 							<div>
 								Prochaine campagne

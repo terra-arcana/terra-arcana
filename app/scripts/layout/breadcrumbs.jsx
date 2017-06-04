@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link, IndexLink} from 'react-router';
+import { Link } from 'react-router-dom';
 
 require('../../styles/layout/breadcrumbs.scss');
 require('../../images/breadcrumbs-home.png');
@@ -10,9 +10,9 @@ export default class Breadcrumbs extends React.Component {
 		return (
 			<ol className = 'breadcrumb ta-breadcrumbs'>
 				<li>
-					<IndexLink to="/">
+					<Link to="/">
 						<img src={WP_Theme_Settings.imageRoot + 'breadcrumbs-home.png'} />
-					</IndexLink>
+					</Link>
 				</li>
 				{this.props.links.map(function(link, index) {
 					return ((link.uri)

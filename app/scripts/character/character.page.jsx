@@ -49,7 +49,7 @@ export default class CharacterPage extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		this.fetchCharacterData(this.props.params.characterSlug);
+		this.fetchCharacterData(this.props.match.params.characterSlug);
 	}
 
 	/**
@@ -58,12 +58,12 @@ export default class CharacterPage extends React.Component {
 	 */
 	componentWillReceiveProps(nextProps) {
 		// Only update character if something changed
-		if (nextProps.params.characterSlug !== this.props.params.characterSlug) {
+		if (nextProps.match.params.characterSlug !== this.props.match.params.characterSlug) {
 			this.setState({
 				character: undefined
 			});
 
-			this.fetchCharacterData(nextProps.params.characterSlug);
+			this.fetchCharacterData(nextProps.match.params.characterSlug);
 		}
 	}
 
@@ -226,7 +226,9 @@ export default class CharacterPage extends React.Component {
  * @type {Object}
  */
 CharacterPage.propTypes = {
-	params: PropTypes.shape({
-		characterSlug: PropTypes.string.isRequired
-	}).isRequired
+	match: PropTypes.shape({
+		params: PropTypes.shape({
+			characterSlug: PropTypes.string.isRequired
+		})
+	})
 };

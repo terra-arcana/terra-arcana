@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Lodash from 'lodash';
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router-dom';
 
 import Spinner from './spinner.jsx';
 
@@ -103,7 +103,7 @@ export default class NavbarUserPanel extends React.Component {
 								return (
 									<li key={character.id}>
 										<Link
-											to = {'/personnage/' + character.slug + '/'}
+											to = {'/personnage/' + character.slug}
 											className = "ta-user-panel-character"
 											onClick = {this.props.onNavLinkClick}
 										>
@@ -117,7 +117,7 @@ export default class NavbarUserPanel extends React.Component {
 							<li className="divider"></li>
 							<li>
 								<Link
-									to = '/personnage/creer/'
+									to = '/personnage/creer'
 									className = "text-success"
 									onClick = {this.props.onNavLinkClick}
 								>

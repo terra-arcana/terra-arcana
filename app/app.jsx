@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, IndexRoute } from 'react-router-dom';
-import Lodash from 'lodash';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Navbar from './scripts/layout/navbar.jsx';
 import Footer from './scripts/layout/footer.jsx';
@@ -40,8 +39,6 @@ class App extends React.Component {
 		this.state = {
 			currentUser: undefined
 		};
-
-		this.switchActiveCharacter = this.switchActiveCharacter.bind(this);
 	}
 
 	componentDidMount() {
@@ -72,48 +69,45 @@ class App extends React.Component {
 	 */
 	render() {
 		return (
-			<div>
-				<Navbar
-					currentUser = {this.state.currentUser}
-					onSwitchActiveCharacter = {this.switchActiveCharacter}
-				/>
-				<div id="page-content">
-					{React.cloneElement(this.props.children, {
-						onSwitchActiveCharacter: this.switchActiveCharacter
-					})}
+			<BrowserRouter>
+				<div>
+					<Navbar currentUser = {this.state.currentUser} />
+
+					<div id="page-content">
+						<Route exact path="/" component={IndexPage} />
+
+						<Switch>
+							<Route path="/campagne/:articleSlug" component={CampaignArticlePage} />
+							<Route path="/campagne" component={CampaignArchivePage} />
+						</Switch>
+
+						<Switch>
+							<Route path="/codex/:articleSlug" component={CodexArticlePage} />
+							<Route path="/codex" component={CodexArchivePage} />
+						</Switch>
+
+						<Switch>
+							<Route path="/personnage/creer" component={CharacterNewPage} />
+							<Switch>
+								{/* TODO: Find a way to default these to particular tabs. See #162 */}
+								<Route path="/personnage/:characterSlug/zodiaque" component={CharacterPage} />
+								<Route path="/personnage/:characterSlug/fiche" component={CharacterPage} />
+								<Route path="/personnage/:characterSlug" component={CharacterPage} />
+							</Switch>
+						</Switch>
+
+						<Switch>
+							<Route path="/systeme/:articleSlug" component={RulesArticlePage} />
+							<Route path="/systeme" component={RulesArchivePage} />
+						</Switch>
+
+						<Route path="/zodiaque" component={ZodiacViewerPage} />
+					</div>
+
+					<Footer />
 				</div>
-				<Footer />
-			</div>
+			</BrowserRouter>
 		);
-	}
-
-	/**
-	 * Changes the current user's active character to a new one.
-	 * @param {number} id The new active character's ID
-	 * @param {bool} [sendServerUpdate=true] Notify the back-end that the current user changed
-	 */
-	switchActiveCharacter(id, sendServerUpdate=true) {
-		var currentUser = Lodash.cloneDeep(this.state.currentUser);
-
-		currentUser['active_character'] = id;
-
-		this.setState({
-			currentUser: currentUser
-		});
-
-		// Update WordPress user model
-		if (sendServerUpdate) {
-			jQuery.ajax({
-				url: WP_API_Settings.root + 'wp/v2/users/' + currentUser['id'],
-				method: 'POST',
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
-				},
-				data: {
-					'active_character': id
-				}
-			});
-		}
 	}
 }
 
@@ -124,23 +118,4 @@ App.propTypes = {
 	children: PropTypes.element
 };
 
-ReactDOM.render(
-	<BrowserRouter>
-		<Route path="/" component={App}>
-			<IndexRoute component={IndexPage} />
-			<Route path="/campagne/" component={CampaignArchivePage} />
-			<Route path="/campagne/:articleSlug/" component={CampaignArticlePage} />
-			<Route path="/codex/" component={CodexArchivePage} />
-			<Route path="/codex/:articleSlug/" component={CodexArticlePage} />
-			<Route path="/personnage/creer/" component={CharacterNewPage} />
-			<Route path="/personnage/:characterSlug/" component={CharacterPage} />
-			{/* TODO: Find a way to default these to particular tabs. See #162 */}
-			<Route path="/personnage/:characterSlug/zodiaque/" component={CharacterPage} />
-			<Route path="/personnage/:characterSlug/fiche/" component={CharacterPage} />
-			<Route path="/systeme/" component={RulesArchivePage} />
-			<Route path="/systeme/:articleSlug/" component={RulesArticlePage} />
-			<Route path="/zodiaque/" component={ZodiacViewerPage} />
-		</Route>
-	</BrowserRouter>,
-	document.getElementById('main')
-);
+ReactDOM.render(<App/>, document.getElementById('main'));

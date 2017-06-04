@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 /**
  * A RouteredText element intercepts all regular <a> events inside its content
  * and pushes them through react-router's history instead.
  * @class
  */
-export default class RouteredText extends React.Component {
+class RouteredText extends React.Component {
 
 	/**
 	 * @constructor
@@ -50,7 +51,7 @@ export default class RouteredText extends React.Component {
 				var parsedUrl = RouteredText.parserPattern.exec(e.currentTarget.href);
 				if (parsedUrl[1] === location.hostname) { // Only reroute links coming from this top domain
 					e.preventDefault();
-					this.context.router.push(parsedUrl[2]);
+					this.props.history.push(parsedUrl[2]);
 				}
 			}.bind(this));
 		}.bind(this));
@@ -74,14 +75,10 @@ RouteredText.parserPattern = /\/{2}([^\/]+)(\/.*)/;
  * @type {Object}
  */
 RouteredText.propTypes = {
-	text: PropTypes.string.isRequired
-};
+	text: PropTypes.string.isRequired,
 
-/**
- * @type {Object}
- */
-RouteredText.contextTypes = {
-	router: PropTypes.object.isRequired
+	// Router properties
+	history: PropTypes.object.isRequired
 };
 
 /**
@@ -95,3 +92,5 @@ export function stripLinkDomain(link) {
 		return parsedUrl[2];
 	}
 }
+
+export default withRouter(RouteredText);

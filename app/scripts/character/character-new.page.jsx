@@ -1,7 +1,7 @@
 import Lodash from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link} from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 
 import PageHeader from '../layout/page-header.jsx';
 import Spinner from '../layout/spinner.jsx';
@@ -11,7 +11,7 @@ import Spinner from '../layout/spinner.jsx';
  * their account.
  * @class
  */
-export default class CharacterNewPage extends React.Component {
+class CharacterNewPage extends React.Component {
 
 	/**
 	 * @constructor
@@ -150,7 +150,7 @@ export default class CharacterNewPage extends React.Component {
 						<label>Compétence de départ</label>
 						<p>
 							Cette compétence détermine votre méthode de régénération principale,
-							ainsi que votre point de départ sur le <Link to="/zodiaque/">Zodiaque</Link>.
+							ainsi que votre point de départ sur le <Link to="/zodiaque">Zodiaque</Link>.
 						</p>
 						<div className="row">
 							{this.state.startingSkills.map(function(skill) {
@@ -296,11 +296,7 @@ export default class CharacterNewPage extends React.Component {
 				});
 
 				// Redirect to new character profile
-				this.context.router.transitionTo('/personnage/' + response.slug + '/');
-
-				if (this.props.onSwitchActiveCharacter) {
-					this.props.onSwitchActiveCharacter(response.id, false);
-				}
+				this.props.history.push('/personnage/' + response.slug);
 			}.bind(this)
 		});
 	}
@@ -310,12 +306,8 @@ export default class CharacterNewPage extends React.Component {
  * @type {Object}
  */
 CharacterNewPage.propTypes = {
-	onSwitchActiveCharacter: PropTypes.func
+	// Router properties
+	history: PropTypes.object.isRequired
 };
 
-/**
- * @type {Object}
- */
-CharacterNewPage.contextTypes = {
-	router: PropTypes.object.isRequired
-};
+export default withRouter(CharacterNewPage);

@@ -42,14 +42,14 @@ export default class CampaignArticlePage extends React.Component {
 	 * @override
 	 */
 	componentDidMount() {
-		this.fetchData(this.props.params.articleSlug);
+		this.fetchData(this.props.match.params.articleSlug);
 	}
 
 	/**
 	 * @override
 	 */
 	componentWillReceiveProps(nextProps) {
-		this.fetchData(nextProps.params.articleSlug);
+		this.fetchData(nextProps.match.params.articleSlug);
 	}
 
 	/**
@@ -67,7 +67,7 @@ export default class CampaignArticlePage extends React.Component {
 				const article = result[0],
 					breadcrumbs = [
 						{
-							uri: '/campagne/',
+							uri: '/campagne',
 							caption: 'Campagnes'
 						},
 						{
@@ -198,7 +198,9 @@ export default class CampaignArticlePage extends React.Component {
  * @type {Object}
  */
 CampaignArticlePage.propTypes = {
-	params: PropTypes.shape({
-		articleSlug: PropTypes.string.isRequired
-	}).isRequired
+	match: PropTypes.shape({
+		params: PropTypes.shape({
+			articleSlug: PropTypes.string.isRequired
+		})
+	})
 };
