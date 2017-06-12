@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import CharacterSheetSkill from './character-sheet-skill.jsx';
+import { getPrimaryCharacterClassFromSkills } from './inc/character-class.query.jsx';
 
-import {InlineSpinner} from '../layout/spinner.jsx';
+import { InlineSpinner } from '../layout/spinner.jsx';
 
 require('../../styles/character/character-sheet.page.scss');
 require('../../images/zodiac/perk-black.png');
@@ -35,7 +36,6 @@ export default class CharacterSheet extends React.Component {
 		};
 
 		this.getSortedSkills = this.getSortedSkills.bind(this);
-		this.updatePrimaryCharacterClassName = this.updatePrimaryCharacterClassName.bind(this);
 	}
 
 	/**
@@ -43,11 +43,12 @@ export default class CharacterSheet extends React.Component {
 	 */
 	componentWillMount() {
 		var i, len, skillInfo, splitID,
-			skillInfoRequest, authorRequest, graphMetadataRequest,
+			skillsRequest, authorRequest, graphMetadataRequest,
 			upgradeIDMap = {},
 			graphMetadata = {},
 			skillIDs = [],
 			authorName = '',
+			primaryCharacterClassName = '',
 			currentBuild = this.props.character.current_build;
 
 		for (i = 0, len = currentBuild.length; i < len; i++) {
@@ -63,13 +64,20 @@ export default class CharacterSheet extends React.Component {
 			}
 		}
 
-		this.setState({
-			pickedUpgradesIDMap: upgradeIDMap
-		});
+		skillsRequest = (() => {
+			let deferred = jQuery.Deferred();
 
-		skillInfoRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/skill?per_page=100&include=' + skillIDs.join(','), function(result) {
-			skillInfo = result;
-		}.bind(this));
+			jQuery.get(WP_API_Settings.root + 'wp/v2/skill?per_page=100&include=' + skillIDs.join(','), function(result) {
+				skillInfo = result;
+
+				getPrimaryCharacterClassFromSkills(skillInfo).done(function(result) {
+					primaryCharacterClassName = result.title.rendered;
+					deferred.resolve();
+				}.bind(this));
+			}.bind(this));
+
+			return deferred.promise();
+		})();
 
 		authorRequest = jQuery.get(WP_API_Settings.root + 'wp/v2/users/' + this.props.character.author, function(result) {
 			authorName = result.name;
@@ -79,15 +87,14 @@ export default class CharacterSheet extends React.Component {
 			graphMetadata = result.meta;
 		}.bind(this));
 
-		jQuery.when(skillInfoRequest, authorRequest, graphMetadataRequest).done(function() {
+		jQuery.when(skillsRequest, authorRequest, graphMetadataRequest).done(function() {
 			this.setState({
+				pickedUpgradesIDMap: upgradeIDMap,
 				skillInfo: skillInfo,
 				authorName: authorName,
-				graphMetadata: graphMetadata
+				graphMetadata: graphMetadata,
+				primaryCharacterClassName: primaryCharacterClassName
 			});
-
-			// TODO: Do this in a single setState call instead of adding another loop
-			this.updatePrimaryCharacterClassName();
 		}.bind(this));
 	}
 
@@ -255,37 +262,6 @@ export default class CharacterSheet extends React.Component {
 		}
 
 		return skillList;
-	}
-
-	/**
-	 * Computes and updates in state the name of the character class that has the most nodes picked by the character.
-	 * @return {string} The character class name
-	 */
-	updatePrimaryCharacterClassName() {
-		var classMap = {};
-
-		for (let i = 0, len = this.state.skillInfo.length; i < len; ++i) {
-			let buildNode = this.state.skillInfo[i];
-
-			if (!classMap.hasOwnProperty(buildNode['character_class'])) {
-				classMap[buildNode['character_class']] = 0;
-			}
-			classMap[buildNode['character_class']]++;
-
-			// Count all picked upgrades as being part of the character class
-			if (buildNode.upgrades.length) {
-				classMap[buildNode['character_class']] += buildNode.upgrades.length;
-			}
-		}
-
-		// Get key of highest rated character class
-		var highestClassId = Object.keys(classMap).reduce((a, b) => { return (classMap[a] > classMap[b]) ? a : b; });
-
-		jQuery.get(WP_API_Settings.root + 'wp/v2/character-class/' + highestClassId, function(result) {
-			this.setState({
-				primaryCharacterClassName: result.title.rendered
-			});
-		}.bind(this));
 	}
 }
 

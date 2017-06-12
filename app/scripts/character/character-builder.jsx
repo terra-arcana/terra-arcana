@@ -6,6 +6,7 @@ import SkillGraph from '../zodiac/skill-graph.jsx';
 import SkillNodeInspector from '../zodiac/skill-node-inspector.jsx';
 import PointNodeInspector from '../zodiac/point-node-inspector.jsx';
 import CharacterSkillsPanel from './character-skills-panel.jsx';
+import { getPrimaryCharacterClassFromSkills } from './inc/character-class.query.jsx';
 
 require('../../styles/character/character-builder.scss');
 
@@ -42,7 +43,6 @@ export default class CharacterBuilder extends React.Component {
 		this.filterUnpickedStartingNodes = this.filterUnpickedStartingNodes.bind(this);
 		this.calculateCurrentPerkBalance = this.calculateCurrentPerkBalance.bind(this);
 		this.calculateCurrentEnergy = this.calculateCurrentEnergy.bind(this);
-		this.updatePrimaryCharacterClassName = this.updatePrimaryCharacterClassName.bind(this);
 		this.saveBuild = this.saveBuild.bind(this);
 
 		/**
@@ -215,14 +215,14 @@ export default class CharacterBuilder extends React.Component {
 				startingSkills: startingSkills
 			});
 
-			// Now that `this.state.nodeData` exists, we can calculate the perk points
-			this.setState({
-				energy: this.calculateCurrentEnergy(this.state.currentBuild),
-				perkPoints: this.calculateCurrentPerkBalance(this.state.currentBuild)
-			});
-
-			// Now that `this.state.nodeData` exists, we can calculate the primary character class
-			this.updatePrimaryCharacterClassName();
+			// Now that `this.state.nodeData` exists, we can calculate the perk points and character class
+			getPrimaryCharacterClassFromSkills(this.getPickedSkillsUpgradesArray()).done(function(characterClass) {
+				this.setState({
+					energy: this.calculateCurrentEnergy(this.state.currentBuild),
+					perkPoints: this.calculateCurrentPerkBalance(this.state.currentBuild),
+					primaryCharacterClassName: characterClass.title.rendered
+				});
+			}.bind(this));
 		}.bind(this));
 	}
 
@@ -326,7 +326,11 @@ export default class CharacterBuilder extends React.Component {
 			perkPoints: this.calculateCurrentPerkBalance(newBuild)
 		});
 
-		this.updatePrimaryCharacterClassName();
+		getPrimaryCharacterClassFromSkills(this.getPickedSkillsUpgradesArray()).done(function(characterClass) {
+			this.setState({
+				primaryCharacterClassName: characterClass.title.rendered
+			});
+		}.bind(this));
 	}
 
 	/**
@@ -436,7 +440,7 @@ export default class CharacterBuilder extends React.Component {
 
 	/**
 	 * Get an array of every skill and upgrade picked by the player
-	 * @return {Array} An array of objects containing the `id` and `name` of each skill/upgrade node
+	 * @return {Array} An array of objects containing the `id`, `name` and `character_class` of each skill/upgrade node
 	 */
 	getPickedSkillsUpgradesArray() {
 		var final = [];
@@ -455,7 +459,7 @@ export default class CharacterBuilder extends React.Component {
 				final.push({
 					id: buildNode.id,
 					name: buildNodeData.name,
-					characterClass: buildNodeData['character-class']
+					character_class: buildNodeData['character-class']
 				});
 			}
 		}
@@ -560,32 +564,6 @@ export default class CharacterBuilder extends React.Component {
 		}
 
 		return this.BASE_ENERGY + totalPoints;
-	}
-
-	/**
-	 * Computes and updates in state the name of the character class that has the most nodes picked by the character.
-	 * @return {string} The character class name
-	 */
-	updatePrimaryCharacterClassName() {
-		var classMap = {},
-			pickedNodes = this.getPickedSkillsUpgradesArray();
-
-		for (let i = 0, len = pickedNodes.length; i < len; ++i) {
-			let buildNode = pickedNodes[i];
-			if (!classMap.hasOwnProperty(buildNode.characterClass)) {
-				classMap[buildNode.characterClass] = 0;
-			}
-			classMap[buildNode.characterClass]++;
-		}
-
-		// Get key of highest rated character class
-		var highestClassId = Object.keys(classMap).reduce((a, b) => { return (classMap[a] > classMap[b]) ? a : b; });
-		
-		jQuery.get(WP_API_Settings.root + 'wp/v2/character-class/' + highestClassId, function(result) {
-			this.setState({
-				primaryCharacterClassName: result.title.rendered
-			});
-		}.bind(this));
 	}
 
 	/**
