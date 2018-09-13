@@ -63,7 +63,7 @@
   "dependencies": {
     "konva": "^1.1.1",
     "lodash": "^4.17.3",
-    "react": "^15.4.0",
+    "react": "^16.5.1",
     "react-dom": "^15.4.0",
     "react-google-maps": "^6.0.1",
     "react-konva": "^1.1.1",
