@@ -47,7 +47,7 @@
     "json-loader": "^0.5.4",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",
-    "karma-cli": "^1.0.1",
+    "karma-cli": "^2.0.0",
     "karma-junit-reporter": "^1.2.0",
     "karma-mocha": "^1.1.1",
     "karma-scss-preprocessor": "^2.0.0",
