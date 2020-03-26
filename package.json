@@ -61,7 +61,7 @@
     "webpack": "^1.14.0"
   },
   "dependencies": {
-    "konva": "^1.1.1",
+    "konva": "^4.2.2",
     "lodash": "^4.17.3",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
